@@ -25,7 +25,7 @@ const Navbar = () => {
         </button>
         <nav className={`sm:flex gap-8 transition-all duration-300 ease-in-out ${open ? 'block' : 'hidden'} sm:block`}>
           <Link to="/" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">Inicio</Link>
-          <Link to="/propiedades" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">PropiedadesX</Link>
+          <Link to="/propiedades" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">Propiedades</Link>
           <Link to="/nosotros" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">Nosotros</Link>
           <Link to="/registro" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">Registro</Link>
         </nav>
