@@ -1,0 +1,53 @@
+/* main.css — Estilos globales adicionales */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tipografía base */
+body {
+  @apply bg-gray-50 text-gray-900 font-sans;
+}
+
+/* Enlaces */
+a {
+  @apply text-blue-600 hover:underline transition-all;
+}
+
+/* Botones */
+.btn {
+  @apply px-4 py-2 rounded-lg font-semibold transition-colors duration-200;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+/* Formularios */
+input, select, textarea {
+  @apply border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+/* Etiquetas de error */
+.input-error {
+  @apply text-red-600 text-sm mt-1;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold text-gray-800;
+}
+
+/* Cards */
+.card {
+  @apply bg-white rounded-2xl shadow p-6;
+}
+
+/* Secciones */
+.section {
+  @apply max-w-6xl mx-auto px-4 py-8;
+}
