@@ -37,7 +37,7 @@ export default function Home() {
       {/* Banner */}
  <section
   className="relative bg-cover bg-center h-64 rounded-2xl shadow-lg"
-  style={{ backgroundImage: "url('./public/baner.png')" }}
+  style={{ backgroundImage: "url('/baner.png')" }}
 >
   <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white text-center p-4 rounded-2xl">
     <h1 className="text-3xl md:text-5xl font-bold">Encuentra tu lugar ideal</h1>
