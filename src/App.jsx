@@ -1,6 +1,6 @@
 // src/App.jsx
 import { RouterProvider } from "react-router-dom";
-import router from "./router/router";
+import router from "./router"; // asumiendo que tu archivo está en src/router.jsx
 import "./styles/main.css";
 
 const App = () => {

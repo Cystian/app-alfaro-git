@@ -1,0 +1,26 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Opcional: colores personalizados si deseas usar variables */
+:root {
+  --rojo-inmobiliario: #C80000;
+  --negro-profundo: #000000;
+  --gris-neutro: #444444;
+  --gris-claro: #F5F5F5;
+  --beige-suave: #FBE8E8;
+  --gris-medio: #777777;
+}
+
+/* index.css o App.css */
+.page-transition {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.page-transition-active {
+  opacity: 1;
+  transform: translateY(0px);
+}

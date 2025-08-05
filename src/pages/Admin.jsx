@@ -1,8 +1,8 @@
 import React from 'react';
 import AdminDashboard from '../components/AdminDashboard';
-
+import PageWrapper from '../components/PageWrapper';
 export default function Admin() {
-  return (
+  return (<PageWrapper>
     <div className="min-h-screen bg-gray-50 p-4">
       <header className="mb-6">
         <h1 className="text-3xl font-bold text-slate-800">Panel de Administración</h1>
@@ -10,5 +10,5 @@ export default function Admin() {
       </header>
       <AdminDashboard />
     </div>
-  );
+  </PageWrapper>);
 }

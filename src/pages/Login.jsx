@@ -1,7 +1,7 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import PageWrapper from '../components/PageWrapper';
 const Login = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -25,7 +25,7 @@ const Login = () => {
     }
   };
 
-  return (
+  return ( <PageWrapper>
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">Iniciar Sesión</h2>
@@ -76,7 +76,7 @@ const Login = () => {
         </p>
       </div>
     </div>
-  );
+   </PageWrapper>);
 };
 
 export default Login;

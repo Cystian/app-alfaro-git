@@ -1,7 +1,7 @@
 // src/pages/Properties.jsx
 import React from 'react';
 import PropertyCard from '../components/PropertyCard';
-
+import PageWrapper from '../components/PageWrapper';
 const mockProperties = [
   {
     id: 1,
@@ -33,7 +33,7 @@ const mockProperties = [
 ];
 
 const Properties = () => {
-  return (
+  return ( <PageWrapper>
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
@@ -46,7 +46,7 @@ const Properties = () => {
         </div>
       </div>
     </div>
-  );
+   </PageWrapper>);
 };
 
 export default Properties;

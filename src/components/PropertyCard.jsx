@@ -1,8 +1,11 @@
 // src/components/PropertyCard.jsx
 import React from 'react';
+import { Button } from './ui/button';
 
 const PropertyCard = ({ property }) => {
-  const { image, title, price, status, location, contactLink } = property;
+  if (!property) return null;
+
+  const { image, title, price, location, status, contactLink } = property;
 
   return (
     <div className="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300">
@@ -28,11 +31,10 @@ const PropertyCard = ({ property }) => {
         </span>
       </div>
       <div className="px-6 pb-4 flex justify-end">
-        <a
-          href={contactLink || '#'}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-xl text-sm transition"
-        >
-          Contactar
+        <a href={contactLink || '#'}>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-xl text-sm transition">
+            Contactar
+          </Button>
         </a>
       </div>
     </div>

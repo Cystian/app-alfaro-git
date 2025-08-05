@@ -3,7 +3,7 @@ import React from 'react';
 import PropertyCard from '../components/PropertyCard';
 import ContactForm from '../components/ContactForm';
 import { Button } from '@/components/ui/button';
-
+import PageWrapper from '../components/PageWrapper';
 const featuredProperties = [
   {
     id: 1,
@@ -32,7 +32,7 @@ const featuredProperties = [
 ];
 
 export default function Home() {
-  return (
+  return ( <PageWrapper>
     <main className="space-y-12 p-4 sm:p-8">
       {/* Banner */}
       <section className="relative bg-cover bg-center h-64 rounded-2xl shadow-lg" style={{ backgroundImage: "url('/images/banner.jpg')" }}>
@@ -59,5 +59,5 @@ export default function Home() {
         <ContactForm />
       </section>
     </main>
-  );
+   </PageWrapper>);
 }
