@@ -1,16 +1,21 @@
-// src/components/Navbar.jsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-
-  const handleLinkClick = () => setOpen(false); // Cierra el menú al hacer clic
+  const handleLinkClick = () => setOpen(false);
 
   return (
     <header className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-[#C80000]">Inmobiliaria</h1>
+        <h1 className="text-xl font-bold text-[#C80000] flex items-center gap-2">
+          <img
+            src="/logo.png" // Coloca tu imagen aquí (de preferencia en la carpeta public/)
+            alt="Logo"
+            className="h-8 w-auto"
+          />
+          Inmobiliaria
+        </h1>
         <button
           onClick={() => setOpen(!open)}
           className="sm:hidden text-[#C80000] text-2xl"
@@ -30,3 +35,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
