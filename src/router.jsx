@@ -7,6 +7,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
+import Blog from "./pages/Blog";
+import Historia from "./pages/Historia";
+import Conocenos from "./pages/Conocenos";
 
 const router = createBrowserRouter([
   {
