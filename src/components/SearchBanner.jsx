@@ -16,21 +16,21 @@ const SearchBanner = () => {
         <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <CustomSelect
             label="Distrito"
-            options={["Chimbote", "Nuevo Chimbote", "Coishco"]}
+            options={["Chimbote", "Nuevo Chimbote", "Coishco","Santa","Coishco","Chao","Viru","Huarmey"]}
             selected={distritos}
             setSelected={setDistritos}
           />
 
           <CustomSelect
             label="Modalidad"
-            options={["Venta", "Alquiler", "Anticresis"]}
+            options={["Venta", "Alquiler", "Venta+Alquiler"]}
             selected={modalidades}
             setSelected={setModalidades}
           />
 
           <CustomSelect
             label="Tipo"
-            options={["Departamento", "Casa", "Terreno"]}
+            options={["Departamento", "Casa", "Terreno","Oficina","Local","Terreno Comercial"]}
             selected={tipos}
             setSelected={setTipos}
           />
@@ -63,3 +63,4 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
