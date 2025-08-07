@@ -47,7 +47,7 @@ export default function Home() {
   </div>
 </section>
 
-          <SearchBanner />
+          <SearchBanner />  // Baner de busqueda principal
       <div className="mt-12">
       {/* Propiedades destacadas */}
       <section>
