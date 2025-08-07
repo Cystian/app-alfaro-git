@@ -1,39 +1,58 @@
-import React from 'react';
+// src/components/SearchBanner.jsx
+import { useState } from 'react';
 
 const SearchBanner = () => {
+  const [formData, setFormData] = useState({
+    distrito: '',
+    modalidad: '',
+    tipo: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Buscando con:', formData);
+    // Aquí puedes agregar lógica para redirigir o filtrar propiedades
+  };
+
   return (
-    <div className="relative h-96 bg-cover bg-center" style={{ backgroundImage: "url('/baner.png')" }}>
-      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div className="bg-white bg-opacity-90 p-6 rounded-xl shadow-lg w-full max-w-4xl">
-          <form className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <select className="p-3 border rounded w-full">
-              <option value="">Distrito</option>
-              <option value="miraflores">Miraflores</option>
-              <option value="sanisidro">San Isidro</option>
-              <option value="surco">Surco</option>
-            </select>
+    <div className="relative w-full h-[300px] bg-cover bg-center" style={{ backgroundImage: `url('/ruta/imagen-inmobiliaria.jpg')` }}>
+      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-6 rounded-2xl shadow-xl grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-5xl"
+        >
+          <select name="distrito" onChange={handleChange} className="p-2 rounded border">
+            <option value="">Distrito</option>
+            <option value="miraflores">Miraflores</option>
+            <option value="sanisidro">San Isidro</option>
+            <option value="surco">Santiago de Surco</option>
+          </select>
 
-            <select className="p-3 border rounded w-full">
-              <option value="">Modalidad</option>
-              <option value="venta">Venta</option>
-              <option value="alquiler">Alquiler</option>
-            </select>
+          <select name="modalidad" onChange={handleChange} className="p-2 rounded border">
+            <option value="">Modalidad</option>
+            <option value="venta">Venta</option>
+            <option value="alquiler">Alquiler</option>
+          </select>
 
-            <select className="p-3 border rounded w-full">
-              <option value="">Tipo de Inmueble</option>
-              <option value="departamento">Departamento</option>
-              <option value="casa">Casa</option>
-              <option value="terreno">Terreno</option>
-            </select>
+          <select name="tipo" onChange={handleChange} className="p-2 rounded border">
+            <option value="">Tipo de Inmueble</option>
+            <option value="departamento">Departamento</option>
+            <option value="casa">Casa</option>
+            <option value="terreno">Terreno</option>
+          </select>
 
-            <button type="submit" className="bg-blue-600 text-white rounded p-3 hover:bg-blue-700 transition duration-200 w-full">
-              Buscar
-            </button>
-          </form>
-        </div>
+          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all">
+            Buscar
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
 export default SearchBanner;
+
