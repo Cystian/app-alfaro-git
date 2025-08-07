@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Historia = () => {
+const NuestraHistoria = () => {
   return (
     <section className="px-6 py-10 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold text-center mb-6">Nuestra Historia</h1>
@@ -12,4 +12,5 @@ const Historia = () => {
   );
 };
 
-export default Historia;
+export default NuestraHistoria;
+
