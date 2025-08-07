@@ -1,6 +1,7 @@
 // src/components/SearchBanner.jsx
-import React from "react";
-import CustomSelect from './CustomSelect'; // si están en la misma carpeta
+import React, { useState } from "react";
+import CustomSelect from "./CustomSelect"; // Asegúrate de que esté en la misma carpeta
+
 const SearchBanner = () => {
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
@@ -13,7 +14,6 @@ const SearchBanner = () => {
     >
       <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
         <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {/* Distrito */}
           <CustomSelect
             label="Distrito"
             options={["Chimbote", "Nuevo Chimbote", "Coishco"]}
@@ -21,7 +21,6 @@ const SearchBanner = () => {
             setSelected={setDistritos}
           />
 
-          {/* Modalidad */}
           <CustomSelect
             label="Modalidad"
             options={["Venta", "Alquiler", "Anticresis"]}
@@ -29,7 +28,6 @@ const SearchBanner = () => {
             setSelected={setModalidades}
           />
 
-          {/* Tipo */}
           <CustomSelect
             label="Tipo"
             options={["Departamento", "Casa", "Terreno"]}
@@ -63,3 +61,5 @@ const SearchBanner = () => {
     </section>
   );
 };
+
+export default SearchBanner;
