@@ -36,7 +36,7 @@ export default function Home() {
   return ( <PageWrapper>
     <main className="space-y-12 p-4 sm:p-8">
       {/* Banner */}
-/*AQUI txt 1*/
+{ /* Aqui txt 1*/}
           <SearchBanner />  { /* Baner de busqueda principal*/}
       <div className="mt-12">
       {/* Propiedades destacadas */}
