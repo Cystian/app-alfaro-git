@@ -3,19 +3,21 @@ import React, { useState, useRef, useEffect } from "react";
 
 const CustomSelect = ({ label, options, selected, setSelected }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef();
+  const wrapperRef = useRef(null);
 
+  // Cerrar el dropdown al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleOption = (option) => {
+  const handleSelect = (option) => {
     if (selected.includes(option)) {
       setSelected(selected.filter((item) => item !== option));
     } else {
@@ -24,27 +26,33 @@ const CustomSelect = ({ label, options, selected, setSelected }) => {
   };
 
   return (
-    <div className="relative" ref={ref}>
-      <label className="text-sm font-medium mb-1 block">{label}</label>
-      <div
-        className="border rounded-lg px-3 py-2 cursor-pointer bg-white"
+    <div className="relative w-full" ref={wrapperRef}>
+      <button
+        type="button"
+        className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selected.length > 0 ? selected.join(", ") : `Todas`}
-      </div>
+        <span className="text-sm text-gray-700">
+          {selected.length > 0 ? selected.join(", ") : `Seleccione ${label}`}
+        </span>
+      </button>
+
       {isOpen && (
-        <ul className="absolute z-50 mt-1 w-full bg-white border rounded-lg shadow-md max-h-48 overflow-y-auto">
+        <ul className="absolute z-20 mt-1 w-full max-h-60 overflow-auto bg-white border rounded-lg shadow-md text-sm">
           {options.map((option) => (
             <li
               key={option}
-              className="px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer"
-              onClick={() => toggleOption(option)}
+              className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
+              onClick={() => handleSelect(option)}
             >
-              <input
-                type="checkbox"
-                checked={selected.includes(option)}
-                onChange={() => toggleOption(option)}
-                className="accent-blue-600"
+              <img
+                src={
+                  selected.includes(option)
+                    ? "/check.svg"
+                    : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" // invisible placeholder
+                }
+                alt=""
+                className="w-4 h-4 mr-2"
               />
               <span>{option}</span>
             </li>
@@ -56,4 +64,3 @@ const CustomSelect = ({ label, options, selected, setSelected }) => {
 };
 
 export default CustomSelect;
-
