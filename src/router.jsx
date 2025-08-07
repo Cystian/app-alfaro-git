@@ -19,6 +19,10 @@ const router = createBrowserRouter([
       { path: "registro", element: <Register /> },
       { path: "nosotros", element: <About /> },
       { path: "admin", element: <Admin /> }, // O separa esto si tiene otro layout
+          // 👇 Nuevas rutas del submenú "Conócenos"
+      { path: "blog", element: <Blog /> },
+      { path: "historia", element: <Historia /> },
+      { path: "conocenos", element: <Conocenos /> },
     ],
   },
 ]);
