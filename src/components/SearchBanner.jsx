@@ -27,7 +27,7 @@ const SearchBanner = () => {
         >
           <select name="distrito" onChange={handleChange} className="p-2 rounded border">
             <option value="">Distrito</option>
-            <option value="miraflores">Miraflores</option>
+            <option value="miraflores">MirafloresX</option>
             <option value="sanisidro">San Isidro</option>
             <option value="surco">Santiago de Surco</option>
           </select>
@@ -55,4 +55,5 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
 
