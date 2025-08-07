@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
-import Historia from "./pages/Historia";
+import NuestraHistoria from "./pages/NuestraHistoria";
 import Conocenos from "./pages/Conocenos";
 
 const router = createBrowserRouter([
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       { path: "admin", element: <Admin /> }, // O separa esto si tiene otro layout
           // 👇 Nuevas rutas del submenú "Conócenos"
       { path: "blog", element: <Blog /> },
-      { path: "historia", element: <Historia /> },
+      { path: "nuestrahistoria", element: <NuestraHistoria /> },
       { path: "conocenos", element: <Conocenos /> },
     ],
   },
