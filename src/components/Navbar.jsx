@@ -14,7 +14,7 @@ const Navbar = () => {
             alt="Logo"
             className="h-8 w-auto"
           />
-          Inmobiliaria Alberto Alfaro
+          Inmobiliaria Alberto Alfaro E.I.R.L.
         </h1>
         <button
           onClick={() => setOpen(!open)}
