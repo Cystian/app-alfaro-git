@@ -36,9 +36,7 @@ export default function Home() {
   return ( <PageWrapper>
     <main className="space-y-12 p-4 sm:p-8">
       {/* Banner */}
-/* <section  className="relative bg-cover bg-center h-64 rounded-2xl shadow-lg"  style={{ backgroundImage: "url('/baner.png')" }}>  <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white text-center p-4 rounded-2xl">    <h1 className="text-3xl md:text-5xl font-bold">Encuentra tu lugar ideal</h1>    <p className="mt-2 text-lg md:text-xl">Compra, vende o alquila con la mejor asesoría</p>
-    <Button className="mt-4 bg-white text-black hover:bg-gray-200 transition">Contáctanos</Button> </div></section>*/
-
+//AQUI txt 1
           <SearchBanner />  // Baner de busqueda principal
       <div className="mt-12">
       {/* Propiedades destacadas */}
