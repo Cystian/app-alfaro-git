@@ -1,8 +1,12 @@
 // src/components/SearchBanner.jsx
 import React, { useState } from "react";
-import CustomSelect from "./CustomSelect"; // Asegúrate de que esté en la misma carpeta
+import CustomSelect from "./CustomSelect"; // Asegúrate de que esté correctamente importado
 
 const SearchBanner = () => {
+  const distritosOptions = ["Chimbote", "Nuevo Chimbote", "Coishco", "Santa", "Chao", "Viru", "Huarmey"];
+  const modalidadesOptions = ["Venta", "Alquiler", "Venta+Alquiler"];
+  const tiposOptions = ["Departamento", "Casa", "Terreno", "Oficina", "Local", "Terreno Comercial"];
+
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
@@ -16,26 +20,29 @@ const SearchBanner = () => {
         <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <CustomSelect
             label="Distrito"
-            options={["Chimbote", "Nuevo Chimbote", "Coishco","Santa","Coishco","Chao","Viru","Huarmey"]}
+            options={distritosOptions}
             selected={distritos}
             setSelected={setDistritos}
+            includeSelectAll={true}
           />
 
           <CustomSelect
             label="Modalidad"
-            options={["Venta", "Alquiler", "Venta+Alquiler"]}
+            options={modalidadesOptions}
             selected={modalidades}
             setSelected={setModalidades}
+            includeSelectAll={true}
           />
 
           <CustomSelect
             label="Tipo"
-            options={["Departamento", "Casa", "Terreno","Oficina","Local","Terreno Comercial"]}
+            options={tiposOptions}
             selected={tipos}
             setSelected={setTipos}
+            includeSelectAll={true}
           />
 
-          {/* Disponible */}
+          {/* Checkbox: Solo disponibles */}
           <div className="flex items-center space-x-2 mt-7 md:mt-0">
             <input
               id="disponible"
@@ -47,7 +54,7 @@ const SearchBanner = () => {
             </label>
           </div>
 
-          {/* Botón buscar */}
+          {/* Botón de búsqueda */}
           <div className="flex justify-center items-center">
             <button
               type="submit"
@@ -63,4 +70,5 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
 
