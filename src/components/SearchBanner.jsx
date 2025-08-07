@@ -5,7 +5,7 @@ const SearchBanner = () => {
   return (
     <section
       className="relative w-full h-[350px] bg-cover bg-center flex items-center justify-center"
-      style={{ backgroundImage: "url('/img/banner-inmobiliaria.jpg')" }}
+      style={{ backgroundImage: "url('/baner_aa.png')" }}
     >
       <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
         <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -70,6 +70,7 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
 
 
 
