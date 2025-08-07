@@ -36,7 +36,7 @@ export default function Home() {
   return ( <PageWrapper>
     <main className="space-y-12 p-4 sm:p-8">
       {/* Banner */}
- <section
+/* <section
   className="relative bg-cover bg-center h-64 rounded-2xl shadow-lg"
   style={{ backgroundImage: "url('/baner.png')" }}
 >
@@ -45,7 +45,7 @@ export default function Home() {
     <p className="mt-2 text-lg md:text-xl">Compra, vende o alquila con la mejor asesoría</p>
     <Button className="mt-4 bg-white text-black hover:bg-gray-200 transition">Contáctanos</Button>
   </div>
-</section>
+</section>*/
 
           <SearchBanner />  // Baner de busqueda principal
       <div className="mt-12">
