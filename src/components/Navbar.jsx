@@ -42,7 +42,7 @@ const Navbar = () => {
           <img
             src="/logo.png"
             alt="Logo"
-            className="h-12 w-auto transition-all duration-300 hover:scale-105"
+            className="h-18 w-auto transition-all duration-300 hover:scale-105"
           />
         </Link>
 
