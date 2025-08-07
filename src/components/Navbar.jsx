@@ -63,13 +63,13 @@ const Navbar = () => {
             Inicio
           </Link>
           <Link to="/propiedades" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">
-            Propiedades
+            Vende o Alquila
           </Link>
           <Link to="/nosotros" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">
-            Nosotros
+            Servicios
           </Link>
           <Link to="/registro" onClick={handleLinkClick} className="text-[#000000] hover:text-[#C80000] font-medium">
-            Registro
+            Conocenos
           </Link>
         </nav>
       </div>
