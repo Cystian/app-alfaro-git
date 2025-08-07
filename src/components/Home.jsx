@@ -10,7 +10,7 @@ const Home = () => {
       <Hero />
        <div className="mt-12">
       <SearchBanner />
-     
+      </div>
     </>
   );
 };
