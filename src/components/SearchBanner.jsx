@@ -51,7 +51,7 @@ const SearchBanner = () => {
               className="accent-blue-600 w-5 h-5 rounded"
             />
             <label htmlFor="disponible" className="text-sm flex items-center">
-              <img src="/check.svg" alt="check" className="w-4 h-4 mr-1" />
+              <img src="/check.png" alt="check" className="w-4 h-4 mr-1" />
               Solo disponibles
             </label>
           </div>
@@ -93,6 +93,7 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
 
 
 
