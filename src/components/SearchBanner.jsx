@@ -27,22 +27,31 @@ const SearchBanner = () => {
         >
           <select name="distrito" onChange={handleChange} className="p-2 rounded border">
             <option value="">Distrito</option>
-            <option value="miraflores">MirafloresX</option>
-            <option value="sanisidro">San Isidro</option>
-            <option value="surco">Santiago de Surco</option>
+            <option value="miraflores">Chimbote</option>
+            <option value="sanisidro">Nuevo Chimbote</option>
+            <option value="surco">Santa</option>
+              <option value="miraflores">Coishco</option>
+            <option value="sanisidro">Chao</option>
+            <option value="surco">Viru</option>
+            <option value="sanisidro">Trujillo</option>
+            <option value="surco">Huarmey</option>
           </select>
 
           <select name="modalidad" onChange={handleChange} className="p-2 rounded border">
             <option value="">Modalidad</option>
             <option value="venta">Venta</option>
             <option value="alquiler">Alquiler</option>
+            <option value="venta">Venta+Alquiler</option>
           </select>
 
           <select name="tipo" onChange={handleChange} className="p-2 rounded border">
             <option value="">Tipo de Inmueble</option>
-            <option value="departamento">Departamento</option>
-            <option value="casa">Casa</option>
+            <option value="departamento">Casa</option>
+            <option value="casa">Departamento</option>
             <option value="terreno">Terreno</option>
+                <option value="departamento">Oficina</option>
+            <option value="casa">Local</option>
+            <option value="terreno">Terreno Comercial</option>
           </select>
 
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all">
@@ -55,5 +64,6 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
 
 
