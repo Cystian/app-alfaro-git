@@ -64,7 +64,7 @@ const Navbar = () => {
                   📝 Blog
                 </Link>
                 <Link
-                  to="/nuestrahistoria"
+                  to="/nuestra-historia"
                   onClick={handleLinkClick}
                   className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:text-[#C80000] hover:bg-gray-50 border-l-4 border-transparent hover:border-[#C80000] transition-all duration-150"
                 >
@@ -119,7 +119,7 @@ const Navbar = () => {
                 📝 Blog
               </Link>
               <Link
-                to="/nuestrahistoria"
+                to="/nuestra-historia"
                 onClick={handleLinkClick}
                 className="block text-sm text-gray-800 hover:text-[#C80000]"
               >
