@@ -2,6 +2,7 @@
 import React from 'react';
 import PropertyCard from '../components/PropertyCard';
 import ContactForm from '../components/ContactForm';
+import SearchBanner from '../components/SearchBanner';
 import { Button } from '@/components/ui/button';
 import PageWrapper from '../components/PageWrapper';
 const featuredProperties = [
@@ -46,6 +47,8 @@ export default function Home() {
   </div>
 </section>
 
+          <SearchBanner />
+      <div className="mt-12">
       {/* Propiedades destacadas */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
@@ -55,7 +58,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-
+      </div>
       {/* Formulario de contacto */}
       <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
         <h2 className="text-xl font-semibold mb-4">¿Tienes dudas? Contáctanos</h2>
