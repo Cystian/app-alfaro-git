@@ -1,65 +1,71 @@
 // src/components/SearchBanner.jsx
-import { useState } from 'react';
+import React from "react";
 
 const SearchBanner = () => {
-  const [formData, setFormData] = useState({
-    distrito: '',
-    modalidad: '',
-    tipo: '',
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Buscando con:', formData);
-    // Aquí puedes agregar lógica para redirigir o filtrar propiedades
-  };
-
   return (
-    <div className="relative w-full h-[300px] bg-cover bg-center" style={{ backgroundImage: `url('/ruta/imagen-inmobiliaria.jpg')` }}>
-      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-2xl shadow-xl grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-5xl"
-        >
-          <select name="distrito" onChange={handleChange} className="p-2 rounded border">
-            <option value="">Distrito</option>
-            <option value="miraflores">Chimbote</option>
-            <option value="sanisidro">Nuevo Chimbote</option>
-            <option value="surco">Santa</option>
-              <option value="miraflores">Coishco</option>
-            <option value="sanisidro">Chao</option>
-            <option value="surco">Viru</option>
-            <option value="sanisidro">Trujillo</option>
-            <option value="surco">Huarmey</option>
-          </select>
+    <section
+      className="relative w-full h-[350px] bg-cover bg-center flex items-center justify-center"
+      style={{ backgroundImage: "url('/img/banner-inmobiliaria.jpg')" }}
+    >
+      <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
+        <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* Distrito */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium mb-1">Distrito</label>
+            <select className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 transition-all">
+              <option value="">Todos</option>
+              <option value="chimbote">Chimbote</option>
+              <option value="nuevo-chimbote">Nuevo Chimbote</option>
+              <option value="coishco">Coishco</option>
+            </select>
+          </div>
 
-          <select name="modalidad" onChange={handleChange} className="p-2 rounded border">
-            <option value="">Modalidad</option>
-            <option value="venta">Venta</option>
-            <option value="alquiler">Alquiler</option>
-            <option value="venta">Venta+Alquiler</option>
-          </select>
+          {/* Modalidad */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium mb-1">Modalidad</label>
+            <select className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 transition-all">
+              <option value="">Todas</option>
+              <option value="venta">Venta</option>
+              <option value="alquiler">Alquiler</option>
+              <option value="anticresis">Anticresis</option>
+            </select>
+          </div>
 
-          <select name="tipo" onChange={handleChange} className="p-2 rounded border">
-            <option value="">Tipo de Inmueble</option>
-            <option value="departamento">Casa</option>
-            <option value="casa">Departamento</option>
-            <option value="terreno">Terreno</option>
-                <option value="departamento">Oficina</option>
-            <option value="casa">Local</option>
-            <option value="terreno">Terreno Comercial</option>
-          </select>
+          {/* Tipo de Inmueble */}
+          <div className="flex flex-col">
+            <label className="text-sm font-medium mb-1">Tipo</label>
+            <select className="border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 transition-all">
+              <option value="">Todos</option>
+              <option value="departamento">Departamento</option>
+              <option value="casa">Casa</option>
+              <option value="terreno">Terreno</option>
+            </select>
+          </div>
 
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all">
-            Buscar
-          </button>
+          {/* Checkbox disponible */}
+          <div className="flex items-center space-x-2 mt-7 md:mt-0">
+            <input
+              id="disponible"
+              type="checkbox"
+              className="accent-blue-600 w-5 h-5 rounded"
+            />
+            <label htmlFor="disponible" className="text-sm">
+              Solo disponibles
+            </label>
+          </div>
+
+          {/* Botón buscar */}
+          <div className="flex justify-center items-center">
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 transition-all text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+            >
+              Buscar
+            </button>
+          </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 
