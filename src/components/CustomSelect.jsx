@@ -48,7 +48,7 @@ const CustomSelect = ({ label, options, selected, setSelected }) => {
               <img
                 src={
                   selected.includes(option)
-                    ? "/check.svg"
+                    ? "/check.png"
                     : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" // invisible placeholder
                 }
                 alt=""
@@ -64,3 +64,4 @@ const CustomSelect = ({ label, options, selected, setSelected }) => {
 };
 
 export default CustomSelect;
+
