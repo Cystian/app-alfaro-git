@@ -5,6 +5,7 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
   const wrapperRef = useRef(null);
   const fullOptions = ["Todos", ...options];
 
+  // Cierra el dropdown si haces click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -16,7 +17,10 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsOpen]);
 
-  const handleSelect = (option) => {
+  // Selección con stopPropagation para evitar cierre del dropdown
+  const handleSelect = (option, event) => {
+    event.stopPropagation();
+
     if (option === "Todos") {
       if (selected.length === options.length) {
         setSelected([]);
@@ -55,7 +59,7 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
             <li
               key={option}
               className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
-              onClick={() => handleSelect(option)}
+              onClick={(event) => handleSelect(option, event)}
             >
               <img
                 src={
