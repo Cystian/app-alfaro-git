@@ -26,8 +26,22 @@ const SearchBanner = () => {
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
 
-  // Estado para controlar qué dropdown está abierto
+  // Controla qué dropdown está abierto
   const [openSelect, setOpenSelect] = useState(null);
+  // Controla hover para cierre diferido
+  const [hoverSelect, setHoverSelect] = useState(null);
+
+  const handleHoverChange = (isHovering, key) => {
+    if (isHovering) {
+      setOpenSelect(key);
+      setHoverSelect(key);
+    } else {
+      setHoverSelect(null);
+      setTimeout(() => {
+        if (hoverSelect === null) setOpenSelect(null);
+      }, 150);
+    }
+  };
 
   return (
     <section
@@ -43,6 +57,8 @@ const SearchBanner = () => {
             setSelected={setDistritos}
             isOpen={openSelect === "distrito"}
             setIsOpen={(open) => setOpenSelect(open ? "distrito" : null)}
+            menuKey="distrito"
+            onHoverChange={handleHoverChange}
           />
 
           <CustomSelect
@@ -52,6 +68,8 @@ const SearchBanner = () => {
             setSelected={setModalidades}
             isOpen={openSelect === "modalidad"}
             setIsOpen={(open) => setOpenSelect(open ? "modalidad" : null)}
+            menuKey="modalidad"
+            onHoverChange={handleHoverChange}
           />
 
           <CustomSelect
@@ -61,9 +79,10 @@ const SearchBanner = () => {
             setSelected={setTipos}
             isOpen={openSelect === "tipo"}
             setIsOpen={(open) => setOpenSelect(open ? "tipo" : null)}
+            menuKey="tipo"
+            onHoverChange={handleHoverChange}
           />
 
-          {/* Checkbox: Solo disponibles */}
           <div className="flex items-center space-x-2 mt-7 md:mt-0">
             <input
               id="disponible"
@@ -75,7 +94,6 @@ const SearchBanner = () => {
             </label>
           </div>
 
-          {/* Botón de búsqueda */}
           <div className="flex justify-center items-center">
             <button
               type="submit"
