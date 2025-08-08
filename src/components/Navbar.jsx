@@ -73,29 +73,40 @@ export default function Navbar() {
                 <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
 
-              {/* SUBMENÚ */}
-              <div
-                className={`absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}
-              >
-                <a
-                  href="/blog"
-                  className="block px-4 py-2 hover:bg-gray-100 transition"
-                >
-                  Blog
-                </a>
-                <a
-                  href="/nuestra-historia"
-                  className="block px-4 py-2 hover:bg-gray-100 transition"
-                >
-                  Nuestra Historia
-                </a>
-                <a
-                  href="/acerca-de-nosotros"
-                  className="block px-4 py-2 hover:bg-gray-100 transition"
-                >
-                  Acerca de Nosotros
-                </a>
-              </div>
+  {/* SUBMENÚ MEJORADO */}
+<div
+  role="menu"
+  aria-hidden={!submenuOpen}
+  className={`absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 transition-opacity transition-transform duration-300 ${
+    submenuOpen
+      ? "opacity-100 translate-y-0 pointer-events-auto"
+      : "opacity-0 translate-y-2 pointer-events-none"
+  }`}
+  style={{ boxShadow: "0 8px 16px rgba(0,0,0,0.15)" }}
+>
+  <a
+    href="/blog"
+    role="menuitem"
+    className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+  >
+    Blog
+  </a>
+  <a
+    href="/nuestra-historia"
+    role="menuitem"
+    className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+  >
+    Nuestra Historia
+  </a>
+  <a
+    href="/acerca-de-nosotros"
+    role="menuitem"
+    className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+  >
+    Acerca de Nosotros
+  </a>
+</div>
+
             </div>
           </div>
 
@@ -123,36 +134,55 @@ export default function Navbar() {
           >
             SERVICIOS
           </a>
-          <div>
-            <button
-              onClick={() => toggleSubMenu("conocenos")}
-              className="w-full text-left px-4 py-2 hover:bg-gray-100 transition"
-            >
-              CONÓCENOS
-            </button>
-            {activeMenu === "conocenos" && (
-              <div className="pl-4">
-                <a
-                  href="/blog"
-                  className="block px-4 py-2 hover:bg-gray-100 transition"
-                >
-                  Blog
-                </a>
-                <a
-                  href="/nuestra-historia"
-                  className="block px-4 py-2 hover:bg-gray-100 transition"
-                >
-                  Nuestra Historia
-                </a>
-                <a
-                  href="/acerca-de-nosotros"
-                  className="block px-4 py-2 hover:bg-gray-100 transition"
-                >
-                  Acerca de Nosotros
-                </a>
-              </div>
-            )}
-          </div>
+        <div>
+  <button
+    onClick={() => toggleSubMenu("conocenos")}
+    aria-expanded={activeMenu === "conocenos"}
+    aria-controls="submenu-conocenos"
+    className="flex justify-between items-center w-full text-left px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-300 font-medium"
+  >
+    CONÓCENOS
+    <svg
+      className={`w-4 h-4 ml-2 transition-transform duration-300 ${
+        activeMenu === "conocenos" ? "rotate-180" : "rotate-0"
+      }`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  <div
+    id="submenu-conocenos"
+    className={`pl-4 overflow-hidden transition-max-height duration-300 ease-in-out ${
+      activeMenu === "conocenos" ? "max-h-40" : "max-h-0"
+    }`}
+  >
+    <a
+      href="/blog"
+      className="block px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-200"
+    >
+      Blog
+    </a>
+    <a
+      href="/nuestra-historia"
+      className="block px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-200"
+    >
+      Nuestra Historia
+    </a>
+    <a
+      href="/acerca-de-nosotros"
+      className="block px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-200"
+    >
+      Acerca de Nosotros
+    </a>
+  </div>
+</div>
+
         </div>
       )}
     </nav>
