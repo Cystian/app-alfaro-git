@@ -25,7 +25,8 @@ const CustomSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsOpen, onHoverChange]);
 
-  const handleSelect = (option) => {
+  const handleSelect = (option, event) => {
+    event.stopPropagation(); // <-- importante para evitar cierre
     if (option === "Todos") {
       if (selected.length === options.length) setSelected([]);
       else setSelected([...options]);
@@ -34,7 +35,7 @@ const CustomSelect = ({
         setSelected(selected.filter((item) => item !== option));
       else setSelected([...selected, option]);
     }
-    // No cerrar menú al seleccionar para mantenerlo abierto
+    // NO cerramos el menú aquí para que siga abierto tras seleccionar
   };
 
   const displayValue =
@@ -54,7 +55,10 @@ const CustomSelect = ({
       <button
         type="button"
         className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.stopPropagation(); // evitar burbuja que cierre todo
+          setIsOpen(!isOpen);
+        }}
       >
         <span className="text-sm text-gray-700">{displayValue}</span>
       </button>
@@ -65,7 +69,7 @@ const CustomSelect = ({
             <li
               key={option}
               className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
-              onClick={() => handleSelect(option)}
+              onClick={(e) => handleSelect(option, e)} // paso el event
             >
               <img
                 src={
