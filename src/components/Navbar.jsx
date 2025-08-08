@@ -49,26 +49,30 @@ export default function Navbar() {
             {/* VENDE O ALQUILA */}
             <a
               href="/vende-o-alquila"
-              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave"
+              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave
+                         before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azulPrimario-light before:rounded
+                         before:transition-all before:duration-suave before:ease-suave hover:before:w-full"
             >
               VENDE O ALQUILA
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-azulPrimario-light rounded transition-all duration-suave ease-suave"></span>
             </a>
 
             {/* SERVICIOS */}
             <a
               href="/servicios"
-              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave"
+              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave
+                         before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azulPrimario-light before:rounded
+                         before:transition-all before:duration-suave before:ease-suave hover:before:w-full"
             >
               SERVICIOS
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-azulPrimario-light rounded transition-all duration-suave ease-suave"></span>
             </a>
 
             {/* CONÓCENOS con Submenú */}
             <div className="relative">
               <button
                 onClick={() => toggleDropdown("conocenos")}
-                className="flex items-center space-x-1 font-medium text-gray-900 hover:text-azulPrimario focus:outline-none transition-colors duration-suave ease-suave"
+                className="flex items-center space-x-1 font-medium text-gray-900 hover:text-azulPrimario focus:outline-none transition-colors duration-suave ease-suave
+                           relative before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azulPrimario-light before:rounded
+                           before:transition-all before:duration-suave before:ease-suave hover:before:w-full"
                 aria-haspopup="true"
                 aria-expanded={openDropdown === "conocenos"}
               >
@@ -127,10 +131,11 @@ export default function Navbar() {
             {/* CONTACTO */}
             <a
               href="/contacto"
-              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave"
+              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave
+                         before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azulPrimario-light before:rounded
+                         before:transition-all before:duration-suave before:ease-suave hover:before:w-full"
             >
               CONTACTO
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-azulPrimario-light rounded transition-all duration-suave ease-suave"></span>
             </a>
           </div>
 
