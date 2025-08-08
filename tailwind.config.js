@@ -8,9 +8,9 @@ export default {
     extend: {
       colors: {
         'rojo-inmobiliario': '#C80000',
-        'azul-primario': '#3B82F6',       // azul para textos y hover
-        'azul-primario-light': '#93C5FD', // azul claro para subrayados y fondos hover
-        'azul-primario-dark': '#1E40AF',  // azul oscuro para sombras y estados activos
+        'azul-primario': '#3B82F6',
+        'azul-primario-light': '#93C5FD',
+        'azul-primario-dark': '#1E40AF',
         'negro-profundo': '#000000',
         'gris-neutro': '#444444',
         'gris-medio': '#777777',
@@ -18,9 +18,9 @@ export default {
         'beige-suave': '#FBE8E8',
       },
       boxShadow: {
-        'navbar': '0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06)', // sombra azulada suave
-        'btn-primary': '0 4px 6px rgba(59, 130, 246, 0.3)', // sombra para botones azul primario
-        'logo-hover': '0 8px 15px rgba(59, 130, 246, 0.4)',  // sombra elegante para logo hover
+        'navbar': '0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06)',
+        'btn-primary': '0 4px 6px rgba(59, 130, 246, 0.3)',
+        'logo-hover': '0 8px 15px rgba(59, 130, 246, 0.4)',
       },
       transitionProperty: {
         'width': 'width',
@@ -40,14 +40,14 @@ export default {
         },
       },
       borderRadius: {
-        'lg': '0.75rem', // más redondeado para contenedores principales
+        'lg': '0.75rem',
       },
       fontWeight: {
         'medium': '500',
         'semibold': '600',
       },
       letterSpacing: {
-        widest: '.12em', // ligero espaciado para menús
+        widest: '.12em',
       },
     },
   },
