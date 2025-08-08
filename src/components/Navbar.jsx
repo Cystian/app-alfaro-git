@@ -47,18 +47,12 @@ export default function Navbar() {
           <div className="hidden md:flex space-x-8">
 
             {/* VENDE O ALQUILA */}
-            <a
-              href="/vende-o-alquila"
-              className="nav-link"
-            >
+            <a href="/vende-o-alquila" className="nav-link">
               VENDE O ALQUILA
             </a>
 
             {/* SERVICIOS */}
-            <a
-              href="/servicios"
-              className="nav-link"
-            >
+            <a href="/servicios" className="nav-link">
               SERVICIOS
             </a>
 
@@ -92,29 +86,17 @@ export default function Navbar() {
                   aria-label="Submenú Conócenos"
                 >
                   <li>
-                    <a
-                      href="/blog"
-                      className="dropdown-item"
-                      role="menuitem"
-                    >
+                    <a href="/blog" className="dropdown-item" role="menuitem">
                       📝 Blog
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/nuestra-historia"
-                      className="dropdown-item"
-                      role="menuitem"
-                    >
+                    <a href="/nuestra-historia" className="dropdown-item" role="menuitem">
                       📖 Nuestra Historia
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="/acerca-de-nosotros"
-                      className="dropdown-item"
-                      role="menuitem"
-                    >
+                    <a href="/acerca-de-nosotros" className="dropdown-item" role="menuitem">
                       🙋 Acerca de Nosotros
                     </a>
                   </li>
@@ -123,10 +105,7 @@ export default function Navbar() {
             </div>
 
             {/* CONTACTO */}
-            <a
-              href="/contacto"
-              className="nav-link"
-            >
+            <a href="/contacto" className="nav-link">
               CONTACTO
             </a>
           </div>
