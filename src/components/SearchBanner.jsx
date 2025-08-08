@@ -13,13 +13,16 @@ const SearchBanner = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [soloDisponibles, setSoloDisponibles] = useState(false);
 
+  // Habilitar botón solo si hay al menos una selección en cada combo
+  const isBuscarEnabled = distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
+
   return (
     <section
       className="relative w-full h-[350px] bg-cover bg-center flex items-center justify-center"
       style={{ backgroundImage: "url('/baner_aa.png')" }}
     >
-      <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-navbar w-full max-w-5xl mx-auto">
-        <form className="grid grid-cols-1 md:grid-cols-5 gap-6">
+      <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
+        <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
 
           <CustomSelect
             label="Distrito"
@@ -29,7 +32,6 @@ const SearchBanner = () => {
             includeSelectAll={true}
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
-            animationClass="animate-slide-down"
           />
 
           <CustomSelect
@@ -40,7 +42,6 @@ const SearchBanner = () => {
             includeSelectAll={true}
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
-            animationClass="animate-slide-down"
           />
 
           <CustomSelect
@@ -51,28 +52,32 @@ const SearchBanner = () => {
             includeSelectAll={true}
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
-            animationClass="animate-slide-down"
           />
 
-          {/* Checkbox: Solo disponibles */}
-          <div className="flex items-center space-x-3 mt-5 md:mt-0">
+          {/* Checkbox personalizado */}
+          <div className="flex items-center space-x-2 mt-7 md:mt-0">
             <input
               id="disponible"
               type="checkbox"
+              className="custom-checkbox"
               checked={soloDisponibles}
               onChange={() => setSoloDisponibles(!soloDisponibles)}
-              className="accent-azul-primario w-5 h-5 rounded transition-colors duration-suave"
             />
-            <label htmlFor="disponible" className="text-gray-700 font-medium select-none">
+            <label htmlFor="disponible" className="text-sm select-none cursor-pointer">
               Solo disponibles
             </label>
           </div>
 
           {/* Botón de búsqueda */}
-          <div className="flex justify-center items-center mt-5 md:mt-0">
+          <div className="flex justify-center items-center">
             <button
               type="submit"
-              className="w-full bg-azul-primario hover:bg-azul-primario-dark transition-all text-white font-semibold py-3 px-6 rounded-lg shadow-btn-primary"
+              disabled={!isBuscarEnabled}
+              className={`w-full font-semibold py-2 px-4 rounded-lg shadow-md text-white transition-all duration-300
+                ${isBuscarEnabled
+                  ? "bg-azul-primario hover:bg-azul-primario-dark cursor-pointer shadow-btn-primary"
+                  : "bg-gray-300 cursor-not-allowed shadow-none"
+                }`}
             >
               Buscar
             </button>
@@ -84,3 +89,4 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
