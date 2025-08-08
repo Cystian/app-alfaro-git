@@ -12,21 +12,28 @@ const CustomSelect = ({
   onHoverChange,
 }) => {
   const wrapperRef = useRef(null);
+
   const fullOptions = ["Todos", ...options];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsOpen(false);
-        if (onHoverChange) onHoverChange(false);
+      // Si clic dentro del componente, no cierres
+      if (wrapperRef.current && wrapperRef.current.contains(event.target)) {
+        return;
       }
+      // Si clic fuera, cierra el menú
+      setIsOpen(false);
+      if (onHoverChange) onHoverChange(false, menuKey);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [setIsOpen, onHoverChange]);
+
+    // Listener en fase captura para atrapar primero
+    document.addEventListener("click", handleClickOutside, true);
+    return () => document.removeEventListener("click", handleClickOutside, true);
+  }, [setIsOpen, onHoverChange, menuKey]);
 
   const handleSelect = (option, event) => {
-    event.stopPropagation(); // <-- importante para evitar cierre
+    event.preventDefault();
+    event.stopPropagation();
     if (option === "Todos") {
       if (selected.length === options.length) setSelected([]);
       else setSelected([...options]);
@@ -35,7 +42,7 @@ const CustomSelect = ({
         setSelected(selected.filter((item) => item !== option));
       else setSelected([...selected, option]);
     }
-    // NO cerramos el menú aquí para que siga abierto tras seleccionar
+    // No cerramos el menú al seleccionar para que puedas elegir más
   };
 
   const displayValue =
@@ -56,7 +63,8 @@ const CustomSelect = ({
         type="button"
         className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
         onClick={(e) => {
-          e.stopPropagation(); // evitar burbuja que cierre todo
+          e.preventDefault();
+          e.stopPropagation();
           setIsOpen(!isOpen);
         }}
       >
@@ -69,7 +77,7 @@ const CustomSelect = ({
             <li
               key={option}
               className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
-              onClick={(e) => handleSelect(option, e)} // paso el event
+              onClick={(e) => handleSelect(option, e)}
             >
               <img
                 src={
@@ -91,4 +99,5 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+
 
