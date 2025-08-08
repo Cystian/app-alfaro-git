@@ -1,6 +1,6 @@
 // src/components/SearchBanner.jsx
 import React, { useState } from "react";
-import CustomSelect from "./CustomSelect"; // Asegúrate de que esté correctamente importado
+import CustomSelect from "./CustomSelect";
 
 const SearchBanner = () => {
   const distritosOptions = ["Chimbote", "Nuevo Chimbote", "Coishco", "Santa", "Chao", "Viru", "Huarmey"];
@@ -10,6 +10,15 @@ const SearchBanner = () => {
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
+  const [soloDisponibles, setSoloDisponibles] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aquí puedes integrar la lógica para filtrar o enviar datos
+    console.log({ distritos, modalidades, tipos, soloDisponibles });
+  };
+
+  const isButtonDisabled = distritos.length === 0 && modalidades.length === 0 && tipos.length === 0;
 
   return (
     <section
@@ -17,7 +26,7 @@ const SearchBanner = () => {
       style={{ backgroundImage: "url('/baner_aa.png')" }}
     >
       <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
-        <form className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <CustomSelect
             label="Distrito"
             options={distritosOptions}
@@ -47,9 +56,12 @@ const SearchBanner = () => {
             <input
               id="disponible"
               type="checkbox"
-              className="accent-blue-600 w-5 h-5 rounded"
+              checked={soloDisponibles}
+              onChange={() => setSoloDisponibles(!soloDisponibles)}
+              className="accent-blue-600 w-5 h-5 rounded transition-shadow duration-200 hover:shadow-md cursor-pointer"
+              aria-label="Solo propiedades disponibles"
             />
-            <label htmlFor="disponible" className="text-sm">
+            <label htmlFor="disponible" className="text-sm select-none cursor-pointer">
               Solo disponibles
             </label>
           </div>
@@ -58,7 +70,11 @@ const SearchBanner = () => {
           <div className="flex justify-center items-center">
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 transition-all text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+              disabled={isButtonDisabled}
+              className={`w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300
+                hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                ${isButtonDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+              aria-disabled={isButtonDisabled}
             >
               Buscar
             </button>
@@ -70,5 +86,4 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
-
 
