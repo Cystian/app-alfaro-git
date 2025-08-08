@@ -3,18 +3,31 @@ import React, { useState } from "react";
 import CustomSelect from "./CustomSelect";
 
 const SearchBanner = () => {
-  const distritosOptions = ["Chimbote", "Nuevo Chimbote", "Coishco", "Santa", "Chao", "Viru", "Huarmey"];
+  const distritosOptions = [
+    "Chimbote",
+    "Nuevo Chimbote",
+    "Coishco",
+    "Santa",
+    "Chao",
+    "Viru",
+    "Huarmey",
+  ];
   const modalidadesOptions = ["Venta", "Alquiler", "Venta+Alquiler"];
-  const tiposOptions = ["Departamento", "Casa", "Terreno", "Oficina", "Local", "Terreno Comercial"];
+  const tiposOptions = [
+    "Departamento",
+    "Casa",
+    "Terreno",
+    "Oficina",
+    "Local",
+    "Terreno Comercial",
+  ];
 
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
-  const [openDropdown, setOpenDropdown] = useState(null);
 
-  const toggleDropdown = (menu) => {
-    setOpenDropdown((prev) => (prev === menu ? null : menu));
-  };
+  // Estado para controlar qué dropdown está abierto
+  const [openSelect, setOpenSelect] = useState(null);
 
   return (
     <section
@@ -28,8 +41,8 @@ const SearchBanner = () => {
             options={distritosOptions}
             selected={distritos}
             setSelected={setDistritos}
-            isOpen={openDropdown === "distritos"}
-            setIsOpen={(val) => toggleDropdown(val ? "distritos" : null)}
+            isOpen={openSelect === "distrito"}
+            setIsOpen={(open) => setOpenSelect(open ? "distrito" : null)}
           />
 
           <CustomSelect
@@ -37,8 +50,8 @@ const SearchBanner = () => {
             options={modalidadesOptions}
             selected={modalidades}
             setSelected={setModalidades}
-            isOpen={openDropdown === "modalidades"}
-            setIsOpen={(val) => toggleDropdown(val ? "modalidades" : null)}
+            isOpen={openSelect === "modalidad"}
+            setIsOpen={(open) => setOpenSelect(open ? "modalidad" : null)}
           />
 
           <CustomSelect
@@ -46,10 +59,11 @@ const SearchBanner = () => {
             options={tiposOptions}
             selected={tipos}
             setSelected={setTipos}
-            isOpen={openDropdown === "tipos"}
-            setIsOpen={(val) => toggleDropdown(val ? "tipos" : null)}
+            isOpen={openSelect === "tipo"}
+            setIsOpen={(open) => setOpenSelect(open ? "tipo" : null)}
           />
 
+          {/* Checkbox: Solo disponibles */}
           <div className="flex items-center space-x-2 mt-7 md:mt-0">
             <input
               id="disponible"
@@ -61,6 +75,7 @@ const SearchBanner = () => {
             </label>
           </div>
 
+          {/* Botón de búsqueda */}
           <div className="flex justify-center items-center">
             <button
               type="submit"
