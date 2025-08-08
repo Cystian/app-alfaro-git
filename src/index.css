@@ -74,7 +74,8 @@
 }
 
 .dropdown-item {
-  @apply block px-4 py-2 text-gray-700 hover:bg-azul-primario-light hover:text-azul-primario transition-colors duration-300 ease-in-out cursor-pointer;
+  @apply block px-4 py-2 text-gray-700 hover:bg-azul-primario-light hover:text-azul-primario transition-colors duration-300 ease-in-out cursor-pointer no-underline;
+  text-decoration: none !important;
 }
 
 /* Sombra navbar personalizada */
@@ -109,6 +110,12 @@ input[type="checkbox"].custom-checkbox:checked {
   border-color: var(--azul-primario, #3B82F6);
   background-color: transparent;
 }
+
+input[type="checkbox"].custom-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
 
 input[type="checkbox"].custom-checkbox:focus {
   outline: none;
