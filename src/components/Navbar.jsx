@@ -49,9 +49,7 @@ export default function Navbar() {
             {/* VENDE O ALQUILA */}
             <a
               href="/vende-o-alquila"
-              className="relative font-medium text-gray-900 hover:text-azul-primario transition-colors duration-300 ease-in-out
-                         before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azul-primario-light before:rounded
-                         before:transition-all before:duration-300 before:ease-in-out hover:before:w-full"
+              className="nav-link"
             >
               VENDE O ALQUILA
             </a>
@@ -59,9 +57,7 @@ export default function Navbar() {
             {/* SERVICIOS */}
             <a
               href="/servicios"
-              className="relative font-medium text-gray-900 hover:text-azul-primario transition-colors duration-300 ease-in-out
-                         before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azul-primario-light before:rounded
-                         before:transition-all before:duration-300 before:ease-in-out hover:before:w-full"
+              className="nav-link"
             >
               SERVICIOS
             </a>
@@ -70,9 +66,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => toggleDropdown("conocenos")}
-                className="flex items-center space-x-1 font-medium text-gray-900 hover:text-azul-primario focus:outline-none transition-colors duration-300 ease-in-out
-                           relative before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azul-primario-light before:rounded
-                           before:transition-all before:duration-300 before:ease-in-out hover:before:w-full"
+                className="flex items-center space-x-1 nav-link focus:outline-none"
                 aria-haspopup="true"
                 aria-expanded={openDropdown === "conocenos"}
               >
@@ -93,14 +87,14 @@ export default function Navbar() {
 
               {openDropdown === "conocenos" && (
                 <ul
-                  className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-navbar z-50 border border-gray-200 animate-slide-down"
+                  className="dropdown-menu animate-slide-down"
                   role="menu"
                   aria-label="Submenú Conócenos"
                 >
                   <li>
                     <a
                       href="/blog"
-                      className="block px-4 py-2 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out text-gray-700"
+                      className="dropdown-item"
                       role="menuitem"
                     >
                       📝 Blog
@@ -109,7 +103,7 @@ export default function Navbar() {
                   <li>
                     <a
                       href="/nuestra-historia"
-                      className="block px-4 py-2 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out text-gray-700"
+                      className="dropdown-item"
                       role="menuitem"
                     >
                       📖 Nuestra Historia
@@ -118,7 +112,7 @@ export default function Navbar() {
                   <li>
                     <a
                       href="/acerca-de-nosotros"
-                      className="block px-4 py-2 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out text-gray-700"
+                      className="dropdown-item"
                       role="menuitem"
                     >
                       🙋 Acerca de Nosotros
@@ -131,9 +125,7 @@ export default function Navbar() {
             {/* CONTACTO */}
             <a
               href="/contacto"
-              className="relative font-medium text-gray-900 hover:text-azul-primario transition-colors duration-300 ease-in-out
-                         before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-0 before:bg-azul-primario-light before:rounded
-                         before:transition-all before:duration-300 before:ease-in-out hover:before:w-full"
+              className="nav-link"
             >
               CONTACTO
             </a>
