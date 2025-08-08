@@ -23,7 +23,7 @@ export default function Navbar() {
               className="flex-shrink-0 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg rounded-lg"
             >
               <img
-                src="/ruta/a/tu-logo.png"
+                src="/public/logo.png"
                 alt="Logo del sitio"
                 className="h-10 w-auto"
               />
