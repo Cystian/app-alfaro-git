@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@apply no-underline;
+
 
 /* Variables de colores personalizados para CSS nativo si lo necesitas */
 :root {
