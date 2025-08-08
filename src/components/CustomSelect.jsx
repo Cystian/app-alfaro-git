@@ -8,41 +8,39 @@ const CustomSelect = ({
   setSelected,
   isOpen,
   setIsOpen,
-  menuKey,
-  onHoverChange,
 }) => {
   const wrapperRef = useRef(null);
 
+  // Opción "Todos"
   const fullOptions = ["Todos", ...options];
 
+  // Cerrar dropdown al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Si clic dentro del componente, no cierres
-      if (wrapperRef.current && wrapperRef.current.contains(event.target)) {
-        return;
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
       }
-      // Si clic fuera, cierra el menú
-      setIsOpen(false);
-      if (onHoverChange) onHoverChange(false, menuKey);
     };
 
-    // Listener en fase captura para atrapar primero
-    document.addEventListener("click", handleClickOutside, true);
-    return () => document.removeEventListener("click", handleClickOutside, true);
-  }, [setIsOpen, onHoverChange, menuKey]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [setIsOpen]);
 
-  const handleSelect = (option, event) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const handleSelect = (option) => {
     if (option === "Todos") {
-      if (selected.length === options.length) setSelected([]);
-      else setSelected([...options]);
+      if (selected.length === options.length) {
+        setSelected([]);
+      } else {
+        setSelected([...options]);
+      }
     } else {
-      if (selected.includes(option))
+      if (selected.includes(option)) {
         setSelected(selected.filter((item) => item !== option));
-      else setSelected([...selected, option]);
+      } else {
+        setSelected([...selected, option]);
+      }
     }
-    // No cerramos el menú al seleccionar para que puedas elegir más
+    // NO cerramos el menú al seleccionar para permitir multi-selección
   };
 
   const displayValue =
@@ -53,31 +51,29 @@ const CustomSelect = ({
       : `Seleccione ${label}`;
 
   return (
-    <div
-      className="relative w-full"
-      ref={wrapperRef}
-      onMouseEnter={() => onHoverChange && onHoverChange(true, menuKey)}
-      onMouseLeave={() => onHoverChange && onHoverChange(false, menuKey)}
-    >
+    <div className="relative w-full" ref={wrapperRef}>
       <button
         type="button"
         className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
       >
         <span className="text-sm text-gray-700">{displayValue}</span>
       </button>
 
       {isOpen && (
-        <ul className="absolute z-20 mt-1 w-full max-h-60 overflow-auto bg-white border rounded-lg shadow-md text-sm">
+        <ul
+          role="listbox"
+          className="absolute z-20 mt-1 w-full max-h-60 overflow-auto bg-white border rounded-lg shadow-md text-sm"
+        >
           {fullOptions.map((option) => (
             <li
               key={option}
+              role="option"
+              aria-selected={selected.includes(option) || (option === "Todos" && selected.length === options.length)}
               className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
-              onClick={(e) => handleSelect(option, e)}
+              onClick={() => handleSelect(option)}
             >
               <img
                 src={
