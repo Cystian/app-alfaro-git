@@ -91,5 +91,3 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
-
-
