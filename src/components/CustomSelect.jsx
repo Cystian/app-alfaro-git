@@ -2,7 +2,7 @@
 import React, { useRef, useEffect } from "react";
 
 const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen }) => {
-  const wrapperRef = React.useRef(null);
+  const wrapperRef = useRef(null);
   const fullOptions = ["Todos", ...options];
 
   useEffect(() => {
@@ -11,6 +11,7 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsOpen]);
@@ -76,4 +77,5 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
 };
 
 export default CustomSelect;
+
 
