@@ -86,21 +86,21 @@ export default function Navbar() {
                 <a
                   href="/blog"
                   role="menuitem"
-                  className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+                  className="block px-4 py-2 border-l-4 border-transparent hover:border-blue-400 hover:bg-gray-100 transition-colors duration-200"
                 >
                   Blog
                 </a>
                 <a
                   href="/nuestra-historia"
                   role="menuitem"
-                  className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+                  className="block px-4 py-2 border-l-4 border-transparent hover:border-blue-400 hover:bg-gray-100 transition-colors duration-200"
                 >
                   Nuestra Historia
                 </a>
                 <a
                   href="/acerca-de-nosotros"
                   role="menuitem"
-                  className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-200"
+                  className="block px-4 py-2 border-l-4 border-transparent hover:border-blue-400 hover:bg-gray-100 transition-colors duration-200"
                 >
                   Acerca de Nosotros
                 </a>
@@ -167,19 +167,19 @@ export default function Navbar() {
             >
               <a
                 href="/blog"
-                className="block px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-200"
+                className="block px-4 py-2 border-l-4 border-transparent hover:border-blue-400 hover:bg-[var(--gris-claro)] transition-colors duration-200"
               >
                 Blog
               </a>
               <a
                 href="/nuestra-historia"
-                className="block px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-200"
+                className="block px-4 py-2 border-l-4 border-transparent hover:border-blue-400 hover:bg-[var(--gris-claro)] transition-colors duration-200"
               >
                 Nuestra Historia
               </a>
               <a
                 href="/acerca-de-nosotros"
-                className="block px-4 py-2 hover:bg-[var(--gris-claro)] transition-colors duration-200"
+                className="block px-4 py-2 border-l-4 border-transparent hover:border-blue-400 hover:bg-[var(--gris-claro)] transition-colors duration-200"
               >
                 Acerca de Nosotros
               </a>
