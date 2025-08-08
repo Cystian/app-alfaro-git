@@ -69,7 +69,7 @@ const SearchBanner = () => {
               {/* Imagen check personalizada */}
               <span
                 className="absolute top-[2px] left-[2px] w-4 h-4 bg-no-repeat bg-center bg-contain pointer-events-none"
-                style={{ backgroundImage: soloDisponibles ? "url('/check.png')" : "none" }}
+                style={{ backgroundImage: soloDisponibles ? "url('/check2.png')" : "none" }}
               />
               Solo disponibles
             </label>
@@ -96,3 +96,4 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
