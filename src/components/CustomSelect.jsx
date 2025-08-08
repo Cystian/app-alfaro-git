@@ -6,25 +6,30 @@ const CustomSelect = ({
   options,
   selected,
   setSelected,
-  isOpen,
-  setIsOpen,
+  includeSelectAll = false,
+  openDropdown,
+  setOpenDropdown,
 }) => {
   const wrapperRef = useRef(null);
 
-  // Opción "Todos"
-  const fullOptions = ["Todos", ...options];
+  // Opciones incluyendo “Todos”
+  const fullOptions = includeSelectAll ? ["Todos", ...options] : options;
+
+  // Abre el dropdown si el dropdown abierto es este label
+  const isOpen = openDropdown === label;
 
   // Cerrar dropdown al hacer clic fuera
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsOpen(false);
+        if (isOpen) {
+          setOpenDropdown(null);
+        }
       }
-    };
-
+    }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [setIsOpen]);
+  }, [isOpen, setOpenDropdown]);
 
   const handleSelect = (option) => {
     if (option === "Todos") {
@@ -40,7 +45,6 @@ const CustomSelect = ({
         setSelected([...selected, option]);
       }
     }
-    // NO cerramos el menú al seleccionar para permitir multi-selección
   };
 
   const displayValue =
@@ -50,12 +54,21 @@ const CustomSelect = ({
       ? selected.join(", ")
       : `Seleccione ${label}`;
 
+  // Toggle abre o cierra este dropdown
+  const toggleDropdown = () => {
+    if (isOpen) {
+      setOpenDropdown(null);
+    } else {
+      setOpenDropdown(label);
+    }
+  };
+
   return (
     <div className="relative w-full" ref={wrapperRef}>
       <button
         type="button"
         className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleDropdown}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
@@ -64,26 +77,26 @@ const CustomSelect = ({
 
       {isOpen && (
         <ul
-          role="listbox"
           className="absolute z-20 mt-1 w-full max-h-60 overflow-auto bg-white border rounded-lg shadow-md text-sm"
+          role="listbox"
+          aria-label={label}
         >
           {fullOptions.map((option) => (
             <li
               key={option}
-              role="option"
-              aria-selected={selected.includes(option) || (option === "Todos" && selected.length === options.length)}
               className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
               onClick={() => handleSelect(option)}
+              role="option"
+              aria-selected={selected.includes(option)}
             >
-              <img
-                src={
+              <input
+                type="checkbox"
+                readOnly
+                checked={
                   (option === "Todos" && selected.length === options.length) ||
                   (option !== "Todos" && selected.includes(option))
-                    ? "/check.png"
-                    : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                 }
-                alt=""
-                className="w-4 h-4 mr-2"
+                className="mr-2"
               />
               <span>{option}</span>
             </li>
