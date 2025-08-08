@@ -1,5 +1,5 @@
 // src/components/CustomSelect.jsx
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 const CustomSelect = ({
   label,
@@ -11,19 +11,32 @@ const CustomSelect = ({
   setOpenDropdown,
 }) => {
   const wrapperRef = useRef(null);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
-  // Opciones incluyendo “Todos”
   const fullOptions = includeSelectAll ? ["Todos", ...options] : options;
 
-  // Abre el dropdown si el dropdown abierto es este label
   const isOpen = openDropdown === label;
 
-  // Cerrar dropdown al hacer clic fuera
+  // Controlar animación salida para animar antes de cerrar dropdown
+  useEffect(() => {
+    if (!isOpen && !isAnimatingOut) return;
+
+    if (!isOpen && isAnimatingOut) {
+      // Esperar duración animación para cerrar dropdown
+      const timeout = setTimeout(() => setIsAnimatingOut(false), 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen, isAnimatingOut]);
+
+  // Cerrar dropdown fuera de clic con animación
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         if (isOpen) {
-          setOpenDropdown(null);
+          // Iniciar animación salida
+          setIsAnimatingOut(true);
+          // Quitar openDropdown tras animación
+          setTimeout(() => setOpenDropdown(null), 300);
         }
       }
     }
@@ -54,20 +67,29 @@ const CustomSelect = ({
       ? selected.join(", ")
       : `Seleccione ${label}`;
 
-  // Toggle abre o cierra este dropdown
   const toggleDropdown = () => {
     if (isOpen) {
-      setOpenDropdown(null);
+      // Animación salida
+      setIsAnimatingOut(true);
+      setTimeout(() => setOpenDropdown(null), 300);
     } else {
       setOpenDropdown(label);
     }
   };
 
+  // Clases para animar entrada/salida
+  const dropdownClasses = `
+    absolute z-20 mt-1 w-full max-h-60 overflow-auto bg-white border rounded-lg shadow-md text-sm
+    transition-opacity duration-300 ease-in-out transform origin-top
+    ${isOpen && !isAnimatingOut ? "opacity-100 scale-100 animate-slide-down" : ""}
+    ${isAnimatingOut ? "opacity-0 scale-95" : ""}
+  `;
+
   return (
     <div className="relative w-full" ref={wrapperRef}>
       <button
         type="button"
-        className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
+        className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm transition-colors duration-300"
         onClick={toggleDropdown}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
@@ -75,16 +97,16 @@ const CustomSelect = ({
         <span className="text-sm text-gray-700">{displayValue}</span>
       </button>
 
-      {isOpen && (
+      {(isOpen || isAnimatingOut) && (
         <ul
-          className="absolute z-20 mt-1 w-full max-h-60 overflow-auto bg-white border rounded-lg shadow-md text-sm"
+          className={dropdownClasses}
           role="listbox"
           aria-label={label}
         >
           {fullOptions.map((option) => (
             <li
               key={option}
-              className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
+              className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100 transition-colors duration-300"
               onClick={() => handleSelect(option)}
               role="option"
               aria-selected={selected.includes(option)}
