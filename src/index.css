@@ -76,6 +76,17 @@
   @apply block px-4 py-2 text-gray-700 hover:bg-azul-primario-light hover:text-azul-primario transition-colors duration-300 ease-in-out cursor-pointer;
 }
 
+/* Sombra navbar personalizada */
+.shadow-navbar {
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1),
+              0 2px 4px -1px rgba(59, 130, 246, 0.06);
+}
+
+/* Sombra logo personalizada */
+.shadow-logo-hover {
+  box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
+}
+
 /* Custom checkbox usando imagen (base para implementar) */
 input[type="checkbox"].custom-checkbox {
   appearance: none;
@@ -102,5 +113,3 @@ input[type="checkbox"].custom-checkbox:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
-
-
