@@ -27,7 +27,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav ref={wrapperRef} className="fixed w-full z-50 bg-white shadow-md">
+    <nav
+      ref={wrapperRef}
+      className="fixed w-full z-50 bg-white shadow-elegante transition-shadow duration-suave"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
@@ -36,43 +39,43 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="Logo"
-              className="h-10 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-xl rounded"
+              className="h-10 w-auto transition-transform duration-suave hover:scale-105 hover:shadow-logoHover rounded-lg"
             />
           </a>
 
           {/* Menú Desktop */}
-          <div className="hidden md:flex space-x-10 font-sans tracking-wide">
+          <div className="hidden md:flex space-x-8">
 
             {/* VENDE O ALQUILA */}
             <a
               href="/vende-o-alquila"
-              className="relative font-medium text-gray-900 hover:text-blue-600 transition-colors duration-300"
+              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave"
             >
               VENDE O ALQUILA
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded transition-all ease-in-out duration-500"></span>
+              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-azulPrimario-light rounded transition-all duration-suave ease-suave"></span>
             </a>
 
             {/* SERVICIOS */}
             <a
               href="/servicios"
-              className="relative font-medium text-gray-900 hover:text-blue-600 transition-colors duration-300"
+              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave"
             >
               SERVICIOS
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded transition-all ease-in-out duration-500"></span>
+              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-azulPrimario-light rounded transition-all duration-suave ease-suave"></span>
             </a>
 
             {/* CONÓCENOS con Submenú */}
             <div className="relative">
               <button
                 onClick={() => toggleDropdown("conocenos")}
-                className="flex items-center space-x-2 font-medium text-gray-900 hover:text-blue-600 focus:outline-none"
+                className="flex items-center space-x-1 font-medium text-gray-900 hover:text-azulPrimario focus:outline-none transition-colors duration-suave ease-suave"
                 aria-haspopup="true"
                 aria-expanded={openDropdown === "conocenos"}
               >
                 <span>CONÓCENOS</span>
                 <svg
-                  className={`w-5 h-5 transform transition-transform duration-300 ${
-                    openDropdown === "conocenos" ? "rotate-180 text-blue-600 animate-pulse" : "rotate-0 text-gray-600"
+                  className={`w-4 h-4 transform transition-transform duration-suave ease-suave ${
+                    openDropdown === "conocenos" ? "rotate-180 text-azulPrimario" : "rotate-0 text-gray-600"
                   }`}
                   fill="none"
                   stroke="currentColor"
@@ -84,30 +87,39 @@ export default function Navbar() {
                 </svg>
               </button>
 
-              {/* Submenú con animación suave */}
               {openDropdown === "conocenos" && (
                 <ul
-                  className="absolute left-0 mt-2 w-48 bg-white rounded-md border border-gray-200/50 shadow-md backdrop-blur-sm z-50 transition-opacity duration-300 ease-in-out opacity-100 translate-y-0"
+                  className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-elegante z-50 border border-gray-200"
                   role="menu"
                   aria-label="Submenú Conócenos"
-                  style={{ willChange: "opacity, transform" }}
                 >
-                  {[
-                    { href: "/blog", label: "📝 Blog" },
-                    { href: "/nuestra-historia", label: "📖 Nuestra Historia" },
-                    { href: "/acerca-de-nosotros", label: "🙋 Acerca de Nosotros" },
-                  ].map(({ href, label }) => (
-                    <li key={href}>
-                      <a
-                        href={href}
-                        className="block px-5 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 rounded"
-                        role="menuitem"
-                        tabIndex={0}
-                      >
-                        {label}
-                      </a>
-                    </li>
-                  ))}
+                  <li>
+                    <a
+                      href="/blog"
+                      className="block px-4 py-2 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave text-gray-700"
+                      role="menuitem"
+                    >
+                      📝 Blog
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/nuestra-historia"
+                      className="block px-4 py-2 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave text-gray-700"
+                      role="menuitem"
+                    >
+                      📖 Nuestra Historia
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/acerca-de-nosotros"
+                      className="block px-4 py-2 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave text-gray-700"
+                      role="menuitem"
+                    >
+                      🙋 Acerca de Nosotros
+                    </a>
+                  </li>
                 </ul>
               )}
             </div>
@@ -115,10 +127,10 @@ export default function Navbar() {
             {/* CONTACTO */}
             <a
               href="/contacto"
-              className="relative font-medium text-gray-900 hover:text-blue-600 transition-colors duration-300"
+              className="relative font-medium text-gray-900 hover:text-azulPrimario transition-colors duration-suave ease-suave"
             >
               CONTACTO
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded transition-all ease-in-out duration-500"></span>
+              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-azulPrimario-light rounded transition-all duration-suave ease-suave"></span>
             </a>
           </div>
 
@@ -137,17 +149,17 @@ export default function Navbar() {
 
       {/* Menú móvil */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white shadow-md border-t border-gray-200">
+        <div className="md:hidden bg-white shadow-elegante border-t border-gray-200">
           <a
             href="/vende-o-alquila"
-            className="block px-4 py-3 text-gray-800 hover:bg-blue-50 transition-colors rounded"
+            className="block px-4 py-3 text-gray-800 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             VENDE O ALQUILA
           </a>
           <a
             href="/servicios"
-            className="block px-4 py-3 text-gray-800 hover:bg-blue-50 transition-colors rounded"
+            className="block px-4 py-3 text-gray-800 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             SERVICIOS
@@ -159,12 +171,12 @@ export default function Navbar() {
               onClick={() => toggleDropdown("conocenos")}
               aria-expanded={openDropdown === "conocenos"}
               aria-controls="submenu-conocenos-mobile"
-              className="flex justify-between items-center w-full px-4 py-3 text-left font-medium text-gray-800 hover:bg-blue-50 transition-colors rounded focus:outline-none"
+              className="flex justify-between items-center w-full px-4 py-3 text-left font-medium text-gray-800 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave focus:outline-none"
             >
               CONÓCENOS
               <svg
-                className={`w-5 h-5 ml-2 transition-transform duration-300 ${
-                  openDropdown === "conocenos" ? "rotate-180 text-blue-600" : "rotate-0 text-gray-600"
+                className={`w-5 h-5 ml-2 transition-transform duration-suave ease-suave ${
+                  openDropdown === "conocenos" ? "rotate-180 text-azulPrimario" : "rotate-0 text-gray-600"
                 }`}
                 fill="none"
                 stroke="currentColor"
@@ -180,25 +192,25 @@ export default function Navbar() {
             {openDropdown === "conocenos" && (
               <div
                 id="submenu-conocenos-mobile"
-                className="pl-6 border-l border-blue-300 bg-blue-50 transition-all duration-300"
+                className="pl-6 border-l border-azulPrimario bg-azulPrimario-light"
               >
                 <a
                   href="/blog"
-                  className="block px-4 py-2 text-gray-700 hover:bg-blue-100 transition-colors rounded"
+                  className="block px-4 py-2 text-gray-700 hover:bg-azulPrimario transition-colors duration-suave ease-suave"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   📝 Blog
                 </a>
                 <a
                   href="/nuestra-historia"
-                  className="block px-4 py-2 text-gray-700 hover:bg-blue-100 transition-colors rounded"
+                  className="block px-4 py-2 text-gray-700 hover:bg-azulPrimario transition-colors duration-suave ease-suave"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   📖 Nuestra Historia
                 </a>
                 <a
                   href="/acerca-de-nosotros"
-                  className="block px-4 py-2 text-gray-700 hover:bg-blue-100 transition-colors rounded"
+                  className="block px-4 py-2 text-gray-700 hover:bg-azulPrimario transition-colors duration-suave ease-suave"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   🙋 Acerca de Nosotros
@@ -209,7 +221,7 @@ export default function Navbar() {
 
           <a
             href="/contacto"
-            className="block px-4 py-3 text-gray-800 hover:bg-blue-50 transition-colors rounded"
+            className="block px-4 py-3 text-gray-800 hover:bg-azulPrimario-light transition-colors duration-suave ease-suave"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             CONTACTO
