@@ -81,5 +81,3 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
 };
 
 export default CustomSelect;
-
-
