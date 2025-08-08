@@ -1,39 +1,40 @@
 // src/components/CustomSelect.jsx
 import React, { useRef, useEffect } from "react";
 
-const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen }) => {
+const CustomSelect = ({
+  label,
+  options,
+  selected,
+  setSelected,
+  isOpen,
+  setIsOpen,
+  menuKey,
+  onHoverChange,
+}) => {
   const wrapperRef = useRef(null);
   const fullOptions = ["Todos", ...options];
 
-  // Cierra el dropdown si haces click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setIsOpen(false);
+        if (onHoverChange) onHoverChange(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [setIsOpen]);
+  }, [setIsOpen, onHoverChange]);
 
-  // Selección con stopPropagation para evitar cierre del dropdown
-  const handleSelect = (option, event) => {
-    event.stopPropagation();
-
+  const handleSelect = (option) => {
     if (option === "Todos") {
-      if (selected.length === options.length) {
-        setSelected([]);
-      } else {
-        setSelected([...options]);
-      }
+      if (selected.length === options.length) setSelected([]);
+      else setSelected([...options]);
     } else {
-      if (selected.includes(option)) {
+      if (selected.includes(option))
         setSelected(selected.filter((item) => item !== option));
-      } else {
-        setSelected([...selected, option]);
-      }
+      else setSelected([...selected, option]);
     }
+    // No cerrar menú al seleccionar para mantenerlo abierto
   };
 
   const displayValue =
@@ -44,7 +45,12 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
       : `Seleccione ${label}`;
 
   return (
-    <div className="relative w-full" ref={wrapperRef}>
+    <div
+      className="relative w-full"
+      ref={wrapperRef}
+      onMouseEnter={() => onHoverChange && onHoverChange(true, menuKey)}
+      onMouseLeave={() => onHoverChange && onHoverChange(false, menuKey)}
+    >
       <button
         type="button"
         className="w-full border rounded-lg py-2 px-3 bg-white hover:border-blue-500 focus:outline-none text-left shadow-sm"
@@ -59,7 +65,7 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
             <li
               key={option}
               className="flex items-center px-3 py-2 cursor-pointer hover:bg-blue-100"
-              onClick={(event) => handleSelect(option, event)}
+              onClick={() => handleSelect(option)}
             >
               <img
                 src={
@@ -81,3 +87,4 @@ const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen
 };
 
 export default CustomSelect;
+
