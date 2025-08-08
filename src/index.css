@@ -44,8 +44,9 @@
 }
 
 /* Mejoras para enlaces de menú (desktop) */
+
 .nav-link {
-  @apply relative font-semibold text-gray-900 transition-colors duration-300 ease-in-out cursor-pointer;
+  @apply relative font-semibold text-gray-900 transition-colors duration-300 ease-in-out cursor-pointer no-underline;
 }
 
 .nav-link::after {
