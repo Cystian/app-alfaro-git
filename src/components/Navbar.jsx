@@ -1,97 +1,140 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [submenuOpen, setSubmenuOpen] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
 
-  const handleLinkClick = () => {
-    setIsMenuOpen(false);
-    setIsSubmenuOpen(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleSubmenu = (menu) => {
+    setSubmenuOpen(submenuOpen === menu ? null : menu);
   };
 
   return (
-    <nav className="bg-white shadow-lg">
+    <nav
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-md" : "bg-white/90"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          
+        <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <div className="flex items-center">
-            <Link
-              to="/"
-              onClick={handleLinkClick}
-              className="flex-shrink-0 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg rounded-lg"
-            >
-              <img
-                src="/public/logo.png"
-                alt="Logo del sitio"
-                className="h-10 w-auto"
+          <Link href="/" className="flex items-center">
+            <div className="relative w-28 h-12 transform transition-transform duration-300 hover:scale-105">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                fill
+                style={{ objectFit: "contain" }}
+                priority
               />
-            </Link>
-          </div>
+            </div>
+          </Link>
 
-          {/* Menú principal */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Menú Desktop */}
+          <div className="hidden md:flex space-x-8">
+            {/* Vende o Alquila */}
             <Link
-              to="/"
-              onClick={handleLinkClick}
-              className="text-gray-700 hover:text-[#C80000] px-3 py-2 rounded-md text-sm font-medium"
+              href="#"
+              className="relative group text-gray-700 font-medium hover:text-blue-600 transition-colors duration-300"
             >
-              Inicio
+              Vende o Alquila
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
             </Link>
 
-            {/* Opción con Submenú */}
-            <div
-              className="relative"
-              onMouseEnter={() => setIsSubmenuOpen(true)}
-              onMouseLeave={() => setIsSubmenuOpen(false)}
+            {/* Servicios */}
+            <Link
+              href="#"
+              className="relative group text-gray-700 font-medium hover:text-blue-600 transition-colors duration-300"
             >
+              Servicios
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+
+            {/* Conócenos */}
+            <div className="relative group">
               <button
-                className="text-gray-700 hover:text-[#C80000] px-3 py-2 rounded-md text-sm font-medium"
+                onClick={() => toggleSubmenu("conocenos")}
+                className="flex items-center space-x-1 text-gray-700 font-medium hover:text-blue-600 transition-colors duration-300 focus:outline-none"
               >
-                Servicios
+                <span>Conócenos</span>
+                <svg
+                  className={`w-4 h-4 transform transition-transform duration-300 ${
+                    submenuOpen === "conocenos" ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
 
-              {/* Submenú con fade + slide down */}
+              {/* Submenú */}
               <div
-                className={`absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md overflow-hidden transform transition-all duration-300 ease-out 
-                ${isSubmenuOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-2 scale-95 pointer-events-none"}`}
+                className={`absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 opacity-0 transform -translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 ${
+                  submenuOpen === "conocenos" ? "opacity-100 translate-y-0" : "pointer-events-none"
+                }`}
               >
                 <Link
-                  to="/servicio1"
-                  onClick={handleLinkClick}
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  href="#"
+                  className="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                 >
-                  Servicio 1
+                  Blog
                 </Link>
                 <Link
-                  to="/servicio2"
-                  onClick={handleLinkClick}
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  href="#"
+                  className="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
                 >
-                  Servicio 2
+                  Nuestra Historia
+                </Link>
+                <Link
+                  href="#"
+                  className="block px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+                >
+                  Acerca de Nosotros
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Botón móvil */}
-          <div className="flex items-center md:hidden">
+          {/* Botón hamburguesa */}
+          <div className="md:hidden flex items-center">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-[#C80000] focus:outline-none"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="focus:outline-none"
             >
               <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
+                className={`w-6 h-6 transform transition-transform duration-300 ${
+                  menuOpen ? "rotate-90" : ""
+                }`}
                 fill="none"
-                viewBox="0 0 24 24"
                 stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
               >
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                {menuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 )}
               </svg>
             </button>
@@ -99,37 +142,57 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Menú móvil */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-md">
+      {/* Menú Mobile */}
+      {menuOpen && (
+        <div className="md:hidden bg-white shadow-lg transition-all duration-300">
           <Link
-            to="/"
-            onClick={handleLinkClick}
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            href="#"
+            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
           >
-            Inicio
+            Vende o Alquila
           </Link>
-          <button
-            onClick={() => setIsSubmenuOpen(!isSubmenuOpen)}
-            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+          <Link
+            href="#"
+            className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
           >
             Servicios
+          </Link>
+          <button
+            onClick={() => toggleSubmenu("conocenos")}
+            className="w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex justify-between items-center"
+          >
+            Conócenos
+            <svg
+              className={`w-4 h-4 transform transition-transform duration-300 ${
+                submenuOpen === "conocenos" ? "rotate-180" : ""
+              }`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
-          {isSubmenuOpen && (
-            <div className="pl-4">
+          {submenuOpen === "conocenos" && (
+            <div className="bg-gray-50">
               <Link
-                to="/servicio1"
-                onClick={handleLinkClick}
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                href="#"
+                className="block px-6 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-600"
               >
-                Servicio 1
+                Blog
               </Link>
               <Link
-                to="/servicio2"
-                onClick={handleLinkClick}
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                href="#"
+                className="block px-6 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-600"
               >
-                Servicio 2
+                Nuestra Historia
+              </Link>
+              <Link
+                href="#"
+                className="block px-6 py-2 text-gray-600 hover:bg-blue-100 hover:text-blue-600"
+              >
+                Acerca de Nosotros
               </Link>
             </div>
           )}
