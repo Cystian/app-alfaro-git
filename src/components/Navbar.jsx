@@ -31,7 +31,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
                 alt="Logo"
-                    className="max-h-16 max-w-60 w-auto h-auto transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                    className="max-h-16 max-w-80 w-auto h-auto transition-transform duration-300 hover:scale-105 hover:shadow-lg"
             />
           </a>
 
