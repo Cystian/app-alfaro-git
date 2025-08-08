@@ -8,9 +8,9 @@ export default {
     extend: {
       colors: {
         'rojo-inmobiliario': '#C80000',
-        'azul-primario': '#3B82F6',        // azul para textos y hover
-        'azul-primario-light': '#93C5FD',  // azul claro para subrayados y fondos hover
-        'azul-primario-dark': '#1E40AF',   // azul oscuro para sombras y estados activos
+        'azul-primario': '#3B82F6',       // azul para textos y hover
+        'azul-primario-light': '#93C5FD', // azul claro para subrayados y fondos hover
+        'azul-primario-dark': '#1E40AF',  // azul oscuro para sombras y estados activos
         'negro-profundo': '#000000',
         'gris-neutro': '#444444',
         'gris-medio': '#777777',
@@ -52,4 +52,4 @@ export default {
     },
   },
   plugins: [],
-};
+}
