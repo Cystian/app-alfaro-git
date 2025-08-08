@@ -1,32 +1,25 @@
 // src/components/CustomSelect.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
-const CustomSelect = ({ label, options, selected, setSelected }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const wrapperRef = useRef(null);
-
-  // Incluir "Todos" como opción adicional
+const CustomSelect = ({ label, options, selected, setSelected, isOpen, setIsOpen }) => {
+  const wrapperRef = React.useRef(null);
   const fullOptions = ["Todos", ...options];
 
-  // Cerrar el dropdown al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [setIsOpen]);
 
   const handleSelect = (option) => {
     if (option === "Todos") {
       if (selected.length === options.length) {
-        // Si ya están todos seleccionados, deselecciona todo
         setSelected([]);
       } else {
-        // Selecciona todos
         setSelected([...options]);
       }
     } else {
@@ -38,7 +31,6 @@ const CustomSelect = ({ label, options, selected, setSelected }) => {
     }
   };
 
-  // Mostrar “Todos” si todos están seleccionados
   const displayValue =
     selected.length === options.length
       ? `Todos los ${label}`
