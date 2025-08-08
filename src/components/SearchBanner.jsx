@@ -10,11 +10,10 @@ const SearchBanner = () => {
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
-
   const [openDropdown, setOpenDropdown] = useState(null);
 
-  const toggleDropdown = (dropdown) => {
-    setOpenDropdown(openDropdown === dropdown ? null : dropdown);
+  const toggleDropdown = (menu) => {
+    setOpenDropdown((prev) => (prev === menu ? null : menu));
   };
 
   return (
@@ -30,7 +29,7 @@ const SearchBanner = () => {
             selected={distritos}
             setSelected={setDistritos}
             isOpen={openDropdown === "distritos"}
-            setIsOpen={() => toggleDropdown("distritos")}
+            setIsOpen={(val) => toggleDropdown(val ? "distritos" : null)}
           />
 
           <CustomSelect
@@ -39,7 +38,7 @@ const SearchBanner = () => {
             selected={modalidades}
             setSelected={setModalidades}
             isOpen={openDropdown === "modalidades"}
-            setIsOpen={() => toggleDropdown("modalidades")}
+            setIsOpen={(val) => toggleDropdown(val ? "modalidades" : null)}
           />
 
           <CustomSelect
@@ -48,7 +47,7 @@ const SearchBanner = () => {
             selected={tipos}
             setSelected={setTipos}
             isOpen={openDropdown === "tipos"}
-            setIsOpen={() => toggleDropdown("tipos")}
+            setIsOpen={(val) => toggleDropdown(val ? "tipos" : null)}
           />
 
           <div className="flex items-center space-x-2 mt-7 md:mt-0">
@@ -77,6 +76,5 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
-
 
 
