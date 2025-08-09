@@ -7,14 +7,10 @@ import { Outlet } from 'react-router-dom';
 const MainLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Navbar fijo arriba con espacio reservado */}
       <Navbar />
-      
-      {/* Contenido principal con padding adaptativo */}
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
+      <main className="flex-grow">
         <Outlet />
       </main>
-      
       <Footer />
     </div>
   );
