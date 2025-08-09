@@ -38,7 +38,7 @@ export default function Home() {
       <main className="flex flex-col gap-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         
         {/* Banner de búsqueda */}
-        <section className="w-full mt-6 sm:mt-8 lg:mt-10">
+        <section className="w-full">
           <SearchBanner />
         </section>
 
@@ -68,4 +68,3 @@ export default function Home() {
     </PageWrapper>
   );
 }
-     
