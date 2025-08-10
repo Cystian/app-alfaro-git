@@ -43,7 +43,74 @@ export default function Home() {
         </section>
 
         {/* Propiedades destacadas */}
-        <section className="w-full">
+        
+
+
+
+
+{/* Sección Redes Sociales */}
+<section className="bg-gray-500 bg-opacity-50 py-8">
+  <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    {/* Facebook Page Plugin */}
+    <div className="bg-white rounded-lg shadow p-4">
+      <div
+        className="fb-page"
+        data-href="https://www.facebook.com/inmobiliariaalbertoalfaro"
+        data-tabs="timeline"
+        data-width=""
+        data-height="500"
+        data-small-header="false"
+        data-adapt-container-width="true"
+        data-hide-cover="false"
+        data-show-facepile="true"
+      >
+        <blockquote
+          cite="https://www.facebook.com/inmobiliariaalbertoalfaro"
+          className="fb-xfbml-parse-ignore"
+        >
+          <a href="https://www.facebook.com/inmobiliariaalbertoalfaro">
+            Inmobiliaria Alberto Alfaro
+          </a>
+        </blockquote>
+      </div>
+    </div>
+
+    {/* Instagram Embed */}
+    <div className="bg-white rounded-lg shadow p-4">
+      <iframe
+        src="https://www.instagram.com/inmobiliariaalbertoalfaro/embed"
+        width="100%"
+        height="500"
+        style={{ border: "none", overflow: "hidden" }}
+        scrolling="no"
+        frameBorder="0"
+        title="Instagram"
+      />
+    </div>
+
+    {/* TikTok Embed */}
+    <div className="bg-white rounded-lg shadow p-4">
+      <blockquote
+        className="tiktok-embed"
+        cite="https://www.tiktok.com/@_inmobiliariaalfaro"
+        data-video-id=""
+        style={{ maxWidth: "100%", minWidth: "200px" }}
+      >
+        <section>Loading TikTok...</section>
+      </blockquote>
+      <script async src="https://www.tiktok.com/embed.js"></script>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+<section className="w-full">
           <h2 className="text-2xl font-bold mb-6 text-gray-800 mt-20 ">
             Propiedades destacadas1
           </h2>
