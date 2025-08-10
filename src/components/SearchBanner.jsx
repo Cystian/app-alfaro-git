@@ -28,24 +28,24 @@ const SearchBanner = () => {
       style={{ backgroundImage: "url('/baner_aa.png')" }}
     >
       {/* Texto animado con efecto flotante */}
-      <h2
-        className={`text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out
-          ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
-        style={{
-          textShadow: `
-            -1px -1px 0 #000,  
-             1px -1px 0 #000,
-            -1px  1px 0 #000,
-             1px  1px 0 #000,
-            -2px -2px 0 #C80000, 
-             2px -2px 0 #C80000,
-            -2px  2px 0 #C80000,
-             2px  2px 0 #C80000
-          `
-        }}
-      >
-        Tenemos el lugar perfecto para ti
-      </h2>
+     <h2
+  className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 mt-4 sm:mt-0 transition-all duration-1000 ease-out
+    ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
+  style={{
+    textShadow: `
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000,
+      -2px -2px 0 #C80000, 
+       2px -2px 0 #C80000,
+      -2px  2px 0 #C80000,
+       2px  2px 0 #C80000
+    `
+  }}
+>
+  Tenemos el lugar perfecto para ti
+</h2>
 
       {/* Franja blanca con filtros */}
       <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
