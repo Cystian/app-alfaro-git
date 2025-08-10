@@ -52,7 +52,7 @@ export default function Home() {
 <section className="bg-gray-500 bg-opacity-50 py-8">
   <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
 
-    {/* Facebook Page Plugin */}
+    {/* Facebook */}
     <div className="bg-white rounded-lg shadow p-4">
       <div
         className="fb-page"
@@ -76,35 +76,25 @@ export default function Home() {
       </div>
     </div>
 
-    {/* Instagram Embed */}
+    {/* Instagram */}
     <div className="bg-white rounded-lg shadow p-4">
-      <iframe
-        src="https://www.instagram.com/inmobiliariaalbertoalfaro/embed"
-        width="100%"
-        height="500"
-        style={{ border: "none", overflow: "hidden" }}
-        scrolling="no"
-        frameBorder="0"
-        title="Instagram"
-      />
+      {/* Pega aquí el embed code que obtengas desde Instagram */}
+      <blockquote className="instagram-media" ... ></blockquote>
+      <script async src="//www.instagram.com/embed.js"></script>
     </div>
 
-    {/* TikTok Embed */}
+    {/* TikTok */}
     <div className="bg-white rounded-lg shadow p-4">
-      <blockquote
-        className="tiktok-embed"
-        cite="https://www.tiktok.com/@_inmobiliariaalfaro"
-        data-video-id=""
-        style={{ maxWidth: "100%", minWidth: "200px" }}
-      >
-        <section>Loading TikTok...</section>
+      {/* Pega aquí el código embed completo del video TikTok */}
+      {/* Ejemplo: */}
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@usuario/video/123..." data-video-id="123..." data-embed-from="oembed" style="max-width: 605px;min-width: 325px;">
+        <section>...contenido...</section>
       </blockquote>
       <script async src="https://www.tiktok.com/embed.js"></script>
     </div>
 
   </div>
 </section>
-
 
 
 
