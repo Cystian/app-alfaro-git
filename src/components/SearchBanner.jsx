@@ -29,7 +29,7 @@ const SearchBanner = () => {
     >
       {/* Texto animado con efecto flotante */}
      <h2
-  className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 mt-10 sm:mt-0 transition-all duration-1000 ease-out
+  className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 mt-15 sm:mt-0 transition-all duration-1000 ease-out
     ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
   style={{
     textShadow: `
