@@ -16,7 +16,6 @@ const SearchBanner = () => {
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {
-    // Activa la animación al montar el componente
     setTimeout(() => setShowText(true), 200);
   }, []);
 
@@ -28,10 +27,10 @@ const SearchBanner = () => {
       className="relative w-full h-[350px] bg-cover bg-center flex flex-col items-center justify-center"
       style={{ backgroundImage: "url('/baner_aa.png')" }}
     >
-      {/* Texto animado */}
+      {/* Texto animado con efecto flotante */}
       <h2
         className={`text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out
-          ${showText ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
+          ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
         style={{
           textShadow: `
             -1px -1px 0 #000,  
@@ -118,8 +117,22 @@ const SearchBanner = () => {
           </div>
         </form>
       </div>
+
+      {/* Animación flotante */}
+      <style>
+        {`
+          @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+          }
+          .float-text {
+            animation: float 3s ease-in-out infinite;
+          }
+        `}
+      </style>
     </section>
   );
 };
 
 export default SearchBanner;
+  
