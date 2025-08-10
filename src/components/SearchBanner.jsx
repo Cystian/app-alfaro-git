@@ -35,9 +35,23 @@ return (
   style={{ backgroundImage: "url('/baner_aa.png')" }}
 >
   {/* Texto principal encima de la franja */}
-  <h2 className="text-white text-2xl sm:text-4xl font-extrabold drop-shadow-lg mb-6">
-    Tenemos el lugar perfecto para ti
-  </h2>
+ <h2
+  className="text-3xl md:text-4xl font-bold text-white text-center mb-6"
+  style={{
+    textShadow: `
+      -1px -1px 0 #000,  
+       1px -1px 0 #000,
+      -1px  1px 0 #000,
+       1px  1px 0 #000,
+      -2px -2px 0 #C80000, 
+       2px -2px 0 #C80000,
+      -2px  2px 0 #C80000,
+       2px  2px 0 #C80000
+    `
+  }}
+>
+  Tenemos el lugar perfecto para ti
+</h2>
 
   {/* Franja blanca con filtros */}
   <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
