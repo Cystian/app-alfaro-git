@@ -1,5 +1,4 @@
-// src/components/SocialMediaCallToAction.jsx
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaInstagram, FaFacebookF, FaTiktok } from "react-icons/fa";
 
 const socialLinks = [
@@ -27,8 +26,32 @@ const socialLinks = [
 ];
 
 export default function SocialMediaCallToAction() {
+  const sectionRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="max-w-3xl mx-auto my-8 space-y-6 px-4">
+    <section
+      ref={sectionRef}
+      className="max-w-3xl mx-auto my-8 px-4 grid gap-4 sm:grid-cols-3"
+    >
       {socialLinks.map(({ id, href, label, icon: Icon, gradient }, index) => (
         <a
           key={id}
@@ -37,14 +60,16 @@ export default function SocialMediaCallToAction() {
           rel="noopener noreferrer"
           title={label}
           aria-label={label}
-          className={`flex items-center justify-center space-x-3 p-4 rounded-xl shadow-lg text-white font-semibold text-lg bg-gradient-to-r ${gradient} transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110 opacity-0 animate-fadeUp`}
+          className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-xl shadow-lg text-white font-semibold text-lg bg-gradient-to-r ${gradient} transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110 opacity-0 ${
+            visible ? "animate-fadeUp" : ""
+          }`}
           style={{
-            animationDelay: `${index * 0.2}s`, // Delay secuencial
+            animationDelay: `${index * 0.2}s`,
             animationFillMode: "forwards",
           }}
         >
-          <Icon size={28} />
-          <span>{label}</span>
+          <Icon size={32} />
+          <span className="text-center">{label}</span>
         </a>
       ))}
     </section>
