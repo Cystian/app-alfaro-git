@@ -140,3 +140,9 @@ input[type="checkbox"].custom-checkbox:focus {
 .animate-gradient-move {
   background-size: 300% 300%;
 }
+
+@layer utilities {
+  .bg-azul-primario-light {
+    background-color: #E0F2FF; /* azul claro */
+  }
+}
