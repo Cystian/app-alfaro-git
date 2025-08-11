@@ -1,4 +1,5 @@
 // src/components/SocialMediaSection.jsx
+//codigo para los plugins
 import React from 'react';
 
 const SocialMediaSection = () => {
