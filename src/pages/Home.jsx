@@ -46,9 +46,9 @@ export default function Home() {
             ))}
           </div>
         </section>
-
+ <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
         <SocialMediaCallToAction />
-
+    </section>
         <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
           <h2 className="text-xl font-semibold mb-4">¿Tienes dudas? Contáctanos</h2>
           <ContactForm />
