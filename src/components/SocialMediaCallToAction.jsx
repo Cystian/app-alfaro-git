@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaInstagram, FaFacebookF, FaTiktok } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const socialLinks = [
   {
@@ -22,6 +23,13 @@ const socialLinks = [
     label: "Visita nuestro TikTok",
     icon: FaTiktok,
     gradient: "from-black via-gray-800 to-gray-900",
+  },
+  {
+    id: "x",
+    href: "https://twitter.com/inmobiliariaalbertoalfaro",
+    label: "Visita nuestro perfil en X",
+    icon: FaXTwitter,
+    gradient: "from-gray-800 via-gray-900 to-black",
   },
 ];
 
@@ -50,7 +58,7 @@ export default function SocialMediaCallToAction() {
   return (
     <section
       ref={sectionRef}
-      className="max-w-3xl mx-auto my-8 px-4 grid gap-4 sm:grid-cols-3"
+      className="max-w-4xl mx-auto my-8 px-4 grid gap-4 sm:grid-cols-4"
     >
       {socialLinks.map(({ id, href, label, icon: Icon, gradient }, index) => (
         <a
