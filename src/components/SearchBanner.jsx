@@ -39,16 +39,8 @@ const SearchBanner = () => {
     ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
   style={{
     textShadow: `
-      /* Borde negro externo (2px distancia) */
-      -2px -2px 0 #000, 
-       2px -2px 0 #000,
-      -2px  2px 0 #000,
-       2px  2px 0 #000,
-      /* Borde rojo interno (1px distancia) */
-      -1px -1px 0 #C80000,  
-       1px -1px 0 #C80000, 
-      -1px  1px 0 #C80000, 
-       1px  1px 0 #C80000
+      2px 2px 4px rgba(0, 0, 0, 0.6), /* sombra negra difusa */
+      0 0 6px rgba(200, 0, 0, 0.7)     /* halo rojo sutil */
     `
   }}
 >
