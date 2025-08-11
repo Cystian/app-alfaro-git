@@ -26,6 +26,10 @@ export default function Navbar() {
     setOpenDropdown(null);
   };
 
+  // Helper para marcar activo basado en ruta (simple ejemplo)
+  // En tu caso puede ser React Router o Next.js router.
+  const isActive = (href) => window.location.pathname === href;
+
   return (
     <nav
       ref={wrapperRef}
@@ -33,7 +37,6 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-
           {/* LOGO */}
           <a href="/" className="flex items-center">
             <img
@@ -45,14 +48,17 @@ export default function Navbar() {
 
           {/* Menú Desktop */}
           <div className="hidden md:flex space-x-8">
-
-            {/* VENDE O ALQUILA */}
-            <a href="/vende-o-alquila" className="nav-link">
+            <a
+              href="/vende-o-alquila"
+              className={`nav-link ${isActive("/vende-o-alquila") ? "active" : ""}`}
+            >
               VENDE O ALQUILA
             </a>
 
-            {/* SERVICIOS */}
-            <a href="/servicios" className="nav-link">
+            <a
+              href="/servicios"
+              className={`nav-link ${isActive("/servicios") ? "active" : ""}`}
+            >
               SERVICIOS
             </a>
 
@@ -60,7 +66,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => toggleDropdown("conocenos")}
-                className="flex items-center space-x-1 nav-link focus:outline-none"
+                className={`flex items-center space-x-1 nav-link ${openDropdown === "conocenos" ? "active" : ""} focus:outline-none`}
                 aria-haspopup="true"
                 aria-expanded={openDropdown === "conocenos"}
               >
@@ -104,8 +110,10 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* CONTACTO */}
-            <a href="/contacto" className="nav-link">
+            <a
+              href="/contacto"
+              className={`nav-link ${isActive("/contacto") ? "active" : ""}`}
+            >
               CONTACTO
             </a>
           </div>
