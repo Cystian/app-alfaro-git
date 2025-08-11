@@ -1,7 +1,6 @@
 // src/components/SocialMediaCallToAction.jsx
 import React from "react";
 import { FaInstagram, FaFacebookF, FaTiktok } from "react-icons/fa";
-import { motion } from "framer-motion";
 
 const socialLinks = [
   {
@@ -27,44 +26,27 @@ const socialLinks = [
   },
 ];
 
-// Variantes para la animación secuencial
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
 export default function SocialMediaCallToAction() {
   return (
-    <motion.section
-      className="max-w-3xl mx-auto my-8 space-y-6 px-4"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      {socialLinks.map(({ id, href, label, icon: Icon, gradient }) => (
-        <motion.a
+    <section className="max-w-3xl mx-auto my-8 space-y-6 px-4">
+      {socialLinks.map(({ id, href, label, icon: Icon, gradient }, index) => (
+        <a
           key={id}
           href={href}
           target="_blank"
           rel="noopener noreferrer"
           title={label}
-          variants={itemVariants}
-          whileHover={{ scale: 1.05, boxShadow: "0px 8px 24px rgba(0,0,0,0.2)" }}
-          className={`flex items-center justify-center space-x-3 p-4 rounded-xl shadow-lg text-white font-semibold text-lg bg-gradient-to-r ${gradient} transition-transform transform hover:brightness-110`}
           aria-label={label}
+          className={`flex items-center justify-center space-x-3 p-4 rounded-xl shadow-lg text-white font-semibold text-lg bg-gradient-to-r ${gradient} transform transition duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110 opacity-0 animate-fadeUp`}
+          style={{
+            animationDelay: `${index * 0.2}s`, // Delay secuencial
+            animationFillMode: "forwards",
+          }}
         >
           <Icon size={28} />
           <span>{label}</span>
-        </motion.a>
+        </a>
       ))}
-    </motion.section>
+    </section>
   );
 }
