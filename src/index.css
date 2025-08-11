@@ -6,7 +6,7 @@
 :root {
   --rojo-inmobiliario: #C80000;
   --azul-primario: #3B82F6;
-  --azul-primario-light: #E0F2FF; /* color corregido y consistente con Tailwind config */
+  --azul-primario-light: #E0F2FF; /* coherente con tailwind.config.js */
   --azul-primario-dark: #1E40AF;
   --negro-profundo: #000000;
   --gris-neutro: #444444;
@@ -142,18 +142,24 @@ input[type="checkbox"].custom-checkbox:focus {
   }
 }
 
+/* Estilos para tarjetas sociales con subrayado animado más estético */
+.social-media-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
 .social-card {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-
   position: relative;
   text-decoration: none;
-  /* Quitar outline para evitar el feo */
   outline: none;
   display: inline-block;
 }
@@ -161,22 +167,21 @@ input[type="checkbox"].custom-checkbox:focus {
 .social-card:hover,
 .social-card:focus {
   transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-  outline: none;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .social-card::after {
   content: '';
   position: absolute;
-  left: 0;
+  left: 10%;
   bottom: 0.4em;
-  width: 100%;
-  height: 2px;
+  width: 80%;
+  height: 3px;
   background: linear-gradient(90deg, #4e54c8, #8f94fb);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
-  border-radius: 1px;
+  border-radius: 2px;
 }
 
 .social-card:hover::after,
@@ -184,13 +189,6 @@ input[type="checkbox"].custom-checkbox:focus {
   transform: scaleX(1);
 }
 
-/* Mejorar foco accesible sin usar outline negro feo */
-.social-card:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.6);
-}
-
-/* Iconos y texto */
 .social-icon {
   font-size: 2rem;
   color: #555;
