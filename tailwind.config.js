@@ -1,4 +1,5 @@
 // tailwind.config.js
+/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -9,7 +10,7 @@ export default {
       colors: {
         'rojo-inmobiliario': '#C80000',
         'azul-primario': '#3B82F6',
-        'azul-primario-light': '#93C5FD',
+        'azul-primario-light': '#E0F2FF', // azul claro corregido para evitar error
         'azul-primario-dark': '#1E40AF',
         'negro-profundo': '#000000',
         'gris-neutro': '#444444',
@@ -61,4 +62,4 @@ export default {
     },
   },
   plugins: [],
-}
+};
