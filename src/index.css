@@ -150,12 +150,14 @@ input[type="checkbox"].custom-checkbox:focus {
   padding: 1rem;
 }
 
-
 .social-card {
   text-decoration: none !important;
   border-bottom: none !important;
   position: relative;    
-  display: inline-block; 
+  display: flex;              /* Cambiado a flex para mejor centrado */
+  flex-direction: column;     /* Ícono arriba, texto abajo */
+  align-items: center;        /* Centra horizontalmente */
+  justify-content: center;    /* Centra verticalmente */
   cursor: pointer;
   background-color: #ffffff;
   border-radius: 12px;
@@ -190,22 +192,22 @@ input[type="checkbox"].custom-checkbox:focus {
   transform: scaleX(1);
 }
 
-
 .social-icon {
   font-size: 2rem;
   color: #555;
   transition: color 0.3s ease;
+  display: block;       /* Para evitar problemas de alineación */
+  margin: 0 auto;       /* Centrado horizontal */
 }
 
+.social-card:hover .social-icon,
+.social-card:focus .social-icon {
+  color: #4e54c8; /* Mismo color que degradado para cohesión */
+}
 
 .social-text {
   margin-top: 0.5rem;
   font-size: 1rem;
   color: #333;
   font-weight: 500;
-}
-.icon-wrapper svg {
-  display: block;
-  margin: 0 auto;
-  vertical-align: middle;
 }
