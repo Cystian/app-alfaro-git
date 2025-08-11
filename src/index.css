@@ -137,4 +137,6 @@ input[type="checkbox"].custom-checkbox:focus {
   animation: fadeUp 0.6s ease-out forwards;
 }
 
-
+.animate-gradient-move {
+  background-size: 300% 300%;
+}
