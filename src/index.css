@@ -154,17 +154,22 @@ input[type="checkbox"].custom-checkbox:focus {
   text-decoration: none !important;
   border-bottom: none !important;
   position: relative;    
-  display: flex;              /* Cambiado a flex para mejor centrado */
-  flex-direction: column;     /* Ícono arriba, texto abajo */
-  align-items: center;        /* Centra horizontalmente */
-  justify-content: center;    /* Centra verticalmente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  background-color: #ffffff;
+  background-color: transparent; /* Cambiado a transparente para no sobreescribir */
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Si el elemento social-card no tiene clase bg-, le ponemos fondo blanco */
+.social-card:not([class*="bg-"]) {
+  background-color: #ffffff;
 }
 
 .social-card:hover,
