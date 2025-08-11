@@ -1,4 +1,3 @@
-// src/components/SearchBanner.jsx
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -19,36 +18,40 @@ const SearchBanner = () => {
     setTimeout(() => setShowText(true), 200);
   }, []);
 
-  const isSearchEnabled =
-    distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
+  const isSearchEnabled = distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
   return (
-    <section
-      className="relative w-full h-[350px] bg-cover bg-center flex flex-col items-center justify-center"
-      style={{ backgroundImage: "url('/baner_aa.png')" }}
-    >
-      {/* Texto animado con efecto flotante */}
-     <h2
-  className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 mt-20 sm:mt-0 transition-all duration-1000 ease-out
-    ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
-  style={{
-    textShadow: `
-      -1px -1px 0 #000,  
-       1px -1px 0 #000,
-      -1px  1px 0 #000,
-       1px  1px 0 #000,
-      -2px -2px 0 #C80000, 
-       2px -2px 0 #C80000,
-      -2px  2px 0 #C80000,
-       2px  2px 0 #C80000
-    `
-  }}
->
-  Tenemos el lugar perfecto para ti
-</h2>
+    <section className="relative w-full h-[350px] flex flex-col items-center justify-center mt-6 px-4">
+      {/* Fondo con esquinas redondeadas */}
+      <div
+        className="absolute inset-0 rounded-3xl overflow-hidden"
+        style={{ backgroundImage: "url('/baner_aa.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+        aria-hidden="true"
+      ></div>
 
-      {/* Franja blanca con filtros */}
-      <div className="bg-white bg-opacity-90 p-6 rounded-2xl shadow-xl w-full max-w-5xl mx-auto">
+      {/* Contenido en z-index superior */}
+      <div className="relative z-10 w-full max-w-5xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
+        {/* Texto animado con efecto flotante */}
+        <h2
+          className={`text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4 sm:mb-6 transition-all duration-1000 ease-out
+            ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
+          style={{
+            textShadow: `
+              -1px -1px 0 #000,  
+              1px -1px 0 #000,
+              -1px  1px 0 #000,
+              1px  1px 0 #000,
+              -2px -2px 0 #C80000, 
+              2px -2px 0 #C80000,
+              -2px  2px 0 #C80000,
+              2px  2px 0 #C80000
+            `
+          }}
+        >
+          Tenemos el lugar perfecto para ti
+        </h2>
+
+        {/* Formulario con filtros */}
         <form
           className="grid grid-cols-1 md:grid-cols-5 gap-4"
           onSubmit={(e) => e.preventDefault()}
@@ -107,8 +110,8 @@ const SearchBanner = () => {
               type="submit"
               disabled={!isSearchEnabled}
               className={`w-full py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300
-                ${isSearchEnabled 
-                  ? "bg-azul-primario hover:bg-azul-primario-dark text-white cursor-pointer" 
+                ${isSearchEnabled
+                  ? "bg-azul-primario hover:bg-azul-primario-dark text-white cursor-pointer"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
@@ -135,4 +138,3 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
-  
