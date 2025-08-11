@@ -32,7 +32,7 @@ const SocialMediaSection = () => {
   ];
 
   return (
-    <section className="py-8 px-4 bg-gray-100">
+    <section className="py-8 px-4 bg-white-100">
       <h2 className="text-center text-2xl font-bold mb-6">
         Síguenos en nuestras redes
       </h2>
