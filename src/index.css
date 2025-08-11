@@ -153,23 +153,18 @@ input[type="checkbox"].custom-checkbox:focus {
 .social-card {
   text-decoration: none !important;
   border-bottom: none !important;
-  position: relative;    
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-color: transparent; /* Cambiado a transparente para no sobreescribir */
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Si el elemento social-card no tiene clase bg-, le ponemos fondo blanco */
-.social-card:not([class*="bg-"]) {
-  background-color: #ffffff;
+  /* No background-color aquí para que Tailwind bg-* funcione */
 }
 
 .social-card:hover,
@@ -197,22 +192,33 @@ input[type="checkbox"].custom-checkbox:focus {
   transform: scaleX(1);
 }
 
-.social-icon {
-  font-size: 2rem;
-  color: #555;
-  transition: color 0.3s ease;
-  display: block;       /* Para evitar problemas de alineación */
-  margin: 0 auto;       /* Centrado horizontal */
+/* Texto e iconos con contraste blanco para fondos oscuros */
+.social-card.bg-black .social-text,
+.social-card.bg-black .social-icon {
+  color: white;
 }
 
-.social-card:hover .social-icon,
-.social-card:focus .social-icon {
-  color: #4e54c8; /* Mismo color que degradado para cohesión */
+/* Si quieres agregar para más fondos oscuros, repite o ajusta así */
+.social-card.bg-blue-600 .social-text,
+.social-card.bg-blue-600 .social-icon {
+  color: white;
 }
 
+.social-card.bg-green-500 .social-text,
+.social-card.bg-green-500 .social-icon {
+  color: white;
+}
+
+/* Por defecto texto oscuro */
 .social-text {
   margin-top: 0.5rem;
   font-size: 1rem;
   color: #333;
   font-weight: 500;
+}
+
+.social-icon {
+  font-size: 2rem;
+  color: inherit; /* Hereda color de la regla anterior */
+  transition: color 0.3s ease;
 }
