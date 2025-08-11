@@ -75,7 +75,7 @@ export default function Home() {
           </div>
         </section>
 
-    /*    <SocialMediaSection />*/
+   {/*   <SocialMediaSection />*/}
 
         {/* Aquí insertas la llamada a la acción */}
         <SocialMediaCallToAction />
