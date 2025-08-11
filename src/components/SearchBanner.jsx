@@ -34,7 +34,6 @@ const SearchBanner = () => {
         {/* Texto animado con efecto flotante */}
 
 
-        <div style={{ position: 'relative', display: 'inline-block' }}>
   <h2
     aria-hidden="true"
     style={{
@@ -59,7 +58,7 @@ const SearchBanner = () => {
   >
     Tenemos el lugar perfecto para ti
   </h2>
-</div>
+
 
         {/* Formulario con filtros */}
         <form
