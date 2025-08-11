@@ -43,15 +43,16 @@
   animation: slide-down 0.3s ease-out forwards;
 }
 
-/* Navbar link base */
-.nav-link {
+/* ==========================
+   NAVBAR: subrayado animado scope limitado
+   ========================== */
+
+.navbar .nav-link {
   @apply relative font-semibold text-gray-900 transition-colors duration-300 ease-in-out cursor-pointer no-underline;
-  text-decoration: none !important;
-  padding-bottom: 0.25rem; /* espacio para el subrayado */
+  padding-bottom: 0.25rem;
 }
 
-/* Subrayado animado para navbar (inspirado en social-card) */
-.nav-link::after {
+.navbar .nav-link::after {
   content: '';
   position: absolute;
   left: 0;
@@ -67,13 +68,21 @@
   z-index: 10;
 }
 
-/* Mostrar subrayado en hover y cuando el enlace es activo */
-.nav-link:hover::after,
-.nav-link.active::after {
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after {
   transform: scaleX(1);
 }
 
-/* Dropdown menu y item, mantenidos iguales */
+/* Sombra y transición elegante para el logo */
+.logo-hover {
+  @apply transition-transform duration-300 ease-in-out rounded-lg shadow-logo-hover;
+}
+
+.logo-hover:hover {
+  @apply scale-105 shadow-logo-hover;
+}
+
+/* Estilos para los dropdown */
 .dropdown-menu {
   @apply absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-navbar z-50 border border-gray-200 animate-slide-down;
 }
@@ -94,4 +103,138 @@
   box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
 }
 
-/* Otros estilos omitidos para foco en navbar */
+/* Custom checkbox usando imagen */
+input[type="checkbox"].custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--azul-primario, #3B82F6);
+  border-radius: 0.375rem; /* rounded-md */
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="checkbox"].custom-checkbox:checked {
+  background-image: url('/check2.png');
+  background-size: contain;
+  border-color: var(--azul-primario, #3B82F6);
+  background-color: transparent;
+}
+
+input[type="checkbox"].custom-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+.animate-gradient-move {
+  background-size: 300% 300%;
+}
+
+/* Asegurar que bg-azul-primario-light siempre exista */
+@layer utilities {
+  .bg-azul-primario-light {
+    background-color: var(--azul-primario-light);
+  }
+}
+
+/* ==========================
+   SOCIAL MEDIA CARDS
+   ========================== */
+
+.social-media-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.social-card {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* NO background-color here to let Tailwind bg-* work */
+}
+
+.social-card:hover,
+.social-card:focus {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.social-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0.4em;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #4e54c8, #8f94fb);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 1px;
+}
+
+.social-card:hover::after,
+.social-card:focus::after {
+  transform: scaleX(1);
+}
+
+/* Texto e iconos con contraste blanco para fondos oscuros */
+.social-card.bg-black .social-text,
+.social-card.bg-black .social-icon {
+  color: white;
+}
+
+.social-card.bg-blue-600 .social-text,
+.social-card.bg-blue-600 .social-icon {
+  color: white;
+}
+
+.social-card.bg-green-500 .social-text,
+.social-card.bg-green-500 .social-icon {
+  color: white;
+}
+
+/* Por defecto texto oscuro */
+.social-text {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.social-icon {
+  font-size: 2rem;
+  color: inherit;
+  transition: color 0.3s ease;
+}
