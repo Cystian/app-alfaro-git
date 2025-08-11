@@ -1,3 +1,4 @@
+// src/components/SocialMediaSection.jsx
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 
@@ -41,7 +42,8 @@ const SocialMediaSection = () => {
             href={social.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center p-4 rounded-2xl bg-white bg-opacity-80 shadow-lg hover:scale-105 transition-transform"
+            className="flex flex-col items-center p-4 rounded-2xl bg-white bg-opacity-80 shadow-lg 
+                       transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
           >
             <div
               className={`w-14 h-14 flex items-center justify-center rounded-full text-white ${social.bg}`}
@@ -57,3 +59,4 @@ const SocialMediaSection = () => {
 };
 
 export default SocialMediaSection;
+
