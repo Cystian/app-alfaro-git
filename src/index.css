@@ -204,3 +204,8 @@ input[type="checkbox"].custom-checkbox:focus {
   color: #333;
   font-weight: 500;
 }
+.icon-wrapper svg {
+  display: block;
+  margin: 0 auto;
+  vertical-align: middle;
+}
