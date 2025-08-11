@@ -141,3 +141,67 @@ input[type="checkbox"].custom-checkbox:focus {
     background-color: var(--azul-primario-light);
   }
 }
+.social-media-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.social-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  position: relative;    /* Para posicionar el ::after */
+  text-decoration: none; /* Quitar subrayado por defecto */
+  outline: none;         /* Quitar outline predeterminado */
+  display: inline-block; /* Para que funcione ::after bien */
+}
+
+.social-card:hover,
+.social-card:focus {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.social-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0.4em;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #4e54c8, #8f94fb);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease-in-out;
+  border-radius: 1px;
+}
+
+.social-card:hover::after,
+.social-card:focus::after {
+  transform: scaleX(1);
+}
+
+.social-icon {
+  font-size: 2rem;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.social-card:hover .social-icon,
+.social-card:focus .social-icon {
+  color: #4e54c8; /* Mismo color que degradado para cohesión */
+}
+
+.social-text {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
