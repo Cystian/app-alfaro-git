@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Variables de colores personalizados para CSS nativo si lo necesitas */
+/* Variables de colores personalizados para CSS nativo */
 :root {
   --rojo-inmobiliario: #C80000;
   --azul-primario: #3B82F6;
-  --azul-primario-light: #93C5FD;
+  --azul-primario-light: #E0F2FF; /* color corregido y consistente con Tailwind config */
   --azul-primario-dark: #1E40AF;
   --negro-profundo: #000000;
   --gris-neutro: #444444;
@@ -89,7 +89,7 @@
   box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
 }
 
-/* Custom checkbox usando imagen (base para implementar) */
+/* Custom checkbox usando imagen */
 input[type="checkbox"].custom-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -116,12 +116,6 @@ input[type="checkbox"].custom-checkbox:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
-
-input[type="checkbox"].custom-checkbox:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-}
-
 @keyframes fadeUp {
   0% {
     opacity: 0;
@@ -141,8 +135,9 @@ input[type="checkbox"].custom-checkbox:focus {
   background-size: 300% 300%;
 }
 
+/* Asegurar que bg-azul-primario-light siempre exista */
 @layer utilities {
   .bg-azul-primario-light {
-    background-color: #E0F2FF; /* azul claro */
+    background-color: var(--azul-primario-light);
   }
 }
