@@ -1,65 +1,143 @@
-// tailwind.config.js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        'rojo-inmobiliario': 'var(--rojo-inmobiliario)',
-        'azul-primario': 'var(--azul-primario)',
-        'azul-primario-light': 'var(--azul-primario-light)', // usa variable CSS
-        'azul-primario-dark': 'var(--azul-primario-dark)',
-        'negro-profundo': 'var(--negro-profundo)',
-        'gris-neutro': 'var(--gris-neutro)',
-        'gris-medio': 'var(--gris-medio)',
-        'gris-claro': 'var(--gris-claro)',
-        'beige-suave': 'var(--beige-suave)',
-      },
-      boxShadow: {
-        'navbar': '0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06)',
-        'btn-primary': '0 4px 6px rgba(59, 130, 246, 0.3)',
-        'logo-hover': '0 8px 15px rgba(59, 130, 246, 0.4)',
-      },
-      transitionProperty: {
-        'width': 'width',
-        'height': 'height',
-        'spacing': 'margin, padding',
-        'colors': 'color, background-color, border-color, text-decoration-color, fill, stroke',
-        'shadow': 'box-shadow',
-        'transform': 'transform',
-      },
-      animation: {
-        'slide-down': 'slideDown 0.3s ease-out forwards',
-        'gradient-move': 'gradientBG 4s ease infinite',
-      },
-      keyframes: {
-        slideDown: {
-          '0%': { opacity: '0', transform: 'translateY(-10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        gradientBG: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
-        },
-      },
-      backgroundSize: {
-        '300%': '300% 300%',
-      },
-      borderRadius: {
-        'lg': '0.75rem',
-      },
-      fontWeight: {
-        'medium': '500',
-        'semibold': '600',
-      },
-      letterSpacing: {
-        widest: '.12em',
-      },
-    },
-  },
-  plugins: [],
-};
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables de colores personalizados para CSS nativo */
+:root {
+  --rojo-inmobiliario: #C80000;
+  --azul-primario: #3B82F6;
+  --azul-primario-light: #E0F2FF; /* color corregido y consistente con Tailwind config */
+  --azul-primario-dark: #1E40AF;
+  --negro-profundo: #000000;
+  --gris-neutro: #444444;
+  --gris-claro: #F5F5F5;
+  --gris-medio: #777777;
+  --beige-suave: #FBE8E8;
+}
+
+/* Transiciones para cambio de página o secciones */
+.page-transition {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.page-transition-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animación personalizada */
+@keyframes slide-down {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out forwards;
+}
+
+/* Mejoras para enlaces de menú (desktop) */
+.nav-link {
+  @apply relative font-semibold text-gray-900 transition-colors duration-300 ease-in-out cursor-pointer no-underline;
+  text-decoration: none !important;
+}
+
+.nav-link::after {
+  content: "";
+  @apply absolute left-0 -bottom-1 w-full h-0.5 rounded bg-azul-primario-light opacity-0 transition-opacity duration-300 ease-in-out;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  @apply opacity-100;
+}
+
+/* Sombra y transición elegante para el logo */
+.logo-hover {
+  @apply transition-transform duration-300 ease-in-out rounded-lg shadow-logo-hover;
+}
+
+.logo-hover:hover {
+  @apply scale-105 shadow-logo-hover;
+}
+
+/* Estilos para los dropdown */
+.dropdown-menu {
+  @apply absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-navbar z-50 border border-gray-200 animate-slide-down;
+}
+
+.dropdown-item {
+  @apply block px-4 py-2 text-gray-700 hover:bg-azul-primario-light hover:text-azul-primario transition-colors duration-300 ease-in-out cursor-pointer no-underline;
+  text-decoration: none !important;
+}
+
+/* Sombra navbar personalizada */
+.shadow-navbar {
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1),
+              0 2px 4px -1px rgba(59, 130, 246, 0.06);
+}
+
+/* Sombra logo personalizada */
+.shadow-logo-hover {
+  box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Custom checkbox usando imagen */
+input[type="checkbox"].custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--azul-primario, #3B82F6);
+  border-radius: 0.375rem; /* rounded-md */
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+input[type="checkbox"].custom-checkbox:checked {
+  background-image: url('/check2.png');
+  background-size: contain;
+  border-color: var(--azul-primario, #3B82F6);
+  background-color: transparent;
+}
+
+input[type="checkbox"].custom-checkbox:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+.animate-gradient-move {
+  background-size: 300% 300%;
+}
+
+/* Asegurar que bg-azul-primario-light siempre exista */
+@layer utilities {
+  .bg-azul-primario-light {
+    background-color: var(--azul-primario-light);
+  }
+}
