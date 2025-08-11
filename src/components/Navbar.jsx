@@ -26,17 +26,14 @@ export default function Navbar() {
     setOpenDropdown(null);
   };
 
-  // Helper para marcar activo basado en ruta (simple ejemplo)
-  // En tu caso puede ser React Router o Next.js router.
-  const isActive = (href) => window.location.pathname === href;
-
   return (
     <nav
       ref={wrapperRef}
-      className="fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300"
+      className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+
           {/* LOGO */}
           <a href="/" className="flex items-center">
             <img
@@ -48,17 +45,14 @@ export default function Navbar() {
 
           {/* Menú Desktop */}
           <div className="hidden md:flex space-x-8">
-            <a
-              href="/vende-o-alquila"
-              className={`nav-link ${isActive("/vende-o-alquila") ? "active" : ""}`}
-            >
+
+            {/* VENDE O ALQUILA */}
+            <a href="/vende-o-alquila" className="nav-link">
               VENDE O ALQUILA
             </a>
 
-            <a
-              href="/servicios"
-              className={`nav-link ${isActive("/servicios") ? "active" : ""}`}
-            >
+            {/* SERVICIOS */}
+            <a href="/servicios" className="nav-link">
               SERVICIOS
             </a>
 
@@ -66,14 +60,16 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => toggleDropdown("conocenos")}
-                className={`flex items-center space-x-1 nav-link ${openDropdown === "conocenos" ? "active" : ""} focus:outline-none`}
+                className="flex items-center space-x-1 nav-link focus:outline-none"
                 aria-haspopup="true"
                 aria-expanded={openDropdown === "conocenos"}
               >
                 <span>CONÓCENOS</span>
                 <svg
                   className={`w-4 h-4 transform transition-transform duration-300 ease-in-out ${
-                    openDropdown === "conocenos" ? "rotate-180 text-azul-primario" : "rotate-0 text-gray-600"
+                    openDropdown === "conocenos"
+                      ? "rotate-180 text-azul-primario"
+                      : "rotate-0 text-gray-600"
                   }`}
                   fill="none"
                   stroke="currentColor"
@@ -110,10 +106,8 @@ export default function Navbar() {
               )}
             </div>
 
-            <a
-              href="/contacto"
-              className={`nav-link ${isActive("/contacto") ? "active" : ""}`}
-            >
+            {/* CONTACTO */}
+            <a href="/contacto" className="nav-link">
               CONTACTO
             </a>
           </div>
@@ -160,7 +154,9 @@ export default function Navbar() {
               CONÓCENOS
               <svg
                 className={`w-5 h-5 ml-2 transition-transform duration-300 ease-in-out ${
-                  openDropdown === "conocenos" ? "rotate-180 text-azul-primario" : "rotate-0 text-gray-600"
+                  openDropdown === "conocenos"
+                    ? "rotate-180 text-azul-primario"
+                    : "rotate-0 text-gray-600"
                 }`}
                 fill="none"
                 stroke="currentColor"
