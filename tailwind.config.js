@@ -1,4 +1,3 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -10,7 +9,7 @@ export default {
       colors: {
         'rojo-inmobiliario': 'var(--rojo-inmobiliario)',
         'azul-primario': 'var(--azul-primario)',
-        'azul-primario-light': 'var(--azul-primario-light)', // usa variable CSS
+        'azul-primario-light': 'var(--azul-primario-light)', // variable CSS
         'azul-primario-dark': 'var(--azul-primario-dark)',
         'negro-profundo': 'var(--negro-profundo)',
         'gris-neutro': 'var(--gris-neutro)',
