@@ -1,68 +1,59 @@
-// src/components/SocialMediaCallToAction.jsx
-import { FaFacebook, FaInstagram, FaTiktok, FaXTwitter, FaWhatsapp } from "react-icons/fa6";
+import React from "react";
+import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 
-const SocialMediaCallToAction = () => {
+const SocialMediaSection = () => {
   const socialLinks = [
     {
       name: "Facebook",
-      icon: <FaFacebook size={40} />,
-      url: "https://facebook.com/inmobiliariaalfaro",
+      icon: <FaFacebookF size={28} />,
+      link: "https://www.facebook.com/inmobiliariaalfaro",
       bg: "bg-blue-600",
     },
     {
       name: "Instagram",
-      icon: <FaInstagram size={40} />,
-      url: "https://instagram.com/inmobiliariaalfaro",
-      bg: "bg-pink-500",
+      icon: <FaInstagram size={28} />,
+      link: "https://www.instagram.com/inmobiliariaalfaro",
+      bg: "bg-gradient-to-r from-pink-500 to-yellow-500",
     },
     {
       name: "TikTok",
-      icon: <FaTiktok size={40} />,
-      url: "https://tiktok.com/@inmobiliariaalfaro",
+      icon: <FaTiktok size={28} />,
+      link: "https://www.tiktok.com/@inmobiliariaalfaro",
       bg: "bg-black",
     },
     {
-      name: "X",
-      icon: <FaXTwitter size={40} />,
-      url: "https://x.com/inmobiliariaalfaro",
-      bg: "bg-gray-800",
-    },
-    {
       name: "WhatsApp",
-      icon: <FaWhatsapp size={40} />,
-      url: "https://wa.me/51940221494",
+      icon: <FaWhatsapp size={28} />,
+      link: "https://wa.me/51940221494",
       bg: "bg-green-500",
     },
   ];
 
   return (
-    <section className="py-12 bg-gray-100">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">
-          ¡Conéctate con Nosotros!
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {socialLinks.map((link, index) => (
-            <a
-              key={index}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/80 shadow-lg hover:scale-105 transition-transform duration-300"
+    <section className="py-8 px-4 bg-gray-100">
+      <h2 className="text-center text-2xl font-bold mb-6">
+        Síguenos en nuestras redes
+      </h2>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        {socialLinks.map((social, index) => (
+          <a
+            key={index}
+            href={social.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center p-4 rounded-2xl bg-white bg-opacity-80 shadow-lg hover:scale-105 transition-transform"
+          >
+            <div
+              className={`w-14 h-14 flex items-center justify-center rounded-full text-white ${social.bg}`}
             >
-              <div
-                className={`w-16 h-16 flex items-center justify-center rounded-full text-white ${link.bg} mb-4`}
-              >
-                {link.icon}
-              </div>
-              <span className="font-semibold">{link.name}</span>
-            </a>
-          ))}
-        </div>
+              {social.icon}
+            </div>
+            <p className="mt-3 font-medium">{social.name}</p>
+          </a>
+        ))}
       </div>
     </section>
   );
 };
 
-export default SocialMediaCallToAction;
-
+export default SocialMediaSection;
