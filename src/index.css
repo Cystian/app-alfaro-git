@@ -150,19 +150,19 @@ input[type="checkbox"].custom-checkbox:focus {
   padding: 1rem;
 }
 
+
 .social-card {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  position: relative;    
+  display: inline-block; 
+  cursor: pointer;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-
-  position: relative;    /* Para posicionar el ::after */
-  text-decoration: none; /* Quitar subrayado por defecto */
-  outline: none;         /* Quitar outline predeterminado */
-  display: inline-block; /* Para que funcione ::after bien */
 }
 
 .social-card:hover,
@@ -175,7 +175,7 @@ input[type="checkbox"].custom-checkbox:focus {
   content: '';
   position: absolute;
   left: 0;
-  bottom: 0.5rem;
+  bottom: 0.4em;
   width: 100%;
   height: 2px;
   background: linear-gradient(90deg, #4e54c8, #8f94fb);
@@ -190,16 +190,13 @@ input[type="checkbox"].custom-checkbox:focus {
   transform: scaleX(1);
 }
 
+
 .social-icon {
   font-size: 2rem;
   color: #555;
   transition: color 0.3s ease;
 }
 
-.social-card:hover .social-icon,
-.social-card:focus .social-icon {
-  color: #4e54c8; /* Mismo color que degradado para cohesión */
-}
 
 .social-text {
   margin-top: 0.5rem;
