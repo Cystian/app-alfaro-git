@@ -6,7 +6,7 @@
 :root {
   --rojo-inmobiliario: #C80000;
   --azul-primario: #3B82F6;
-  --azul-primario-light: #E0F2FF; /* coherente con tailwind.config.js */
+  --azul-primario-light: #E0F2FF; /* color corregido y consistente con Tailwind config */
   --azul-primario-dark: #1E40AF;
   --negro-profundo: #000000;
   --gris-neutro: #444444;
@@ -142,7 +142,7 @@ input[type="checkbox"].custom-checkbox:focus {
   }
 }
 
-/* Estilos para tarjetas sociales con subrayado animado más estético */
+/* Social media cards con subrayado animado */
 .social-media-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -158,10 +158,11 @@ input[type="checkbox"].custom-checkbox:focus {
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  position: relative;
-  text-decoration: none;
-  outline: none;
-  display: inline-block;
+
+  position: relative;    /* Para posicionar el ::after */
+  text-decoration: none; /* Quitar subrayado por defecto */
+  outline: none;         /* Quitar outline predeterminado */
+  display: inline-block; /* Para que funcione ::after bien */
 }
 
 .social-card:hover,
@@ -173,15 +174,15 @@ input[type="checkbox"].custom-checkbox:focus {
 .social-card::after {
   content: '';
   position: absolute;
-  left: 10%;
-  bottom: 0.4em;
-  width: 80%;
-  height: 3px;
+  left: 0;
+  bottom: 0.5rem;
+  width: 100%;
+  height: 2px;
   background: linear-gradient(90deg, #4e54c8, #8f94fb);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .social-card:hover::after,
@@ -197,7 +198,7 @@ input[type="checkbox"].custom-checkbox:focus {
 
 .social-card:hover .social-icon,
 .social-card:focus .social-icon {
-  color: #4e54c8;
+  color: #4e54c8; /* Mismo color que degradado para cohesión */
 }
 
 .social-text {
