@@ -32,22 +32,34 @@ const SearchBanner = () => {
       {/* Contenido en z-index superior */}
       <div className="relative z-10 w-full max-w-5xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
         {/* Texto animado con efecto flotante */}
- <h2
-  className={`text-4xl font-extrabold text-white mb-4 sm:mb-6 mt-20 sm:mt-0 transition-opacity duration-700 ease-out
-    ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
-  style={{
-    color: 'white', // relleno blanco
-    textShadow: `
-      -2px -2px 0 #000,   /* borde negro arriba izquierda */
-      2px 2px 0 #000,     /* borde negro abajo derecha */
-      -2px 2px 0 #C80000, /* borde rojo abajo izquierda */
-      2px -2px 0 #C80000, /* borde rojo arriba derecha */
-      0 0 5px #C80000     /* glow rojo suave */
-    `,
-  }}
->
-  Tenemos el lugar perfecto para ti
-</h2>
+
+
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+  <h2
+    aria-hidden="true"
+    style={{
+      color: 'transparent',
+      WebkitTextStroke: '3px black',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      zIndex: 0,
+      userSelect: 'none',
+    }}
+  >
+    Tenemos el lugar perfecto para ti
+  </h2>
+  <h2
+    style={{
+      color: 'white',
+      WebkitTextStroke: '1.5px red',
+      position: 'relative',
+      zIndex: 1,
+    }}
+  >
+    Tenemos el lugar perfecto para ti
+  </h2>
+</div>
 
         {/* Formulario con filtros */}
         <form
