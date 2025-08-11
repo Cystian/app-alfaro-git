@@ -40,15 +40,15 @@ const SearchBanner = () => {
   style={{
     textShadow: `
       /* Borde rojo externo (2px distancia) */
-      -2px -2px 0 #C80000, 
-       2px -2px 0 #C80000,
-      -2px  2px 0 #C80000,
-       2px  2px 0 #C80000,
+      -2px -2px 0 #000, 
+       2px -2px 0 #000,
+      -2px  2px 0 #C000,
+       2px  2px 0 #C000,
       /* Borde negro interno (1px distancia) */
-      -1px -1px 0 #000,  
-       1px -1px 0 #000,
-      -1px  1px 0 #000,
-       1px  1px 0 #000
+      -4px -4px 0 #C80000,  
+       1px -1px 0 #C80000, 
+      -1px  1px 0 #C80000, 
+       1px  1px 0 #C80000, 
     `
   }}
 >
