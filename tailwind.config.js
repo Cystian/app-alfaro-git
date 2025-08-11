@@ -32,12 +32,21 @@ export default {
       },
       animation: {
         'slide-down': 'slideDown 0.3s ease-out forwards',
+        'gradient-move': 'gradientBG 4s ease infinite',
       },
       keyframes: {
         slideDown: {
           '0%': { opacity: '0', transform: 'translateY(-10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        gradientBG: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      backgroundSize: {
+        '300%': '300% 300%',
       },
       borderRadius: {
         'lg': '0.75rem',
@@ -53,23 +62,3 @@ export default {
   },
   plugins: [],
 }
-
-module.exports = {
-  theme: {
-    extend: {
-      animation: {
-        'gradient-move': 'gradientBG 4s ease infinite',
-      },
-      keyframes: {
-        gradientBG: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
-        },
-      },
-      backgroundSize: {
-        '300%': '300% 300%',
-      },
-    },
-  },
-};
