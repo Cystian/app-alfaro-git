@@ -141,32 +141,28 @@ input[type="checkbox"].custom-checkbox:focus {
     background-color: var(--azul-primario-light);
   }
 }
-.social-media-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}
 
 .social-card {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 
-  position: relative;    /* Para posicionar el ::after */
-  text-decoration: none; /* Quitar subrayado por defecto */
-  outline: none;         /* Quitar outline predeterminado */
-  display: inline-block; /* Para que funcione ::after bien */
+  position: relative;
+  text-decoration: none;
+  /* Quitar outline para evitar el feo */
+  outline: none;
+  display: inline-block;
 }
 
 .social-card:hover,
 .social-card:focus {
   transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  outline: none;
 }
 
 .social-card::after {
@@ -188,6 +184,13 @@ input[type="checkbox"].custom-checkbox:focus {
   transform: scaleX(1);
 }
 
+/* Mejorar foco accesible sin usar outline negro feo */
+.social-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(78, 84, 200, 0.6);
+}
+
+/* Iconos y texto */
 .social-icon {
   font-size: 2rem;
   color: #555;
@@ -196,7 +199,7 @@ input[type="checkbox"].custom-checkbox:focus {
 
 .social-card:hover .social-icon,
 .social-card:focus .social-icon {
-  color: #4e54c8; /* Mismo color que degradado para cohesión */
+  color: #4e54c8;
 }
 
 .social-text {
