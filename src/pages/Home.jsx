@@ -46,7 +46,7 @@ export default function Home() {
             ))}
           </div>
         </section>
- <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
+ <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow">
         <SocialMediaCallToAction />
     </section>
         <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
