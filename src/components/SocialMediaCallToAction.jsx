@@ -45,11 +45,11 @@ const SocialMediaSection = () => {
             className={`social-card flex flex-col items-center p-4 rounded-2xl bg-white bg-opacity-80 shadow-lg
                         transform transition-all duration-300 hover:scale-105 hover:shadow-2xl`}
           >
-            <div
-              className={`w-14 h-14 flex items-center justify-center rounded-full text-white ${social.bg}`}
-            >
-              {social.icon}
-            </div>
+          <div
+  className={`icon-wrapper w-14 h-14 flex items-center justify-center rounded-full text-white ${social.bg}`}
+>
+  {social.icon}
+</div>
             <p className="mt-3 font-medium">{social.name}</p>
           </a>
         ))}
