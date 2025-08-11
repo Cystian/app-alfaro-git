@@ -8,15 +8,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        'rojo-inmobiliario': '#C80000',
-        'azul-primario': '#3B82F6',
-        'azul-primario-light': '#E0F2FF', // azul claro corregido para evitar error
-        'azul-primario-dark': '#1E40AF',
-        'negro-profundo': '#000000',
-        'gris-neutro': '#444444',
-        'gris-medio': '#777777',
-        'gris-claro': '#F5F5F5',
-        'beige-suave': '#FBE8E8',
+        'rojo-inmobiliario': 'var(--rojo-inmobiliario)',
+        'azul-primario': 'var(--azul-primario)',
+        'azul-primario-light': 'var(--azul-primario-light)', // usa variable CSS
+        'azul-primario-dark': 'var(--azul-primario-dark)',
+        'negro-profundo': 'var(--negro-profundo)',
+        'gris-neutro': 'var(--gris-neutro)',
+        'gris-medio': 'var(--gris-medio)',
+        'gris-claro': 'var(--gris-claro)',
+        'beige-suave': 'var(--beige-suave)',
       },
       boxShadow: {
         'navbar': '0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06)',
