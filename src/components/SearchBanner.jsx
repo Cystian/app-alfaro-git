@@ -45,7 +45,7 @@ const SearchBanner = () => {
       -2px  2px 0 #000,
        2px  2px 0 #000,
       /* Borde rojo interno (1px distancia) */
-      -4px -4px 0 #C80000,  
+      -1px -1px 0 #C80000,  
        1px -1px 0 #C80000, 
       -1px  1px 0 #C80000, 
        1px  1px 0 #C80000
