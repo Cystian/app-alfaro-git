@@ -1,7 +1,7 @@
 import { Client } from 'pg';
 
 export async function handler() {
-  console.log('Conexión string:', process.env.NEON_DB_URL);
+   console.log("Valor NEON_DB_URL:", process.env.NEON_DB_URL);
 
   const client = new Client({
     connectionString: process.env.NEON_DB_URL,
