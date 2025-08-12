@@ -2,52 +2,62 @@ import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
 const SearchBanner = () => {
-  const distritosOptions = ["Chimbote", "Nuevo Chimbote", "Coishco", "Santa", "Chao", "Viru", "Huarmey"];
-  const modalidadesOptions = ["Venta", "Alquiler", "Venta+Alquiler"];
-  const tiposOptions = ["Departamento", "Casa", "Terreno", "Oficina", "Local", "Terreno Comercial"];
+  const [distritosOptions, setDistritosOptions] = useState([]);
+  const [modalidadesOptions, setModalidadesOptions] = useState([]);
+  const [tiposOptions, setTiposOptions] = useState([]);
 
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [soloDisponibles, setSoloDisponibles] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setShowText(true), 200);
   }, []);
 
+  // 🔹 Llamada a API serverless
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const res = await fetch("/.netlify/functions/get-options");
+        const data = await res.json();
+
+        setDistritosOptions(data.distritos || []);
+        setModalidadesOptions(data.modalidades || []);
+        setTiposOptions(data.tipos || []);
+      } catch (error) {
+        console.error("Error cargando opciones:", error);
+      }
+    };
+    fetchOptions();
+  }, []);
+
   const isSearchEnabled = distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
   return (
     <section className="relative w-full h-[350px] flex flex-col items-center justify-center mt-6 px-4">
-      {/* Fondo con esquinas redondeadas */}
       <div
         className="absolute inset-0 rounded-3xl overflow-hidden"
         style={{ backgroundImage: "url('/baner_aa.png')", backgroundSize: "cover", backgroundPosition: "center" }}
         aria-hidden="true"
       ></div>
 
-      {/* Contenido en z-index superior */}
       <div className="relative z-10 w-full max-w-5xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
-        {/* Texto animado con efecto flotante */}
+        <h2
+          className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 transition-all duration-1000 ease-out
+            ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
+          style={{
+            textShadow: `
+              2px 2px 4px rgba(0, 0, 0),
+              0 0 6px rgba(255, 0, 0)
+            `
+          }}
+        >
+          Tenemos el lugar perfecto para ti
+        </h2>
 
-
-<h2
-  className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 transition-all duration-1000 ease-out
-    ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
-  style={{
-    textShadow: `
-      2px 2px 4px rgba(0, 0, 0), /* sombra negra difusa */
-      0 0 6px rgba(255, 0, 0)     /* halo rojo sutil */
-    `
-  }}
->
-  Tenemos el lugar perfecto para ti
-</h2>
-
-        {/* Formulario con filtros */}
         <form
           className="grid grid-cols-1 md:grid-cols-5 gap-4"
           onSubmit={(e) => e.preventDefault()}
@@ -82,7 +92,6 @@ const SearchBanner = () => {
             setOpenDropdown={setOpenDropdown}
           />
 
-          {/* Checkbox solo disponibles */}
           <div className="flex items-center space-x-2 mt-7 md:mt-0">
             <label htmlFor="disponible" className="relative cursor-pointer select-none text-sm text-gray-700">
               <input
@@ -100,7 +109,6 @@ const SearchBanner = () => {
             </label>
           </div>
 
-          {/* Botón Buscar */}
           <div className="flex justify-center items-center">
             <button
               type="submit"
@@ -117,7 +125,6 @@ const SearchBanner = () => {
         </form>
       </div>
 
-      {/* Animación flotante */}
       <style>
         {`
           @keyframes float {
