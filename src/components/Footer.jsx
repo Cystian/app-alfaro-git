@@ -31,10 +31,10 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-2 text-red-500">Contáctanos</h4>
             <div className="flex space-x-4 mt-2">
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
+              <a href="https://www.facebook.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaFacebookF size={20} />
               </a>
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
+              <a href="https://www.instagram.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaInstagram size={20} />
               </a>
               <a href="https://wa.me/51987654321" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
@@ -44,7 +44,7 @@ const Footer = () => {
                 <FaPhoneAlt size={20} />
               </a>
             </div>
-            <p className="mt-3 text-sm">Tel: +51 987 654 321</p>
+            <p className="mt-3 text-sm">Tel: +51 940 221 494</p>
             <p className="text-sm">Email: contacto@alfaroinmobiliaria.pe</p>
           </div>
         </div>
