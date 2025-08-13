@@ -1,34 +1,22 @@
-// src/components/SocialMediaSection.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 
+const iconMap = {
+  facebook: <FaFacebookF className="social-icon" />,
+  instagram: <FaInstagram className="social-icon" />,
+  tiktok: <FaTiktok className="social-icon" />,
+  whatsapp: <FaWhatsapp className="social-icon" />,
+};
+
 const SocialMediaSection = () => {
-  const socialLinks = [
-    {
-      name: "Facebook",
-      icon: <FaFacebookF className="social-icon" />,
-      link: "https://www.facebook.com/inmobiliariaalfaro",
-      bg: "bg-blue-600",
-    },
-    {
-      name: "Instagram",
-      icon: <FaInstagram className="social-icon" />,
-      link: "https://www.instagram.com/inmobiliariaalfaro",
-      bg: "bg-gradient-to-r from-pink-500 to-yellow-500",
-    },
-    {
-      name: "TikTok",
-      icon: <FaTiktok className="social-icon" />,
-      link: "https://www.tiktok.com/@inmobiliariaalfaro",
-      bg: "bg-black",
-    },
-    {
-      name: "WhatsApp",
-      icon: <FaWhatsapp className="social-icon" />,
-      link: "https://wa.me/51940221494",
-      bg: "bg-green-500",
-    },
-  ];
+  const [socialLinks, setSocialLinks] = useState([]);
+
+  useEffect(() => {
+    fetch("/.netlify/functions/get-social-links")
+      .then((res) => res.json())
+      .then((data) => setSocialLinks(data))
+      .catch((err) => console.error("Error cargando redes:", err));
+  }, []);
 
   return (
     <section className="py-8 px-4 bg-white-100">
@@ -39,13 +27,13 @@ const SocialMediaSection = () => {
         {socialLinks.map((social, index) => (
           <a
             key={index}
-            href={social.link}
+            href={social.enlace}
             target="_blank"
             rel="noopener noreferrer"
-            className={`social-card ${social.bg}`}
+            className={`social-card ${social.color_fondo}`}
           >
-            {social.icon}
-            <p className="social-text">{social.name}</p>
+            {iconMap[social.icono] || null}
+            <p className="social-text">{social.nombre}</p>
           </a>
         ))}
       </div>
@@ -54,4 +42,5 @@ const SocialMediaSection = () => {
 };
 
 export default SocialMediaSection;
+
 
