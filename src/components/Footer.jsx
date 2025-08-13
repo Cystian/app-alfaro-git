@@ -43,7 +43,7 @@ const Footer = () => {
               <a href="https://wa.me/51987654321" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaWhatsapp size={20} />
               </a>
-              <a href="tel:+51987654321" className="hover:text-red-500">
+              <a href="tel:+51940221494" className="hover:text-red-500">
                 <FaPhoneAlt size={20} />
               </a>
             </div>
