@@ -72,22 +72,7 @@ const Footer = () => {
         <FaWhatsapp size={28} />
       </a>
 
-      {/* Estilos para animación neonPulse */}
-      <style>
-        {`
-          @keyframes neonPulse {
-            0% {
-              box-shadow: 0 0 10px #22c55e, 0 0 20px #22c55e, 0 0 30px #22c55e;
-            }
-            50% {
-              box-shadow: 0 0 20px #22c55e, 0 0 30px #22c55e, 0 0 40px #22c55e;
-            }
-            100% {
-              box-shadow: 0 0 10px #22c55e, 0 0 20px #22c55e, 0 0 30px #22c55e;
-            }
-          }
-        `}
-      </style>
+
     </>
   );
 };
