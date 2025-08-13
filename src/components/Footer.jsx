@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
+import { FaFacebookF, FaInstagram,FaTiktok, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -36,6 +36,9 @@ const Footer = () => {
               </a>
               <a href="https://www.instagram.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaInstagram size={20} />
+              </a>
+               <a href="https://www.tiktok.com/@inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
+                <FaTiktok size={20} />
               </a>
               <a href="https://wa.me/51987654321" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaWhatsapp size={20} />
