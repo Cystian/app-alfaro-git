@@ -54,17 +54,20 @@ const Footer = () => {
         &copy; {new Date().getFullYear()} Inmobiliaria Alberto Alfaro E.I.R.L. Todos los derechos reservados.
       </p>
 
-  <a
-  href="https://wa.me/51987654321"
-  className="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-full shadow-lg 
-             animate-pulse hover:animate-bounce hover:shadow-2xl transition-all duration-300"
+<a
+  href="https://wa.me/51940221494"
+  className="fixed bottom-4 right-4 p-4 rounded-full text-white 
+             bg-green-500 shadow-lg transition-all duration-300 hover:animate-bounce"
+  style={{
+    animation: "neonPulse 2s infinite alternate",
+    boxShadow: "0 0 10px #22c55e, 0 0 20px #22c55e, 0 0 30px #22c55e"
+  }}
   target="_blank"
   rel="noopener noreferrer"
   aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
 >
   <FaWhatsapp size={28} />
 </a>
-      
     </footer>
   );
 };
