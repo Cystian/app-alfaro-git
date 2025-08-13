@@ -60,20 +60,16 @@ const Footer = () => {
       </footer>
 
       {/* Ícono flotante WhatsApp ultra-neón */}
-      <a
-        href="https://wa.me/51940221494"
-        className="fixed bottom-4 right-4 p-4 rounded-full text-white 
-                   bg-green-500 shadow-lg transition-all duration-300 hover:animate-bounce"
-        style={{
-          animation: "neonPulse 2s infinite alternate",
-          boxShadow: "0 0 10px #22c55e, 0 0 20px #22c55e, 0 0 30px #22c55e"
-        }}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
-      >
-        <FaWhatsapp size={28} />
-      </a>
+<a
+  href="https://wa.me/51940221494"
+  className="fixed bottom-4 right-4 p-4 rounded-full text-white bg-green-500 shadow-lg transition-all duration-300"
+  style={{ animation: "neonPulse 2s infinite alternate" }}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
+>
+  <FaWhatsapp size={28} />
+</a>
 
 
     </>
