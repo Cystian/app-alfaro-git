@@ -53,6 +53,16 @@ const Footer = () => {
       <p className="text-center text-xs text-gray-400">
         &copy; {new Date().getFullYear()} Inmobiliaria Alberto Alfaro E.I.R.L. Todos los derechos reservados.
       </p>
+
+      <a
+  href="https://wa.me/51987654321"
+  className="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <FaWhatsapp size={24} />
+</a>
+      
     </footer>
   );
 };
