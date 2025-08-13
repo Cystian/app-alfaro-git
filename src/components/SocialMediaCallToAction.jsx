@@ -25,16 +25,16 @@ const SocialMediaSection = () => {
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto social-media-container">
         {socialLinks.map((social, index) => (
-          <a
-            key={index}
-            href={social.enlace}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`social-card ${social.color_fondo}`}
-          >
-            {iconMap[social.icono] || null}
-            <p className="social-text">{social.nombre}</p>
-          </a>
+   <a
+  key={index}
+  href={social.enlace}
+  target="_blank"
+  rel="noopener noreferrer"
+  className={`social-card ${social.color_fondo || ''} flex flex-col items-center justify-center`}
+>
+  {iconMap[social.icono] || null}
+  <p className="social-text">{social.nombre}</p>
+</a>
         ))}
       </div>
     </section>
