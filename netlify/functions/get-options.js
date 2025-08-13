@@ -1,7 +1,7 @@
 import { Client } from 'pg';
 
 export async function handler() {
-  console.log("Usando cadena de conexión:", process.env.NEON_DB_URL);
+  console.log("Valor NEON_DB_URL:", process.env.NEON_DB_URL);
 
   if (!process.env.NEON_DB_URL) {
     return {
@@ -12,35 +12,36 @@ export async function handler() {
 
   const client = new Client({
     connectionString: process.env.NEON_DB_URL,
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // evita errores con certificados
-    },
+    ssl: { rejectUnauthorized: false },
   });
 
   try {
     await client.connect();
-    console.log("✅ Conexión exitosa a Neon");
 
-    // Aquí podrías hacer un SELECT de prueba si quieres
-    const res = await client.query('SELECT NOW()');
-    
+    const [distritosResult, modalidadesResult, tiposResult] = await Promise.all([
+      client.query('SELECT nombre FROM distritos ORDER BY nombre ASC'),
+      client.query('SELECT nombre FROM modalidades ORDER BY nombre ASC'),
+      client.query('SELECT nombre FROM tipos ORDER BY nombre ASC'),
+    ]);
+
     await client.end();
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        mensaje: "Conexión exitosa con Neon",
-        horaServidor: res.rows[0].now
+        distritos: distritosResult.rows.map(row => row.nombre),
+        modalidades: modalidadesResult.rows.map(row => row.nombre),
+        tipos: tiposResult.rows.map(row => row.nombre),
       }),
     };
+
   } catch (error) {
-    console.error("❌ Error detalle:", error);
+    console.error("Error detalle:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Error al conectar a Neon",
-        detalle: error.message,
+        error: "Error al conectar o consultar en Neon",
+        detalle: error.message
       }),
     };
   }
