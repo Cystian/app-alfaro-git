@@ -1,7 +1,7 @@
 // src/components/FloatingWhatsApp.jsx
 import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import "./FloatingWhatsApp.css";
+import '../styles/FloatingWhatsApp.css';
 
 const FloatingWhatsApp = () => {
   return (
