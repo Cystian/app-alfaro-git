@@ -6,10 +6,15 @@ import '../styles/FloatingWhatsApp.css';
 const FloatingWhatsApp = () => {
   return (
     <div className="floating-whatsapp">
-      <div className="whatsapp-bubble">
+      <a
+        href="https://wa.me/519XXXXXXXX" // reemplaza con tu número
+        target="_blank"
+        rel="noopener noreferrer"
+        className="whatsapp-bubble"
+      >
         <FaWhatsapp className="whatsapp-icon" />
         <span className="whatsapp-label">ESCRÍBENOS</span>
-      </div>
+      </a>
     </div>
   );
 };
