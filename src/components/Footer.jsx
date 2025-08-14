@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
-import "./FloatingWhatsApp.css"; // Archivo CSS para el rebote y neon
+import "../styles/FloatingWhatsApp.css"; // Archivo CSS para el rebote y neon
 
 const Footer = () => {
   return (
