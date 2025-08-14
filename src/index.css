@@ -300,3 +300,28 @@ input[type="checkbox"].custom-checkbox:focus {
 .fog-float-in {
   animation: fogFloatIn 0.8s ease-out forwards;
 }
+
+.fog-breathe {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fogIn 0.8s ease-out forwards, floatBreathe 3s ease-in-out infinite alternate;
+}
+
+@keyframes fogIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes floatBreathe {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
