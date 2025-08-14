@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram,FaTiktok, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -12,7 +12,8 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold text-red-600">Inmobiliaria Alberto Alfaro</h3>
             <p className="mt-2 text-sm">
-              Soluciones inmobiliarias con confianza, seguridad y asesoría personalizada. Te ayudamos a encontrar el hogar o inversión ideal.
+              Soluciones inmobiliarias con confianza, seguridad y asesoría personalizada. 
+              Te ayudamos a encontrar el hogar o inversión ideal.
             </p>
           </div>
 
@@ -37,7 +38,7 @@ const Footer = () => {
               <a href="https://www.instagram.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaInstagram size={20} />
               </a>
-               <a href="https://www.tiktok.com/@inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
+              <a href="https://www.tiktok.com/@inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaTiktok size={20} />
               </a>
               <a href="https://wa.me/51940221494" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
@@ -55,22 +56,26 @@ const Footer = () => {
         <hr className="my-6 border-gray-700" />
 
         <p className="text-center text-xs text-gray-400">
-          &copy; {new Date().getFullYear()} Inmobiliaria Alberto Alfaro E.I.R.L. Todos los derechos reservados.
+          &copy; {new Date().getFullYear()} Inmobiliaria Alberto Alfaro E.I.R.L. 
+          Todos los derechos reservados.
         </p>
       </footer>
 
-      {/* Ícono flotante WhatsApp ultra-neón */}
-<a
-  href="https://wa.me/51940221494"
-  className="fixed bottom-4 right-4 p-4 rounded-full text-white bg-green-500 shadow-lg floating-whatsapp"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
->
-  <FaWhatsapp size={28} />
-</a>
-
-
+      {/* Ícono flotante WhatsApp con texto encima */}
+      <div className="fixed bottom-4 right-4 flex flex-col items-center space-y-1">
+        <span className="bg-black text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg mb-1">
+          ESCRÍBENOS
+        </span>
+        <a
+          href="https://wa.me/51940221494"
+          className="p-4 rounded-full text-white bg-green-500 shadow-lg floating-whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
+        >
+          <FaWhatsapp size={28} />
+        </a>
+      </div>
     </>
   );
 };
