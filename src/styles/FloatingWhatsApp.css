@@ -2,13 +2,10 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  animation: bounce 1.5s infinite;
-  z-index: 1000;
+  text-decoration: none;
+  z-index: 9999;
 }
+
 
 .whatsapp-content {
   display: flex;
@@ -18,17 +15,17 @@
 }
 
 .whatsapp-icon {
-  font-size: 3rem;
-  color: #25D366;
-  border-radius: 50%;
-  animation: neonIcon 1.5s infinite alternate;
+  font-size: 50px;
+  color: #25d366;
+  filter: drop-shadow(0 0 8px #25d366);
 }
 
 .whatsapp-text {
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: bold;
-  color: white;
-  animation: neonText 1.5s infinite alternate;
+  color: #25d366;
+  filter: drop-shadow(0 0 6px #25d366);
+  white-space: nowrap;
 }
 
 /* Rebote */
