@@ -254,7 +254,7 @@ input[type="checkbox"].custom-checkbox:focus {
     }
   }
 
-
+/*     a:hover {    animation: neonPulse 2s infinite alternate, bounce 0.6s;  }*/
 
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
