@@ -15,7 +15,7 @@
   padding: 10px 16px;
   border-radius: 50px;
   cursor: pointer;
-  animation: bounceBlink 2.5s infinite;
+  animation: bounceBlink 5.5s infinite;
 }
 
 .whatsapp-icon {
@@ -34,7 +34,7 @@
     opacity: 1;
   }
   25% {
-    transform: translateY(-8px);
+    transform: translateY(-12px);
     opacity: 0.8;
   }
   50% {
@@ -42,7 +42,7 @@
     opacity: 1;
   }
   75% {
-    transform: translateY(-8px);
+    transform: translateY(-12px);
     opacity: 0.8;
   }
 }
