@@ -28,34 +28,34 @@ const SocialMediaSection = () => {
         Síguenos en nuestras redes
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto social-media-container">
-        {socialLinks.map((social, index) => {
-          const colorValue = social.color_fondo || "";
-          const useClass = !isHex(colorValue) && !isGradient(colorValue);
-          const useStyle = isHex(colorValue)
-            ? { backgroundColor: colorValue }
-            : isGradient(colorValue)
-            ? { background: colorValue }
-            : {};
+       {socialLinks.map((social, index) => {
+  const colorValue = social.color_fondo || "";
+  const useClass = !isHex(colorValue) && !isGradient(colorValue);
+  const useStyle = isHex(colorValue)
+    ? { backgroundColor: colorValue }
+    : isGradient(colorValue)
+    ? { background: colorValue }
+    : {};
 
-          return (
-            <a
-              key={index}
-              href={social.enlace}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`social-card flex flex-col items-center justify-center ${
-                useClass ? colorValue : ""
-              } fade-in-fog`}
-              style={{
-                ...useStyle,
-                animationDelay: `${index * 0.15}s`, // retraso escalonado
-              }}
-            >
-              {iconMap[social.icono] || null}
-              <p className="social-text">{social.nombre}</p>
-            </a>
-          );
-        })}
+  return (
+    <a
+      key={index}
+      href={social.enlace}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`social-card flex flex-col items-center justify-center ${
+        useClass ? colorValue : ""
+      } fog-float-in`}
+      style={{
+        ...useStyle,
+        animationDelay: `${index * 0.2}s`, // escalonado más marcado
+      }}
+    >
+      {iconMap[social.icono] || null}
+      <p className="social-text">{social.nombre}</p>
+    </a>
+  );
+})}
       </div>
     </section>
   );
