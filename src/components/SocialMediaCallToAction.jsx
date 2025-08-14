@@ -45,8 +45,11 @@ const SocialMediaSection = () => {
               rel="noopener noreferrer"
               className={`social-card flex flex-col items-center justify-center ${
                 useClass ? colorValue : ""
-              }`}
-              style={useStyle}
+              } fade-in-fog`}
+              style={{
+                ...useStyle,
+                animationDelay: `${index * 0.15}s`, // retraso escalonado
+              }}
             >
               {iconMap[social.icono] || null}
               <p className="social-text">{social.nombre}</p>
