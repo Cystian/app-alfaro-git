@@ -262,4 +262,11 @@ input[type="checkbox"].custom-checkbox:focus {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
   }
+.floating-whatsapp {
+  animation: neonPulse 2s infinite alternate;
+  transition: all 0.3s;
+}
 
+.floating-whatsapp:hover {
+  animation: neonPulse 2s infinite alternate, bounce 0.6s;
+}
