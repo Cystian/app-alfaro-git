@@ -53,16 +53,9 @@ const Footer = () => {
       </footer>
 
       {/* WhatsApp flotante con texto + icono juntos */}
-      <a
-        href="https://wa.me/51940221494"
-        className="floating-whatsapp"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
-      >
-        <span className="whatsapp-text">ESCRÍBENOS</span>
-        <FaWhatsapp className="whatsapp-icon" />
-      </a>
+  {/* Ícono flotante de WhatsApp */}
+      <FloatingWhatsApp />
+      
     </>
   );
 };
