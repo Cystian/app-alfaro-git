@@ -40,7 +40,7 @@ const Footer = () => {
                <a href="https://www.tiktok.com/@inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaTiktok size={20} />
               </a>
-              <a href="https://wa.me/51987654321" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
+              <a href="https://wa.me/51940221494" target="_blank" rel="noopener noreferrer" className="hover:text-red-500">
                 <FaWhatsapp size={20} />
               </a>
               <a href="tel:+51940221494" className="hover:text-red-500">
