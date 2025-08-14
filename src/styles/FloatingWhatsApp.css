@@ -1,89 +1,47 @@
-/* Contenedor general */
+/* src/styles/FloatingWhatsApp.css */
 .floating-whatsapp {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 9999;
+}
+
+.whatsapp-bubble {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 8px;
-  z-index: 1000;
-}
-
-/* Botón principal */
-.whatsapp-button {
-  background: #25d366;
-  border-radius: 15px; /* cuadrado con esquinas redondeadas */
-  width: 70px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: neonIcon 1.5s infinite alternate;
-  border: 2px solid #ffffff40; /* leve borde translúcido */
-}
-
-/* Icono */
-.whatsapp-icon {
-  font-size: 32px;
-  color: white;
-}
-
-/* Texto */
-.whatsapp-label {
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  animation: neonText 1.5s infinite alternate;
-}
-
-/* Rebote */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-/* Neon para el botón */
-@keyframes neonIcon {
-  from {
-    box-shadow: 0 0 8px #25D366, 0 0 16px #25D366, 0 0 24px #25D366;
-  }
-  to {
-    box-shadow: 0 0 12px #25D366, 0 0 20px #25D366, 0 0 32px #25D366;
-  }
-}
-
-/* Neon para el texto */
-@keyframes neonText {
-  from {
-    text-shadow: 0 0 5px #25D366, 0 0 10px #25D366;
-  }
-  to {
-    text-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
-  }
-}
-
-/* Burbuja de mensaje */
-.whatsapp-bubble {
   background-color: #25d366;
   color: white;
-  padding: 12px 16px;
-  border-radius: 12px; /* cuadrado redondeado */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: bounceBlink 1.5s infinite;
+  padding: 10px 16px;
+  border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 0 8px #25D366, 0 0 16px #25D366;
+  animation: bounceBlink 1.5s infinite;
 }
 
-/* Animación burbuja */
+.whatsapp-icon {
+  font-size: 24px;
+}
+
+.whatsapp-label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Rebote + parpadeo simultáneo */
 @keyframes bounceBlink {
   0%, 100% {
     transform: translateY(0);
     opacity: 1;
   }
+  25% {
+    transform: translateY(-5px);
+    opacity: 0.8;
+  }
   50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  75% {
     transform: translateY(-5px);
     opacity: 0.8;
   }
