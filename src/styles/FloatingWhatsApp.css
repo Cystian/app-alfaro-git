@@ -3,39 +3,49 @@
   bottom: 20px;
   right: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-decoration: none;
-  animation: bounce 2s infinite, neonPulse 1.5s infinite alternate;
-}
-
-.whatsapp-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: #25d366;
-  text-shadow: 0 0 5px #25d366, 0 0 10px #25d366, 0 0 20px #25d366;
-  margin-bottom: 6px;
+  gap: 10px;
+  cursor: pointer;
+  animation: bounce 1.5s infinite;
+  z-index: 1000;
 }
 
 .whatsapp-icon {
-  font-size: 50px;
-  color: #25d366;
-  filter: drop-shadow(0 0 5px #25d366) drop-shadow(0 0 10px #25d366);
+  font-size: 3rem;
+  color: #25D366;
+  border-radius: 50%;
+  animation: neonIcon 1.5s infinite alternate;
+}
+
+.whatsapp-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  animation: neonText 1.5s infinite alternate;
 }
 
 /* Rebote */
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-12px); }
-  60% { transform: translateY(-6px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
-/* Efecto neón */
-@keyframes neonPulse {
+/* Neon solo para icono circular */
+@keyframes neonIcon {
   from {
-    filter: drop-shadow(0 0 5px #25d366) drop-shadow(0 0 10px #25d366);
+    box-shadow: 0 0 5px #25D366, 0 0 10px #25D366, 0 0 20px #25D366;
   }
   to {
-    filter: drop-shadow(0 0 15px #25d366) drop-shadow(0 0 25px #25d366);
+    box-shadow: 0 0 10px #25D366, 0 0 20px #25D366, 0 0 30px #25D366;
+  }
+}
+
+/* Neon solo para texto */
+@keyframes neonText {
+  from {
+    text-shadow: 0 0 5px #25D366, 0 0 10px #25D366;
+  }
+  to {
+    text-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
   }
 }
