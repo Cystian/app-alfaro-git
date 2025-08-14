@@ -5,11 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   z-index: 1000;
-  animation: bounce 1.5s infinite; /* rebota todo el conjunto */
 }
-
 .whatsapp-button {
   background: #25d366;
   border-radius: 50%;
@@ -22,16 +20,12 @@
 }
 
 .whatsapp-icon {
-  color: white;
-  font-size: 32px;
+  font-size: 28px;
 }
-
 .whatsapp-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
-  color: white;
-  text-shadow: 0 0 5px #25D366, 0 0 10px #25D366;
-  animation: neonText 1.5s infinite alternate;
+  letter-spacing: 1px;
 }
 
 /* Rebote */
@@ -57,5 +51,27 @@
   }
   to {
     text-shadow: 0 0 10px #25D366, 0 0 20px #25D366;
+  }
+}
+.whatsapp-bubble {
+  background-color: #25d366;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounceBlink 1.5s infinite;
+  cursor: pointer;
+}
+
+@keyframes bounceBlink {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-5px);
+    opacity: 0.7;
   }
 }
