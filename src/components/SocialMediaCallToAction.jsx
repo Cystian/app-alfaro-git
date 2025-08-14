@@ -9,12 +9,18 @@ const iconMap = {
 };
 
 const SocialMediaSection = () => {
-  const [socialLinks, setSocialLinks] = useState([]);
+  const [visibleLinks, setVisibleLinks] = useState([]);
 
   useEffect(() => {
     fetch("/.netlify/functions/get-social-links")
       .then((res) => res.json())
-      .then((data) => setSocialLinks(data))
+      .then((data) => {
+        data.forEach((item, i) => {
+          setTimeout(() => {
+            setVisibleLinks((prev) => [...prev, item]);
+          }, i * 200); // 200ms entre cada tarjeta
+        });
+      })
       .catch((err) => console.error("Error cargando redes:", err));
   }, []);
 
@@ -28,39 +34,35 @@ const SocialMediaSection = () => {
         Síguenos en nuestras redes
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto social-media-container">
-       {socialLinks.map((social, index) => {
-  const colorValue = social.color_fondo || "";
-  const useClass = !isHex(colorValue) && !isGradient(colorValue);
-  const useStyle = isHex(colorValue)
-    ? { backgroundColor: colorValue }
-    : isGradient(colorValue)
-    ? { background: colorValue }
-    : {};
+        {visibleLinks.map((social, index) => {
+          const colorValue = social.color_fondo || "";
+          const useClass = !isHex(colorValue) && !isGradient(colorValue);
+          const useStyle = isHex(colorValue)
+            ? { backgroundColor: colorValue }
+            : isGradient(colorValue)
+            ? { background: colorValue }
+            : {};
 
-  return (
-    <a
-      key={index}
-      href={social.enlace}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`social-card flex flex-col items-center justify-center ${
-        useClass ? colorValue : ""
-      } fog-float-in`}
-      style={{
-        ...useStyle,
-        animationDelay: `${index * 0.2}s`, // escalonado más marcado
-      }}
-    >
-      {iconMap[social.icono] || null}
-      <p className="social-text">{social.nombre}</p>
-    </a>
-  );
-})}
+          return (
+            <a
+              key={index}
+              href={social.enlace}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`social-card flex flex-col items-center justify-center fog-breathe ${
+                useClass ? colorValue : ""
+              }`}
+              style={useStyle}
+            >
+              {iconMap[social.icono] || null}
+              <p className="social-text">{social.nombre}</p>
+            </a>
+          );
+        })}
       </div>
     </section>
   );
 };
 
 export default SocialMediaSection;
-
 
