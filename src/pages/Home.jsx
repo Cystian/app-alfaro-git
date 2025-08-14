@@ -39,7 +39,7 @@ export default function Home() {
         <SearchBanner />
 
         <section>
-          <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
+          <h2 className="text-2xl font-bold mb-4">Propiedades destacadasX</h2>
           <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
             {featuredProperties.map((prop) => (
               <PropertyCard key={prop.id} {...prop} />
