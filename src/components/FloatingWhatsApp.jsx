@@ -7,7 +7,7 @@ const FloatingWhatsApp = () => {
   return (
     <div className="floating-whatsapp">
       <a
-        href="https://wa.me/519XXXXXXXX" // reemplaza con tu número
+        href="https://wa.me/51940221494" // mi nro
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-bubble"
