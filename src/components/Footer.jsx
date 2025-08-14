@@ -21,8 +21,8 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-2 text-red-500">Enlaces</h4>
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="hover:text-red-400 transition">Inicio</Link></li>
-              <li><Link to="/propiedades" className="hover:text-red-400 transition">Propiedades</Link></li>
-              <li><Link to="/sobre-nosotros" className="hover:text-red-400 transition">Nosotros</Link></li>
+              <li><Link to="/vende-o-alquila" className="hover:text-red-400 transition">Vende o Alquila</Link></li>
+              <li><Link to="/servicios" className="hover:text-red-400 transition">Servicios</Link></li>
               <li><Link to="/contacto" className="hover:text-red-400 transition">Contacto</Link></li>
             </ul>
           </div>
