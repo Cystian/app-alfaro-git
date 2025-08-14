@@ -10,6 +10,20 @@
   z-index: 1000;
 }
 
+.floating-whatsapp-button {
+  background: transparent !important; /* elimina el fondo rectangular */
+  border: none !important;
+  box-shadow: none !important; /* elimina sombras raras */
+  border-radius: 50% !important; /* asegura forma circular */
+  padding: 0 !important;
+}
+
+.floating-whatsapp-button img,
+.floating-whatsapp-button svg {
+  border-radius: 50%;
+  display: block;
+}
+
 .whatsapp-content {
   display: flex;
   align-items: center;
