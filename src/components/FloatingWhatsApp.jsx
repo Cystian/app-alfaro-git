@@ -8,8 +8,6 @@ const FloatingWhatsApp = () => {
     <div className="floating-whatsapp">
       <div className="whatsapp-bubble">
         <FaWhatsapp className="whatsapp-icon" />
-      </div>
-      <div className="whatsapp-bubble">
         <span className="whatsapp-label">ESCRÍBENOS</span>
       </div>
     </div>
