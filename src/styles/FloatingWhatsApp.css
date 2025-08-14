@@ -7,44 +7,7 @@
   align-items: center;
   gap: 5px;
   z-index: 1000;
-}
-
-.floating-whatsapp-button {
-  background: transparent !important; /* elimina el fondo rectangular */
-  border: none !important;
-  box-shadow: none !important; /* elimina sombras raras */
-  border-radius: 50% !important; /* asegura forma circular */
-  padding: 0 !important;
-}
-
-.floating-whatsapp-button img,
-.floating-whatsapp-button svg {
-  border-radius: 50%;
-  display: block;
-}
-
-.whatsapp-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  animation: bounce 1.5s infinite;
-}
-
-.whatsapp-icon {
-  color: white;
-  font-size: 32px;
-}
-.whatsapp-label {
-  font-size: 12px;
-  font-weight: bold;
-  color: #444;
-}
-
-.whatsapp-text {
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  animation: neonText 1.5s infinite alternate;
+  animation: bounce 1.5s infinite; /* rebota todo el conjunto */
 }
 
 .whatsapp-button {
@@ -55,17 +18,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-decoration: none;
+  animation: neonIcon 1.5s infinite alternate;
+}
+
+.whatsapp-icon {
+  color: white;
+  font-size: 32px;
+}
+
+.whatsapp-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 5px #25D366, 0 0 10px #25D366;
+  animation: neonText 1.5s infinite alternate;
 }
 
 /* Rebote */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-6px); }
 }
 
-/* Neon solo para icono circular */
+/* Neon para el botón */
 @keyframes neonIcon {
   from {
     box-shadow: 0 0 5px #25D366, 0 0 10px #25D366, 0 0 20px #25D366;
@@ -75,7 +50,7 @@
   }
 }
 
-/* Neon solo para texto */
+/* Neon para el texto */
 @keyframes neonText {
   from {
     text-shadow: 0 0 5px #25D366, 0 0 10px #25D366;
