@@ -62,8 +62,7 @@ const Footer = () => {
       {/* Ícono flotante WhatsApp ultra-neón */}
 <a
   href="https://wa.me/51940221494"
-  className="fixed bottom-4 right-4 p-4 rounded-full text-white bg-green-500 shadow-lg transition-all duration-300"
-  style={{ animation: "neonPulse 2s infinite alternate" }}
+  className="fixed bottom-4 right-4 p-4 rounded-full text-white bg-green-500 shadow-lg floating-whatsapp"
   target="_blank"
   rel="noopener noreferrer"
   aria-label="WhatsApp Inmobiliaria Alberto Alfaro"
