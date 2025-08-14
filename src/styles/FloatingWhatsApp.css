@@ -10,6 +10,13 @@
   z-index: 1000;
 }
 
+.whatsapp-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: bounce 1.5s infinite;
+}
+
 .whatsapp-icon {
   font-size: 3rem;
   color: #25D366;
