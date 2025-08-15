@@ -7,7 +7,7 @@ export default function FeaturedProperties() {
   const reelRef = useRef(null);
 
   useEffect(() => {
-    fetch('/api/properties')
+    fetch('/.netlify/functions/getProperties')
       .then(res => res.json())
       .then(data => setProperties(data))
       .catch(err => console.error(err));
