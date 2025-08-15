@@ -15,7 +15,8 @@ const FeaturedProperties = () => {
           "https://inmobiliariaalfaro.netlify.app/.netlify/functions/getProperties"
         );
         const data = await response.json();
-        setProperties(data);
+        console.log("Propiedades obtenidas:", data);
+        if (Array.isArray(data)) setProperties(data);
       } catch (error) {
         console.error("Error al traer propiedades:", error);
       }
@@ -23,18 +24,23 @@ const FeaturedProperties = () => {
     fetchProperties();
   }, []);
 
+  if (!properties || properties.length === 0) {
+    return <p className="text-center py-8">Cargando propiedades...</p>;
+  }
+
   return (
     <div className="w-full">
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
-        slidesPerView={3} // cantidad visible a la vez
         loop={true}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
+        speed={3000}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
         }}
-        speed={3000} // velocidad de desplazamiento
       >
         {properties.map((property) => (
           <SwiperSlide key={property.id}>
