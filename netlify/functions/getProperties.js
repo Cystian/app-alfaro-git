@@ -1,15 +1,11 @@
-import express from 'express';
-import pkg from 'pg';
-const { Pool } = pkg;
+const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // NeonDB URL
+  connectionString: process.env.DATABASE_URL, // URL de NeonDB en variables de entorno
   ssl: { rejectUnauthorized: false },
 });
 
-const app = express();
-
-app.get('/api/properties', async (req, res) => {
+exports.handler = async (event, context) => {
   try {
     const result = await pool.query(`
       SELECT id, title, image, price, location, status
@@ -17,11 +13,15 @@ app.get('/api/properties', async (req, res) => {
       ORDER BY RANDOM()
       LIMIT 10
     `);
-    res.json(result.rows);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.rows),
+    };
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error al traer propiedades' });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Error al traer propiedades' }),
+    };
   }
-});
-
-app.listen(3000, () => console.log('Server running on port 3000'));
+};
