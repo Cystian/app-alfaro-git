@@ -4,7 +4,7 @@ import ContactForm from '../components/ContactForm';
 import SearchBanner from '../components/SearchBanner';
 import SocialMediaCallToAction from '../components/SocialMediaCallToAction';
 import PageWrapper from '../components/PageWrapper';
-import FeaturedProperties from "../componenets/FeaturedProperties";
+import FeaturedProperties from "../components/FeaturedProperties";
 
 export default function Home() {
   return (
