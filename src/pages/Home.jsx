@@ -4,33 +4,7 @@ import ContactForm from '../components/ContactForm';
 import SearchBanner from '../components/SearchBanner';
 import SocialMediaCallToAction from '../components/SocialMediaCallToAction';
 import PageWrapper from '../components/PageWrapper';
-
-const featuredProperties = [
-  {
-    id: 1,
-    title: 'Departamento en Miraflores',
-    image: '/images/miraflores.jpg',
-    price: 'US$ 120,000',
-    location: 'Miraflores, Lima',
-    status: 'En Venta',
-  },
-  {
-    id: 2,
-    title: 'Casa en Trujillo',
-    image: '/images/trujillo.jpg',
-    price: 'S/ 390,000',
-    location: 'Trujillo, La Libertad',
-    status: 'En Alquiler',
-  },
-  {
-    id: 3,
-    title: 'Terreno en Cajamarca',
-    image: '/images/cajamarca.jpg',
-    price: 'US$ 35,000',
-    location: 'Cajamarca',
-    status: 'En Venta',
-  },
-];
+import FeaturedProperties from "../componenets/FeaturedProperties";
 
 export default function Home() {
   return (
