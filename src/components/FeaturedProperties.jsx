@@ -1,36 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import PropertyCard from './PropertyCard';
+import React, { useEffect, useState } from "react";
+import PropertyCard from "./PropertyCard";
 
 export default function FeaturedProperties() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/.netlify/functions/getProperties')
-      .then(res => res.json())
-      .then(data => {
-        setProperties(data);
+    const fetchProperties = async () => {
+      try {
+        const res = await fetch("https://inmobiliariaalfaro.netlify.app/.netlify/functions/getProperties");
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setProperties(data);
+        } else {
+          console.error("Formato inesperado:", data);
+        }
+      } catch (error) {
+        console.error("Error al cargar propiedades:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching properties:', err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchProperties();
   }, []);
 
-  if (loading) {
-    return <p className="text-center">Cargando propiedades...</p>;
-  }
+  if (loading) return <p>Cargando propiedades...</p>;
 
   return (
-    <section>
+    <div>
       <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
       <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
         {properties.map((prop) => (
           <PropertyCard key={prop.id} {...prop} />
         ))}
       </div>
-    </section>
+    </div>
   );
 }
-
