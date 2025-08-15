@@ -15,7 +15,7 @@ export default function Home() {
         <section>
      {/*   <h2 className="text-2xl font-bold mb-4">Propiedades destacadasX</h2>*/}
 
-          <FeaturedProperties /> {/* Aquí va el reel */}
+           <FeaturedProperties />
           
           <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
             {featuredProperties.map((prop) => (
