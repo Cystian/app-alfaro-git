@@ -3,8 +3,8 @@ import React from "react";
 import { Button } from "./ui/button";
 
 const PropertyCard = ({ id, title, image, price, location, status }) => {
-  // Mensaje para WhatsApp incluyendo precio
-  const whatsappMessage = `Hola, estoy interesado en la propiedad "${title}" ubicada en ${location} con precio ${price}. ¿Me pueden dar más información?`;
+  // Mensaje para WhatsApp incluyendo título, ubicación, precio y URL de la imagen
+  const whatsappMessage = `Hola, estoy interesado en la propiedad "${title}" ubicada en ${location} con precio ${price}. Aquí está la foto: ${image}`;
   // Número de contacto
   const whatsappNumber = "51931283609"; 
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
@@ -48,5 +48,4 @@ const PropertyCard = ({ id, title, image, price, location, status }) => {
 };
 
 export default PropertyCard;
-
 
