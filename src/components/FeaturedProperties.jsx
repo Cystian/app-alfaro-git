@@ -9,7 +9,6 @@ import PropertyCard from "./PropertyCard";
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -19,20 +18,19 @@ const FeaturedProperties = () => {
         );
         const data = await response.json();
 
-        if (Array.isArray(data) && data.length > 0) {
-          // Limpiar posibles caracteres extra en las URLs
-          const cleanData = data.map(p => ({
-            ...p,
-            image: p.image?.trim() || "https://via.placeholder.com/400x300"
-          }));
-          setProperties(cleanData);
-        } else {
-          console.error("Datos de propiedades vacíos o formato incorrecto:", data);
-          setError(true);
-        }
-      } catch (err) {
-        console.error("Error al traer propiedades:", err);
-        setError(true);
+        // Limpiar datos de espacios y saltos de línea
+        const cleanData = data.map((p) => ({
+          ...p,
+          image: p.image?.trim(),
+          title: p.title?.trim(),
+          price: p.price?.trim(),
+          location: p.location?.trim(),
+          status: p.status?.trim(),
+        }));
+
+        if (Array.isArray(cleanData)) setProperties(cleanData);
+      } catch (error) {
+        console.error("Error al traer propiedades:", error);
       } finally {
         setLoading(false);
       }
@@ -41,17 +39,17 @@ const FeaturedProperties = () => {
     fetchProperties();
   }, []);
 
-  if (loading) {
+  if (loading)
     return <p className="text-center py-8">Cargando propiedades...</p>;
-  }
 
-  if (error || properties.length === 0) {
-    return <p className="text-center py-8">No se pudieron cargar las propiedades.</p>;
-  }
+  if (!properties || properties.length === 0)
+    return <p className="text-center py-8">No hay propiedades disponibles.</p>;
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">
+        Propiedades destacadas
+      </h2>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
@@ -66,7 +64,7 @@ const FeaturedProperties = () => {
       >
         {properties.map((property) => (
           <SwiperSlide key={property.id}>
-            <PropertyCard property={property} />
+            <PropertyCard {...property} />
           </SwiperSlide>
         ))}
       </Swiper>
