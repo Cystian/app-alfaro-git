@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // URL de NeonDB en variables de entorno
+  connectionString: process.env.NEON_DB_URL, // URL de NeonDB en variables de entorno
   ssl: { rejectUnauthorized: false },
 });
 
