@@ -12,7 +12,7 @@ export default function Home() {
       <main className="space-y-12 p-4 sm:p-8">
         <SearchBanner />
 
-        <section>
+        <section> 
      {/*   <h2 className="text-2xl font-bold mb-4">Propiedades destacadasX</h2>*/}
 
            <FeaturedProperties />
