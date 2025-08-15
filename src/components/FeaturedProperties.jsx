@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropertyCard from './PropertyCard';
+import { motion } from 'framer-motion'; // Para animaciones suaves
 
 export default function FeaturedProperties() {
   const [properties, setProperties] = useState([]);
   const reelRef = useRef(null);
 
-  // Fetch de propiedades desde tu BD
+  // Fetch propiedades desde tu BD
   useEffect(() => {
     fetch('/api/properties') // Ajusta tu endpoint
       .then(res => res.json())
@@ -13,36 +14,34 @@ export default function FeaturedProperties() {
       .catch(err => console.error(err));
   }, []);
 
-  // Efecto de reel automático
+  // Scroll infinito horizontal
   useEffect(() => {
     const reel = reelRef.current;
     if (!reel) return;
 
     let scrollAmount = 0;
+    const speed = 1; // Ajusta velocidad
+
     const interval = setInterval(() => {
-      scrollAmount += 1; // velocidad
-      if (scrollAmount >= reel.scrollWidth - reel.clientWidth) {
-        scrollAmount = 0; // reinicia
+      scrollAmount += speed;
+      if (scrollAmount >= reel.scrollWidth / 2) {
+        scrollAmount = 0; // reinicia para loop infinito
       }
       reel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-    }, 30);
+    }, 20);
 
     return () => clearInterval(interval);
   }, [properties]);
+
+  // Duplicar propiedades para loop infinito visual
+  const loopProperties = [...properties, ...properties];
 
   return (
     <section>
       <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
       <div
         ref={reelRef}
-        className="flex gap-4 overflow-x-auto whitespace-nowrap scroll-smooth"
+        className="flex gap-4 overflow-x-hidden whitespace-nowrap"
       >
-        {properties.map((prop) => (
-          <div key={prop.id} className="inline-block flex-shrink-0 w-72">
-            <PropertyCard {...prop} />
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
+        {loopProperties.map((prop, index) => (
+
