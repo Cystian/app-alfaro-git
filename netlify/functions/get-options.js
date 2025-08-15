@@ -6,7 +6,7 @@ export async function handler() {
   if (!process.env.NEON_DB_URL) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Variable NEON_DB_URL no definida" }),
+      body: JSON.stringify({ error: "Variable NEON_DB_URL no definid" }),
     };
   }
 
