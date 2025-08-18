@@ -1,8 +1,6 @@
 // src/components/PropertyModal.jsx 
 //MODAL PARA LAS PROPIEDADES
 import React, { useEffect, useState } from "react";
-//import jsPDF from "jspdf";
-import { jsPDF } from "jspdf";
 import { createClient } from "@supabase/supabase-js"; // NeonDB compatible con supabase client
 
 // Inicializa tu cliente NeonDB (similar a Supabase)
@@ -21,9 +19,8 @@ const PropertyModal = ({ property, onClose }) => {
   useEffect(() => {
     setTimeout(() => setVisible(true), 10);
 
-    // Traer sub_properties de esta propiedad
     const fetchData = async () => {
-      // Traemos sub_properties ordenadas
+      // Traer sub_properties ordenadas
       const { data: subData } = await supabase
         .from("sub_properties")
         .select("*, flyer:texto_flyer")
@@ -32,7 +29,7 @@ const PropertyModal = ({ property, onClose }) => {
 
       setSubProperties(subData || []);
 
-      // Traemos el flyer principal si existe
+      // Traer flyer principal si existe
       if (subData?.length > 0 && subData[0].flyer) {
         setFlyerData({ texto_flyer: subData[0].flyer });
       }
@@ -50,7 +47,22 @@ const PropertyModal = ({ property, onClose }) => {
     }, 300);
   };
 
-  const generatePDF = () => {
+  // Convierte URL de imagen a base64
+  const toDataURL = (url) =>
+    fetch(url)
+      .then((response) => response.blob())
+      .then(
+        (blob) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
+
+  const generatePDF = async () => {
+    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     let yPos = 20;
 
@@ -75,10 +87,11 @@ const PropertyModal = ({ property, onClose }) => {
     }
 
     // Agregar cada sub_property: imagen + contenido
-    subProperties.forEach((sp) => {
+    for (const sp of subProperties) {
       if (sp.image) {
         try {
-          doc.addImage(sp.image, "JPEG", 20, yPos, 160, 80);
+          const imgData = await toDataURL(sp.image);
+          doc.addImage(imgData, "JPEG", 20, yPos, 160, 80);
           yPos += 85;
         } catch (err) {
           console.error("Error cargando imagen:", err);
@@ -95,13 +108,14 @@ const PropertyModal = ({ property, onClose }) => {
         doc.addPage();
         yPos = 20;
       }
-    });
+    }
 
     doc.save(`${property.title}_flyer.pdf`);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Fondo negro con fade */}
       <div
         onClick={handleClose}
         className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ease-out ${
@@ -109,6 +123,7 @@ const PropertyModal = ({ property, onClose }) => {
         }`}
       ></div>
 
+      {/* Contenedor modal */}
       <div
         className={`relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 transform transition-all duration-300 ease-out ${
           visible && !closing
@@ -116,6 +131,7 @@ const PropertyModal = ({ property, onClose }) => {
             : "opacity-0 scale-95 translate-y-4"
         }`}
       >
+        {/* Botón cerrar */}
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-xl"
@@ -123,6 +139,7 @@ const PropertyModal = ({ property, onClose }) => {
           ✕
         </button>
 
+        {/* Imagen principal */}
         <div className="mb-4">
           <img
             src={property.flyer || property.image}
@@ -131,6 +148,7 @@ const PropertyModal = ({ property, onClose }) => {
           />
         </div>
 
+        {/* Info */}
         <div className="space-y-3">
           <h2 className="text-2xl font-bold">{property.title}</h2>
           <p className="text-gray-600 text-lg">{property.location}</p>
@@ -138,6 +156,7 @@ const PropertyModal = ({ property, onClose }) => {
           <p className="text-sm text-gray-500">Estado: {property.status}</p>
         </div>
 
+        {/* Botones */}
         <div className="mt-6 flex gap-3">
           <a
             href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
