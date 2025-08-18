@@ -12,7 +12,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['jspdf'], // <- aquí indicamos que jspdf no se empaquete
+      external: ['@supabase/supabase-js'],
     },
   },
 });
