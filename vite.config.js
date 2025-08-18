@@ -10,12 +10,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  optimizeDeps: {
-    include: ['jspdf'], // Fuerza a Vite a incluirlo en el bundle dev
-  },
   build: {
     rollupOptions: {
-      external: [], // No externalices jspdf, déjalo dentro del bundle
+      external: ['jspdf'], // <- aquí indicamos que jspdf no se empaquete
     },
   },
 });
