@@ -12,8 +12,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@supabase/supabase-js'],
+      external: ['@supabase/supabase-js', 'jspdf'], // <--- Agregado jspdf aquí
     },
   },
 });
-
