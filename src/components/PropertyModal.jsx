@@ -33,11 +33,7 @@ const PropertyModal = ({ property, onClose }) => {
       {/* Contenedor modal con animaciones */}
       <div
         className={`relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 transform transition-all duration-300 ease-out
-          ${
-            visible && !closing
-              ? "opacity-100 scale-100 translate-y-0"
-              : "opacity-0 scale-95 translate-y-4"
-          }`}
+          ${visible && !closing ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4"}`}
       >
         {/* Botón cerrar */}
         <button
@@ -66,6 +62,7 @@ const PropertyModal = ({ property, onClose }) => {
 
         {/* Botones */}
         <div className="mt-6 flex gap-3">
+          {/* Botón Contactar */}
           <a
             href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
             target="_blank"
@@ -75,16 +72,20 @@ const PropertyModal = ({ property, onClose }) => {
             Contactar
           </a>
 
-          {property.flyer && (
-            <a
-              href={property.flyer}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 text-center transition"
-            >
-              Descargar flyer
-            </a>
-          )}
+          {/* Botón Descargar flyer (si no hay flyer, deshabilitado) */}
+          <a
+            href={property.flyer || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => !property.flyer && e.preventDefault()}
+            className={`flex-1 py-2 px-4 rounded-lg text-center transition text-white ${
+              property.flyer
+                ? "bg-blue-500 hover:bg-blue-600 cursor-pointer"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+          >
+            Descargar flyer
+          </a>
         </div>
       </div>
     </div>
@@ -92,4 +93,3 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
-
