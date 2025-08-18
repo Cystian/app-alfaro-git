@@ -5,8 +5,15 @@ const PropertyModal = ({ property, onClose }) => {
   if (!property) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="bg-white rounded-2xl shadow-lg max-w-3xl w-full p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Fondo negro con fade */}
+      <div
+        onClick={onClose}
+        className="absolute inset-0 bg-black/70 opacity-0 animate-fadeIn"
+      ></div>
+
+      {/* Contenedor del modal */}
+      <div className="relative bg-white rounded-2xl shadow-lg max-w-3xl w-full p-6 opacity-0 animate-scaleIn">
         {/* Botón Cerrar */}
         <button
           onClick={onClose}
@@ -24,7 +31,7 @@ const PropertyModal = ({ property, onClose }) => {
           />
         </div>
 
-        {/* Info de la propiedad */}
+        {/* Info */}
         <div className="space-y-3">
           <h2 className="text-2xl font-bold">{property.title}</h2>
           <p className="text-gray-600 text-lg">{property.location}</p>
@@ -35,7 +42,7 @@ const PropertyModal = ({ property, onClose }) => {
         {/* Botones */}
         <div className="mt-6 flex gap-3">
           <a
-            href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
+            href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 text-center transition"
@@ -60,3 +67,4 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
