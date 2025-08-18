@@ -1,7 +1,8 @@
 // src/components/PropertyModal.jsx 
 //MODAL PARA LAS PROPIEDADES
 import React, { useEffect, useState } from "react";
-import jsPDF from "jspdf";
+//import jsPDF from "jspdf";
+import { jsPDF } from "jspdf";
 import { createClient } from "@supabase/supabase-js"; // NeonDB compatible con supabase client
 
 // Inicializa tu cliente NeonDB (similar a Supabase)
