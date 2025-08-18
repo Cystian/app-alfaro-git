@@ -3,15 +3,22 @@ import React, { useEffect, useState } from "react";
 
 const PropertyModal = ({ property, onClose }) => {
   const [closing, setClosing] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   if (!property) return null;
 
+  useEffect(() => {
+    // Al montar el modal, activa la animación de entrada
+    setTimeout(() => setVisible(true), 10);
+  }, []);
+
   const handleClose = () => {
     setClosing(true);
+    setVisible(false);
     setTimeout(() => {
       setClosing(false);
       onClose();
-    }, 300); // igual que la duración de las animaciones
+    }, 300); // misma duración de las transiciones
   };
 
   return (
@@ -19,18 +26,17 @@ const PropertyModal = ({ property, onClose }) => {
       {/* Fondo negro con fade */}
       <div
         onClick={handleClose}
-        className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ease-out ${
-          closing ? "opacity-0" : "opacity-100"
-        }`}
+        className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ease-out
+          ${visible && !closing ? "opacity-100" : "opacity-0"}`}
       ></div>
 
-      {/* Contenedor modal con animaciones más suaves */}
+      {/* Contenedor modal con animaciones */}
       <div
         className={`relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 transform transition-all duration-300 ease-out
           ${
-            closing
-              ? "opacity-0 scale-95 translate-y-4"
-              : "opacity-100 scale-100 translate-y-0"
+            visible && !closing
+              ? "opacity-100 scale-100 translate-y-0"
+              : "opacity-0 scale-95 translate-y-4"
           }`}
       >
         {/* Botón cerrar */}
