@@ -1,49 +1,44 @@
-// src/components/PropertyModal.jsx 
-//MODAL PARA LAS PROPIEDADES
+// src/components/PropertyModal.jsx
 import React, { useEffect, useState } from "react";
-import { jsPDF } from "jspdf";
 
 const PropertyModal = ({ property, onClose }) => {
   const [closing, setClosing] = useState(false);
   const [visible, setVisible] = useState(false);
   const [subProperties, setSubProperties] = useState([]);
   const [flyerData, setFlyerData] = useState(null);
+  const [supabaseClient, setSupabaseClient] = useState(null);
 
   if (!property) return null;
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 10);
 
-    // Import dinámico de Supabase para evitar errores de Rollup
+    // Import dinámico de Supabase para evitar problemas de Vite
+    import("@supabase/supabase-js").then(({ createClient }) => {
+      const supabase = createClient("TU_NEON_URL", "TU_NEON_KEY");
+      setSupabaseClient(supabase);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!supabaseClient) return;
+
     const fetchData = async () => {
-      const { createClient } = await import("@supabase/supabase-js");
-
-      const supabaseUrl = "TU_NEON_URL";
-      const supabaseKey = "TU_NEON_KEY";
-      const supabase = createClient(supabaseUrl, supabaseKey);
-
-      // Traer sub_properties de esta propiedad
-      const { data: subData, error } = await supabase
+      const { data: subData } = await supabaseClient
         .from("sub_properties")
         .select("*, flyer:texto_flyer")
         .eq("property_id", property.id)
         .order("order", { ascending: true });
 
-      if (error) {
-        console.error("Error fetching sub_properties:", error);
-        return;
-      }
-
       setSubProperties(subData || []);
 
-      // Traer flyer principal si existe
       if (subData?.length > 0 && subData[0].flyer) {
         setFlyerData({ texto_flyer: subData[0].flyer });
       }
     };
 
     fetchData();
-  }, [property]);
+  }, [supabaseClient, property]);
 
   const handleClose = () => {
     setClosing(true);
@@ -54,20 +49,24 @@ const PropertyModal = ({ property, onClose }) => {
     }, 300);
   };
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
+    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     let yPos = 20;
 
+    // Título de la propiedad
     doc.setFontSize(22);
     doc.text(property.title, 20, yPos);
     yPos += 10;
 
+    // Ubicación y precio
     doc.setFontSize(14);
     doc.text(`Ubicación: ${property.location}`, 20, yPos);
     yPos += 8;
     doc.text(`Precio: ${property.price}`, 20, yPos);
     yPos += 10;
 
+    // Texto del flyer
     if (flyerData?.texto_flyer) {
       doc.setFontSize(12);
       const splitText = doc.splitTextToSize(flyerData.texto_flyer, 170);
@@ -75,6 +74,7 @@ const PropertyModal = ({ property, onClose }) => {
       yPos += splitText.length * 6 + 5;
     }
 
+    // Sub-properties: imágenes + contenido
     subProperties.forEach((sp) => {
       if (sp.image) {
         try {
@@ -102,6 +102,7 @@ const PropertyModal = ({ property, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Fondo negro */}
       <div
         onClick={handleClose}
         className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ease-out ${
@@ -116,6 +117,7 @@ const PropertyModal = ({ property, onClose }) => {
             : "opacity-0 scale-95 translate-y-4"
         }`}
       >
+        {/* Cerrar modal */}
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-xl"
@@ -123,6 +125,7 @@ const PropertyModal = ({ property, onClose }) => {
           ✕
         </button>
 
+        {/* Imagen principal */}
         <div className="mb-4">
           <img
             src={property.flyer || property.image}
@@ -131,6 +134,7 @@ const PropertyModal = ({ property, onClose }) => {
           />
         </div>
 
+        {/* Info */}
         <div className="space-y-3">
           <h2 className="text-2xl font-bold">{property.title}</h2>
           <p className="text-gray-600 text-lg">{property.location}</p>
@@ -138,6 +142,7 @@ const PropertyModal = ({ property, onClose }) => {
           <p className="text-sm text-gray-500">Estado: {property.status}</p>
         </div>
 
+        {/* Botones */}
         <div className="mt-6 flex gap-3">
           <a
             href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
@@ -161,4 +166,3 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
-
