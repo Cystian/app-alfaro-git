@@ -79,7 +79,7 @@ const FeaturedProperties = () => {
 
                 <div className="mt-auto flex gap-2">
                   <a
-                    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
+                    href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition"
