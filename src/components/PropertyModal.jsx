@@ -1,18 +1,17 @@
 // src/components/PropertyModal.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const PropertyModal = ({ property, onClose }) => {
   const [closing, setClosing] = useState(false);
 
   if (!property) return null;
 
-  // Manejo de animación de salida
   const handleClose = () => {
     setClosing(true);
     setTimeout(() => {
       setClosing(false);
       onClose();
-    }, 300); // tiempo igual al de las animaciones
+    }, 300); // igual a duración de animación
   };
 
   return (
@@ -20,23 +19,23 @@ const PropertyModal = ({ property, onClose }) => {
       {/* Fondo negro con fade */}
       <div
         onClick={handleClose}
-        className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ease-in-out ${
           closing ? "opacity-0" : "opacity-100"
         }`}
-      ></div>
+      />
 
-      {/* Contenedor del modal */}
+      {/* Contenedor del modal con animación suave */}
       <div
-        className={`relative bg-white rounded-2xl shadow-lg max-w-3xl w-full p-6 transform transition-all duration-300 ${
+        className={`relative bg-white rounded-2xl shadow-xl max-w-3xl w-full p-6 transform transition-all duration-300 ease-in-out ${
           closing
-            ? "opacity-0 scale-95"
-            : "opacity-100 scale-100"
+            ? "opacity-0 scale-95 translate-y-4"
+            : "opacity-100 scale-100 translate-y-0"
         }`}
       >
         {/* Botón Cerrar */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-xl"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-xl transition"
         >
           ✕
         </button>
