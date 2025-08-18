@@ -4,11 +4,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
-import PropertyCard from "./PropertyCard";
+import PropertyModal from "./PropertyModal";
 
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -18,7 +19,6 @@ const FeaturedProperties = () => {
         );
         const data = await response.json();
 
-        // Limpiar datos de espacios y saltos de línea
         const cleanData = data.map((p) => ({
           ...p,
           image: p.image?.trim(),
@@ -26,6 +26,7 @@ const FeaturedProperties = () => {
           price: p.price?.trim(),
           location: p.location?.trim(),
           status: p.status?.trim(),
+          flyer: p.flyer?.trim(),
         }));
 
         if (Array.isArray(cleanData)) setProperties(cleanData);
@@ -64,10 +65,49 @@ const FeaturedProperties = () => {
       >
         {properties.map((property) => (
           <SwiperSlide key={property.id}>
-            <PropertyCard {...property} />
+            <div className="bg-white shadow-md rounded-2xl overflow-hidden flex flex-col">
+              <img
+                src={property.image}
+                alt={property.title || "Propiedad inmobiliaria"}
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4 flex flex-col flex-grow">
+                <h3 className="text-lg font-bold mb-1">{property.title}</h3>
+                <p className="text-sm text-gray-600 mb-1">{property.location}</p>
+                <p className="text-blue-600 font-semibold mb-2">{property.price}</p>
+                <p className="text-xs text-gray-500 mb-4">{property.status}</p>
+
+                <div className="mt-auto flex gap-2">
+                  <a
+                    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition"
+                  >
+                    Contactar
+                  </a>
+
+                  {/* Abrir modal */}
+                  <button
+                    onClick={() => setSelectedProperty(property)}
+                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
+                  >
+                    Ver flyer
+                  </button>
+                </div>
+              </div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Modal */}
+      {selectedProperty && (
+        <PropertyModal
+          property={selectedProperty}
+          onClose={() => setSelectedProperty(null)}
+        />
+      )}
     </div>
   );
 };
