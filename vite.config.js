@@ -11,6 +11,12 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['jspdf'], // ⚡ Fuerza a Vite a preprocesar jspdf
+    include: ['jspdf'], // Fuerza a Vite a incluirlo en el bundle dev
+  },
+  build: {
+    rollupOptions: {
+      external: [], // No externalices jspdf, déjalo dentro del bundle
+    },
   },
 });
+
