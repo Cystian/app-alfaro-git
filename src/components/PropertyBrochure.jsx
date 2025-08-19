@@ -6,22 +6,27 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // 🔹 Convierte URL externa a Base64 con fetcht
-  const toDataUrl = async (url) => {
-    try {
-      const response = await fetch(url, { mode: "cors" });
-      const blob = await response.blob();
+  // 🔹 Convierte URL a Base64 usando un <img>
+  const toDataUrl = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // clave para evitar CORS
+      img.src = url;
 
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    } catch (err) {
-      console.error("Error cargando imagen:", err);
-      return null;
-    }
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/jpeg"));
+      };
+
+      img.onerror = () => {
+        console.error("❌ Error cargando imagen:", url);
+        resolve(null); // No rompe el PDF, solo omite la imagen
+      };
+    });
   };
 
   const generatePDF = async () => {
@@ -41,7 +46,7 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       doc.text(property.description || "Sin descripción disponible.", 20, y);
       y += 20;
 
-      // 🔹 Si hay imagen principal
+      // 🔹 Imagen principal
       if (property.image) {
         const base64Img = await toDataUrl(property.image);
         if (base64Img) {
@@ -53,7 +58,9 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       // 🔹 Subpropiedades
       for (const sp of subProperties) {
         doc.addPage();
+        doc.setFontSize(14);
         doc.text(sp.name || "SubPropiedad", 20, 20);
+
         if (sp.image) {
           const base64Img = await toDataUrl(sp.image);
           if (base64Img) {
@@ -100,5 +107,4 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
-
 
