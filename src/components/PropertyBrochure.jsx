@@ -1,37 +1,28 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 
-const PropertyBrochure = ({ 
-  property = { 
-    title: "Departamento moderno", 
-    description: "Hermosa vista al mar.", 
-    image: "https://picsum.photos/600/400" 
-  }, 
-  subProperties = [
-    { name: "Cochera", image: "https://picsum.photos/500/300" },
-    { name: "Piscina", image: "https://picsum.photos/400/300" }
-  ] 
-}) => {
+const PropertyBrochure = ({ property = {}, subProperties = [] }) => {
   const [generating, setGenerating] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // ✅ Convierte imagen a Base64 con canvas (más seguro que fetch)
-  const toDataUrl = (url) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous"; // necesario para CORS
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-        resolve(canvas.toDataURL("image/jpeg"));
-      };
-      img.onerror = (err) => reject(err);
-      img.src = url;
-    });
+  // 🔹 Convierte URL externa a Base64 con fetch
+  const toDataUrl = async (url) => {
+    try {
+      const response = await fetch(url, { mode: "cors" });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const blob = await response.blob();
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (err) {
+      console.error("❌ Error cargando imagen:", err);
+      return null; // 🔹 Retorna null si falla
+    }
   };
 
   const generatePDF = async () => {
@@ -54,8 +45,13 @@ const PropertyBrochure = ({
       // 🔹 Imagen principal
       if (property.image) {
         const base64Img = await toDataUrl(property.image);
-        doc.addImage(base64Img, "JPEG", 20, y, 160, 90);
-        y += 100;
+        if (base64Img) {
+          doc.addImage(base64Img, "JPEG", 20, y, 160, 90);
+          y += 100;
+        } else {
+          doc.text("⚠ No se pudo cargar la imagen principal.", 20, y);
+          y += 10;
+        }
       }
 
       // 🔹 Subpropiedades
@@ -64,7 +60,11 @@ const PropertyBrochure = ({
         doc.text(sp.name || "SubPropiedad", 20, 20);
         if (sp.image) {
           const base64Img = await toDataUrl(sp.image);
-          doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
+          if (base64Img) {
+            doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
+          } else {
+            doc.text("⚠ Imagen no disponible.", 20, 40);
+          }
         }
       }
 
@@ -73,7 +73,7 @@ const PropertyBrochure = ({
       const url = URL.createObjectURL(pdfBlob);
       setPdfUrl(url);
     } catch (err) {
-      console.error("Error generando PDF:", err);
+      console.error("❌ Error generando PDF:", err);
       setError("No se pudo generar el PDF.");
     } finally {
       setGenerating(false);
