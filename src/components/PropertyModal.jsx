@@ -144,7 +144,7 @@ const PropertyModal = ({ property, onClose }) => {
         </div>
 
         {/* Botones */}
-//<div className="mt-6 flex gap-3 flex-col sm:flex-row">
+       // <div className="mt-6 flex gap-3 flex-col sm:flex-row">
 //  <a
 //    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
 //    target="_blank"
@@ -158,11 +158,10 @@ const PropertyModal = ({ property, onClose }) => {
   //  property={property}
   //  subProperties={subProperties /* tu array */}
   //  flyerData={flyerData /* { texto_flyer: "..."} o null */}
-  />
+//  />
 //</div>
 
-
-        <div className="mt-6 flex gap-3 flex-col sm:flex-row">
+     <div className="mt-6 flex gap-3 flex-col sm:flex-row">
   <a
     href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property?.title || ""}`}
     target="_blank"
@@ -180,6 +179,7 @@ const PropertyModal = ({ property, onClose }) => {
     />
   )}
 </div>
+   
         
       </div>
     </div>
