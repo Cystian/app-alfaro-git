@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { jsPDF } from "jspdf";
 
 const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
   const [generating, setGenerating] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // 🔄 Convertir URL externa a Base64
-  const toBase64 = async (url) => {
+  // 🔹 Convierte URL externa a Base64 con fetch
+  const toDataUrl = async (url) => {
     try {
-      console.log("Descargando imagen:", url);
-      const res = await fetch(url, { mode: "cors" });
-      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
-      const blob = await res.blob();
+      const response = await fetch(url, { mode: "cors" });
+      const blob = await response.blob();
+
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
@@ -19,82 +19,67 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         reader.readAsDataURL(blob);
       });
     } catch (err) {
-      console.error("❌ Error cargando imagen:", url, err);
+      console.error("Error cargando imagen:", err);
       return null;
     }
   };
 
-  // 📄 Generar PDF
-  const generatePdf = async () => {
+  const generatePDF = async () => {
     try {
       setGenerating(true);
       setError(null);
+      setPdfUrl(null);
 
-      const { jsPDF } = await import("jspdf");
       const doc = new jsPDF();
+      let y = 20;
 
-      // --- Título principal ---
-      doc.setFontSize(20);
-      doc.text(property.title || "Propiedad", 20, 20);
+      doc.setFontSize(18);
+      doc.text(property.title || "Brochure de Propiedad", 20, y);
+      y += 10;
 
-      // --- Imagen principal ---
+      doc.setFontSize(12);
+      doc.text(property.description || "Sin descripción disponible.", 20, y);
+      y += 20;
+
+      // 🔹 Si hay imagen principal
       if (property.image) {
-        const base64Img = await toBase64(property.image);
+        const base64Img = await toDataUrl(property.image);
         if (base64Img) {
-          doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
-        } else {
-          console.warn("⚠️ No se pudo cargar imagen principal:", property.image);
+          doc.addImage(base64Img, "JPEG", 20, y, 160, 90);
+          y += 100;
         }
       }
 
-      let y = 130;
-
-      // --- Subpropiedades ---
+      // 🔹 Subpropiedades
       for (const sp of subProperties) {
-        y += 5;
         doc.addPage();
-        const base64Img = await toBase64(sp.image);
-        if (base64Img) {
-          doc.addImage(base64Img, "JPEG", 20, 20, 160, 90);
-          doc.text(sp.name || "SubPropiedad", 20, 115);
-        } else {
-          console.warn("⚠️ No se pudo cargar subpropiedad:", sp.image);
+        doc.text(sp.name || "SubPropiedad", 20, 20);
+        if (sp.image) {
+          const base64Img = await toDataUrl(sp.image);
+          if (base64Img) {
+            doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
+          }
         }
       }
 
-      // --- Información adicional (flyerData) ---
-      if (flyerData) {
-        doc.addPage();
-        doc.setFontSize(14);
-        doc.text("Información del Flyer:", 20, 20);
-        doc.setFontSize(12);
-        doc.text(flyerData.description || "", 20, 40);
-      }
-
-      // --- Generar y guardar URL del PDF ---
+      // 🔹 Generar blob y URL
       const pdfBlob = doc.output("blob");
-      const pdfUrl = URL.createObjectURL(pdfBlob);
-      setPdfUrl(pdfUrl);
+      const url = URL.createObjectURL(pdfBlob);
+      setPdfUrl(url);
     } catch (err) {
-      console.error("❌ Error al generar el PDF:", err);
+      console.error("Error generando PDF:", err);
       setError("No se pudo generar el PDF.");
     } finally {
       setGenerating(false);
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
-    };
-  }, [pdfUrl]);
-
   return (
-    <div className="p-4">
+    <div>
       <button
-        onClick={generatePdf}
+        onClick={generatePDF}
         disabled={generating}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+        className="bg-blue-500 text-white px-4 py-2 rounded"
       >
         {generating ? "Generando..." : "📄 Descargar Brochure"}
       </button>
@@ -105,9 +90,9 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         <a
           href={pdfUrl}
           download="brochure.pdf"
-          className="text-blue-600 underline mt-2 block"
+          className="block mt-4 text-blue-600 underline"
         >
-          Descargar ahora
+          📥 Descargar PDF
         </a>
       )}
     </div>
@@ -115,4 +100,5 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
+
 
