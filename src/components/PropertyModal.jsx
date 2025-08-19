@@ -1,5 +1,6 @@
 // src/components/PropertyModal.jsx
 import React, { useEffect, useState } from "react";
+import PropertyBrochure from "./PropertyBrochure";
 
 const PropertyModal = ({ property, onClose }) => {
   const [closing, setClosing] = useState(false);
@@ -143,23 +144,22 @@ const PropertyModal = ({ property, onClose }) => {
         </div>
 
         {/* Botones */}
-        <div className="mt-6 flex gap-3">
-          <a
-            href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 text-center transition"
-          >
-            Contactar
-          </a>
+ <div className="mt-6 flex gap-3">
+  <a
+    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 text-center transition"
+  >
+    Contactar
+  </a>
 
-          <button
-            onClick={generatePDF}
-            className="flex-1 py-2 px-4 rounded-lg text-center text-white bg-blue-500 hover:bg-blue-600 transition"
-          >
-            Descargar flyer
-          </button>
-        </div>
+  <PropertyBrochure
+    property={property}
+    subProperties={subProperties}
+    flyerData={flyerData}
+  />
+</div>
       </div>
     </div>
   );
