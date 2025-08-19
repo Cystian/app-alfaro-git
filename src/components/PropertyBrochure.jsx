@@ -20,6 +20,20 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       .replace(/^_+|_+$/g, "")
       .toLowerCase();
 
+  // Convierte una URL en Base64 para jsPDF
+  const toBase64 = (url) =>
+    fetch(url, { mode: "cors" }) // importante si está en otro dominio
+      .then((res) => res.blob())
+      .then(
+        (blob) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
+
   const generatePDF = async () => {
     setGenerating(true);
     setError(null);
@@ -37,7 +51,8 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 
       if (property.image) {
         try {
-          doc.addImage(property.image, "JPEG", 20, yPos, 170, 90);
+          const imgData = await toBase64(property.image); // convierte URL
+          doc.addImage(imgData, "JPEG", 20, yPos, 170, 90);
           yPos += 100;
         } catch (err) {
           console.error("Error agregando imagen de portada:", err);
@@ -99,14 +114,15 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         doc.text("Galería", 20, yPos);
         yPos += 10;
 
-        subProperties.forEach((sp) => {
+        for (const sp of subProperties) {
           if (yPos > 230) {
             doc.addPage();
             yPos = 20;
           }
           if (sp.image) {
             try {
-              doc.addImage(sp.image, "JPEG", 20, yPos, 160, 80);
+              const imgData = await toBase64(sp.image); // convierte URL
+              doc.addImage(imgData, "JPEG", 20, yPos, 160, 80);
               yPos += 85;
             } catch (err) {
               console.error("Error cargando imagen:", err);
@@ -117,7 +133,7 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
             doc.text(contentSplit, 20, yPos);
             yPos += contentSplit.length * 6 + 10;
           }
-        });
+        }
       }
 
       // ===== Footer / contacto =====
@@ -203,4 +219,5 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
+
 
