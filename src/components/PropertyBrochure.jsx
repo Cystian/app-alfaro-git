@@ -5,18 +5,21 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // 🔄 Convertir URL externa a Base64.
+  // 🔄 Convertir URL externa a Base64
   const toBase64 = async (url) => {
     try {
-      const res = await fetch(url);
+      console.log("Descargando imagen:", url);
+      const res = await fetch(url, { mode: "cors" });
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
       const blob = await res.blob();
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
         reader.readAsDataURL(blob);
       });
     } catch (err) {
-      console.error("Error cargando imagen:", err);
+      console.error("❌ Error cargando imagen:", url, err);
       return null;
     }
   };
@@ -39,6 +42,8 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         const base64Img = await toBase64(property.image);
         if (base64Img) {
           doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
+        } else {
+          console.warn("⚠️ No se pudo cargar imagen principal:", property.image);
         }
       }
 
@@ -52,6 +57,8 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         if (base64Img) {
           doc.addImage(base64Img, "JPEG", 20, 20, 160, 90);
           doc.text(sp.name || "SubPropiedad", 20, 115);
+        } else {
+          console.warn("⚠️ No se pudo cargar subpropiedad:", sp.image);
         }
       }
 
@@ -69,19 +76,16 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       const pdfUrl = URL.createObjectURL(pdfBlob);
       setPdfUrl(pdfUrl);
     } catch (err) {
-      console.error("Error al generar el PDF:", err);
+      console.error("❌ Error al generar el PDF:", err);
       setError("No se pudo generar el PDF.");
     } finally {
       setGenerating(false);
     }
   };
 
-  // 🧹 Limpiar URL de PDF cuando se desmonte
   useEffect(() => {
     return () => {
-      if (pdfUrl) {
-        URL.revokeObjectURL(pdfUrl);
-      }
+      if (pdfUrl) URL.revokeObjectURL(pdfUrl);
     };
   }, [pdfUrl]);
 
