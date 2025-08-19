@@ -142,13 +142,11 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       yPos += 6;
       doc.text("🌐 www.inmobiliaria.com", 20, yPos);
 
-      // ===== Generar Blob URL + descarga automática =====
+      // ===== Generar bloburl + descarga automática =====
       const fileName = `${safeFileName(property.title)}_brochure.pdf`;
-      const blob = doc.output("blob");
-      const url = URL.createObjectURL(blob);
+      const url = doc.output("bloburl");
       setPdfUrl(url);
 
-      // Intenta descarga automática
       const a = document.createElement("a");
       a.href = url;
       a.download = fileName;
