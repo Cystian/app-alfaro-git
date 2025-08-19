@@ -144,9 +144,27 @@ const PropertyModal = ({ property, onClose }) => {
         </div>
 
         {/* Botones */}
-<div className="mt-6 flex gap-3 flex-col sm:flex-row">
+//<div className="mt-6 flex gap-3 flex-col sm:flex-row">
+//  <a
+//    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
+//    target="_blank"
+//    rel="noopener noreferrer"
+//    className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 text-center transition"
+//  >
+ //   Contactar
+ // </a>
+
+//  <PropertyBrochure
+  //  property={property}
+  //  subProperties={subProperties /* tu array */}
+  //  flyerData={flyerData /* { texto_flyer: "..."} o null */}
+  />
+//</div>
+
+
+        <div className="mt-6 flex gap-3 flex-col sm:flex-row">
   <a
-    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property.title}`}
+    href={`https://wa.me/51999999999?text=Hola, me interesa la propiedad: ${property?.title || ""}`}
     target="_blank"
     rel="noopener noreferrer"
     className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 text-center transition"
@@ -154,12 +172,15 @@ const PropertyModal = ({ property, onClose }) => {
     Contactar
   </a>
 
-//  <PropertyBrochure
-  //  property={property}
-  //  subProperties={subProperties /* tu array */}
-  //  flyerData={flyerData /* { texto_flyer: "..."} o null */}
-  />
+  {property && property.title && (
+    <PropertyBrochure 
+      property={property} 
+      subProperties={subProperties} 
+      flyerData={flyerData} 
+    />
+  )}
 </div>
+        
       </div>
     </div>
   );
