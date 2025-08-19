@@ -25,14 +25,14 @@ const PropertyBrochure = ({ property, subProperties, flyerData }) => {
 
     doc.setFontSize(20);
     doc.setTextColor(0, 0, 0);
-    doc.text(property.title, 20, yPos);
+    doc.text(property.title || "Propiedad", 20, yPos);
     yPos += 10;
 
     doc.setFontSize(14);
     doc.setTextColor(80, 80, 80);
-    doc.text(`Ubicación: ${property.location}`, 20, yPos);
+    doc.text(`📍 Ubicación: ${property.location || "N/D"}`, 20, yPos);
     yPos += 8;
-    doc.text(`Precio: ${property.price}`, 20, yPos);
+    doc.text(`💰 Precio: ${property.price || "Consultar"}`, 20, yPos);
     yPos += 15;
 
     // ===== Tabla de características =====
@@ -44,14 +44,14 @@ const PropertyBrochure = ({ property, subProperties, flyerData }) => {
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
     const features = [
-      ["Área total", property.area || "N/D"],
+      ["Área total", `${property.area || "N/D"} m²`],
       ["Dormitorios", property.rooms || "N/D"],
       ["Baños", property.bathrooms || "N/D"],
       ["Estado", property.status || "Disponible"],
     ];
 
     features.forEach(([label, value]) => {
-      doc.text(`${label}: ${value}`, 25, yPos);
+      doc.text(`✔ ${label}: ${value}`, 25, yPos);
       yPos += 7;
     });
 
@@ -71,8 +71,13 @@ const PropertyBrochure = ({ property, subProperties, flyerData }) => {
       yPos += splitText.length * 6 + 10;
     }
 
-    // ===== Subpropiedades (fotos extra) =====
+    // ===== Subpropiedades (galería de fotos) =====
     if (subProperties?.length > 0) {
+      doc.setFontSize(14);
+      doc.setTextColor(40, 40, 120);
+      doc.text("Galería", 20, yPos);
+      yPos += 10;
+
       subProperties.forEach((sp) => {
         if (yPos > 230) {
           doc.addPage();
@@ -96,11 +101,15 @@ const PropertyBrochure = ({ property, subProperties, flyerData }) => {
       });
     }
 
-    // ===== Footer con CTA =====
+    // ===== Footer con branding =====
     if (yPos > 240) {
       doc.addPage();
       yPos = 20;
     }
+
+    doc.setDrawColor(40, 40, 120);
+    doc.line(20, yPos, 190, yPos);
+    yPos += 10;
 
     doc.setFontSize(14);
     doc.setTextColor(40, 40, 120);
@@ -109,11 +118,19 @@ const PropertyBrochure = ({ property, subProperties, flyerData }) => {
 
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
-    doc.text("WhatsApp: +51 999 999 999", 20, yPos);
+    doc.text("📱 WhatsApp: +51 999 999 999", 20, yPos);
     yPos += 6;
-    doc.text("Email: contacto@inmobiliaria.com", 20, yPos);
+    doc.text("✉ Email: contacto@inmobiliaria.com", 20, yPos);
+    yPos += 6;
+    doc.text("🌐 www.inmobiliaria.com", 20, yPos);
 
-    doc.save(`${property.title}_brochure.pdf`);
+    // Marca corporativa
+    yPos += 15;
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text("Inmobiliaria Alfaro © 2025 - Todos los derechos reservados", 20, yPos);
+
+    doc.save(`${property.title || "propiedad"}_brochure.pdf`);
   };
 
   return (
@@ -121,9 +138,10 @@ const PropertyBrochure = ({ property, subProperties, flyerData }) => {
       onClick={generatePDF}
       className="flex-1 py-2 px-4 rounded-lg text-center text-white bg-blue-600 hover:bg-blue-700 transition"
     >
-      Descargar Brochure
+      📄 Descargar Brochure
     </button>
   );
 };
 
 export default PropertyBrochure;
+
