@@ -1,6 +1,6 @@
 // src/components/PropertyModal.jsx
 import React, { useEffect, useState } from "react";
-//import PropertyBrochure from "./PropertyBrochure";
+import PropertyBrochure from "./PropertyBrochure";
 
 const PropertyModal = ({ property, onClose }) => {
   const [closing, setClosing] = useState(false);
