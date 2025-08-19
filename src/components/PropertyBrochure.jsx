@@ -5,7 +5,7 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // 🔄 Convertir URL externa a Base64
+  // 🔄 Convertir URL externa a Base64.
   const toBase64 = async (url) => {
     try {
       const res = await fetch(url);
