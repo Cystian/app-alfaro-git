@@ -1,29 +1,37 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 
-const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
+const PropertyBrochure = ({ 
+  property = { 
+    title: "Departamento moderno", 
+    description: "Hermosa vista al mar.", 
+    image: "https://picsum.photos/600/400" 
+  }, 
+  subProperties = [
+    { name: "Cochera", image: "https://picsum.photos/500/300" },
+    { name: "Piscina", image: "https://picsum.photos/400/300" }
+  ] 
+}) => {
   const [generating, setGenerating] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [error, setError] = useState(null);
 
-  // 🔹 Convierte URL externa a Base64
-  const toDataUrl = async (url) => {
-    try {
-      console.log("Intentando cargar imagen:", url);
-      const response = await fetch(url, { mode: "cors" });
-      if (!response.ok) throw new Error("Error al cargar imagen");
-      const blob = await response.blob();
-
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    } catch (err) {
-      console.error("❌ Error cargando imagen:", err);
-      return null;
-    }
+  // ✅ Convierte imagen a Base64 con canvas (más seguro que fetch)
+  const toDataUrl = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // necesario para CORS
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/jpeg"));
+      };
+      img.onerror = (err) => reject(err);
+      img.src = url;
+    });
   };
 
   const generatePDF = async () => {
@@ -32,44 +40,31 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       setError(null);
       setPdfUrl(null);
 
-      console.log("🚀 Generando PDF...");
       const doc = new jsPDF();
       let y = 20;
 
-      // 🔹 Título
       doc.setFontSize(18);
-      doc.text(property?.title || "Brochure de Propiedad", 20, y);
+      doc.text(property.title || "Brochure de Propiedad", 20, y);
       y += 10;
 
-      // 🔹 Descripción
       doc.setFontSize(12);
-      doc.text(property?.description || "Sin descripción disponible.", 20, y);
+      doc.text(property.description || "Sin descripción disponible.", 20, y);
       y += 20;
 
       // 🔹 Imagen principal
-      if (property?.image) {
-        console.log("Cargando imagen principal...");
+      if (property.image) {
         const base64Img = await toDataUrl(property.image);
-        if (base64Img) {
-          doc.addImage(base64Img, "JPEG", 20, y, 160, 90);
-          y += 100;
-        } else {
-          console.warn("⚠ No se pudo cargar la imagen principal");
-        }
+        doc.addImage(base64Img, "JPEG", 20, y, 160, 90);
+        y += 100;
       }
 
       // 🔹 Subpropiedades
       for (const sp of subProperties) {
         doc.addPage();
-        doc.text(sp?.name || "SubPropiedad", 20, 20);
-        if (sp?.image) {
-          console.log("Cargando subimagen...");
+        doc.text(sp.name || "SubPropiedad", 20, 20);
+        if (sp.image) {
           const base64Img = await toDataUrl(sp.image);
-          if (base64Img) {
-            doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
-          } else {
-            console.warn("⚠ No se pudo cargar imagen de subpropiedad");
-          }
+          doc.addImage(base64Img, "JPEG", 20, 30, 160, 90);
         }
       }
 
@@ -77,9 +72,8 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
       const pdfBlob = doc.output("blob");
       const url = URL.createObjectURL(pdfBlob);
       setPdfUrl(url);
-      console.log("✅ PDF generado con éxito");
     } catch (err) {
-      console.error("❌ Error generando PDF:", err);
+      console.error("Error generando PDF:", err);
       setError("No se pudo generar el PDF.");
     } finally {
       setGenerating(false);
@@ -87,7 +81,7 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
   };
 
   return (
-    <div className="p-4">
+    <div>
       <button
         onClick={generatePDF}
         disabled={generating}
