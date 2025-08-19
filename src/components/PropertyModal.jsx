@@ -1,6 +1,6 @@
 // src/components/PropertyModal.jsx
 import React, { useEffect, useState } from "react";
-import PropertyBrochure from "./PropertyBrochure";
+//import PropertyBrochure from "./PropertyBrochure";
 
 const PropertyModal = ({ property, onClose }) => {
   const [closing, setClosing] = useState(false);
@@ -154,10 +154,10 @@ const PropertyModal = ({ property, onClose }) => {
     Contactar
   </a>
 
-  <PropertyBrochure
-    property={property}
-    subProperties={subProperties /* tu array */}
-    flyerData={flyerData /* { texto_flyer: "..."} o null */}
+//  <PropertyBrochure
+  //  property={property}
+  //  subProperties={subProperties /* tu array */}
+  //  flyerData={flyerData /* { texto_flyer: "..."} o null */}
   />
 </div>
       </div>
