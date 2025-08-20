@@ -1,5 +1,5 @@
 // src/components/PropertyBrochure.jsx
-// src/components/PropertyBrochure.js
+// src/components/PropertyBrochure.jsx
 import React, { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
