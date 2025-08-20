@@ -155,11 +155,7 @@ const PropertyModal = ({ property, onClose }) => {
     Contactar
   </a>
 
-  <PropertyBrochure
-   property={property}
-   subProperties={subProperties /* tu array */}
-    flyerData={flyerData /* { texto_flyer: "..."} o null */}
- />
+/////
 </div>
 
           
