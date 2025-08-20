@@ -26,6 +26,7 @@ const PropertyModal = ({ property, onClose }) => {
       <PropertyBrochure 
         property={testProperty} 
         subProperties={testSubProperties} 
+        flyerData={null}
       />
     </div>
   );
