@@ -10,7 +10,7 @@ const PropertyModal = ({ propertyId, onClose }) => {
     const fetchPropertyDetails = async () => {
       try {
         const res = await fetch(
-          `https://inmobiliariaalfaro.netlify.app/.netlify/functions/getPropertyDetails?id=${propertyId}`
+          "https://inmobiliariaalfaro.netlify.app/.netlify/functions/getPropertyDetails?id=${propertyId}"
         );
         const data = await res.json();
         setPropertyDetails(data);
