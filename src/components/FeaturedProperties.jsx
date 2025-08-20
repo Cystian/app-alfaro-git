@@ -9,13 +9,13 @@ import PropertyModal from "./PropertyModal";
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const response = await fetch(
-          "https://inmobiliariaalfaro.netlify.app/.netlify/functions/getProperties"
+          "/.netlify/functions/getProperties"
         );
         const data = await response.json();
 
@@ -26,7 +26,6 @@ const FeaturedProperties = () => {
           price: p.price?.trim(),
           location: p.location?.trim(),
           status: p.status?.trim(),
-          flyer: p.flyer?.trim(),
         }));
 
         if (Array.isArray(cleanData)) setProperties(cleanData);
@@ -89,7 +88,7 @@ const FeaturedProperties = () => {
 
                   {/* Abrir modal */}
                   <button
-                    onClick={() => setSelectedProperty(property)}
+                    onClick={() => setSelectedPropertyId(property.id)}
                     className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
                   >
                     Ver flyer
@@ -102,10 +101,10 @@ const FeaturedProperties = () => {
       </Swiper>
 
       {/* Modal */}
-      {selectedProperty && (
+      {selectedPropertyId && (
         <PropertyModal
-          property={selectedProperty}
-          onClose={() => setSelectedProperty(null)}
+          propertyId={selectedPropertyId} // <-- pasamos solo el id
+          onClose={() => setSelectedPropertyId(null)}
         />
       )}
     </div>
