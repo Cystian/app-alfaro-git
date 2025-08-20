@@ -1,92 +1,111 @@
 // src/components/PropertyBrochure.jsx
-// src/components/PropertyBrochure.jsx
 import React, { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
   const [generating, setGenerating] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState(null);
+  const [error, setError] = useState(null);
 
   const generatePDF = async () => {
-    setGenerating(true);
-
     try {
-      const element = document.getElementById("flyer-content");
+      setGenerating(true);
+      setError(null);
 
-      if (!element) {
-        alert("⚠️ No se encontró el contenido del flyer.");
-        setGenerating(false);
-        return;
+      // Captura el contenido del div
+      const input = document.getElementById("brochure-content");
+      if (!input) {
+        throw new Error("No se encontró el contenido del folleto.");
       }
 
-      // Convierte el HTML en canvas
-      const canvas = await html2canvas(element, { scale: 2 });
+      const canvas = await html2canvas(input, { scale: 2 });
       const imgData = canvas.toDataURL("image/png");
 
-      // Crea el PDF
       const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`${property.title || "flyer"}.pdf`);
-    } catch (error) {
-      console.error("❌ Error generando PDF:", error);
-      alert("Error al generar el PDF. Revisa la consola.");
+      // Ajuste de la imagen al tamaño de la página
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let position = 0;
+      if (imgHeight > pageHeight) {
+        // Si es más grande, agregar varias páginas
+        let heightLeft = imgHeight;
+        while (heightLeft > 0) {
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+          if (heightLeft > 0) {
+            pdf.addPage();
+            position = -pageHeight;
+          }
+        }
+      } else {
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      }
+
+      const blobUrl = URL.createObjectURL(pdf.output("blob"));
+      setPdfUrl(blobUrl);
+    } catch (err) {
+      console.error("Error generando PDF:", err);
+      setError("Ocurrió un error al generar el PDF.");
     } finally {
       setGenerating(false);
     }
   };
 
   return (
-    <>
-      {/* Botón */}
-      <button
-        onClick={generatePDF}
-        disabled={generating}
-        className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 text-center transition"
-      >
-        {generating ? "Generando..." : "📄 Descargar Flyer"}
-      </button>
-
-      {/* Contenido oculto del flyer */}
+    <div className="p-4">
       <div
-        id="flyer-content"
-        style={{ display: "none" }}
+        id="brochure-content"
+        className="p-6 bg-white shadow-xl rounded-2xl border border-gray-200"
       >
-        <h1 style={{ fontSize: "20px", fontWeight: "bold" }}>
-          {property.title || "Propiedad"}
-        </h1>
-        <p>{property.description || "Sin descripción"}</p>
-        {flyerData?.texto_flyer && (
-          <p style={{ marginTop: "10px" }}>{flyerData.texto_flyer}</p>
+        <h2 className="text-2xl font-bold mb-4">{property?.title || "Propiedad"}</h2>
+        <p className="mb-2">{property?.description || "Sin descripción."}</p>
+
+        {subProperties?.length > 0 && (
+          <div className="mt-4">
+            <h3 className="font-semibold">Subpropiedades:</h3>
+            <ul className="list-disc pl-6">
+              {subProperties.map((sub, index) => (
+                <li key={index}>{sub?.title || "Subpropiedad"}</li>
+              ))}
+            </ul>
+          </div>
         )}
 
-        <img
-          src={property.image || "https://via.placeholder.com/400x300.png?text=Propiedad"}
-          alt={property.title}
-          style={{ width: "100%", marginTop: "10px" }}
-        />
-
-        {subProperties.length > 0 && (
-          <div style={{ marginTop: "20px" }}>
-            <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-              Subpropiedades:
-            </h2>
-            {subProperties.map((sub, index) => (
-              <div key={index} style={{ marginTop: "5px" }}>
-                <p>{sub.name}</p>
-                <img
-                  src={sub.image || "https://via.placeholder.com/300x200.png?text=Sub"}
-                  alt={sub.name}
-                  style={{ width: "100%", marginTop: "5px" }}
-                />
-              </div>
-            ))}
+        {flyerData && (
+          <div className="mt-4">
+            <h3 className="font-semibold">Flyer:</h3>
+            <img src={flyerData} alt="Flyer" className="w-full rounded-lg border" />
           </div>
         )}
       </div>
-    </>
+
+      <div className="mt-4 flex gap-4">
+        <button
+          onClick={generatePDF}
+          disabled={generating}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        >
+          {generating ? "Generando..." : "Generar PDF"}
+        </button>
+
+        {pdfUrl && (
+          <a
+            href={pdfUrl}
+            download="brochure.pdf"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            Descargar PDF
+          </a>
+        )}
+      </div>
+
+      {error && <p className="text-red-600 mt-2">{error}</p>}
+    </div>
   );
 };
 
