@@ -12,7 +12,10 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@supabase/supabase-js', 'jspdf'], // <--- Agregado jspdf aquí
+      external: ['@supabase/supabase-js'], // 👈 deja solo supabase
     },
+  },
+  optimizeDeps: {
+    include: ['jspdf'], // 👈 esto fuerza a Vite a preempacar jspdf
   },
 });
