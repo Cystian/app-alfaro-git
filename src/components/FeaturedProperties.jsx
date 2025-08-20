@@ -1,4 +1,3 @@
-// src/components/FeaturedProperties.jsx
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -9,13 +8,13 @@ import PropertyModal from "./PropertyModal";
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const response = await fetch(
-          "https://inmobiliariaalfaro.netlify.app/.netlify/functions/getProperties"
+          "/.netlify/functions/getProperties"
         );
         const data = await response.json();
 
@@ -50,7 +49,6 @@ const FeaturedProperties = () => {
       <h2 className="text-2xl font-bold mb-4 text-center">
         Propiedades destacadas
       </h2>
-
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
@@ -87,9 +85,9 @@ const FeaturedProperties = () => {
                     Contactar
                   </a>
 
-                  {/* Abrir modal */}
+                  {/* Abrir modal y pasar propiedad seleccionada */}
                   <button
-                    onClick={() => setSelectedPropertyId(property.id)}
+                    onClick={() => setSelectedProperty(property)}
                     className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
                   >
                     Ver flyer
@@ -102,10 +100,10 @@ const FeaturedProperties = () => {
       </Swiper>
 
       {/* Modal */}
-      {selectedPropertyId && (
+      {selectedProperty && (
         <PropertyModal
-          propertyId={selectedPropertyId}
-          onClose={() => setSelectedPropertyId(null)}
+          property={selectedProperty}
+          onClose={() => setSelectedProperty(null)}
         />
       )}
     </div>
