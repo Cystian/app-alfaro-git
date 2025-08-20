@@ -15,7 +15,7 @@ const FeaturedProperties = () => {
     const fetchProperties = async () => {
       try {
         const response = await fetch(
-          "/.netlify/functions/getProperties"
+          "https://inmobiliariaalfaro.netlify.app/.netlify/functions/getProperties"
         );
         const data = await response.json();
 
@@ -50,6 +50,7 @@ const FeaturedProperties = () => {
       <h2 className="text-2xl font-bold mb-4 text-center">
         Propiedades destacadas
       </h2>
+
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
@@ -103,7 +104,7 @@ const FeaturedProperties = () => {
       {/* Modal */}
       {selectedPropertyId && (
         <PropertyModal
-          propertyId={selectedPropertyId} // <-- pasamos solo el id
+          propertyId={selectedPropertyId}
           onClose={() => setSelectedPropertyId(null)}
         />
       )}
