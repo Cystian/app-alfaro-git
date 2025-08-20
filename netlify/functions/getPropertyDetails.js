@@ -12,67 +12,56 @@ exports.handler = async (event, context) => {
   if (!propertyId) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: "Falta el parámetro id" }),
+      body: JSON.stringify({ message: "Debe indicar el id de la propiedad" }),
     };
   }
 
   try {
-    // 🔹 Consulta principal de la propiedad
-    const propertyRes = await pool.query(
+    // 🔹 Traer la propiedad principal y su flyer
+    const propertyResult = await pool.query(
       `
-      SELECT id, title, image, price, location, status, bedrooms, bathrooms, area, description
-      FROM properties
-      WHERE id = $1
-      LIMIT 1
+      SELECT p.id, p.title, p.image, p.price, p.location, p.status, 
+             p.bedrooms, p.bathrooms, p.area, p.description,
+             f.texto_flyer
+      FROM properties p
+      LEFT JOIN flyer f ON f.id = p.id
+      WHERE p.id = $1
       `,
       [propertyId]
     );
 
-    if (propertyRes.rows.length === 0) {
+    if (propertyResult.rows.length === 0) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "Propiedad no encontrada" }),
       };
     }
 
-    const property = propertyRes.rows[0];
+    const property = propertyResult.rows[0];
 
-    // 🔹 Consulta de subpropiedades
-    const subPropsRes = await pool.query(
+    // 🔹 Traer subpropiedades
+    const subPropsResult = await pool.query(
       `
-      SELECT id, property_id, flyer_id, content, image, "order", created_at, updated_at
+      SELECT id, property_id, flyer_id, content, image, order
       FROM sub_properties
       WHERE property_id = $1
       ORDER BY "order" ASC
       `,
       [propertyId]
     );
-    const sub_properties = subPropsRes.rows;
 
-    // 🔹 Consulta de flyer (si existe)
-    let flyer = null;
-    if (sub_properties.length > 0 && sub_properties[0].flyer_id) {
-      const flyerRes = await pool.query(
-        `
-        SELECT id, texto_flyer, created_at, updated_at
-        FROM flyer
-        WHERE id = $1
-        `,
-        [sub_properties[0].flyer_id]
-      );
-      flyer = flyerRes.rows[0] || null;
-    }
+    const subProperties = subPropsResult.rows;
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        ...property,
-        sub_properties,
-        flyer,
+        property,
+        flyerData: { texto_flyer: property.texto_flyer },
+        subProperties,
       }),
     };
-  } catch (err) {
-    console.error("Error en getPropertyDetails:", err);
+  } catch (error) {
+    console.error(error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: "Error al traer detalles de la propiedad" }),
