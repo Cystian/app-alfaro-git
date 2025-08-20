@@ -1,5 +1,5 @@
 // netlify/functions/getPropertyDetails.js
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 
 const pool = new Pool({
   connectionString: process.env.NEON_DB_URL,
@@ -7,50 +7,68 @@ const pool = new Pool({
 });
 
 exports.handler = async (event, context) => {
-  const { property_id } = event.queryStringParameters || {};
+  const propertyId = event.queryStringParameters?.id;
 
-  if (!property_id) {
+  if (!propertyId) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: "property_id es requerido" }),
+      body: JSON.stringify({ message: "Falta el parámetro id" }),
     };
   }
 
   try {
-    // Obtener subpropiedades
-    const subPropsResult = await pool.query(
+    // 🔹 Consulta principal de la propiedad
+    const propertyRes = await pool.query(
       `
-      SELECT id, property_id, flyer_id, content, image, "order", create_at, update_at
+      SELECT id, title, image, price, location, status, bedrooms, bathrooms, area, description
+      FROM properties
+      WHERE id = $1
+      LIMIT 1
+      `,
+      [propertyId]
+    );
+
+    if (propertyRes.rows.length === 0) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "Propiedad no encontrada" }),
+      };
+    }
+
+    const property = propertyRes.rows[0];
+
+    // 🔹 Consulta de subpropiedades
+    const subPropsRes = await pool.query(
+      `
+      SELECT id, property_id, flyer_id, content, image, "order", created_at, updated_at
       FROM sub_properties
       WHERE property_id = $1
       ORDER BY "order" ASC
       `,
-      [property_id]
+      [propertyId]
     );
+    const sub_properties = subPropsRes.rows;
 
-    // Obtener información del flyer
-    const flyerIds = subPropsResult.rows
-      .map((sub) => sub.flyer_id)
-      .filter((id) => id !== null);
-
-    let flyers = [];
-    if (flyerIds.length > 0) {
-      const flyersResult = await pool.query(
+    // 🔹 Consulta de flyer (si existe)
+    let flyer = null;
+    if (sub_properties.length > 0 && sub_properties[0].flyer_id) {
+      const flyerRes = await pool.query(
         `
         SELECT id, texto_flyer, created_at, updated_at
         FROM flyer
-        WHERE id = ANY($1::int[])
+        WHERE id = $1
         `,
-        [flyerIds]
+        [sub_properties[0].flyer_id]
       );
-      flyers = flyersResult.rows;
+      flyer = flyerRes.rows[0] || null;
     }
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        subProperties: subPropsResult.rows,
-        flyers,
+        ...property,
+        sub_properties,
+        flyer,
       }),
     };
   } catch (err) {
