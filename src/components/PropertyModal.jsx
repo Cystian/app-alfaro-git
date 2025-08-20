@@ -2,31 +2,64 @@
 import React, { useEffect, useState } from "react";
 import PropertyBrochure from "./PropertyBrochure";
 
-const PropertyModal = ({ property, onClose }) => {
-  const testProperty = {
-    title: "Casa de prueba",
-    description: "Esta es una propiedad de ejemplo solo para test.",
-    image: "https://via.placeholder.com/400x300.png?text=Propiedad",
-  };
+const PropertyModal = ({ propertyId, onClose }) => {
+  const [property, setProperty] = useState(null);
+  const [subProperties, setSubProperties] = useState([]);
+  const [flyerData, setFlyerData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const testSubProperties = [
-    {
-      name: "Mini depa 1",
-      image: "https://via.placeholder.com/300x200.png?text=Sub1",
-    },
-    {
-      name: "Mini depa 2",
-      image: "https://via.placeholder.com/300x200.png?text=Sub2",
-    },
-  ];
+  useEffect(() => {
+    if (!propertyId) return;
+
+    const fetchPropertyDetails = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${propertyId}`);
+        const data = await res.json();
+
+        if (data) {
+          setProperty({
+            id: data.id,
+            title: data.title,
+            image: data.image,
+            price: data.price,
+            location: data.location,
+            status: data.status,
+            bedrooms: data.bedrooms,
+            bathrooms: data.bathrooms,
+            area: data.area,
+            description: data.description,
+          });
+
+          setSubProperties(data.sub_properties || []);
+          setFlyerData(data.flyer || null);
+        }
+      } catch (err) {
+        console.error("Error cargando detalles de propiedad:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPropertyDetails();
+  }, [propertyId]);
+
+  if (loading) return <p className="text-center py-8">Cargando detalles...</p>;
+  if (!property) return <p className="text-center py-8">Propiedad no encontrada.</p>;
 
   return (
-    <div className="p-10">
-      <h1 className="text-2xl font-bold mb-4">🔍 Test PropertyBrochure</h1>
-      <PropertyBrochure 
-        property={testProperty} 
-        subProperties={testSubProperties} 
-        flyerData={null}
+    <div className="p-10 bg-white rounded-xl shadow-lg max-w-4xl mx-auto">
+      <button
+        onClick={onClose}
+        className="mb-4 text-red-500 font-bold hover:text-red-700"
+      >
+        Cerrar ✖
+      </button>
+
+      <PropertyBrochure
+        property={property}
+        subProperties={subProperties}
+        flyerData={flyerData}
       />
     </div>
   );
