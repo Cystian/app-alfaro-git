@@ -33,19 +33,13 @@ const FeaturedProperties = () => {
     fetchProperties();
   }, []);
 
-  if (loading)
-    return <p className="text-center py-8">Cargando propiedades...</p>;
-
-  if (!properties || properties.length === 0)
-    return <p className="text-center py-8">No hay propiedades disponibles.</p>;
+  if (loading) return <p className="text-center py-8">Cargando propiedades...</p>;
+  if (!properties || properties.length === 0) return <p className="text-center py-8">No hay propiedades disponibles.</p>;
 
   return (
     <div className="w-full relative">
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        Propiedades destacadas
-      </h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Propiedades destacadas</h2>
 
-      {/* Carrusel principal */}
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
