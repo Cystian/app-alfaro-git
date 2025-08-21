@@ -10,10 +10,7 @@ const PropertyModal = ({ property, onClose }) => {
   if (!property) return null;
 
   // Se arma un array con la foto principal + subfotos
-  const images = [
-    property.image,
-    ...(property.subImages || []),
-  ];
+  const images = [property.image, ...(property.subImages || [])];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
@@ -33,6 +30,7 @@ const PropertyModal = ({ property, onClose }) => {
             pagination={{ clickable: true }}
             modules={[Navigation, Pagination]}
             className="rounded-xl"
+            style={{ paddingBottom: "40px" }} // 🔥 asegura espacio para bullets
           >
             {images.map((src, i) => (
               <SwiperSlide key={i}>
@@ -50,7 +48,9 @@ const PropertyModal = ({ property, onClose }) => {
         <div className="space-y-3">
           <h2 className="text-2xl font-bold text-gray-800">{property.title}</h2>
           <p className="text-gray-600">{property.description}</p>
-          <p className="text-lg font-semibold text-blue-600">Precio: {property.price}</p>
+          <p className="text-lg font-semibold text-blue-600">
+            Precio: {property.price}
+          </p>
           <p className="text-gray-700">Ubicación: {property.location}</p>
           {property.area && (
             <p className="text-gray-700">Área: {property.area} m²</p>
@@ -65,4 +65,5 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
 
