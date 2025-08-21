@@ -9,7 +9,6 @@ const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [popupTop, setPopupTop] = useState(0);
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -40,21 +39,13 @@ const FeaturedProperties = () => {
   if (!properties || properties.length === 0)
     return <p className="text-center py-8">No hay propiedades disponibles.</p>;
 
-  // Abrir popup justo debajo del botón
-  const openPopup = (property, event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const scrollTop = window.scrollY || window.pageYOffset;
-    setPopupTop(rect.bottom + scrollTop + 10); // 10px debajo del botón
-    setSelectedProperty(property);
-  };
-
   return (
     <div className="w-full relative">
       <h2 className="text-2xl font-bold mb-4 text-center">
         Propiedades destacadas
       </h2>
 
-      {/* Carrusel */}
+      {/* Carrusel principal */}
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
@@ -92,7 +83,7 @@ const FeaturedProperties = () => {
                   </a>
 
                   <button
-                    onClick={(e) => openPopup(property, e)}
+                    onClick={() => setSelectedProperty(property)}
                     className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
                   >
                     Ver flyer
@@ -107,17 +98,14 @@ const FeaturedProperties = () => {
       {/* Overlay oscuro */}
       {selectedProperty && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
           onClick={() => setSelectedProperty(null)}
         />
       )}
 
-      {/* Mini-popup flotante debajo del botón con animación */}
+      {/* Popup centrado */}
       {selectedProperty && (
-        <div
-          className="absolute left-1/2 transform -translate-x-1/2 z-50 w-96 bg-white shadow-2xl rounded-2xl p-4 animate-slideFadeIn transition-all duration-500"
-          style={{ top: popupTop }}
-        >
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 md:w-96 max-h-[80vh] overflow-y-auto bg-white shadow-2xl rounded-2xl p-4 animate-slideFadeIn">
           <button
             onClick={() => setSelectedProperty(null)}
             className="mb-2 text-red-500 font-bold hover:underline"
@@ -133,7 +121,7 @@ const FeaturedProperties = () => {
         </div>
       )}
 
-      {/* Animación personalizada */}
+      {/* Animación */}
       <style jsx>{`
         @keyframes slideFadeIn {
           0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
