@@ -11,7 +11,6 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
   const flyerRef = useRef(null);
   const [generating, setGenerating] = useState(false);
 
-  // Combinar imagen principal + subpropiedades
   const allImages = [
     { src: property.image, caption: property.title },
     ...subProperties.map((sub) => ({ src: sub.image, caption: sub.content })),
@@ -87,5 +86,4 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
-
 
