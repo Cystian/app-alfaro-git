@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
-import PropertyBrochure from "./PropertyBrochure";
+import PropertyModal from "./PropertyModal";
 
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -32,6 +32,14 @@ const FeaturedProperties = () => {
     };
     fetchProperties();
   }, []);
+
+  const openPopup = (property) => {
+    setSelectedProperty(property);
+  };
+
+  const closePopup = () => {
+    setSelectedProperty(null);
+  };
 
   if (loading) return <p className="text-center py-8">Cargando propiedades...</p>;
   if (!properties || properties.length === 0) return <p className="text-center py-8">No hay propiedades disponibles.</p>;
@@ -77,7 +85,7 @@ const FeaturedProperties = () => {
                   </a>
 
                   <button
-                    onClick={() => setSelectedProperty(property)}
+                    onClick={() => openPopup(property)}
                     className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
                   >
                     Ver flyer
@@ -89,42 +97,10 @@ const FeaturedProperties = () => {
         ))}
       </Swiper>
 
-      {/* Overlay oscuro */}
+      {/* Modal */}
       {selectedProperty && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={() => setSelectedProperty(null)}
-        />
+        <PropertyModal property={selectedProperty} onClose={closePopup} />
       )}
-
-      {/* Popup centrado */}
-      {selectedProperty && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 md:w-96 max-h-[80vh] overflow-y-auto bg-white shadow-2xl rounded-2xl p-4 animate-slideFadeIn">
-          <button
-            onClick={() => setSelectedProperty(null)}
-            className="mb-2 text-red-500 font-bold hover:underline"
-          >
-            ✖ Cerrar
-          </button>
-
-          <PropertyBrochure
-            property={selectedProperty}
-            subProperties={selectedProperty.subProperties || []}
-            flyerData={selectedProperty.flyerData || {}}
-          />
-        </div>
-      )}
-
-      {/* Animación */}
-      <style jsx>{`
-        @keyframes slideFadeIn {
-          0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-          100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        .animate-slideFadeIn {
-          animation: slideFadeIn 0.4s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 };
