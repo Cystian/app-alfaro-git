@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
-import PropertyModal from "./PropertyModal";
+import PropertyBrochure from "./PropertyBrochure";
 
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -13,11 +13,8 @@ const FeaturedProperties = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch(
-          "/.netlify/functions/getProperties"
-        );
-        const data = await response.json();
-
+        const res = await fetch("/.netlify/functions/getProperties");
+        const data = await res.json();
         const cleanData = data.map((p) => ({
           ...p,
           image: p.image?.trim(),
@@ -26,15 +23,13 @@ const FeaturedProperties = () => {
           location: p.location?.trim(),
           status: p.status?.trim(),
         }));
-
         if (Array.isArray(cleanData)) setProperties(cleanData);
-      } catch (error) {
-        console.error("Error al traer propiedades:", error);
+      } catch (err) {
+        console.error("Error al traer propiedades:", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProperties();
   }, []);
 
@@ -45,14 +40,16 @@ const FeaturedProperties = () => {
     return <p className="text-center py-8">No hay propiedades disponibles.</p>;
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <h2 className="text-2xl font-bold mb-4 text-center">
         Propiedades destacadas
       </h2>
+
+      {/* Carrusel */}
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
-        loop={true}
+        loop
         autoplay={{ delay: 2000, disableOnInteraction: false }}
         speed={3000}
         breakpoints={{
@@ -66,7 +63,7 @@ const FeaturedProperties = () => {
             <div className="bg-white shadow-md rounded-2xl overflow-hidden flex flex-col">
               <img
                 src={property.image}
-                alt={property.title || "Propiedad inmobiliaria"}
+                alt={property.title || "Propiedad"}
                 className="h-48 w-full object-cover"
               />
               <div className="p-4 flex flex-col flex-grow">
@@ -85,7 +82,6 @@ const FeaturedProperties = () => {
                     Contactar
                   </a>
 
-                  {/* Abrir modal y pasar propiedad seleccionada */}
                   <button
                     onClick={() => setSelectedProperty(property)}
                     className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
@@ -99,15 +95,46 @@ const FeaturedProperties = () => {
         ))}
       </Swiper>
 
-      {/* Modal */}
+      {/* Overlay semi-transparente */}
       {selectedProperty && (
-        <PropertyModal
-          property={selectedProperty}
-          onClose={() => setSelectedProperty(null)}
+        <div
+          className="fixed inset-0 bg-black bg-opacity-40 z-40 transition-opacity duration-300"
+          onClick={() => setSelectedProperty(null)}
         />
       )}
+
+      {/* Mini-popup flotante con animación */}
+      {selectedProperty && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-96 bg-white shadow-2xl rounded-2xl p-4 
+                        animate-slideFadeIn transition-all duration-500">
+          <button
+            onClick={() => setSelectedProperty(null)}
+            className="mb-2 text-red-500 font-bold hover:underline"
+          >
+            ✖ Cerrar
+          </button>
+
+          <PropertyBrochure
+            property={selectedProperty}
+            subProperties={selectedProperty.subProperties || []}
+            flyerData={selectedProperty.flyerData || {}}
+          />
+        </div>
+      )}
+
+      {/* Animación personalizada */}
+      <style jsx>{`
+        @keyframes slideFadeIn {
+          0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+          100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .animate-slideFadeIn {
+          animation: slideFadeIn 0.4s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default FeaturedProperties;
+
