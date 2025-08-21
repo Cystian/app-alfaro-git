@@ -1,9 +1,10 @@
 // src/components/PropertyModal.jsx
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const PropertyModal = ({ property, onClose }) => {
   if (!property) return null;
@@ -17,24 +18,20 @@ const PropertyModal = ({ property, onClose }) => {
         
         {/* Botón de cerrar */}
         <button
+          className="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 z-50"
           onClick={onClose}
-          className="absolute top-4 right-4 bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-70 z-50"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          ✕
         </button>
 
         {/* Carrusel de imágenes */}
         <div className="w-full h-[60vh]">
-          <Swiper navigation modules={[Navigation]} className="h-full">
+          <Swiper
+            navigation
+            pagination={{ clickable: true }}
+            modules={[Navigation, Pagination]}
+            className="h-full"
+          >
             {images.map((img, index) => (
               <SwiperSlide key={index}>
                 <img
@@ -53,24 +50,12 @@ const PropertyModal = ({ property, onClose }) => {
           <p className="text-gray-700">{property.description}</p>
 
           <div className="grid grid-cols-2 gap-4 mt-4 text-gray-600">
-            <p>
-              <span className="font-semibold">Precio:</span> ${property.price}
-            </p>
-            <p>
-              <span className="font-semibold">Ubicación:</span> {property.location}
-            </p>
-            <p>
-              <span className="font-semibold">Área:</span> {property.area} m²
-            </p>
-            <p>
-              <span className="font-semibold">Habitaciones:</span> {property.bedrooms}
-            </p>
-            <p>
-              <span className="font-semibold">Baños:</span> {property.bathrooms}
-            </p>
-            <p>
-              <span className="font-semibold">Estado:</span> {property.status}
-            </p>
+            <p><span className="font-semibold">Precio:</span> ${property.price}</p>
+            <p><span className="font-semibold">Ubicación:</span> {property.location}</p>
+            <p><span className="font-semibold">Área:</span> {property.area} m²</p>
+            <p><span className="font-semibold">Habitaciones:</span> {property.bedrooms}</p>
+            <p><span className="font-semibold">Baños:</span> {property.bathrooms}</p>
+            <p><span className="font-semibold">Estado:</span> {property.status}</p>
           </div>
         </div>
       </div>
