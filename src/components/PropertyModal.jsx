@@ -1,6 +1,7 @@
 // src/components/PropertyModal.jsx
 import React from "react";
-import { X } from "lucide-react";
+import * as Lucide from "lucide-react";
+const { X } = Lucide;
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
