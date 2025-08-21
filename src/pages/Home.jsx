@@ -13,7 +13,7 @@ export default function Home() {
         <SearchBanner />
 
         <section> 
-       <h2 className="text-2xl font-bold mb-4">Propiedades destacadasX</h2>
+       <h2 className="text-2xl font-bold mb-4">Propiedades destacadasXD</h2>
 
            <FeaturedProperties />
           
