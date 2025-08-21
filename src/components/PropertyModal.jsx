@@ -40,13 +40,19 @@ const PropertyModal = ({ property, onClose }) => {
       />
 
       {/* Popup centrado */}
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 md:w-96 max-h-[80vh] overflow-y-auto bg-white shadow-2xl rounded-2xl p-4 animate-slideFadeIn">
-        <button
-          onClick={onClose}
-          className="mb-2 text-red-500 font-bold hover:underline"
-        >
-          ✖ Cerrar
-        </button>
+      <div
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                   z-50 w-11/12 md:w-[800px] lg:w-[1000px] 
+                   max-h-[90vh] overflow-y-auto bg-white shadow-2xl rounded-2xl p-6 animate-slideFadeIn"
+      >
+        <div className="flex justify-end">
+          <button
+            onClick={onClose}
+            className="text-red-500 font-bold hover:underline"
+          >
+            ✖ Cerrar
+          </button>
+        </div>
 
         <PropertyBrochure
           property={mainProperty}
