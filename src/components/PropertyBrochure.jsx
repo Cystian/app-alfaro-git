@@ -91,4 +91,3 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
-
