@@ -9,7 +9,6 @@ const pool = new Pool({
 
 exports.handler = async (event, context) => {
   try {
-    // Validar que venga el id
     const rawId = event.queryStringParameters?.id;
     if (!rawId) {
       return {
@@ -18,7 +17,6 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Convertir a número
     const propertyId = parseInt(rawId, 10);
     if (isNaN(propertyId)) {
       return {
@@ -27,15 +25,13 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 🔹 Traer la propiedad principal y su flyer
+    // 🔹 Traer propiedad principal
     const propertyResult = await pool.query(
       `
-      SELECT p.id, p.title, p.image, p.price, p.location, p.status, 
-             p.bedrooms, p.bathrooms, p.area, p.description,
-             f.texto_flyer
-      FROM properties p
-      LEFT JOIN flyer f ON f.id = p.id
-      WHERE p.id = $1
+      SELECT id, title, image, price, location, status, 
+             bedrooms, bathrooms, area, description
+      FROM properties
+      WHERE id = $1
       `,
       [propertyId]
     );
@@ -49,6 +45,17 @@ exports.handler = async (event, context) => {
 
     const property = propertyResult.rows[0];
 
+    // 🔹 Traer flyer asociado
+    const flyerResult = await pool.query(
+      `
+      SELECT id, property_id, texto_flyer
+      FROM flyer
+      WHERE property_id = $1
+      `,
+      [propertyId]
+    );
+    const flyerData = flyerResult.rows[0] || null;
+
     // 🔹 Traer subpropiedades
     const subPropsResult = await pool.query(
       `
@@ -59,26 +66,25 @@ exports.handler = async (event, context) => {
       `,
       [propertyId]
     );
-
     const subProperties = subPropsResult.rows;
 
-    // Respuesta exitosa
+    // 🔹 Respuesta
     return {
       statusCode: 200,
       body: JSON.stringify({
         property,
         subProperties,
+        flyerData, // 👈 ahora viaja completo
       }),
     };
   } catch (error) {
-    // Mostrar error real para debug
     console.error("ERROR en getPropertyDetails:", error);
 
     return {
       statusCode: 500,
       body: JSON.stringify({
         message: "Error al traer detalles de la propiedad",
-        error: error.message, // ⚡ Esto te permite ver qué falla
+        error: error.message,
       }),
     };
   }
