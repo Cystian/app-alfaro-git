@@ -1,22 +1,32 @@
 // netlify/functions/getPropertyDetails.js
 const { Pool } = require("pg");
 
+// Pool global para reutilizar conexiones
 const pool = new Pool({
   connectionString: process.env.NEON_DB_URL,
   ssl: { rejectUnauthorized: false },
 });
 
 exports.handler = async (event, context) => {
-  const propertyId = event.queryStringParameters?.id;
-
-  if (!propertyId) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: "Debe indicar el id de la propiedad" }),
-    };
-  }
-
   try {
+    // Validar que venga el id
+    const rawId = event.queryStringParameters?.id;
+    if (!rawId) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Debe indicar el id de la propiedad" }),
+      };
+    }
+
+    // Convertir a número
+    const propertyId = parseInt(rawId, 10);
+    if (isNaN(propertyId)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Id inválido, debe ser un número" }),
+      };
+    }
+
     // 🔹 Traer la propiedad principal y su flyer
     const propertyResult = await pool.query(
       `
@@ -42,7 +52,7 @@ exports.handler = async (event, context) => {
     // 🔹 Traer subpropiedades
     const subPropsResult = await pool.query(
       `
-      SELECT id, property_id, flyer_id, content, image, order
+      SELECT id, property_id, flyer_id, content, image, "order"
       FROM sub_properties
       WHERE property_id = $1
       ORDER BY "order" ASC
@@ -52,19 +62,24 @@ exports.handler = async (event, context) => {
 
     const subProperties = subPropsResult.rows;
 
+    // Respuesta exitosa
     return {
       statusCode: 200,
       body: JSON.stringify({
         property,
-        flyerData: { texto_flyer: property.texto_flyer },
         subProperties,
       }),
     };
   } catch (error) {
-    console.error(error);
+    // Mostrar error real para debug
+    console.error("ERROR en getPropertyDetails:", error);
+
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error al traer detalles de la propiedad" }),
+      body: JSON.stringify({
+        message: "Error al traer detalles de la propiedad",
+        error: error.message, // ⚡ Esto te permite ver qué falla
+      }),
     };
   }
 };
