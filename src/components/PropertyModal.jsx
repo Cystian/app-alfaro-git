@@ -9,11 +9,8 @@ const PropertyModal = ({ property, onClose }) => {
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       try {
-        const res = await fetch(
-          `/.netlify/functions/getPropertyDetails?id=${property.id}`
-        );
+        const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${property.id}`);
         const data = await res.json();
-
         if (res.ok) {
           setPropertyDetails(data);
         } else {
@@ -29,29 +26,45 @@ const PropertyModal = ({ property, onClose }) => {
     fetchPropertyDetails();
   }, [property.id]);
 
-  if (loading)
-    return <p className="text-center py-8">Cargando detalles de la propiedad...</p>;
-
-  if (!propertyDetails)
-    return <p className="text-center py-8">No se encontraron detalles.</p>;
+  if (loading) return <p className="text-center py-8">Cargando detalles...</p>;
+  if (!propertyDetails) return <p className="text-center py-8">No se encontraron detalles.</p>;
 
   const { property: mainProperty, subProperties, flyerData } = propertyDetails;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
-      <button
+    <>
+      {/* Overlay */}
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
         onClick={onClose}
-        className="mb-4 text-red-500 font-bold hover:underline"
-      >
-        ✖ Cerrar
-      </button>
-
-      <PropertyBrochure
-        property={mainProperty}
-        subProperties={subProperties}
-        flyerData={flyerData}
       />
-    </div>
+
+      {/* Popup centrado */}
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 md:w-96 max-h-[80vh] overflow-y-auto bg-white shadow-2xl rounded-2xl p-4 animate-slideFadeIn">
+        <button
+          onClick={onClose}
+          className="mb-2 text-red-500 font-bold hover:underline"
+        >
+          ✖ Cerrar
+        </button>
+
+        <PropertyBrochure
+          property={mainProperty}
+          subProperties={subProperties}
+          flyerData={flyerData}
+        />
+      </div>
+
+      <style jsx>{`
+        @keyframes slideFadeIn {
+          0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+          100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .animate-slideFadeIn {
+          animation: slideFadeIn 0.4s ease-out forwards;
+        }
+      `}</style>
+    </>
   );
 };
 
