@@ -2,6 +2,10 @@
 import React, { useState, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
 
 const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
   const [generating, setGenerating] = useState(false);
@@ -11,13 +15,8 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
     setGenerating(true);
     try {
       const element = flyerRef.current;
-      if (!element) {
-        alert("⚠️ No se encontró el contenido del flyer.");
-        setGenerating(false);
-        return;
-      }
+      if (!element) throw new Error("No se encontró el contenido del flyer");
 
-      // Usar html2canvas con scale 2 para mayor calidad
       const canvas = await html2canvas(element, { scale: 2 });
       const imgData = canvas.toDataURL("image/png");
 
@@ -45,7 +44,6 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         {generating ? "Generando..." : "📄 Descargar Flyer"}
       </button>
 
-      {/* Contenido del flyer para PDF y visualización */}
       <div
         ref={flyerRef}
         style={{
@@ -58,27 +56,35 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         <p>{property.description}</p>
         {flyerData?.texto_flyer && <p style={{ marginTop: "10px" }}>{flyerData.texto_flyer}</p>}
 
-        <img
-          src={property.image || "https://via.placeholder.com/400x300.png?text=Propiedad"}
-          alt={property.title}
-          style={{ width: "100%", marginTop: "10px" }}
-        />
+        {/* Carrusel de imágenes */}
+        <Swiper
+          modules={[Navigation]}
+          navigation
+          spaceBetween={10}
+          slidesPerView={1}
+          className="mt-4"
+        >
+          {/* Imagen principal */}
+          <SwiperSlide>
+            <img
+              src={property.image || "https://via.placeholder.com/400x300.png?text=Propiedad"}
+              alt={property.title}
+              style={{ width: "100%", borderRadius: "8px" }}
+            />
+          </SwiperSlide>
 
-        {subProperties.length > 0 && (
-          <div style={{ marginTop: "20px" }}>
-            <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>Subpropiedades:</h2>
-            {subProperties.map((sub, idx) => (
-              <div key={idx} style={{ marginTop: "5px" }}>
-                <p>{sub.content}</p>
-                <img
-                  src={sub.image || "https://via.placeholder.com/300x200.png?text=Sub"}
-                  alt={sub.content}
-                  style={{ width: "100%", marginTop: "5px" }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+          {/* Subpropiedades */}
+          {subProperties.map((sub, idx) => (
+            <SwiperSlide key={idx}>
+              <img
+                src={sub.image || "https://via.placeholder.com/300x200.png?text=Sub"}
+                alt={sub.content}
+                style={{ width: "100%", borderRadius: "8px" }}
+              />
+              <p className="mt-2 text-sm text-gray-700">{sub.content}</p>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
