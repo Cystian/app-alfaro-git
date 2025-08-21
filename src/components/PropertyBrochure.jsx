@@ -1,5 +1,5 @@
 // src/components/PropertyBrochure.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,8 +8,8 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 
 const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
-  const [generating, setGenerating] = useState(false);
   const flyerRef = useRef(null);
+  const [generating, setGenerating] = useState(false);
 
   // Combinar imagen principal + subpropiedades
   const allImages = [
@@ -50,7 +50,6 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         {generating ? "Generando..." : "📄 Descargar Flyer"}
       </button>
 
-      {/* Contenedor del flyer */}
       <div
         ref={flyerRef}
         style={{
@@ -88,4 +87,5 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
+
 
