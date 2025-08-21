@@ -1,5 +1,5 @@
 // src/components/PropertyBrochure.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,6 +10,12 @@ import { Navigation } from "swiper/modules";
 const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
   const [generating, setGenerating] = useState(false);
   const flyerRef = useRef(null);
+
+  // Combinar imagen principal + subpropiedades
+  const allImages = [
+    { src: property.image, caption: property.title },
+    ...subProperties.map((sub) => ({ src: sub.image, caption: sub.content })),
+  ];
 
   const generatePDF = async () => {
     setGenerating(true);
@@ -44,6 +50,7 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         {generating ? "Generando..." : "📄 Descargar Flyer"}
       </button>
 
+      {/* Contenedor del flyer */}
       <div
         ref={flyerRef}
         style={{
@@ -56,7 +63,7 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
         <p>{property.description}</p>
         {flyerData?.texto_flyer && <p style={{ marginTop: "10px" }}>{flyerData.texto_flyer}</p>}
 
-        {/* Carrusel de imágenes */}
+        {/* Carrusel interno */}
         <Swiper
           modules={[Navigation]}
           navigation
@@ -64,24 +71,14 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
           slidesPerView={1}
           className="mt-4"
         >
-          {/* Imagen principal */}
-          <SwiperSlide>
-            <img
-              src={property.image || "https://via.placeholder.com/400x300.png?text=Propiedad"}
-              alt={property.title}
-              style={{ width: "100%", borderRadius: "8px" }}
-            />
-          </SwiperSlide>
-
-          {/* Subpropiedades */}
-          {subProperties.map((sub, idx) => (
+          {allImages.map((img, idx) => (
             <SwiperSlide key={idx}>
               <img
-                src={sub.image || "https://via.placeholder.com/300x200.png?text=Sub"}
-                alt={sub.content}
+                src={img.src || "https://via.placeholder.com/400x300.png?text=Imagen"}
+                alt={img.caption}
                 style={{ width: "100%", borderRadius: "8px" }}
               />
-              <p className="mt-2 text-sm text-gray-700">{sub.content}</p>
+              <p className="mt-2 text-sm text-gray-700">{img.caption}</p>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -91,3 +88,4 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 };
 
 export default PropertyBrochure;
+
