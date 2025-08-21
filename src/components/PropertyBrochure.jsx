@@ -1,39 +1,51 @@
 // src/components/PropertyBrochure.jsx
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
 
-const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null }) => {
-  const flyerRef = useRef(null);
+const getBase64FromUrl = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
+
+const PropertyBrochure = ({ property = {}, subProperties = [] }) => {
+  const [open, setOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
 
-  const allImages = [
-    { src: property.image, caption: property.title },
-    ...subProperties.map((sub) => ({ src: sub.image, caption: sub.content })),
-  ];
-
-  const generatePDF = async () => {
-    setGenerating(true);
+  const generatePdf = async () => {
     try {
-      const element = flyerRef.current;
-      if (!element) throw new Error("No se encontró el contenido del flyer");
+      setGenerating(true);
+      const doc = new jsPDF();
 
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
+      // Imagen principal
+      if (property.image) {
+        const base64Main = await getBase64FromUrl(property.image);
+        doc.addImage(base64Main, "JPEG", 15, 20, 180, 100);
+      }
 
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      // Texto principal
+      doc.text(property.title || "Propiedad", 15, 140);
+      doc.text(property.description || "", 15, 150);
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`${property.title || "flyer"}.pdf`);
-    } catch (error) {
-      console.error("❌ Error generando PDF:", error);
-      alert("Error al generar el PDF. Revisa la consola.");
+      // Sub propiedades en nuevas páginas
+      for (let i = 0; i < subProperties.length; i++) {
+        const sub = subProperties[i];
+        if (sub.image) {
+          doc.addPage();
+          const base64Sub = await getBase64FromUrl(sub.image);
+          doc.addImage(base64Sub, "JPEG", 15, 20, 180, 100);
+          doc.text(sub.title || `Sub Propiedad ${i + 1}`, 15, 140);
+        }
+      }
+
+      doc.save(`${property.title || "propiedad"}.pdf`);
+    } catch (err) {
+      console.error("Error generando PDF", err);
     } finally {
       setGenerating(false);
     }
@@ -41,46 +53,62 @@ const PropertyBrochure = ({ property = {}, subProperties = [], flyerData = null 
 
   return (
     <div>
+      {/* Botón para abrir popup */}
       <button
-        onClick={generatePDF}
-        disabled={generating}
-        className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 text-center mb-4"
+        onClick={() => setOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
       >
-        {generating ? "Generando..." : "📄 Descargar Flyer"}
+        Ver Detalles
       </button>
 
-      <div
-        ref={flyerRef}
-        style={{
-          background: "#fff",
-          padding: "10px",
-          borderRadius: "10px",
-        }}
-      >
-        <h1 style={{ fontSize: "22px", fontWeight: "bold" }}>{property.title}</h1>
-        <p>{property.description}</p>
-        {flyerData?.texto_flyer && <p style={{ marginTop: "10px" }}>{flyerData.texto_flyer}</p>}
+      {/* Popup */}
+      {open && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl shadow-lg max-w-3xl w-full p-6 relative">
+            {/* Cerrar */}
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl"
+            >
+              ✖
+            </button>
 
-        {/* Carrusel interno */}
-        <Swiper
-          modules={[Navigation]}
-          navigation
-          spaceBetween={10}
-          slidesPerView={1}
-          className="mt-4"
-        >
-          {allImages.map((img, idx) => (
-            <SwiperSlide key={idx}>
-              <img
-                src={img.src || "https://via.placeholder.com/400x300.png?text=Imagen"}
-                alt={img.caption}
-                style={{ width: "100%", borderRadius: "8px" }}
-              />
-              <p className="mt-2 text-sm text-gray-700">{img.caption}</p>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+            {/* Carrusel de imágenes */}
+            <div className="relative w-full h-80 overflow-hidden rounded-xl mb-4">
+              <div className="flex w-full h-full overflow-x-auto space-x-2 scrollbar-hide">
+                <img
+                  src={property.image}
+                  alt="Principal"
+                  className="w-full h-full object-cover flex-shrink-0 rounded-xl"
+                />
+                {subProperties.map((sub, idx) => (
+                  <img
+                    key={idx}
+                    src={sub.image}
+                    alt={`Sub ${idx + 1}`}
+                    className="w-full h-full object-cover flex-shrink-0 rounded-xl"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Info */}
+            <h2 className="text-xl font-semibold mb-2">{property.title}</h2>
+            <p className="text-gray-600">{property.description}</p>
+
+            {/* Botón PDF */}
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={generatePdf}
+                disabled={generating}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700"
+              >
+                {generating ? "Generando..." : "Descargar PDF"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
