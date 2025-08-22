@@ -74,7 +74,7 @@ const PropertyModal = ({ property, onClose }) => {
         {/* Botón de cerrar */}
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 text-gray-700 text-2xl font-bold hover:text-gray-900"
+          className="absolute top-3 right-3 text-gray-700 text-2xl font-bold hover:text-gray-900 z-20"
           aria-label="Cerrar modal"
         >
           &times;
@@ -96,6 +96,11 @@ const PropertyModal = ({ property, onClose }) => {
             {/* Título */}
             <h2 className="text-2xl font-bold mb-4 text-center">{property.title}</h2>
 
+            {/* Contador de slide */}
+            <div className="absolute top-3 right-3 z-10 bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-semibold">
+              {activeIndex + 1} / {images.length}
+            </div>
+
             {/* Swiper principal */}
             <Swiper
               modules={[Navigation, Pagination, Autoplay, Thumbs]}
@@ -107,7 +112,7 @@ const PropertyModal = ({ property, onClose }) => {
               spaceBetween={10}
               thumbs={{ swiper: thumbsSwiper }}
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-              className="rounded-xl"
+              className="rounded-xl relative"
             >
               {images.map((img, idx) => (
                 <SwiperSlide key={idx}>
@@ -169,3 +174,4 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
