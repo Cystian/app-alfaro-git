@@ -12,8 +12,10 @@ const PropertyModal = ({ property, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const mainSwiperRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const modalRef = useRef(null);
 
+  // Fetch de detalles
   useEffect(() => {
     if (!property?.id) return;
 
@@ -25,6 +27,7 @@ const PropertyModal = ({ property, onClose }) => {
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         const data = await res.json();
         setDetails(data);
+        setIsOpen(true); // abrir modal tras cargar
       } catch (err) {
         console.error("Error al cargar detalles de propiedad:", err);
         setError("No se pudieron cargar los detalles de la propiedad.");
@@ -36,17 +39,47 @@ const PropertyModal = ({ property, onClose }) => {
     fetchDetails();
   }, [property]);
 
+  // Cierre con Esc
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") handleClose();
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setTimeout(() => onClose(), 300); // espera animación
+  };
+
+  // Focus trap simple
+  useEffect(() => {
+    if (isOpen && modalRef.current) modalRef.current.focus();
+  }, [isOpen]);
+
   if (!property) return null;
 
-  // Combina imagen principal + sub-imágenes
   const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-3xl w-full relative shadow-lg overflow-hidden">
+    <div
+      className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ease-in-out ${
+        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+      role="dialog"
+      aria-modal="true"
+      ref={modalRef}
+      tabIndex={-1}
+    >
+      <div
+        className={`bg-white rounded-2xl max-w-3xl w-full relative shadow-lg overflow-hidden transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "scale-100" : "scale-95"
+        }`}
+      >
         {/* Botón de cerrar */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-3 right-3 text-gray-700 text-2xl font-bold hover:text-gray-900"
           aria-label="Cerrar modal"
         >
@@ -54,8 +87,11 @@ const PropertyModal = ({ property, onClose }) => {
         </button>
 
         {loading ? (
-          <div className="flex items-center justify-center h-64">
-            <p>Cargando...</p>
+          // Skeleton loader
+          <div className="flex flex-col items-center justify-center h-64 animate-pulse">
+            <div className="w-full h-64 bg-gray-300 rounded-xl mb-4"></div>
+            <div className="w-3/4 h-6 bg-gray-300 rounded mb-2"></div>
+            <div className="w-1/2 h-4 bg-gray-300 rounded"></div>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-64 text-red-500">
@@ -72,7 +108,8 @@ const PropertyModal = ({ property, onClose }) => {
               modules={[Navigation, Pagination, Autoplay, Thumbs]}
               navigation
               pagination={{ clickable: true }}
-              autoplay={{ delay: 2500, disableOnInteraction: false }}
+              autoplay={{ delay: 2000, disableOnInteraction: false }}
+              speed={3000}
               loop
               spaceBetween={10}
               thumbs={{ swiper: thumbsSwiper }}
@@ -111,13 +148,22 @@ const PropertyModal = ({ property, onClose }) => {
               ))}
             </Swiper>
 
-            {/* Detalles de la propiedad */}
+            {/* Detalles + Contactar */}
             <div className="mt-4 p-2 text-center">
               {details?.property?.description && (
                 <p className="text-gray-700 mb-2">{details.property.description}</p>
               )}
               <p className="font-semibold text-blue-600">{property.price}</p>
               <p className="text-sm text-gray-500">{property.location}</p>
+
+              <a
+                href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition"
+              >
+                Contactar
+              </a>
             </div>
           </>
         )}
