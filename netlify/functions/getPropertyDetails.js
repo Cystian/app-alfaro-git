@@ -25,7 +25,7 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 🔹 Traer propiedad principal (ahora con lat/long)
+    // 🔹 Traer propiedad principal (con lat/long)
     const propertyResult = await pool.query(
       `
       SELECT id, title, image, price, location, status, 
@@ -46,21 +46,10 @@ exports.handler = async (event, context) => {
 
     const property = propertyResult.rows[0];
 
-    // 🔹 Traer flyer asociado
-    const flyerResult = await pool.query(
-      `
-      SELECT id, property_id, texto_flyer
-      FROM flyer
-      WHERE property_id = $1
-      `,
-      [propertyId]
-    );
-    const flyerData = flyerResult.rows[0] || null;
-
-    // 🔹 Traer subpropiedades
+    // 🔹 Traer subpropiedades (con text_content)
     const subPropsResult = await pool.query(
       `
-      SELECT id, property_id, flyer_id, content, image, "order"
+      SELECT id, property_id, content, image, "order", text_content
       FROM sub_properties
       WHERE property_id = $1
       ORDER BY "order" ASC
@@ -69,13 +58,12 @@ exports.handler = async (event, context) => {
     );
     const subProperties = subPropsResult.rows;
 
-    // 🔹 Respuesta final
+    // 🔹 Respuesta final (sin flyerData)
     return {
       statusCode: 200,
       body: JSON.stringify({
         property,
         subProperties,
-        flyerData,
       }),
     };
   } catch (error) {
