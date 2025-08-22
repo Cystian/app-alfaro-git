@@ -1,4 +1,5 @@
 // src/utils/pdfGenerator.js
+// src/utils/pdfGenerator.js
 import jsPDF from "jspdf";
 
 const getBase64FromUrl = async (url) => {
@@ -12,124 +13,115 @@ const getBase64FromUrl = async (url) => {
   });
 };
 
-export const generatePropertyPdf = async (property, subProperties = []) => {
-  const doc = new jsPDF("p", "mm", "a4");
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const margin = 15;
-  let y = 40;
+// Íconos en /public/icons
+const ICONS = {
+  price: "/icons/price.png",
+  area: "/icons/area.png",
+  bedrooms: "/icons/bedroom.png",
+  bathrooms: "/icons/bathroom.png",
+  location: "/icons/location.png",
+};
 
-  // Encabezado con logo
+export const generatePropertyPdf = async (property, subProperties = []) => {
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+  const margin = 40;
+  let y = 60;
+
+  // Logo
   try {
     const logoBase64 = await getBase64FromUrl("/logo.png");
-    doc.addImage(logoBase64, "PNG", margin, 10, 35, 20);
+    doc.addImage(logoBase64, "PNG", margin, 20, 60, 30);
   } catch (e) {
     console.warn("No se pudo cargar el logo.");
   }
 
-  // Encabezado de empresa
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.text("Inmobiliaria Alfaro", pageWidth - margin - 70, 20);
-
-  // Línea separadora
-  doc.setDrawColor(100);
-  doc.setLineWidth(0.5);
-  doc.line(margin, 32, pageWidth - margin, 32);
-
   // Imagen principal
   if (property.image) {
     const base64Main = await getBase64FromUrl(property.image);
-    doc.addImage(base64Main, "JPEG", margin, y, pageWidth - margin * 2, 90);
-    y += 100;
+    doc.addImage(base64Main, "JPEG", margin, y, 515, 250);
+    y += 260;
   }
 
-  // Título de la propiedad
+  // Título
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
+  doc.setFontSize(18);
+  doc.setTextColor(30, 60, 150);
   doc.text(property.title || "Propiedad", margin, y);
-  y += 10;
+  y += 25;
 
-  // Descripción principal
+  // Descripción
   if (property.description) {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    const desc = doc.splitTextToSize(property.description, pageWidth - margin * 2);
-    doc.text(desc, margin, y);
-    y += desc.length * 6 + 5;
+    const descLines = doc.splitTextToSize(property.description, 515);
+    doc.text(descLines, margin, y);
+    y += descLines.length * 14 + 10;
   }
 
-  // Datos clave con estilo
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text("Características:", margin, y);
-  y += 8;
+  // Datos clave con íconos
+  const addDataLine = async (label, value, icon) => {
+    if (!value) return;
+    if (icon) {
+      const iconBase64 = await getBase64FromUrl(icon);
+      doc.addImage(iconBase64, "PNG", margin, y - 10, 12, 12);
+      doc.text(`${label}: ${value}`, margin + 18, y);
+    } else {
+      doc.text(`${label}: ${value}`, margin, y);
+    }
+    y += 18;
+  };
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(12);
-  if (property.price) {
-    doc.text(`💲 Precio: ${property.price}`, margin, y);
-    y += 7;
-  }
-  if (property.area) {
-    doc.text(`📐 Área: ${property.area} m²`, margin, y);
-    y += 7;
-  }
-  if (property.bedrooms) {
-    doc.text(`🛏 Dormitorios: ${property.bedrooms}`, margin, y);
-    y += 7;
-  }
-  if (property.bathrooms) {
-    doc.text(`🚿 Baños: ${property.bathrooms}`, margin, y);
-    y += 7;
-  }
-  if (property.location) {
-    doc.text(`📍 Ubicación: ${property.location}`, margin, y);
-    y += 7;
-  }
+  await addDataLine("Precio", property.price, ICONS.price);
+  await addDataLine("Área", property.area ? `${property.area} m²` : null, ICONS.area);
+  await addDataLine("Dormitorios", property.bedrooms, ICONS.bedrooms);
+  await addDataLine("Baños", property.bathrooms, ICONS.bathrooms);
+  await addDataLine("Ubicación", property.location, ICONS.location);
+
+  // Línea separadora
+  doc.setDrawColor(200);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, 555, y);
+  y += 20;
 
   // Subpropiedades
   for (let i = 0; i < subProperties.length; i++) {
     const sub = subProperties[i];
-    doc.addPage();
-    y = 30;
 
-    // Imagen de subpropiedad
+    doc.addPage();
+    y = 60;
+
+    // Imagen subpropiedad
     if (sub.image) {
       const base64Sub = await getBase64FromUrl(sub.image);
-      doc.addImage(base64Sub, "JPEG", margin, y, pageWidth - margin * 2, 90);
-      y += 100;
+      doc.addImage(base64Sub, "JPEG", margin, y, 515, 250);
+      y += 260;
     }
 
-    // Título de la subpropiedad
+    // Título subpropiedad
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(16);
+    doc.setTextColor(30, 60, 150);
     doc.text(sub.title || `Sub Propiedad ${i + 1}`, margin, y);
-    y += 10;
+    y += 22;
 
     // Descripción extra
     if (sub.text_content) {
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(11);
-      const textLines = doc.splitTextToSize(sub.text_content, pageWidth - margin * 2);
+      doc.setFontSize(12);
+      const textLines = doc.splitTextToSize(sub.text_content, 515);
       doc.text(textLines, margin, y);
-      y += textLines.length * 6;
+      y += textLines.length * 14;
     }
   }
 
-  // Pie de página en todas las páginas
-  const pageCount = doc.internal.getNumberOfPages();
-  for (let i = 1; i <= pageCount; i++) {
-    doc.setPage(i);
+  // Pie de página con branding
+  const pageCount = doc.getNumberOfPages();
+  for (let p = 1; p <= pageCount; p++) {
+    doc.setPage(p);
     doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text(
-      `Página ${i} de ${pageCount} | Inmobiliaria Alfaro`,
-      pageWidth / 2,
-      doc.internal.pageSize.getHeight() - 10,
-      { align: "center" }
-    );
+    doc.setTextColor(120);
+    doc.text(`Página ${p} de ${pageCount}`, margin, 820);
   }
 
-  // Guardar
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
