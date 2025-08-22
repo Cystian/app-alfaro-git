@@ -1,21 +1,37 @@
 // src/components/PropertyModal.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const PropertyModal = ({ images = [], onClose }) => {
-  // 🔹 Si no llegan imágenes, ponemos unas de prueba
-  const demoImages =
-    images.length > 0
-      ? images
-      : [
-          "https://picsum.photos/800/400?random=1",
-          "https://picsum.photos/800/400?random=2",
-          "https://picsum.photos/800/400?random=3",
-        ];
+const PropertyModal = ({ propertyId, onClose }) => {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${propertyId}`);
+        const data = await res.json();
+        if (res.ok) {
+          // Construimos un array con la imagen principal + subpropiedades
+          const imgs = [data.property.image, ...data.subProperties.map(sp => sp.image)];
+          setImages(imgs.filter(Boolean)); // filtramos posibles null
+        } else {
+          console.error("Error API:", data.message);
+        }
+      } catch (err) {
+        console.error("Error al traer detalles:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProperty();
+  }, [propertyId]);
+
+  if (loading) return <p className="text-center py-8">Cargando imágenes...</p>;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
@@ -28,14 +44,14 @@ const PropertyModal = ({ images = [], onClose }) => {
           ✕
         </button>
 
-        {/* Carrusel */}
+        {/* Slider de imágenes */}
         <Swiper
           modules={[Navigation, Pagination]}
-          navigation={true}
+          navigation
           pagination={{ clickable: true }}
           className="rounded-xl"
         >
-          {demoImages.map((src, i) => (
+          {images.map((src, i) => (
             <SwiperSlide key={i}>
               <img
                 src={src}
