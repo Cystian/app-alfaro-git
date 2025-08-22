@@ -7,6 +7,13 @@ import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "swiper/css/effect-fade";
 import { Navigation, Pagination, Autoplay, Thumbs, EffectFade } from "swiper/modules";
+import { MapPin } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const PropertyModal = ({ property, onClose }) => {
   const [details, setDetails] = useState(null);
@@ -181,13 +188,37 @@ const PropertyModal = ({ property, onClose }) => {
             </Swiper>
 
             {/* Detalles + Contactar */}
-            <div className="mt-4 p-2 text-center">
+            <div className="mt-4 p-4 text-center">
               {details?.property?.description && (
                 <p className="text-gray-700 mb-2">{details.property.description}</p>
               )}
               <p className="font-semibold text-blue-600">{property.price}</p>
-              <p className="text-sm text-gray-500">{property.location}</p>
 
+              {/* Ubicación con enlace a Google Maps */}
+              <div className="flex justify-center items-center gap-2 mt-1">
+                <p className="text-sm text-gray-600">{property.location}</p>
+                {property.latitude && property.longitude && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <a
+                          href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
+                        >
+                          <MapPin className="w-5 h-5 text-blue-600" />
+                        </a>
+                      </TooltipTrigger>
+                      <TooltipContent side="top">
+                        <p>Ver en Google Maps</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </div>
+
+              {/* Botón de contacto */}
               <a
                 href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
                 target="_blank"
@@ -205,4 +236,5 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
 
