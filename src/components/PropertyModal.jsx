@@ -79,6 +79,10 @@ const PropertyModal = ({ property, onClose }) => {
   const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
   const labels = [property.title, ...(details?.subProperties?.map(sp => sp.content) || [])];
 
+  // 🔹 OJO: sacamos lat/long del details.property
+  const lat = details?.property?.latitude;
+  const lng = details?.property?.longitude;
+
   return (
     <div
       className={`fixed inset-0 flex items-center justify-center z-50 p-4 transition-opacity duration-400 ease-in-out ${
@@ -190,9 +194,9 @@ const PropertyModal = ({ property, onClose }) => {
               {/* Ubicación con enlace a Google Maps */}
               <div className="flex justify-center items-center gap-2 mt-1">
                 <p className="text-sm text-gray-600">{property.location}</p>
-                {property.latitude && property.longitude && (
+                {lat && lng && (
                   <a
-                    href={`https://www.google.com/maps?q=${property.latitude},${property.longitude}`}
+                    href={`https://www.google.com/maps?q=${lat},${lng}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Ver en Google Maps"
@@ -225,5 +229,3 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
-
-
