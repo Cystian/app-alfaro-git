@@ -18,7 +18,6 @@ const PropertyModal = ({ property, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const modalRef = useRef(null);
 
-  // Precargar imágenes
   const preloadImages = (urls) => {
     urls.forEach((url) => {
       const img = new Image();
@@ -26,7 +25,6 @@ const PropertyModal = ({ property, onClose }) => {
     });
   };
 
-  // Fetch detalles y precarga
   useEffect(() => {
     if (!property?.id) return;
 
@@ -54,7 +52,6 @@ const PropertyModal = ({ property, onClose }) => {
     fetchDetails();
   }, [property]);
 
-  // Cierre con Esc y click fuera
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") handleClose();
@@ -80,7 +77,6 @@ const PropertyModal = ({ property, onClose }) => {
   const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
   const labels = [property.title, ...(details?.subProperties?.map(sp => sp.content) || [])];
 
-  // 🔹 Extraer campos
   const propData = details?.property || {};
   const lat = propData.latitude;
   const lng = propData.longitude;
@@ -238,8 +234,30 @@ const PropertyModal = ({ property, onClose }) => {
                 )}
               </div>
 
+              {/* 🔹 Subpropiedades con text_content */}
+              {details?.subProperties?.length > 0 && (
+                <div className="mt-6 text-left">
+                  <h3 className="text-lg font-semibold mb-3 text-gray-800">Subpropiedades</h3>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {details.subProperties.map((sp) => (
+                      <div key={sp.id} className="border rounded-lg p-3 shadow-sm">
+                        <img
+                          src={sp.image}
+                          alt={sp.content}
+                          className="w-full h-32 object-cover rounded-md mb-2"
+                        />
+                        <p className="font-semibold">{sp.content}</p>
+                        {sp.text_content && (
+                          <p className="text-sm text-gray-600 mt-1">{sp.text_content}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Botones */}
-              <div className="flex justify-center gap-3 mt-4">
+              <div className="flex justify-center gap-3 mt-6">
                 <a
                   href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
                   target="_blank"
@@ -266,4 +284,5 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
 
