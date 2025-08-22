@@ -15,7 +15,7 @@ const getBase64FromUrl = async (url) => {
 export const generatePropertyPdf = async (property, subProperties = []) => {
   const doc = new jsPDF();
 
-  // Logo (si lo tienes en /public/logo.png)
+  // Logo
   try {
     const logoBase64 = await getBase64FromUrl("/logo.png");
     doc.addImage(logoBase64, "PNG", 15, 10, 40, 20);
@@ -35,7 +35,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.setFontSize(12);
   doc.text(property.description || "", 15, 160);
 
-  // Datos clave (precio, área, etc.)
+  // Datos clave
   let y = 175;
   if (property.price) {
     doc.text(`Precio: ${property.price}`, 15, y);
@@ -57,14 +57,25 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     doc.text(`Ubicación: ${property.location}`, 15, y);
   }
 
-  // Sub propiedades
+  // Subpropiedades
   for (let i = 0; i < subProperties.length; i++) {
     const sub = subProperties[i];
     if (sub.image) {
       doc.addPage();
       const base64Sub = await getBase64FromUrl(sub.image);
       doc.addImage(base64Sub, "JPEG", 15, 20, 180, 100);
+
+      // Título
+      doc.setFontSize(14);
       doc.text(sub.title || `Sub Propiedad ${i + 1}`, 15, 140);
+
+      // Descripción extra
+      if (sub.text_content) {
+        doc.setFontSize(11);
+        // splitTextToSize evita que el texto se corte fuera de la página
+        const textLines = doc.splitTextToSize(sub.text_content, 180);
+        doc.text(textLines, 15, 150);
+      }
     }
   }
 
