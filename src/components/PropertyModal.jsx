@@ -7,6 +7,7 @@ import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "swiper/css/effect-fade";
 import { Navigation, Pagination, Autoplay, Thumbs, EffectFade } from "swiper/modules";
+import { generatePropertyPdf } from "../utils/pdfGenerator";
 
 const PropertyModal = ({ property, onClose }) => {
   const [details, setDetails] = useState(null);
@@ -151,7 +152,7 @@ const PropertyModal = ({ property, onClose }) => {
               ))}
             </Swiper>
 
-            {/* Miniaturas scrollables */}
+            {/* Miniaturas */}
             <Swiper
               onSwiper={setThumbsSwiper}
               modules={[Thumbs]}
@@ -185,16 +186,13 @@ const PropertyModal = ({ property, onClose }) => {
               ))}
             </Swiper>
 
-            {/* Detalles ordenados */}
+            {/* Detalles */}
             <div className="mt-4 p-4 text-center text-gray-700">
-              {/* Descripción */}
               {propData.description && (
                 <p className="mb-3">
-                  <strong>Descripción:</strong>  {propData.description}
-                 </p>
+                  <strong>Descripción:</strong> {propData.description}
+                </p>
               )}
-
-              {/* Estado */}
               {propData.status && (
                 <p className="mb-1">
                   <strong>Estado:</strong> {propData.status}
@@ -202,12 +200,12 @@ const PropertyModal = ({ property, onClose }) => {
               )}
 
               {/* Precio */}
-          {propData.price && (
-  <div className="flex justify-center items-center gap-2 mb-2">
-    <img src="/precio.png" alt="Precio" className="w-5 h-5" />
-    <p className="font-semibold text-blue-600">{propData.price}</p>
-  </div>
-)}
+              {propData.price && (
+                <div className="flex justify-center items-center gap-2 mb-2">
+                  <img src="/precio.png" alt="Precio" className="w-5 h-5" />
+                  <p className="font-semibold text-blue-600">{propData.price}</p>
+                </div>
+              )}
 
               {/* Área – Dormitorios – Baños */}
               <div className="flex justify-center items-center gap-6 mb-3 text-sm">
@@ -225,7 +223,7 @@ const PropertyModal = ({ property, onClose }) => {
                 </div>
               </div>
 
-              {/* Ubicación + enlace a Google Maps */}
+              {/* Ubicación */}
               <div className="flex justify-center items-center gap-2 mt-2">
                 <p className="text-sm">{propData.location}</p>
                 {lat && lng && (
@@ -240,15 +238,25 @@ const PropertyModal = ({ property, onClose }) => {
                 )}
               </div>
 
-              {/* Botón de contacto */}
-              <a
-                href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition"
-              >
-                Contactar
-              </a>
+              {/* Botones */}
+              <div className="flex justify-center gap-3 mt-4">
+                <a
+                  href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition"
+                >
+                  <img src="/whatsapp.png" alt="WhatsApp" className="w-5 h-5 mr-2" />
+                  Contactar
+                </a>
+                <button
+                  onClick={() => generatePropertyPdf(propData, details?.subProperties || [])}
+                  className="inline-flex items-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
+                >
+                  <img src="/flyer.png" alt="Flyer" className="w-5 h-5 mr-2" />
+                  Descargar Flyer
+                </button>
+              </div>
             </div>
           </>
         )}
@@ -258,3 +266,4 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
