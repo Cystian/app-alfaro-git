@@ -97,7 +97,7 @@ const FeaturedProperties = () => {
         ))}
       </Swiper>
 
-      {/* Modal */}
+      {/* Modal con miniaturas */}
       {selectedProperty && (
         <PropertyModal property={selectedProperty} onClose={closePopup} />
       )}
@@ -106,4 +106,3 @@ const FeaturedProperties = () => {
 };
 
 export default FeaturedProperties;
-
