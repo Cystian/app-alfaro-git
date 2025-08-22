@@ -1,5 +1,4 @@
 // src/utils/pdfGenerator.js
-// src/utils/pdfGenerator.js
 import jsPDF from "jspdf";
 
 const getBase64FromUrl = async (url) => {
