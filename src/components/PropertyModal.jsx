@@ -79,9 +79,10 @@ const PropertyModal = ({ property, onClose }) => {
   const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
   const labels = [property.title, ...(details?.subProperties?.map(sp => sp.content) || [])];
 
-  // 🔹 OJO: sacamos lat/long del details.property
-  const lat = details?.property?.latitude;
-  const lng = details?.property?.longitude;
+  // 🔹 Extraer campos
+  const propData = details?.property || {};
+  const lat = propData.latitude;
+  const lng = propData.longitude;
 
   return (
     <div
@@ -184,29 +185,52 @@ const PropertyModal = ({ property, onClose }) => {
               ))}
             </Swiper>
 
-            {/* Detalles + Contactar */}
-            <div className="mt-4 p-4 text-center">
-              {details?.property?.description && (
-                <p className="text-gray-700 mb-2">{details.property.description}</p>
+            {/* Detalles ordenados */}
+            <div className="mt-4 p-4 text-center text-gray-700">
+              {/* Descripción */}
+              {propData.description && (
+                <p className="mb-3">{propData.description}</p>
               )}
-              <p className="font-semibold text-blue-600">{property.price}</p>
 
-              {/* Ubicación con enlace a Google Maps */}
-              <div className="flex justify-center items-center gap-2 mt-1">
-                <p className="text-sm text-gray-600">{property.location}</p>
+              {/* Estado */}
+              {propData.status && (
+                <p className="mb-1">
+                  <strong>Estado:</strong> {propData.status}
+                </p>
+              )}
+
+              {/* Precio */}
+              {propData.price && (
+                <p className="font-semibold text-blue-600 mb-2">{propData.price}</p>
+              )}
+
+              {/* Área – Dormitorios – Baños */}
+              <div className="flex justify-center items-center gap-6 mb-3 text-sm">
+                <div className="flex items-center gap-1">
+                  <img src="/area.png" alt="Área" className="w-5 h-5" />
+                  <span>{propData.area} m²</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <img src="/dormi.png" alt="Dormitorios" className="w-5 h-5" />
+                  <span>{propData.bedrooms}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <img src="/bano.png" alt="Baños" className="w-5 h-5" />
+                  <span>{propData.bathrooms}</span>
+                </div>
+              </div>
+
+              {/* Ubicación + enlace a Google Maps */}
+              <div className="flex justify-center items-center gap-2 mt-2">
+                <p className="text-sm">{propData.location}</p>
                 {lat && lng && (
                   <a
                     href={`https://www.google.com/maps?q=${lat},${lng}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Ver en Google Maps"
-                    className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
                   >
-                    <img
-                      src="/maps.png"
-                      alt="Ver en Google Maps"
-                      className="w-5 h-5"
-                    />
+                    <img src="/maps.png" alt="Ver en Google Maps" className="w-5 h-5" />
                   </a>
                 )}
               </div>
