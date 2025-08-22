@@ -1,11 +1,12 @@
 // src/components/PropertyModal.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
-import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
+import "swiper/css/effect-fade";
+import { Navigation, Pagination, Autoplay, Thumbs, EffectFade } from "swiper/modules";
 
 const PropertyModal = ({ property, onClose }) => {
   const [details, setDetails] = useState(null);
@@ -14,8 +15,17 @@ const PropertyModal = ({ property, onClose }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const modalRef = useRef(null);
 
-  // Fetch de detalles
+  // Precargar imágenes
+  const preloadImages = (urls) => {
+    urls.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+  };
+
+  // Fetch detalles y precarga
   useEffect(() => {
     if (!property?.id) return;
 
@@ -27,6 +37,10 @@ const PropertyModal = ({ property, onClose }) => {
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         const data = await res.json();
         setDetails(data);
+
+        const imagesToPreload = [property.image, ...(data?.subProperties?.map(sp => sp.image) || [])];
+        preloadImages(imagesToPreload);
+
         setIsOpen(true);
       } catch (err) {
         console.error("Error al cargar detalles de propiedad:", err);
@@ -39,49 +53,62 @@ const PropertyModal = ({ property, onClose }) => {
     fetchDetails();
   }, [property]);
 
-  // Cierre con Esc
+  // Cierre con Esc y click fuera
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") handleClose();
     };
+    const handleClickOutside = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) handleClose();
+    };
     document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleClose = () => {
     setIsOpen(false);
-    setTimeout(() => onClose(), 300); // espera animación
+    setTimeout(() => onClose(), 400);
   };
 
   if (!property) return null;
 
   const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
+  const labels = [property.title, ...(details?.subProperties?.map(sp => sp.content) || [])];
 
   return (
     <div
-      className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ease-in-out ${
+      className={`fixed inset-0 flex items-center justify-center z-50 p-4 transition-opacity duration-400 ease-in-out ${
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
+      } bg-black/50 backdrop-blur-sm`}
       role="dialog"
       aria-modal="true"
       tabIndex={-1}
     >
       <div
-        className={`bg-white rounded-2xl max-w-3xl w-full relative shadow-lg overflow-hidden transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "scale-100" : "scale-95"
+        ref={modalRef}
+        className={`bg-white rounded-2xl max-w-3xl w-full relative shadow-xl overflow-hidden transform transition-all duration-400 ease-in-out ${
+          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
-        {/* Botón de cerrar */}
-        <button
-          onClick={handleClose}
-          className="absolute top-3 right-3 text-gray-700 text-2xl font-bold hover:text-gray-900 z-20"
-          aria-label="Cerrar modal"
-        >
-          &times;
-        </button>
+        {/* Barra superior */}
+        <div className="absolute top-3 left-3 right-3 flex justify-between items-center z-20 px-2">
+          <button
+            onClick={handleClose}
+            className="text-gray-700 text-2xl font-bold hover:text-gray-900"
+            aria-label="Cerrar modal"
+          >
+            &times;
+          </button>
+          <div className="bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-semibold">
+            {activeIndex + 1} / {images.length}
+          </div>
+        </div>
 
         {loading ? (
-          // Skeleton loader
           <div className="flex flex-col items-center justify-center h-64 animate-pulse">
             <div className="w-full h-64 bg-gray-300 rounded-xl mb-4"></div>
             <div className="w-3/4 h-6 bg-gray-300 rounded mb-2"></div>
@@ -93,21 +120,14 @@ const PropertyModal = ({ property, onClose }) => {
           </div>
         ) : (
           <>
-            {/* Título */}
-            <h2 className="text-2xl font-bold mb-4 text-center">{property.title}</h2>
-
-            {/* Contador de slide */}
-            <div className="absolute top-3 right-3 z-10 bg-black/50 text-white px-3 py-1 rounded-lg text-sm font-semibold">
-              {activeIndex + 1} / {images.length}
-            </div>
-
             {/* Swiper principal */}
             <Swiper
-              modules={[Navigation, Pagination, Autoplay, Thumbs]}
+              modules={[Navigation, Pagination, Autoplay, Thumbs, EffectFade]}
               navigation
               pagination={{ clickable: true }}
-              autoplay={{ delay: 2000, disableOnInteraction: false }}
-              speed={3000}
+              autoplay={{ delay: 2500, disableOnInteraction: false }}
+              speed={3500}
+              effect="fade"
               loop
               spaceBetween={10}
               thumbs={{ swiper: thumbsSwiper }}
@@ -118,7 +138,7 @@ const PropertyModal = ({ property, onClose }) => {
                 <SwiperSlide key={idx}>
                   <img
                     src={img}
-                    alt={`${property.title} - Imagen ${idx + 1}`}
+                    alt={`${property.title} - ${labels[idx] || "Imagen"} ${idx + 1}`}
                     className="w-full h-64 object-cover rounded-xl"
                     loading="lazy"
                   />
@@ -126,17 +146,23 @@ const PropertyModal = ({ property, onClose }) => {
               ))}
             </Swiper>
 
-            {/* Miniaturas */}
+            {/* Miniaturas scrollables */}
             <Swiper
               onSwiper={setThumbsSwiper}
               modules={[Thumbs]}
               spaceBetween={10}
               slidesPerView={Math.min(images.length, 5)}
               watchSlidesProgress
-              className="mt-4 h-20"
+              slideToClickedSlide
+              className="mt-4 h-20 overflow-x-auto"
+              breakpoints={{
+                320: { slidesPerView: Math.min(images.length, 3), spaceBetween: 8 },
+                640: { slidesPerView: Math.min(images.length, 4), spaceBetween: 10 },
+                1024: { slidesPerView: Math.min(images.length, 5), spaceBetween: 10 },
+              }}
             >
               {images.map((img, idx) => (
-                <SwiperSlide key={idx} className="cursor-pointer">
+                <SwiperSlide key={idx} className="cursor-pointer relative">
                   <img
                     src={img}
                     alt={`Miniatura ${idx + 1}`}
@@ -145,6 +171,11 @@ const PropertyModal = ({ property, onClose }) => {
                     } hover:border-blue-500 transition`}
                     loading="lazy"
                   />
+                  {labels[idx] && (
+                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-xs px-1 rounded">
+                      {labels[idx]}
+                    </span>
+                  )}
                 </SwiperSlide>
               ))}
             </Swiper>
