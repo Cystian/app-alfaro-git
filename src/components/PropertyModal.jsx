@@ -202,9 +202,12 @@ const PropertyModal = ({ property, onClose }) => {
               )}
 
               {/* Precio */}
-              {propData.price && (
-                <p className="font-semibold text-blue-600 mb-2">{propData.price}</p>
-              )}
+          {propData.price && (
+  <div className="flex items-center gap-2 mb-2">
+    <img src="/precio.png" alt="Precio" className="w-5 h-5" />
+    <p className="font-semibold text-blue-600">{propData.price}</p>
+  </div>
+)}
 
               {/* Área – Dormitorios – Baños */}
               <div className="flex justify-center items-center gap-6 mb-3 text-sm">
