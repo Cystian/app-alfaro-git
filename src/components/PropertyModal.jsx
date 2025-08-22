@@ -1,5 +1,5 @@
 // src/components/PropertyModal.jsx
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,7 +13,7 @@ const PropertyModal = ({ property, onClose }) => {
   const [error, setError] = useState(null);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Fetch de detalles
   useEffect(() => {
@@ -27,7 +27,7 @@ const PropertyModal = ({ property, onClose }) => {
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         const data = await res.json();
         setDetails(data);
-        setIsOpen(true); // abrir modal tras cargar
+        setIsOpen(true);
       } catch (err) {
         console.error("Error al cargar detalles de propiedad:", err);
         setError("No se pudieron cargar los detalles de la propiedad.");
@@ -53,11 +53,6 @@ const PropertyModal = ({ property, onClose }) => {
     setTimeout(() => onClose(), 300); // espera animación
   };
 
-  // Focus trap simple
-  useEffect(() => {
-    if (isOpen && modalRef.current) modalRef.current.focus();
-  }, [isOpen]);
-
   if (!property) return null;
 
   const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
@@ -69,7 +64,6 @@ const PropertyModal = ({ property, onClose }) => {
       }`}
       role="dialog"
       aria-modal="true"
-      ref={modalRef}
       tabIndex={-1}
     >
       <div
@@ -104,7 +98,6 @@ const PropertyModal = ({ property, onClose }) => {
 
             {/* Swiper principal */}
             <Swiper
-              ref={mainSwiperRef}
               modules={[Navigation, Pagination, Autoplay, Thumbs]}
               navigation
               pagination={{ clickable: true }}
@@ -113,13 +106,14 @@ const PropertyModal = ({ property, onClose }) => {
               loop
               spaceBetween={10}
               thumbs={{ swiper: thumbsSwiper }}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
               className="rounded-xl"
             >
               {images.map((img, idx) => (
                 <SwiperSlide key={idx}>
                   <img
                     src={img}
-                    alt={`${property.title} - ${idx + 1}`}
+                    alt={`${property.title} - Imagen ${idx + 1}`}
                     className="w-full h-64 object-cover rounded-xl"
                     loading="lazy"
                   />
@@ -141,7 +135,9 @@ const PropertyModal = ({ property, onClose }) => {
                   <img
                     src={img}
                     alt={`Miniatura ${idx + 1}`}
-                    className="w-full h-16 object-cover rounded-lg border-2 border-gray-300 hover:border-blue-500"
+                    className={`w-full h-16 object-cover rounded-lg border-2 ${
+                      activeIndex === idx ? "border-blue-500" : "border-gray-300"
+                    } hover:border-blue-500 transition`}
                     loading="lazy"
                   />
                 </SwiperSlide>
@@ -173,4 +169,3 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
-
