@@ -12,115 +12,116 @@ const getBase64FromUrl = async (url) => {
   });
 };
 
-// Íconos en /public/icons
-const ICONS = {
-  price: "/icons/price.png",
-  area: "/icons/area.png",
-  bedrooms: "/icons/bedroom.png",
-  bathrooms: "/icons/bathroom.png",
-  location: "/icons/location.png",
-};
-
 export const generatePropertyPdf = async (property, subProperties = []) => {
-  const doc = new jsPDF({ unit: "pt", format: "a4" });
-  const margin = 40;
-  let y = 60;
+  const doc = new jsPDF();
+
+  // 🔹 Función para obtener URL absoluta de /public
+  const getPublicUrl = (fileName) => `${window.location.origin}/${fileName}`;
+
+  let y = 20;
 
   // Logo
   try {
-    const logoBase64 = await getBase64FromUrl("/logo.png");
-    doc.addImage(logoBase64, "PNG", margin, 20, 60, 30);
+    const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.png"));
+    doc.addImage(logoBase64, "PNG", 15, y, 40, 20);
   } catch (e) {
     console.warn("No se pudo cargar el logo.");
   }
 
+  y += 30;
+
   // Imagen principal
   if (property.image) {
-    const base64Main = await getBase64FromUrl(property.image);
-    doc.addImage(base64Main, "JPEG", margin, y, 515, 250);
-    y += 260;
+    try {
+      const base64Main = await getBase64FromUrl(property.image);
+      doc.addImage(base64Main, "JPEG", 15, y, 180, 100);
+    } catch (e) {
+      console.warn("No se pudo cargar la imagen principal.");
+    }
   }
+
+  y += 110;
 
   // Título
+  doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.setTextColor(30, 60, 150);
-  doc.text(property.title || "Propiedad", margin, y);
-  y += 25;
+  doc.text(property.title || "Propiedad", 15, y);
+  y += 10;
 
   // Descripción
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "normal");
   if (property.description) {
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-    const descLines = doc.splitTextToSize(property.description, 515);
-    doc.text(descLines, margin, y);
-    y += descLines.length * 14 + 10;
+    const descLines = doc.splitTextToSize(property.description, 180);
+    doc.text(descLines, 15, y);
+    y += descLines.length * 6;
   }
 
-  // Datos clave con íconos
-  const addDataLine = async (label, value, icon) => {
-    if (!value) return;
-    if (icon) {
-      const iconBase64 = await getBase64FromUrl(icon);
-      doc.addImage(iconBase64, "PNG", margin, y - 10, 12, 12);
-      doc.text(`${label}: ${value}`, margin + 18, y);
-    } else {
-      doc.text(`${label}: ${value}`, margin, y);
+  y += 5;
+
+  // Función auxiliar para agregar ícono + texto
+  const addIconText = async (iconFile, text, x = 15, yPos = y) => {
+    try {
+      const base64Icon = await getBase64FromUrl(getPublicUrl(iconFile));
+      doc.addImage(base64Icon, "PNG", x, yPos - 4, 6, 6);
+      doc.text(text, x + 10, yPos);
+      return yPos + 10;
+    } catch (e) {
+      doc.text(text, x, yPos);
+      return yPos + 10;
     }
-    y += 18;
   };
 
-  await addDataLine("Precio", property.price, ICONS.price);
-  await addDataLine("Área", property.area ? `${property.area} m²` : null, ICONS.area);
-  await addDataLine("Dormitorios", property.bedrooms, ICONS.bedrooms);
-  await addDataLine("Baños", property.bathrooms, ICONS.bathrooms);
-  await addDataLine("Ubicación", property.location, ICONS.location);
-
-  // Línea separadora
-  doc.setDrawColor(200);
-  doc.setLineWidth(0.5);
-  doc.line(margin, y, 555, y);
-  y += 20;
+  // Datos clave
+  if (property.price) y = await addIconText("precio.png", `Precio: ${property.price}`, 15, y);
+  if (property.area) y = await addIconText("area.png", `Área: ${property.area} m²`, 15, y);
+  if (property.bedrooms) y = await addIconText("dormi.png", `Dormitorios: ${property.bedrooms}`, 15, y);
+  if (property.bathrooms) y = await addIconText("bano.png", `Baños: ${property.bathrooms}`, 15, y);
+  if (property.location) y = await addIconText("maps.png", `Ubicación: ${property.location}`, 15, y);
 
   // Subpropiedades
   for (let i = 0; i < subProperties.length; i++) {
     const sub = subProperties[i];
-
     doc.addPage();
-    y = 60;
+    y = 20;
 
     // Imagen subpropiedad
     if (sub.image) {
-      const base64Sub = await getBase64FromUrl(sub.image);
-      doc.addImage(base64Sub, "JPEG", margin, y, 515, 250);
-      y += 260;
+      try {
+        const base64Sub = await getBase64FromUrl(sub.image);
+        doc.addImage(base64Sub, "JPEG", 15, y, 180, 100);
+      } catch (e) {
+        console.warn("No se pudo cargar la imagen de subpropiedad.");
+      }
     }
+
+    y += 110;
 
     // Título subpropiedad
+    doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.setTextColor(30, 60, 150);
-    doc.text(sub.title || `Sub Propiedad ${i + 1}`, margin, y);
-    y += 22;
+    doc.text(sub.title || `Sub Propiedad ${i + 1}`, 15, y);
+    y += 8;
 
-    // Descripción extra
+    // Descripción extra (text_content)
     if (sub.text_content) {
+      doc.setFontSize(11);
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(12);
-      const textLines = doc.splitTextToSize(sub.text_content, 515);
-      doc.text(textLines, margin, y);
-      y += textLines.length * 14;
+      const lines = doc.splitTextToSize(sub.text_content, 180);
+      doc.text(lines, 15, y);
+      y += lines.length * 6;
+    }
+
+    // Información adicional (opcional, ejemplo: content)
+    if (sub.content) {
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "italic");
+      const lines = doc.splitTextToSize(sub.content, 180);
+      doc.text(lines, 15, y);
+      y += lines.length * 6;
     }
   }
 
-  // Pie de página con branding
-  const pageCount = doc.getNumberOfPages();
-  for (let p = 1; p <= pageCount; p++) {
-    doc.setPage(p);
-    doc.setFontSize(10);
-    doc.setTextColor(120);
-    doc.text(`Página ${p} de ${pageCount}`, margin, 820);
-  }
-
+  // Guardar PDF
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
