@@ -25,11 +25,12 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 🔹 Traer propiedad principal
+    // 🔹 Traer propiedad principal (ahora con lat/long)
     const propertyResult = await pool.query(
       `
       SELECT id, title, image, price, location, status, 
-             bedrooms, bathrooms, area, description
+             bedrooms, bathrooms, area, description,
+             latitude, longitude
       FROM properties
       WHERE id = $1
       `,
@@ -68,13 +69,13 @@ exports.handler = async (event, context) => {
     );
     const subProperties = subPropsResult.rows;
 
-    // 🔹 Respuesta
+    // 🔹 Respuesta final
     return {
       statusCode: 200,
       body: JSON.stringify({
         property,
         subProperties,
-        flyerData, // 👈 ahora viaja completo
+        flyerData,
       }),
     };
   } catch (error) {
