@@ -1,15 +1,18 @@
 // src/components/PropertyModal.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css/thumbs";
+import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
 
 const PropertyModal = ({ property, onClose }) => {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const mainSwiperRef = useRef(null);
 
   useEffect(() => {
     if (!property?.id) return;
@@ -35,6 +38,9 @@ const PropertyModal = ({ property, onClose }) => {
 
   if (!property) return null;
 
+  // Combina imagen principal + sub-imágenes
+  const images = [property.image, ...(details?.subProperties?.map(sp => sp.image) || [])];
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-3xl w-full relative shadow-lg overflow-hidden">
@@ -47,7 +53,6 @@ const PropertyModal = ({ property, onClose }) => {
           &times;
         </button>
 
-        {/* Contenido */}
         {loading ? (
           <div className="flex items-center justify-center h-64">
             <p>Cargando...</p>
@@ -61,17 +66,19 @@ const PropertyModal = ({ property, onClose }) => {
             {/* Título */}
             <h2 className="text-2xl font-bold mb-4 text-center">{property.title}</h2>
 
-            {/* Swiper con imagen principal + sub-imágenes */}
+            {/* Swiper principal */}
             <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
+              ref={mainSwiperRef}
+              modules={[Navigation, Pagination, Autoplay, Thumbs]}
               navigation
               pagination={{ clickable: true }}
               autoplay={{ delay: 2500, disableOnInteraction: false }}
               loop
               spaceBetween={10}
+              thumbs={{ swiper: thumbsSwiper }}
               className="rounded-xl"
             >
-              {[property.image, ...(details?.subImages || [])].map((img, idx) => (
+              {images.map((img, idx) => (
                 <SwiperSlide key={idx}>
                   <img
                     src={img}
@@ -83,9 +90,32 @@ const PropertyModal = ({ property, onClose }) => {
               ))}
             </Swiper>
 
+            {/* Miniaturas */}
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              modules={[Thumbs]}
+              spaceBetween={10}
+              slidesPerView={Math.min(images.length, 5)}
+              watchSlidesProgress
+              className="mt-4 h-20"
+            >
+              {images.map((img, idx) => (
+                <SwiperSlide key={idx} className="cursor-pointer">
+                  <img
+                    src={img}
+                    alt={`Miniatura ${idx + 1}`}
+                    className="w-full h-16 object-cover rounded-lg border-2 border-gray-300 hover:border-blue-500"
+                    loading="lazy"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
             {/* Detalles de la propiedad */}
             <div className="mt-4 p-2 text-center">
-              {details?.description && <p className="text-gray-700 mb-2">{details.description}</p>}
+              {details?.property?.description && (
+                <p className="text-gray-700 mb-2">{details.property.description}</p>
+              )}
               <p className="font-semibold text-blue-600">{property.price}</p>
               <p className="text-sm text-gray-500">{property.location}</p>
             </div>
@@ -97,3 +127,4 @@ const PropertyModal = ({ property, onClose }) => {
 };
 
 export default PropertyModal;
+
