@@ -17,7 +17,7 @@ const ContactForm = () => {
   const [charCount, setCharCount] = useState(0);
   const [recaptchaToken, setRecaptchaToken] = useState(null);
 
-  const scriptURL = "TU_URL_DEL_WEBHOOK_DE_APPS_SCRIPT";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec";
 
   // 🔹 Validación en tiempo real
   const validate = (name, value) => {
@@ -174,7 +174,7 @@ const ContactForm = () => {
 
         {/* reCAPTCHA */}
         <ReCAPTCHA
-          sitekey="TU_SITE_KEY_RECAPTCHA"
+          sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe"
           onChange={setRecaptchaToken}
           size="invisible"
         />
