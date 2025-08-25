@@ -1,158 +1,198 @@
 import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import toast, { Toaster } from "react-hot-toast";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     telefono: "",
     correo: "",
+    categoria: "General",
     mensaje: "",
+    privacidadAceptada: false,
   });
 
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [charCount, setCharCount] = useState(0);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
 
-  const validateForm = () => {
-    let newErrors = {};
+  const scriptURL = "TU_URL_DEL_WEBHOOK_DE_APPS_SCRIPT";
 
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = "El nombre es obligatorio";
+  // 🔹 Validación en tiempo real
+  const validate = (name, value) => {
+    switch (name) {
+      case "correo":
+        if (!/\S+@\S+\.\S+/.test(value)) return "Correo inválido";
+        break;
+      case "telefono":
+        if (!/^\d+$/.test(value)) return "Solo números";
+        break;
+      case "mensaje":
+        if (value.length < 10) return "Mínimo 10 caracteres";
+        break;
+      default:
+        break;
     }
-
-    if (!formData.telefono.trim()) {
-      newErrors.telefono = "El teléfono es obligatorio";
-    } else if (!/^[0-9]{7,15}$/.test(formData.telefono)) {
-      newErrors.telefono = "Debe contener solo números (7 a 15 dígitos)";
-    }
-
-    if (!formData.correo.trim()) {
-      newErrors.correo = "El correo es obligatorio";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.correo)) {
-      newErrors.correo = "El correo no es válido";
-    }
-
-    if (!formData.mensaje.trim()) {
-      newErrors.mensaje = "El mensaje es obligatorio";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return "";
   };
 
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+
+    setFormData({ ...formData, [name]: newValue });
+
+    // Validar en tiempo real
+    setErrors({ ...errors, [name]: validate(name, newValue) });
+
+    if (name === "mensaje") setCharCount(newValue.length);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return; // 🚫 No envía si hay errores
+    if (!recaptchaToken) {
+      toast.error("Completa el reCAPTCHA");
+      return;
+    }
 
-    setStatus("loading");
+    if (!formData.privacidadAceptada) {
+      toast.error("Debes aceptar la política de privacidad");
+      return;
+    }
 
+    setLoading(true);
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec", {
+      const response = await fetch(scriptURL, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+      const result = await response.json();
 
-      setFormData({ nombre: "", telefono: "", correo: "", mensaje: "" });
-      setErrors({});
-      setStatus("success");
+      if (result.result === "success") {
+        toast.success("Tu mensaje fue enviado ✅");
+        setFormData({
+          nombre: "",
+          telefono: "",
+          correo: "",
+          categoria: "General",
+          mensaje: "",
+          privacidadAceptada: false,
+        });
+        setCharCount(0);
+      } else {
+        toast.error("Error al enviar");
+      }
     } catch (error) {
-      console.error("Error al enviar:", error);
-      setStatus("error");
+      toast.error("Error de conexión");
     }
+    setLoading(false);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-2xl shadow-md border border-gray-200 max-w-lg w-full mx-auto"
-    >
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Contáctanos</h2>
+    <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
+      <Toaster />
+      <h2 className="text-2xl font-bold mb-4">Contáctanos</h2>
 
-      {/* Nombre */}
-      <div className="mb-4">
-        <label htmlFor="nombre" className="block text-gray-700 font-medium mb-1">
-          Nombre completo
-        </label>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Nombre */}
         <input
           type="text"
-          id="nombre"
           name="nombre"
           value={formData.nombre}
           onChange={handleChange}
-          className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Nombre"
+          className="w-full p-2 border rounded"
+          required
         />
-        {errors.nombre && <p className="text-red-500 text-sm">{errors.nombre}</p>}
-      </div>
 
-      {/* Teléfono */}
-      <div className="mb-4">
-        <label htmlFor="telefono" className="block text-gray-700 font-medium mb-1">
-          Teléfono
-        </label>
+        {/* Teléfono */}
         <input
-          type="tel"
-          id="telefono"
+          type="text"
           name="telefono"
           value={formData.telefono}
           onChange={handleChange}
-          className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Teléfono"
+          className="w-full p-2 border rounded"
+          required
         />
         {errors.telefono && <p className="text-red-500 text-sm">{errors.telefono}</p>}
-      </div>
 
-      {/* Correo */}
-      <div className="mb-4">
-        <label htmlFor="correo" className="block text-gray-700 font-medium mb-1">
-          Correo electrónico
-        </label>
+        {/* Correo */}
         <input
           type="email"
-          id="correo"
           name="correo"
           value={formData.correo}
           onChange={handleChange}
-          className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          placeholder="Correo"
+          className="w-full p-2 border rounded"
+          required
         />
         {errors.correo && <p className="text-red-500 text-sm">{errors.correo}</p>}
-      </div>
 
-      {/* Mensaje */}
-      <div className="mb-4">
-        <label htmlFor="mensaje" className="block text-gray-700 font-medium mb-1">
-          Mensaje
-        </label>
+        {/* Categoría */}
+        <select
+          name="categoria"
+          value={formData.categoria}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+        >
+          <option value="General">General</option>
+          <option value="Soporte">Soporte</option>
+          <option value="Ventas">Ventas</option>
+        </select>
+
+        {/* Mensaje */}
         <textarea
-          id="mensaje"
           name="mensaje"
           value={formData.mensaje}
           onChange={handleChange}
-          rows="4"
-          className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-        ></textarea>
+          placeholder="Escribe tu mensaje..."
+          maxLength="500"
+          className="w-full p-2 border rounded"
+          required
+        />
+        <p className="text-sm text-gray-500">{charCount}/500</p>
         {errors.mensaje && <p className="text-red-500 text-sm">{errors.mensaje}</p>}
-      </div>
 
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="w-full bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50"
-      >
-        {status === "loading" ? "Enviando..." : "Enviar mensaje"}
-      </button>
+        {/* Checkbox privacidad */}
+        <label className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            name="privacidadAceptada"
+            checked={formData.privacidadAceptada}
+            onChange={handleChange}
+          />
+          <span>
+            Acepto la{" "}
+            <a href="/privacidad" className="text-blue-600 underline">
+              política de privacidad
+            </a>
+          </span>
+        </label>
 
-      {/* Mensajes de estado */}
-      {status === "success" && (
-        <p className="mt-3 text-green-600 font-medium">✅ Tu mensaje fue enviado correctamente.</p>
-      )}
-      {status === "error" && (
-        <p className="mt-3 text-red-600 font-medium">❌ Hubo un error al enviar. Intenta de nuevo.</p>
-      )}
-    </form>
+        {/* reCAPTCHA */}
+        <ReCAPTCHA
+          sitekey="TU_SITE_KEY_RECAPTCHA"
+          onChange={setRecaptchaToken}
+          size="invisible"
+        />
+
+        {/* Botón */}
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block"></span>
+          ) : (
+            "Enviar"
+          )}
+        </button>
+      </form>
+    </div>
   );
 };
 
