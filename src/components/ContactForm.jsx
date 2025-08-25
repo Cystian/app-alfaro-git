@@ -16,8 +16,8 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
   const [successFields, setSuccessFields] = useState({});
-
   const captchaRef = useRef(null);
+
   const proxyURL = "/.netlify/functions/contactForm";
 
   const validate = (name, value) => {
@@ -40,10 +40,8 @@ const ContactForm = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
-
     setFormData({ ...formData, [name]: newValue });
     setErrors({ ...errors, [name]: validate(name, newValue) });
-
     if (name === "mensaje") setCharCount(newValue.length);
   };
 
@@ -72,7 +70,6 @@ const ContactForm = () => {
     try {
       const recaptchaToken = await captchaRef.current.executeAsync();
 
-      // ✅ Enviar payload con campos exactos para la hoja
       const payload = {
         nombre: formData.nombre.trim(),
         telefono: formData.telefono.replace(/\D/g, ""),
@@ -93,7 +90,6 @@ const ContactForm = () => {
 
       if (result.success) {
         toast.success(result.message || "Tu mensaje fue enviado ✅");
-
         const fields = Object.keys(formData);
         const successObj = {};
         fields.forEach((key) => (successObj[key] = true));
@@ -109,9 +105,7 @@ const ContactForm = () => {
         });
         setErrors({});
         setCharCount(0);
-
         setTimeout(() => setSuccessFields({}), 1500);
-
       } else {
         toast.error(result.message || "Error al enviar");
       }
@@ -169,4 +163,5 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
 
