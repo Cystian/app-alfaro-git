@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -15,11 +15,12 @@ const ContactForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
-  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const captchaRef = useRef(null);
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec";
+  const scriptURL =
+    "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec";
 
-  // 🔹 Validación en tiempo real
+  // Validación en tiempo real
   const validate = (name, value) => {
     switch (name) {
       case "correo":
@@ -40,60 +41,54 @@ const ContactForm = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
-
     setFormData({ ...formData, [name]: newValue });
-
-    // Validar en tiempo real
     setErrors({ ...errors, [name]: validate(name, newValue) });
-
     if (name === "mensaje") setCharCount(newValue.length);
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!recaptchaToken) {
-    toast.error("Completa el reCAPTCHA");
-    return;
-  }
-
-  if (!formData.privacidadAceptada) {
-    toast.error("Debes aceptar la política de privacidad");
-    return;
-  }
-
-  setLoading(true);
-  try {
-    const response = await fetch(scriptURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        recaptchaToken, // 🔹 Enviar token al backend
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) { // 🔹 ahora coincide con Apps Script
-      toast.success("Tu mensaje fue enviado ✅");
-      setFormData({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        categoria: "General",
-        mensaje: "",
-        privacidadAceptada: false,
-      });
-      setCharCount(0);
-    } else {
-      toast.error(result.message || "Error al enviar");
+    if (!formData.privacidadAceptada) {
+      toast.error("Debes aceptar la política de privacidad");
+      return;
     }
-  } catch (error) {
-    toast.error("Error de conexión");
-  }
-  setLoading(false);
-};
+
+    setLoading(true);
+
+    try {
+      // Ejecutar reCAPTCHA invisible
+      const recaptchaToken = await captchaRef.current.executeAsync();
+
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, recaptchaToken }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success(result.message || "Tu mensaje fue enviado ✅");
+        setFormData({
+          nombre: "",
+          telefono: "",
+          correo: "",
+          categoria: "General",
+          mensaje: "",
+          privacidadAceptada: false,
+        });
+        setCharCount(0);
+      } else {
+        toast.error(result.message || "Error al enviar");
+      }
+    } catch (error) {
+      toast.error("Error de conexión");
+    }
+
+    setLoading(false);
+    captchaRef.current.reset(); // Resetear captcha
+  };
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
@@ -101,7 +96,6 @@ const handleSubmit = async (e) => {
       <h2 className="text-2xl font-bold mb-4">Contáctanos</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Nombre */}
         <input
           type="text"
           name="nombre"
@@ -112,7 +106,6 @@ const handleSubmit = async (e) => {
           required
         />
 
-        {/* Teléfono */}
         <input
           type="text"
           name="telefono"
@@ -124,7 +117,6 @@ const handleSubmit = async (e) => {
         />
         {errors.telefono && <p className="text-red-500 text-sm">{errors.telefono}</p>}
 
-        {/* Correo */}
         <input
           type="email"
           name="correo"
@@ -136,7 +128,6 @@ const handleSubmit = async (e) => {
         />
         {errors.correo && <p className="text-red-500 text-sm">{errors.correo}</p>}
 
-        {/* Categoría */}
         <select
           name="categoria"
           value={formData.categoria}
@@ -148,7 +139,6 @@ const handleSubmit = async (e) => {
           <option value="Ventas">Ventas</option>
         </select>
 
-        {/* Mensaje */}
         <textarea
           name="mensaje"
           value={formData.mensaje}
@@ -161,7 +151,6 @@ const handleSubmit = async (e) => {
         <p className="text-sm text-gray-500">{charCount}/500</p>
         {errors.mensaje && <p className="text-red-500 text-sm">{errors.mensaje}</p>}
 
-        {/* Checkbox privacidad */}
         <label className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -177,14 +166,12 @@ const handleSubmit = async (e) => {
           </span>
         </label>
 
-        {/* reCAPTCHA */}
         <ReCAPTCHA
+          ref={captchaRef}
           sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe"
-          onChange={setRecaptchaToken}
           size="invisible"
         />
 
-        {/* Botón */}
         <button
           type="submit"
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
@@ -202,4 +189,3 @@ const handleSubmit = async (e) => {
 };
 
 export default ContactForm;
-
