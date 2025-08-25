@@ -18,8 +18,10 @@ const ContactForm = () => {
 
   const captchaRef = useRef(null);
 
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec"; // ⚠️ Reemplaza con tu URL real
+  const scriptURL =
+    "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec"; // Tu URL real
 
+  // Validación en tiempo real
   const validate = (name, value) => {
     switch (name) {
       case "correo":
@@ -58,7 +60,7 @@ const ContactForm = () => {
     setLoading(true);
 
     try {
-      // Obtener token de reCAPTCHA
+      // Ejecutar reCAPTCHA invisible y obtener token
       const recaptchaToken = await captchaRef.current.executeAsync();
 
       const response = await fetch(scriptURL, {
@@ -88,7 +90,7 @@ const ContactForm = () => {
     }
 
     setLoading(false);
-    captchaRef.current.reset();
+    captchaRef.current.reset(); // Resetear captcha
   };
 
   return (
@@ -169,7 +171,7 @@ const ContactForm = () => {
 
         <ReCAPTCHA
           ref={captchaRef}
-          sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe" // ⚠️ Reemplaza con tu clave de frontend
+          sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe"
           size="invisible"
         />
 
