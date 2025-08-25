@@ -18,8 +18,7 @@ const ContactForm = () => {
 
   const captchaRef = useRef(null);
 
-  const scriptURL =
-    "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec"; // Tu URL real
+  const scriptURL ="/.netlify/functions/contactForm"; // ahora apunta al proxy
 
   // Validación en tiempo real
   const validate = (name, value) => {
