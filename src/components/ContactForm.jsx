@@ -50,7 +50,7 @@ const ContactForm = () => {
     setStatus("loading");
 
     try {
-      await fetch("TU_URL_WEBHOOK", {
+      await fetch("https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
