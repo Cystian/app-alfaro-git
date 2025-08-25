@@ -18,7 +18,8 @@ const ContactForm = () => {
 
   const captchaRef = useRef(null);
 
-  const scriptURL ="/.netlify/functions/contactForm"; // ahora apunta al proxy
+  // URL del proxy serverless en Netlify
+  const proxyURL = "/.netlify/functions/contactForm";
 
   // Validación en tiempo real
   const validate = (name, value) => {
@@ -62,7 +63,8 @@ const ContactForm = () => {
       // Ejecutar reCAPTCHA invisible y obtener token
       const recaptchaToken = await captchaRef.current.executeAsync();
 
-      const response = await fetch(scriptURL, {
+      // Llamada al proxy serverless
+      const response = await fetch(proxyURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, recaptchaToken }),
