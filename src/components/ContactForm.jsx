@@ -19,7 +19,6 @@ const ContactForm = () => {
   const scriptURL =
     "https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec";
 
-  // Validación en tiempo real
   const validate = (name, value) => {
     switch (name) {
       case "correo":
@@ -40,22 +39,18 @@ const ContactForm = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
-
     setFormData({ ...formData, [name]: newValue });
     setErrors({ ...errors, [name]: validate(name, newValue) });
-
     if (name === "mensaje") setCharCount(newValue.length);
   };
 
-  // Ejecuta reCAPTCHA con timeout
   const executeCaptcha = () => {
     return new Promise((resolve, reject) => {
       let timedOut = false;
-
       const timer = setTimeout(() => {
         timedOut = true;
         reject(new Error("reCAPTCHA timeout, intenta nuevamente."));
-      }, 10000); // 10s timeout
+      }, 10000);
 
       captchaRef.current.executeAsync().then((token) => {
         if (!timedOut) {
@@ -74,7 +69,6 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación básica
     if (!formData.privacidadAceptada) {
       toast.error("Debes aceptar la política de privacidad");
       return;
@@ -95,8 +89,10 @@ const ContactForm = () => {
     setLoading(true);
 
     try {
+      // Ejecutar reCAPTCHA
       const recaptchaToken = await executeCaptcha();
 
+      // Llamada al backend
       const response = await fetch(scriptURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -129,7 +125,12 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
+    <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg relative">
+      {loading && (
+        <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center z-10 rounded-2xl">
+          <span className="animate-spin border-4 border-blue-600 border-t-transparent rounded-full w-10 h-10"></span>
+        </div>
+      )}
       <Toaster position="top-right" />
       <h2 className="text-2xl font-bold mb-4">Contáctanos</h2>
 
@@ -142,6 +143,7 @@ const ContactForm = () => {
           placeholder="Nombre"
           className={`w-full p-2 border rounded ${errors.nombre ? "border-red-500" : ""}`}
           required
+          disabled={loading}
         />
 
         <input
@@ -152,6 +154,7 @@ const ContactForm = () => {
           placeholder="Teléfono"
           className={`w-full p-2 border rounded ${errors.telefono ? "border-red-500" : ""}`}
           required
+          disabled={loading}
         />
         {errors.telefono && <p className="text-red-500 text-sm">{errors.telefono}</p>}
 
@@ -163,6 +166,7 @@ const ContactForm = () => {
           placeholder="Correo"
           className={`w-full p-2 border rounded ${errors.correo ? "border-red-500" : ""}`}
           required
+          disabled={loading}
         />
         {errors.correo && <p className="text-red-500 text-sm">{errors.correo}</p>}
 
@@ -171,6 +175,7 @@ const ContactForm = () => {
           value={formData.categoria}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          disabled={loading}
         >
           <option value="General">General</option>
           <option value="Soporte">Soporte</option>
@@ -185,6 +190,7 @@ const ContactForm = () => {
           maxLength="500"
           className={`w-full p-2 border rounded ${errors.mensaje ? "border-red-500" : ""}`}
           required
+          disabled={loading}
         />
         <p className="text-sm text-gray-500">{charCount}/500</p>
         {errors.mensaje && <p className="text-red-500 text-sm">{errors.mensaje}</p>}
@@ -195,6 +201,7 @@ const ContactForm = () => {
             name="privacidadAceptada"
             checked={formData.privacidadAceptada}
             onChange={handleChange}
+            disabled={loading}
           />
           <span>
             Acepto la{" "}
@@ -212,11 +219,14 @@ const ContactForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-60"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-60 flex items-center justify-center gap-2"
           disabled={loading}
         >
           {loading ? (
-            <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block"></span>
+            <>
+              <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
+              Enviando...
+            </>
           ) : (
             "Enviar"
           )}
