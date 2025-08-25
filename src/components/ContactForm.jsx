@@ -17,10 +17,8 @@ const ContactForm = () => {
   const [charCount, setCharCount] = useState(0);
 
   const captchaRef = useRef(null);
-
   const proxyURL = "/.netlify/functions/contactForm";
 
-  // Validación en tiempo real
   const validate = (name, value) => {
     switch (name) {
       case "correo":
@@ -51,19 +49,16 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación política de privacidad
     if (!formData.privacidadAceptada) {
       toast.error("Debes aceptar la política de privacidad");
       return;
     }
 
-    // Validación rápida de errores antes de enviar
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
       const error = validate(key, formData[key]);
       if (error) newErrors[key] = error;
     });
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       toast.error("Corrige los errores antes de enviar");
@@ -76,11 +71,11 @@ const ContactForm = () => {
       const recaptchaToken = await captchaRef.current.executeAsync();
 
       const payload = {
-        nombre: formData.nombre,
-        telefono: formData.telefono,
-        correo: formData.correo,
-        categoria: formData.categoria,
-        mensaje: formData.mensaje,
+        nombre: formData.nombre.trim(),
+        telefono: formData.telefono.replace(/\D/g, ""),
+        correo: formData.correo.trim(),
+        categoria: formData.categoria.trim(),
+        mensaje: formData.mensaje.trim(),
         privacidadAceptada: formData.privacidadAceptada,
         recaptchaToken,
       };
@@ -116,7 +111,6 @@ const ContactForm = () => {
     captchaRef.current.reset();
   };
 
-  // Estilos dinámicos para campos con error
   const inputClass = (field) =>
     `w-full p-2 border rounded ${errors[field] ? "border-red-500" : "border-gray-300"} focus:outline-none focus:ring-2 focus:ring-blue-400`;
 
@@ -126,95 +120,34 @@ const ContactForm = () => {
       <h2 className="text-2xl font-bold mb-4">Contáctanos</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          placeholder="Nombre"
-          className={inputClass("nombre")}
-          required
-        />
+        <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} placeholder="Nombre" className={inputClass("nombre")} required />
         {errors.nombre && <p className="text-red-500 text-sm">{errors.nombre}</p>}
 
-        <input
-          type="text"
-          name="telefono"
-          value={formData.telefono}
-          onChange={handleChange}
-          placeholder="Teléfono"
-          className={inputClass("telefono")}
-          required
-        />
+        <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} placeholder="Teléfono" className={inputClass("telefono")} required />
         {errors.telefono && <p className="text-red-500 text-sm">{errors.telefono}</p>}
 
-        <input
-          type="email"
-          name="correo"
-          value={formData.correo}
-          onChange={handleChange}
-          placeholder="Correo"
-          className={inputClass("correo")}
-          required
-        />
+        <input type="email" name="correo" value={formData.correo} onChange={handleChange} placeholder="Correo" className={inputClass("correo")} required />
         {errors.correo && <p className="text-red-500 text-sm">{errors.correo}</p>}
 
-        <select
-          name="categoria"
-          value={formData.categoria}
-          onChange={handleChange}
-          className={inputClass("categoria")}
-        >
+        <select name="categoria" value={formData.categoria} onChange={handleChange} className={inputClass("categoria")}>
           <option value="General">General</option>
           <option value="Soporte">Soporte</option>
           <option value="Ventas">Ventas</option>
         </select>
 
-        <textarea
-          name="mensaje"
-          value={formData.mensaje}
-          onChange={handleChange}
-          placeholder="Escribe tu mensaje..."
-          maxLength="500"
-          className={inputClass("mensaje")}
-          required
-        />
+        <textarea name="mensaje" value={formData.mensaje} onChange={handleChange} placeholder="Escribe tu mensaje..." maxLength="500" className={inputClass("mensaje")} required />
         <p className="text-sm text-gray-500">{charCount}/500</p>
         {errors.mensaje && <p className="text-red-500 text-sm">{errors.mensaje}</p>}
 
         <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            name="privacidadAceptada"
-            checked={formData.privacidadAceptada}
-            onChange={handleChange}
-          />
-          <span>
-            Acepto la{" "}
-            <a href="/privacidad" className="text-blue-600 underline">
-              política de privacidad
-            </a>
-          </span>
+          <input type="checkbox" name="privacidadAceptada" checked={formData.privacidadAceptada} onChange={handleChange} />
+          <span>Acepto la <a href="/privacidad" className="text-blue-600 underline">política de privacidad</a></span>
         </label>
 
-        <ReCAPTCHA
-          ref={captchaRef}
-          sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe"
-          size="invisible"
-        />
+        <ReCAPTCHA ref={captchaRef} sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe" size="invisible" />
 
-        <button
-          type="submit"
-          className={`w-full py-2 rounded text-white ${
-            loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-          } flex items-center justify-center`}
-          disabled={loading}
-        >
-          {loading ? (
-            <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
-          ) : (
-            "Enviar"
-          )}
+        <button type="submit" className={`w-full py-2 rounded text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} flex items-center justify-center`} disabled={loading}>
+          {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> : "Enviar"}
         </button>
       </form>
     </div>
