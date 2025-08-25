@@ -12,16 +12,28 @@ const ContactForm = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setStatus("loading");
 
-    // 👉 Aquí puedes conectar con tu backend, WhatsApp API o Google Sheets
-    console.log("Datos enviados:", formData);
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec", {
+      method: "POST",
+      mode: "no-cors", // 👈 evita problemas CORS
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-    // Limpieza del formulario
     setFormData({ nombre: "", telefono: "", correo: "", mensaje: "" });
-    alert("¡Tu mensaje ha sido enviado correctamente!");
-  };
+    setStatus("success");
+  } catch (error) {
+    console.error("Error al enviar:", error);
+    setStatus("error");
+  }
+};
+
 
   return (
     <form
