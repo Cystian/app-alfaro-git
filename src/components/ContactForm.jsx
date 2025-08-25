@@ -15,7 +15,7 @@ const ContactForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
-  const [successFields, setSuccessFields] = useState({}); // Para resaltado
+  const [successFields, setSuccessFields] = useState({});
 
   const captchaRef = useRef(null);
   const proxyURL = "/.netlify/functions/contactForm";
@@ -72,11 +72,12 @@ const ContactForm = () => {
     try {
       const recaptchaToken = await captchaRef.current.executeAsync();
 
+      // ✅ Enviar payload con campos exactos para la hoja
       const payload = {
         nombre: formData.nombre.trim(),
         telefono: formData.telefono.replace(/\D/g, ""),
         correo: formData.correo.trim(),
-        categoria: formData.categoria.trim(),
+        categoria: formData.categoria,
         mensaje: formData.mensaje.trim(),
         privacidadAceptada: formData.privacidadAceptada,
         recaptchaToken,
@@ -91,15 +92,13 @@ const ContactForm = () => {
       const result = await response.json();
 
       if (result.success) {
-        toast.success(result.message || "Tu mensaje fue enviado ✅", { duration: 4000 });
+        toast.success(result.message || "Tu mensaje fue enviado ✅");
 
-        // Resaltar campos en verde temporalmente
-        const fieldKeys = Object.keys(formData);
+        const fields = Object.keys(formData);
         const successObj = {};
-        fieldKeys.forEach((key) => (successObj[key] = true));
+        fields.forEach((key) => (successObj[key] = true));
         setSuccessFields(successObj);
 
-        // Limpiar formulario y errores
         setFormData({
           nombre: "",
           telefono: "",
@@ -111,25 +110,23 @@ const ContactForm = () => {
         setErrors({});
         setCharCount(0);
 
-        // Quitar resaltado después de 1.5s
         setTimeout(() => setSuccessFields({}), 1500);
 
       } else {
-        toast.error(result.message || "Error al enviar", { duration: 4000 });
+        toast.error(result.message || "Error al enviar");
       }
     } catch (error) {
-      toast.error("Error de conexión: " + error.message, { duration: 4000 });
+      toast.error("Error de conexión: " + error.message);
     }
 
     setLoading(false);
     captchaRef.current.reset();
   };
 
-  const inputClass = (field) => `
-    w-full p-2 border rounded
-    ${errors[field] ? "border-red-500" : successFields[field] ? "border-green-500" : "border-gray-300"}
-    focus:outline-none focus:ring-2 focus:ring-blue-400
-  `;
+  const inputClass = (field) =>
+    `w-full p-2 border rounded ${
+      errors[field] ? "border-red-500" : successFields[field] ? "border-green-500" : "border-gray-300"
+    } focus:outline-none focus:ring-2 focus:ring-blue-400`;
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
@@ -163,7 +160,7 @@ const ContactForm = () => {
 
         <ReCAPTCHA ref={captchaRef} sitekey="6LcX6rErAAAAAMEu9KoBGzNmmJjI8lUSo5i4-Lwe" size="invisible" />
 
-        <button type="submit" className={`w-full py-2 rounded text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"} flex items-center justify-center`} disabled={loading}>
+        <button type="submit" className={`w-full py-2 rounded text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`} disabled={loading}>
           {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> : "Enviar"}
         </button>
       </form>
@@ -172,3 +169,4 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+
