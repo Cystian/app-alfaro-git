@@ -17,9 +17,9 @@ const handleSubmit = async (e) => {
   setStatus("loading");
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbyuPq4qKLV_CmeyICL5eAj8F_DyMjf28qv9QLZq8Cu0dZEXRoTdnGwV56yz0BXkhJJw/exec", {
+    await fetch("TU_URL_WEBHOOK", {
       method: "POST",
-      mode: "no-cors", // 👈 evita problemas CORS
+      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -33,6 +33,7 @@ const handleSubmit = async (e) => {
     setStatus("error");
   }
 };
+
 
 
   return (
