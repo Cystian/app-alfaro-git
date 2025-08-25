@@ -49,46 +49,51 @@ const ContactForm = () => {
     if (name === "mensaje") setCharCount(newValue.length);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!recaptchaToken) {
-      toast.error("Completa el reCAPTCHA");
-      return;
-    }
+  if (!recaptchaToken) {
+    toast.error("Completa el reCAPTCHA");
+    return;
+  }
 
-    if (!formData.privacidadAceptada) {
-      toast.error("Debes aceptar la política de privacidad");
-      return;
-    }
+  if (!formData.privacidadAceptada) {
+    toast.error("Debes aceptar la política de privacidad");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const response = await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(formData),
+  setLoading(true);
+  try {
+    const response = await fetch(scriptURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...formData,
+        recaptchaToken, // 🔹 Enviar token al backend
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) { // 🔹 ahora coincide con Apps Script
+      toast.success("Tu mensaje fue enviado ✅");
+      setFormData({
+        nombre: "",
+        telefono: "",
+        correo: "",
+        categoria: "General",
+        mensaje: "",
+        privacidadAceptada: false,
       });
-      const result = await response.json();
-
-      if (result.result === "success") {
-        toast.success("Tu mensaje fue enviado ✅");
-        setFormData({
-          nombre: "",
-          telefono: "",
-          correo: "",
-          categoria: "General",
-          mensaje: "",
-          privacidadAceptada: false,
-        });
-        setCharCount(0);
-      } else {
-        toast.error("Error al enviar");
-      }
-    } catch (error) {
-      toast.error("Error de conexión");
+      setCharCount(0);
+    } else {
+      toast.error(result.message || "Error al enviar");
     }
-    setLoading(false);
-  };
+  } catch (error) {
+    toast.error("Error de conexión");
+  }
+  setLoading(false);
+};
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
