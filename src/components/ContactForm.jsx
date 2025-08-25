@@ -18,7 +18,6 @@ const ContactForm = () => {
 
   const captchaRef = useRef(null);
 
-  // URL del proxy serverless en Netlify
   const proxyURL = "/.netlify/functions/contactForm";
 
   // Validación en tiempo real
@@ -52,28 +51,50 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validación política de privacidad
     if (!formData.privacidadAceptada) {
       toast.error("Debes aceptar la política de privacidad");
+      return;
+    }
+
+    // Validación rápida de errores antes de enviar
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      const error = validate(key, formData[key]);
+      if (error) newErrors[key] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Corrige los errores antes de enviar");
       return;
     }
 
     setLoading(true);
 
     try {
-      // Ejecutar reCAPTCHA invisible y obtener token
       const recaptchaToken = await captchaRef.current.executeAsync();
 
-      // Llamada al proxy serverless
+      const payload = {
+        nombre: formData.nombre,
+        telefono: formData.telefono,
+        correo: formData.correo,
+        categoria: formData.categoria,
+        mensaje: formData.mensaje,
+        privacidadAceptada: formData.privacidadAceptada,
+        recaptchaToken,
+      };
+
       const response = await fetch(proxyURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, recaptchaToken }),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
 
       if (result.success) {
-        toast.success(result.message || "Tu mensaje fue enviado ✅");
+        toast.success(result.message || "Tu mensaje fue enviado ✅", { duration: 4000 });
         setFormData({
           nombre: "",
           telefono: "",
@@ -82,17 +103,22 @@ const ContactForm = () => {
           mensaje: "",
           privacidadAceptada: false,
         });
+        setErrors({});
         setCharCount(0);
       } else {
-        toast.error(result.message || "Error al enviar");
+        toast.error(result.message || "Error al enviar", { duration: 4000 });
       }
     } catch (error) {
-      toast.error("Error de conexión: " + error.message);
+      toast.error("Error de conexión: " + error.message, { duration: 4000 });
     }
 
     setLoading(false);
-    captchaRef.current.reset(); // Resetear captcha
+    captchaRef.current.reset();
   };
+
+  // Estilos dinámicos para campos con error
+  const inputClass = (field) =>
+    `w-full p-2 border rounded ${errors[field] ? "border-red-500" : "border-gray-300"} focus:outline-none focus:ring-2 focus:ring-blue-400`;
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
@@ -106,9 +132,10 @@ const ContactForm = () => {
           value={formData.nombre}
           onChange={handleChange}
           placeholder="Nombre"
-          className="w-full p-2 border rounded"
+          className={inputClass("nombre")}
           required
         />
+        {errors.nombre && <p className="text-red-500 text-sm">{errors.nombre}</p>}
 
         <input
           type="text"
@@ -116,7 +143,7 @@ const ContactForm = () => {
           value={formData.telefono}
           onChange={handleChange}
           placeholder="Teléfono"
-          className="w-full p-2 border rounded"
+          className={inputClass("telefono")}
           required
         />
         {errors.telefono && <p className="text-red-500 text-sm">{errors.telefono}</p>}
@@ -127,7 +154,7 @@ const ContactForm = () => {
           value={formData.correo}
           onChange={handleChange}
           placeholder="Correo"
-          className="w-full p-2 border rounded"
+          className={inputClass("correo")}
           required
         />
         {errors.correo && <p className="text-red-500 text-sm">{errors.correo}</p>}
@@ -136,7 +163,7 @@ const ContactForm = () => {
           name="categoria"
           value={formData.categoria}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className={inputClass("categoria")}
         >
           <option value="General">General</option>
           <option value="Soporte">Soporte</option>
@@ -149,7 +176,7 @@ const ContactForm = () => {
           onChange={handleChange}
           placeholder="Escribe tu mensaje..."
           maxLength="500"
-          className="w-full p-2 border rounded"
+          className={inputClass("mensaje")}
           required
         />
         <p className="text-sm text-gray-500">{charCount}/500</p>
@@ -178,11 +205,13 @@ const ContactForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className={`w-full py-2 rounded text-white ${
+            loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+          } flex items-center justify-center`}
           disabled={loading}
         >
           {loading ? (
-            <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 inline-block"></span>
+            <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
           ) : (
             "Enviar"
           )}
@@ -193,4 +222,3 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
-
