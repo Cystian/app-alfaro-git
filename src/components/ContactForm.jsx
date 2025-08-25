@@ -15,6 +15,7 @@ const ContactForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
+  const [successFields, setSuccessFields] = useState({}); // Para resaltado
 
   const captchaRef = useRef(null);
   const proxyURL = "/.netlify/functions/contactForm";
@@ -59,6 +60,7 @@ const ContactForm = () => {
       const error = validate(key, formData[key]);
       if (error) newErrors[key] = error;
     });
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       toast.error("Corrige los errores antes de enviar");
@@ -90,6 +92,14 @@ const ContactForm = () => {
 
       if (result.success) {
         toast.success(result.message || "Tu mensaje fue enviado ✅", { duration: 4000 });
+
+        // Resaltar campos en verde temporalmente
+        const fieldKeys = Object.keys(formData);
+        const successObj = {};
+        fieldKeys.forEach((key) => (successObj[key] = true));
+        setSuccessFields(successObj);
+
+        // Limpiar formulario y errores
         setFormData({
           nombre: "",
           telefono: "",
@@ -100,6 +110,10 @@ const ContactForm = () => {
         });
         setErrors({});
         setCharCount(0);
+
+        // Quitar resaltado después de 1.5s
+        setTimeout(() => setSuccessFields({}), 1500);
+
       } else {
         toast.error(result.message || "Error al enviar", { duration: 4000 });
       }
@@ -111,8 +125,11 @@ const ContactForm = () => {
     captchaRef.current.reset();
   };
 
-  const inputClass = (field) =>
-    `w-full p-2 border rounded ${errors[field] ? "border-red-500" : "border-gray-300"} focus:outline-none focus:ring-2 focus:ring-blue-400`;
+  const inputClass = (field) => `
+    w-full p-2 border rounded
+    ${errors[field] ? "border-red-500" : successFields[field] ? "border-green-500" : "border-gray-300"}
+    focus:outline-none focus:ring-2 focus:ring-blue-400
+  `;
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-2xl shadow-lg">
