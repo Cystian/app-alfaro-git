@@ -11,7 +11,7 @@ const ContactForm = () => {
     mensaje: "",
     privacidadAceptada: false,
   });
-
+  console.log("Datos que se envían a Sheets:", formData);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
