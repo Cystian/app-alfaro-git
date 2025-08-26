@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const ContactForm = () => {
   });
 
   const [status, setStatus] = useState({ type: "", message: "" });
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,22 +24,38 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.privacidadAceptada) {
+      setStatus({ type: "error", message: "Debes aceptar la política de privacidad" });
+      return;
+    }
+
+    if (!executeRecaptcha) {
+      setStatus({ type: "error", message: "Error: reCAPTCHA aún no está listo" });
+      return;
+    }
+
     setStatus({ type: "loading", message: "Enviando datos..." });
 
     try {
+      // Genera el token de reCAPTCHA v3
+      const recaptchaToken = await executeRecaptcha("contact_form");
+
+      const payload = {
+        ...formData,
+        recaptchaToken,
+      };
+
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // tu URL del WebApp
+        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // URL Web App
         {
           method: "POST",
           mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         }
       );
 
-      // Asegura que la respuesta sea JSON válido
       const text = await response.text();
       let result;
       try {
@@ -105,11 +123,12 @@ const ContactForm = () => {
         value={formData.categoria}
         onChange={handleChange}
         className="block w-full p-2 mb-2 border rounded"
+        required
       >
         <option value="">Seleccione categoría</option>
-        <option value="consulta">Consulta</option>
-        <option value="soporte">Soporte</option>
-        <option value="otro">Otro</option>
+        <option value="Consulta">Consulta</option>
+        <option value="Soporte">Soporte</option>
+        <option value="Otro">Otro</option>
       </select>
 
       <textarea
@@ -127,6 +146,7 @@ const ContactForm = () => {
           checked={formData.privacidadAceptada}
           onChange={handleChange}
           className="mr-2"
+          required
         />
         Acepto la política de privacidad
       </label>
@@ -152,5 +172,11 @@ const ContactForm = () => {
   );
 };
 
-export default ContactForm;
-
+// Envolvemos el form dentro del Provider para reCAPTCHA v3
+export default function ContactFormWrapper() {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey="6LfQTrMrAAAAALEXtM-Gg4-6Qsw1Zyto0xxqEFVP">
+      <ContactForm />
+    </GoogleReCaptchaProvider>
+  );
+}
