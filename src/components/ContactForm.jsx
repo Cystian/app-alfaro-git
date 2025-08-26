@@ -47,6 +47,7 @@ const ContactForm = () => {
         "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // tu WebApp URL
         {
           method: "POST",
+            mode: "cors",
           body: JSON.stringify(formData),
           headers: {
             "Content-Type": "application/json",
