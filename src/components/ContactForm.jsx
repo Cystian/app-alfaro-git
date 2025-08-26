@@ -11,63 +11,89 @@ const ContactForm = () => {
     privacidadAceptada: false,
   });
 
-  const [status, setStatus] = useState({ type: "", message: "" });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [charCount, setCharCount] = useState(0);
+
   const { executeRecaptcha } = useGoogleReCaptcha();
+
+  // Validación de campos
+  const validateField = (name, value) => {
+    if (!value && name !== "privacidadAceptada") return "vacío"; // campo obligatorio vacío
+
+    switch (name) {
+      case "correo":
+        if (value && !/\S+@\S+\.\S+/.test(value)) return "Correo inválido";
+        break;
+      case "telefono":
+        if (value && !/^\d+$/.test(value)) return "Solo números";
+        break;
+      case "mensaje":
+        if (value && value.length < 10) return "Mínimo 10 caracteres";
+        break;
+      case "privacidadAceptada":
+        if (!value) return "Debes aceptar la política";
+        break;
+      default:
+        break;
+    }
+    return "";
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    const val = type === "checkbox" ? checked : value;
+
+    setFormData((prev) => ({ ...prev, [name]: val }));
+
+    const error = validateField(name, val);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+
+    if (name === "mensaje") setCharCount(value.length);
+  };
+
+  const inputClass = (field) => {
+    if (errors[field] === "vacío") return "block w-full p-2 mb-2 border border-orange-500 rounded focus:outline-none focus:ring-2 focus:ring-orange-400";
+    if (errors[field] && errors[field] !== "vacío") return "block w-full p-2 mb-2 border border-red-500 rounded focus:outline-none focus:ring-2 focus:ring-red-400";
+    if (formData[field] && !errors[field]) return "block w-full p-2 mb-2 border border-green-500 rounded focus:outline-none focus:ring-2 focus:ring-green-400";
+    return "block w-full p-2 mb-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400";
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.privacidadAceptada) {
-      setStatus({ type: "error", message: "Debes aceptar la política de privacidad" });
+    // Validación final antes de enviar
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) newErrors[key] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    if (!executeRecaptcha) {
-      setStatus({ type: "error", message: "Error: reCAPTCHA aún no está listo" });
-      return;
-    }
-
-    setStatus({ type: "loading", message: "Enviando datos..." });
+    setLoading(true);
 
     try {
-      // Genera el token de reCAPTCHA v3
-      const recaptchaToken = await executeRecaptcha("contact_form");
+      const recaptchaToken = executeRecaptcha ? await executeRecaptcha("contact_form") : "";
 
-      const payload = {
-        ...formData,
-        recaptchaToken,
-      };
+      const payload = { ...formData, recaptchaToken };
 
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // URL Web App
+        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec",
         {
           method: "POST",
-          mode: "cors",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
 
-      const text = await response.text();
-      let result;
-      try {
-        result = JSON.parse(text);
-      } catch (err) {
-        throw new Error("La respuesta no es un JSON válido: " + text);
-      }
-
-      console.log("📩 Respuesta del servidor:", result);
+      const result = await response.json();
 
       if (result.ok) {
-        setStatus({ type: "success", message: "✅ Datos guardados correctamente." });
+        alert("✅ Datos guardados correctamente.");
         setFormData({
           nombre: "",
           telefono: "",
@@ -76,12 +102,16 @@ const ContactForm = () => {
           mensaje: "",
           privacidadAceptada: false,
         });
+        setErrors({});
+        setCharCount(0);
       } else {
-        setStatus({ type: "error", message: "❌ Error: " + (result.error || "desconocido") });
+        alert("❌ Error: " + (result.error || "desconocido"));
       }
-    } catch (error) {
-      console.error("❌ Error en el envío:", error);
-      setStatus({ type: "error", message: "Error al guardar: " + error.message });
+    } catch (err) {
+      console.error(err);
+      alert("⚠️ Error de conexión: " + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,9 +125,10 @@ const ContactForm = () => {
         placeholder="Nombre"
         value={formData.nombre}
         onChange={handleChange}
-        className="block w-full p-2 mb-2 border rounded"
+        className={inputClass("nombre")}
         required
       />
+      {errors.nombre && <p className="text-red-500 text-sm mb-2">{errors.nombre !== "vacío" ? errors.nombre : "Campo obligatorio"}</p>}
 
       <input
         type="text"
@@ -105,8 +136,10 @@ const ContactForm = () => {
         placeholder="Teléfono"
         value={formData.telefono}
         onChange={handleChange}
-        className="block w-full p-2 mb-2 border rounded"
+        className={inputClass("telefono")}
+        required
       />
+      {errors.telefono && <p className="text-red-500 text-sm mb-2">{errors.telefono !== "vacío" ? errors.telefono : "Campo obligatorio"}</p>}
 
       <input
         type="email"
@@ -114,21 +147,21 @@ const ContactForm = () => {
         placeholder="Correo"
         value={formData.correo}
         onChange={handleChange}
-        className="block w-full p-2 mb-2 border rounded"
+        className={inputClass("correo")}
         required
       />
+      {errors.correo && <p className="text-red-500 text-sm mb-2">{errors.correo !== "vacío" ? errors.correo : "Campo obligatorio"}</p>}
 
       <select
         name="categoria"
         value={formData.categoria}
         onChange={handleChange}
-        className="block w-full p-2 mb-2 border rounded"
+        className={inputClass("categoria")}
         required
       >
         <option value="">Seleccione categoría</option>
-        <option value="Consulta">Consulta</option>
         <option value="Soporte">Soporte</option>
-        <option value="Otro">Otro</option>
+        <option value="Ventas">Ventas</option>
       </select>
 
       <textarea
@@ -136,8 +169,11 @@ const ContactForm = () => {
         placeholder="Mensaje"
         value={formData.mensaje}
         onChange={handleChange}
-        className="block w-full p-2 mb-2 border rounded"
+        className={inputClass("mensaje")}
+        maxLength={500}
+        required
       />
+      <p className="text-sm text-gray-500 mb-2">{charCount}/500</p>
 
       <label className="flex items-center mb-2">
         <input
@@ -146,33 +182,25 @@ const ContactForm = () => {
           checked={formData.privacidadAceptada}
           onChange={handleChange}
           className="mr-2"
-          required
         />
         Acepto la política de privacidad
       </label>
+      {errors.privacidadAceptada && (
+        <p className="text-red-500 text-sm mb-2">{errors.privacidadAceptada}</p>
+      )}
 
       <button
         type="submit"
-        disabled={status.type === "loading"}
+        disabled={loading}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
       >
-        {status.type === "loading" ? "Enviando..." : "Enviar"}
+        {loading ? "Enviando..." : "Enviar"}
       </button>
-
-      {status.message && (
-        <p
-          className={`mt-3 text-sm ${
-            status.type === "success" ? "text-green-600" : "text-red-600"
-          }`}
-        >
-          {status.message}
-        </p>
-      )}
     </form>
   );
 };
 
-// Envolvemos el form dentro del Provider para reCAPTCHA v3
+// Envolvemos con Provider
 export default function ContactFormWrapper() {
   return (
     <GoogleReCaptchaProvider reCaptchaKey="6LfQTrMrAAAAALEXtM-Gg4-6Qsw1Zyto0xxqEFVP">
