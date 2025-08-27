@@ -52,7 +52,7 @@ const ContactForm = () => {
       const result = await response.json();
       console.log("Respuesta del servidor:", result);
 
-      if (result.ok) {
+      if (result.success) {
         alert("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
