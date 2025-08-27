@@ -58,6 +58,7 @@ const ContactForm = () => {
     try {
       setLoading(true);
 
+      // Ejecutar reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
 
       const payload = {
@@ -65,21 +66,17 @@ const ContactForm = () => {
         recaptchaToken,
       };
 
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      // Llamada a la Netlify Function sendForm
+      const response = await fetch("/.netlify/functions/sendForm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const result = await response.json();
       console.log("Respuesta del servidor:", result);
 
-      if (result.success) {
+      if (result.ok) {
         toast.success("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
@@ -91,6 +88,7 @@ const ContactForm = () => {
         });
       } else {
         toast.error("Hubo un error al enviar ❌");
+        console.log("Detalle:", result.detalle || result.error);
       }
     } catch (error) {
       console.error("Error al enviar:", error);
@@ -209,4 +207,3 @@ export default function ContactFormWrapper() {
     </GoogleReCaptchaProvider>
   );
 }
-
