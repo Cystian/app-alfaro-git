@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import toast, { Toaster } from "react-hot-toast";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -8,44 +9,70 @@ const ContactForm = () => {
     correo: "",
     categoria: "",
     mensaje: "",
-    privacidadAceptada: false
+    privacidadAceptada: false,
   });
 
   const [loading, setLoading] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const handleChange = (e) => {
+  // Manejo de cambios en inputs
+  const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  }, []);
+
+  // Validaciones básicas
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{6,15}$/;
+
+    if (!emailRegex.test(formData.correo)) {
+      toast.error("Correo inválido ❌");
+      return false;
+    }
+    if (!phoneRegex.test(formData.telefono)) {
+      toast.error("Teléfono inválido (solo números, 6-15 dígitos)");
+      return false;
+    }
+    if (!formData.privacidadAceptada) {
+      toast.error("Debes aceptar la política de privacidad");
+      return false;
+    }
+    return true;
   };
 
+  // Envío de formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!validateForm()) return;
+
     if (!executeRecaptcha) {
-      alert("Error: reCAPTCHA aún no está listo.");
+      toast.error("Error: reCAPTCHA aún no está listo.");
       return;
     }
 
     try {
       setLoading(true);
 
-      // Genera el token de reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
 
       const payload = {
         ...formData,
-        recaptchaToken
+        recaptchaToken,
       };
 
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // 👈 tu URL de Apps Script
+        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec",
         {
           method: "POST",
-          body: JSON.stringify(payload)
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         }
       );
 
@@ -53,93 +80,124 @@ const ContactForm = () => {
       console.log("Respuesta del servidor:", result);
 
       if (result.success) {
-        alert("Formulario enviado con éxito ✅");
+        toast.success("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
           telefono: "",
           correo: "",
           categoria: "",
           mensaje: "",
-          privacidadAceptada: false
+          privacidadAceptada: false,
         });
       } else {
-        alert("Hubo un error ❌");
+        toast.error("Hubo un error al enviar ❌");
       }
     } catch (error) {
       console.error("Error al enviar:", error);
-      alert("Error de conexión ⚠️");
+      toast.error("Error de conexión ⚠️");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        name="nombre"
-        placeholder="Nombre"
-        onChange={handleChange}
-        value={formData.nombre}
-        required
-        className="border p-2 rounded w-full"
-      />
-      <input
-        type="text"
-        name="telefono"
-        placeholder="Teléfono"
-        onChange={handleChange}
-        value={formData.telefono}
-        required
-        className="border p-2 rounded w-full"
-      />
-      <input
-        type="email"
-        name="correo"
-        placeholder="Correo"
-        onChange={handleChange}
-        value={formData.correo}
-        required
-        className="border p-2 rounded w-full"
-      />
-      <select
-        name="categoria"
-        onChange={handleChange}
-        value={formData.categoria}
-        required
-        className="border p-2 rounded w-full"
-      >
-        <option value="">Seleccione categoría</option>
-        <option value="Soporte">Informes</option>
-        <option value="Ventas">Alquiler</option>
-         <option value="Ventas">Ventas</option>
-         <option value="Ventas">Alquiler+Ventas</option>
-      </select>
-      <textarea
-        name="mensaje"
-        placeholder="Mensaje"
-        onChange={handleChange}
-        value={formData.mensaje}
-        className="border p-2 rounded w-full"
-      />
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          name="privacidadAceptada"
-          checked={formData.privacidadAceptada}
-          onChange={handleChange}
-          required
-        />
-        Acepto la política de privacidad
-      </label>
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        {loading ? "Enviando..." : "Enviar"}
-      </button>
-    </form>
+    <>
+      <Toaster position="top-right" />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Nombre */}
+        <label className="block">
+          <span className="text-sm font-medium">Nombre</span>
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Tu nombre"
+            onChange={handleChange}
+            value={formData.nombre}
+            required
+            className="border p-2 rounded w-full mt-1"
+          />
+        </label>
+
+        {/* Teléfono */}
+        <label className="block">
+          <span className="text-sm font-medium">Teléfono</span>
+          <input
+            type="text"
+            name="telefono"
+            placeholder="Tu teléfono"
+            onChange={handleChange}
+            value={formData.telefono}
+            required
+            className="border p-2 rounded w-full mt-1"
+          />
+        </label>
+
+        {/* Correo */}
+        <label className="block">
+          <span className="text-sm font-medium">Correo</span>
+          <input
+            type="email"
+            name="correo"
+            placeholder="Tu correo"
+            onChange={handleChange}
+            value={formData.correo}
+            required
+            className="border p-2 rounded w-full mt-1"
+          />
+        </label>
+
+        {/* Categoría */}
+        <label className="block">
+          <span className="text-sm font-medium">Categoría</span>
+          <select
+            name="categoria"
+            onChange={handleChange}
+            value={formData.categoria}
+            required
+            className="border p-2 rounded w-full mt-1"
+          >
+            <option value="">Seleccione categoría</option>
+            <option value="Informes">Informes</option>
+            <option value="Alquiler">Alquiler</option>
+            <option value="Ventas">Ventas</option>
+            <option value="Alquiler+Ventas">Alquiler + Ventas</option>
+          </select>
+        </label>
+
+        {/* Mensaje */}
+        <label className="block">
+          <span className="text-sm font-medium">Mensaje</span>
+          <textarea
+            name="mensaje"
+            placeholder="Escribe tu mensaje..."
+            onChange={handleChange}
+            value={formData.mensaje}
+            className="border p-2 rounded w-full mt-1"
+          />
+        </label>
+
+        {/* Política de privacidad */}
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="privacidadAceptada"
+            checked={formData.privacidadAceptada}
+            onChange={handleChange}
+            required
+          />
+          <span>Acepto la política de privacidad</span>
+        </label>
+
+        {/* Botón */}
+        <button
+          type="submit"
+          disabled={loading}
+          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          {loading ? "⏳ Enviando..." : "Enviar"}
+        </button>
+      </form>
+    </>
   );
 };
 
@@ -151,5 +209,4 @@ export default function ContactFormWrapper() {
     </GoogleReCaptchaProvider>
   );
 }
-
 
