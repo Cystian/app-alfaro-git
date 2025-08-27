@@ -204,7 +204,7 @@ const ContactForm = () => {
 // 👇 Envolvemos el form dentro del Provider
 export default function ContactFormWrapper() {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
+    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_KEY}>
       <ContactForm />
     </GoogleReCaptchaProvider>
   );
