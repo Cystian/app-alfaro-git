@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -7,140 +8,146 @@ const ContactForm = () => {
     correo: "",
     categoria: "",
     mensaje: "",
+    privacidadAceptada: false
   });
 
-  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
-  // Manejar cambios en los inputs
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value
     });
   };
 
-  // Validaciones básicas antes de enviar
-  const validateForm = () => {
-    if (!formData.nombre.trim()) return "⚠️ El nombre es obligatorio";
-    if (!/^[0-9]{9}$/.test(formData.telefono))
-      return "⚠️ El celular debe tener 9 dígitos";
-    if (!/\S+@\S+\.\S+/.test(formData.correo))
-      return "⚠️ El correo no es válido";
-    if (!formData.categoria.trim()) return "⚠️ La categoría es obligatoria";
-    if (!formData.mensaje.trim()) return "⚠️ El mensaje es obligatorio";
-    return null;
-  };
-
-  // Enviar datos al Google Apps Script
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("⏳ Enviando...");
 
-    const error = validateForm();
-    if (error) {
-      setStatus(error);
+    if (!executeRecaptcha) {
+      alert("Error: reCAPTCHA aún no está listo.");
       return;
     }
 
     try {
+      setLoading(true);
+
+      // Genera el token de reCAPTCHA
+      const recaptchaToken = await executeRecaptcha("contact_form");
+
+      const payload = {
+        ...formData,
+        recaptchaToken
+      };
+
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // tu WebApp URL
+        "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec", // 👈 tu URL de Apps Script
         {
           method: "POST",
-            mode: "cors",
-          body: JSON.stringify(formData),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          body: JSON.stringify(payload)
         }
       );
 
-      const data = await response.json();
+      const result = await response.json();
+      console.log("Respuesta del servidor:", result);
 
-      if (data.success) {
-        setStatus("✅ Registro exitoso");
+      if (result.ok) {
+        alert("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
           telefono: "",
           correo: "",
           categoria: "",
           mensaje: "",
+          privacidadAceptada: false
         });
       } else {
-        setStatus("❌ Error en el servidor");
+        alert("Hubo un error ❌");
       }
     } catch (error) {
-      console.error("Error de conexión:", error);
-      setStatus("❌ No se pudo conectar con el servidor");
+      console.error("Error al enviar:", error);
+      alert("Error de conexión ⚠️");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-4 bg-white shadow-lg rounded-lg"
-    >
-      <h2 className="text-xl font-bold mb-4">Formulario de Contacto</h2>
-
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input
         type="text"
         name="nombre"
         placeholder="Nombre"
+        onChange={handleChange}
         value={formData.nombre}
-        onChange={handleChange}
-        className="w-full p-2 mb-3 border rounded"
         required
+        className="border p-2 rounded w-full"
       />
-
       <input
-        type="tel"
+        type="text"
         name="telefono"
-        placeholder="Celular (9 dígitos)"
-        value={formData.telefono}
+        placeholder="Teléfono"
         onChange={handleChange}
-        className="w-full p-2 mb-3 border rounded"
+        value={formData.telefono}
         required
+        className="border p-2 rounded w-full"
       />
-
       <input
         type="email"
         name="correo"
-        placeholder="Correo electrónico"
+        placeholder="Correo"
+        onChange={handleChange}
         value={formData.correo}
-        onChange={handleChange}
-        className="w-full p-2 mb-3 border rounded"
         required
+        className="border p-2 rounded w-full"
       />
-
-      <input
-        type="text"
+      <select
         name="categoria"
-        placeholder="Categoría"
-        value={formData.categoria}
         onChange={handleChange}
-        className="w-full p-2 mb-3 border rounded"
+        value={formData.categoria}
         required
-      />
-
+        className="border p-2 rounded w-full"
+      >
+        <option value="">Seleccione categoría</option>
+        <option value="Soporte">Soporte</option>
+        <option value="Ventas">Ventas</option>
+      </select>
       <textarea
         name="mensaje"
         placeholder="Mensaje"
-        value={formData.mensaje}
         onChange={handleChange}
-        className="w-full p-2 mb-3 border rounded"
-        required
-      ></textarea>
-
+        value={formData.mensaje}
+        className="border p-2 rounded w-full"
+      />
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          name="privacidadAceptada"
+          checked={formData.privacidadAceptada}
+          onChange={handleChange}
+          required
+        />
+        Acepto la política de privacidad
+      </label>
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        disabled={loading}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
-        Enviar
+        {loading ? "Enviando..." : "Enviar"}
       </button>
-
-      {status && <p className="mt-3 text-center">{status}</p>}
     </form>
   );
 };
 
-export default ContactForm;
+// 👇 Envolvemos el form dentro del Provider
+export default function ContactFormWrapper() {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey="6LfQTrMrAAAAALEXtM-Gg4-6Qsw1Zyto0xxqEFVP">
+      <ContactForm />
+    </GoogleReCaptchaProvider>
+  );
+}
+
+
