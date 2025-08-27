@@ -110,8 +110,10 @@ const ContactForm = () => {
         className="border p-2 rounded w-full"
       >
         <option value="">Seleccione categoría</option>
-        <option value="Soporte">Soporte</option>
-        <option value="Ventas">Ventas</option>
+        <option value="Soporte">Informes</option>
+        <option value="Ventas">Alquiler</option>
+         <option value="Ventas">Ventas</option>
+         <option value="Ventas">Alquiler+Ventas</option>
       </select>
       <textarea
         name="mensaje"
