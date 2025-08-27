@@ -1,73 +1,40 @@
-// netlify/functions/sendForm.js
-export async function handler(event) {
-  const cors = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
+import fetch from "node-fetch";
 
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers: cors, body: "" };
-  }
+export async function handler(event, context) {
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, headers: cors, body: "Method Not Allowed" };
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ success: false, message: "Método no permitido" }),
+    };
   }
 
   try {
-    const body = JSON.parse(event.body || "{}");
+    const data = JSON.parse(event.body);
 
-    // 1) Validar reCAPTCHA en el servidor
-    const secret = process.env.RECAPTCHA_SECRET; // <- configura en Netlify
-    if (!secret) {
-      return {
-        statusCode: 500,
-        headers: cors,
-        body: JSON.stringify({ ok: false, error: "RECAPTCHA_SECRET no configurado" }),
-      };
-    }
+    // URL de tu Apps Script
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec";
 
-    const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        secret,
-        response: body.recaptchaToken || "",
-      }),
-    });
-
-    const verifyJson = await verifyRes.json();
-    if (!verifyJson.success || (typeof verifyJson.score === "number" && verifyJson.score < 0.5)) {
-      return {
-        statusCode: 400,
-        headers: cors,
-        body: JSON.stringify({ ok: false, error: "reCAPTCHA inválido", detalle: verifyJson }),
-      };
-    }
-
-    // 2) Reenviar a tu Apps Script (server-to-server ⇒ sin CORS)
-    const appsScriptUrl = process.env.APPS_SCRIPT_URL; // <- configura en Netlify (tu URL /exec)
-    if (!appsScriptUrl) {
-      return {
-        statusCode: 500,
-        headers: cors,
-        body: JSON.stringify({ ok: false, error: "APPS_SCRIPT_URL no configurado" }),
-      };
-    }
-
-    // Opcional: no mandes el token al Sheet (mejor higiene)
-    const { recaptchaToken, ...forwardPayload } = body;
-
-    const gasRes = await fetch(appsScriptUrl, {
+    const response = await fetch(scriptURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(forwardPayload),
+      body: JSON.stringify(data),
     });
 
-    // Si tu GAS devuelve JSON como { ok: true, ... }
-    const gasJson = await gasRes.json().catch(() => ({ ok: false, error: "Respuesta no JSON" }));
+    const result = await response.json();
 
-    return { statusCode: 200, headers: cors, body: JSON.stringify(gasJson) };
-  } catch (err) {
-    return { statusCode: 500, headers: cors, body: JSON.stringify({ ok: false, error: err.message }) };
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+      },
+      body: JSON.stringify(result),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ success: false, message: error.message }),
+    };
   }
 }
