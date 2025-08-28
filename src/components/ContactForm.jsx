@@ -45,58 +45,59 @@ const ContactForm = () => {
   };
 
   // Envío de formulario
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    if (!validateForm()) return;
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!executeRecaptcha) {
-      toast.error("Error: reCAPTCHA aún no está listo.");
-      return;
-    }
+  if (!validateForm()) return;
 
-    try {
-      setLoading(true);
+  if (!executeRecaptcha) {
+    toast.error("Error: reCAPTCHA aún no está listo.");
+    return;
+  }
 
-      // Ejecutar reCAPTCHA
-      const recaptchaToken = await executeRecaptcha("contact_form");
+  try {
+    setLoading(true);
 
-      const payload = {
-        ...formData,
-        recaptchaToken,
-      };
+    // Ejecutar reCAPTCHA
+    const recaptchaToken = await executeRecaptcha("contact_form");
 
-      // Llamada a la Netlify Function sendForm
-      const response = await fetch("/.netlify/functions/sendForm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+    const payload = {
+      ...formData,
+      recaptchaToken,
+    };
+
+    // Llamada a la Netlify Function sendForm
+    const response = await fetch("/.netlify/functions/sendForm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+    console.log("Respuesta del servidor:", result);
+
+    if (result.ok) {
+      toast.success("✅ Tu mensaje fue enviado correctamente");
+      setFormData({
+        nombre: "",
+        telefono: "",
+        correo: "",
+        categoria: "",
+        mensaje: "",
+        privacidadAceptada: false,
       });
-
-      const result = await response.json();
-      console.log("Respuesta del servidor:", result);
-
-      if (result.ok) {
-        toast.success("Formulario enviado con éxito ✅");
-        setFormData({
-          nombre: "",
-          telefono: "",
-          correo: "",
-          categoria: "",
-          mensaje: "",
-          privacidadAceptada: false,
-        });
-      } else {
-        toast.error("Hubo un error al enviar ❌");
-        console.log("Detalle:", result.detalle || result.error);
-      }
-    } catch (error) {
-      console.error("Error al enviar:", error);
-      toast.error("Error de conexión ⚠️");
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error("❌ Error al enviar: " + (result.error || "Inténtalo de nuevo"));
+      console.log("Detalle:", result.detalle || result.error);
     }
-  };
+  } catch (error) {
+    console.error("Error al enviar:", error);
+    toast.error("⚠️ Error de conexión, intenta de nuevo");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
