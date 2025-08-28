@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import toast from "react-hot-toast"; // ✅ solo importamos toast
+import toast from "react-hot-toast"; // ✅ solo `toast`
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,7 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  // Manejo de cambios en inputs
+  // 🔄 Manejo de cambios en inputs
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -24,7 +24,7 @@ const ContactForm = () => {
     }));
   }, []);
 
-  // Validaciones básicas
+  // ✅ Validaciones básicas
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{6,15}$/;
@@ -44,7 +44,7 @@ const ContactForm = () => {
     return true;
   };
 
-  // Envío de formulario
+  // 📤 Envío de formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -61,10 +61,7 @@ const ContactForm = () => {
       // Ejecutar reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
 
-      const payload = {
-        ...formData,
-        recaptchaToken,
-      };
+      const payload = { ...formData, recaptchaToken };
 
       // Llamada a la Netlify Function sendForm
       const response = await fetch("/.netlify/functions/sendForm", {
@@ -78,7 +75,7 @@ const ContactForm = () => {
 
       if (result.success) {
         toast.success("Formulario enviado con éxito ✅");
-        // 🔄 Reseteamos formulario
+        // 🔄 Resetear formulario
         setFormData({
           nombre: "",
           telefono: "",
@@ -189,7 +186,7 @@ const ContactForm = () => {
       <button
         type="submit"
         disabled={loading}
-        className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? "⏳ Enviando..." : "Enviar"}
       </button>
@@ -205,4 +202,3 @@ export default function ContactFormWrapper() {
     </GoogleReCaptchaProvider>
   );
 }
-
