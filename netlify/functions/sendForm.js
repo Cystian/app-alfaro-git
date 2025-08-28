@@ -1,134 +1,69 @@
-import React, { useState } from "react";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { toast } from "react-hot-toast";
+// Si tu entorno ya tiene fetch nativo, quita esta línea
+import fetch from "node-fetch";
 
-const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    telefono: "",
-    correo: "",
-    categoria: "",
-    mensaje: "",
-    privacidadAceptada: false,
-  });
+export async function handler(event, context) {
+  // Manejo de preflight requests
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: "OK",
+    };
+  }
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  // Solo permitir POST
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify({ ok: false, message: "Método no permitido" }),
+    };
+  }
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  try {
+    const data = JSON.parse(event.body);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    // URL de tu Apps Script
+    const scriptURL =
+      "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec";
 
-    if (!executeRecaptcha) {
-      toast.error("ReCAPTCHA no disponible, intenta nuevamente.");
-      return;
-    }
+    // Llamada al Apps Script
+    const response = await fetch(scriptURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-    try {
-      const token = await executeRecaptcha("contact_form");
-      const dataToSend = { ...formData, recaptchaToken: token };
+    const result = await response.json();
 
-      const response = await fetch("/.netlify/functions/submit-form", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToSend),
-      });
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify(result),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify({ ok: false, message: error.message }),
+    };
+  }
+}
 
-      const result = await response.json();
-      console.log("Respuesta del servidor:", result);
-
-      if (result?.ok) {
-        toast.success(result.message || "✅ Formulario enviado con éxito");
-        setFormData({
-          nombre: "",
-          telefono: "",
-          correo: "",
-          categoria: "",
-          mensaje: "",
-          privacidadAceptada: false,
-        });
-      } else {
-        toast.error("❌ Error: " + (result.message || "Desconocido"));
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("⚠️ Error inesperado: " + error.message);
-    }
-  };
-
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey="TU_CLAVE_RECAPTCHA_PUBLICA">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          placeholder="Nombre"
-          required
-          className="border p-2 w-full"
-        />
-        <input
-          type="tel"
-          name="telefono"
-          value={formData.telefono}
-          onChange={handleChange}
-          placeholder="Teléfono"
-          className="border p-2 w-full"
-        />
-        <input
-          type="email"
-          name="correo"
-          value={formData.correo}
-          onChange={handleChange}
-          placeholder="Correo"
-          required
-          className="border p-2 w-full"
-        />
-        <select
-          name="categoria"
-          value={formData.categoria}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        >
-          <option value="">Seleccione categoría</option>
-          <option value="consulta">Consulta</option>
-          <option value="soporte">Soporte</option>
-          <option value="otro">Otro</option>
-        </select>
-        <textarea
-          name="mensaje"
-          value={formData.mensaje}
-          onChange={handleChange}
-          placeholder="Mensaje"
-          className="border p-2 w-full"
-        ></textarea>
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            name="privacidadAceptada"
-            checked={formData.privacidadAceptada}
-            onChange={handleChange}
-            required
-            className="mr-2"
-          />
-          Acepto la política de privacidad
-        </label>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white p-2 rounded"
-        >
-          Enviar
-        </button>
-      </form>
-    </GoogleReCaptchaProvider>
-  );
-};
-
-export default ContactForm;
