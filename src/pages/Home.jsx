@@ -5,7 +5,7 @@ import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
-import toast, { Toaster } from "react-hot-toast"; // ✅ Importamos también `toast`
+import toast, { Toaster } from "react-hot-toast"; // ✅ `toast` y `Toaster` solo aquí
 
 export default function Home() {
   return (
@@ -14,7 +14,8 @@ export default function Home() {
         <SearchBanner />
 
         <section>
-          <h2 className="text-2xl font-bold mb-4">Propiedades destacadasXD</h2>
+          <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
+          {/* 🔔 Botón de prueba */}
           <button
             onClick={() => toast.success("Toast de prueba ✅")}
             className="bg-green-600 text-white px-4 py-2 rounded"
