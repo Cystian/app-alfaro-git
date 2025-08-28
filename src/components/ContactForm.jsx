@@ -64,23 +64,24 @@ const ContactForm = () => {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
-      console.log("Respuesta del servidor:", result);
+   const result = await response.json();
+console.log("Respuesta del servidor:", result);
 
-      if (result?.ok) {
-        toast.success("✅ Formulario enviado con éxito");
-        setFormData({
-          nombre: "",
-          telefono: "",
-          correo: "",
-          categoria: "",
-          mensaje: "",
-          privacidadAceptada: false,
-        });
-      } else {
-        toast.error("❌ Error al enviar: " + (result?.error || "Inténtalo de nuevo"));
-        console.log("Detalle:", result?.detalle || result?.error);
-      }
+// Verifica distintas formas de 'ok'
+if (result?.ok === true || result?.ok === "true") {
+  toast.success(result.message || "Formulario enviado con éxito ✅");
+  setFormData({
+    nombre: "",
+    telefono: "",
+    correo: "",
+    categoria: "",
+    mensaje: "",
+    privacidadAceptada: false,
+  });
+} else {
+  toast.error(result.error || "Hubo un error al enviar ❌");
+  console.log("Detalle:", result.detalle || result.error);
+}
     } catch (error) {
       console.error("Error al enviar:", error);
       toast.error("⚠️ Error de conexión");
