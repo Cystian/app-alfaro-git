@@ -1,4 +1,4 @@
-// Si tu entorno ya tiene fetch nativo, quita esta línea
+// Si tu entorno ya tiene fetch nativo, puedes quitar esta línea
 import fetch from "node-fetch";
 
 export async function handler(event, context) {
@@ -24,7 +24,7 @@ export async function handler(event, context) {
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },
-      body: JSON.stringify({ ok: false, message: "Método no permitido" }),
+      body: JSON.stringify({ success: false, message: "Método no permitido" }),
     };
   }
 
@@ -62,7 +62,7 @@ export async function handler(event, context) {
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },
-      body: JSON.stringify({ ok: false, message: error.message }),
+      body: JSON.stringify({ success: false, message: error.message }),
     };
   }
 }
