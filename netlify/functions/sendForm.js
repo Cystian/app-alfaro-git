@@ -1,50 +1,69 @@
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError(null);
+// Si tu entorno ya tiene fetch nativo, puedes quitar esta línea
+import fetch from "node-fetch";
+
+export async function handler(event, context) {
+  // Manejo de preflight requests
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: "OK",
+    };
+  }
+
+  // Solo permitir POST
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify({ success: false, message: "Método no permitido" }),
+    };
+  }
 
   try {
-    // Obtener token reCAPTCHA
-    const token = await executeRecaptcha("form_submit");
+    const data = JSON.parse(event.body);
 
-    // Enviar datos al backend
-    const response = await fetch("/.netlify/functions/sendForm", {
+    // URL de tu Apps Script
+    const scriptURL =
+      "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec";
+
+    // Llamada al Apps Script
+    const response = await fetch(scriptURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...formData, recaptchaToken: token }),
+      body: JSON.stringify(data),
     });
 
-    let result;
-    try {
-      result = await response.json();
-    } catch (err) {
-      result = { ok: false, error: "Respuesta no es JSON válido" };
-    }
+    const result = await response.json();
 
-    console.log("Respuesta del servidor:", result);
-
-    // Nueva lógica: comprobamos ok pero también fallback
-    if (result && result.ok) {
-      alert("✅ Tu mensaje fue enviado con éxito.");
-      setFormData({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        categoria: "",
-        mensaje: "",
-        privacidadAceptada: false,
-      });
-    } else {
-      // Si result.ok no llega, igual notificamos
-      alert("⚠️ Tus datos fueron enviados, pero hubo un detalle en la confirmación.");
-      console.error("Detalle del error:", result);
-    }
-  } catch (err) {
-    console.error("Error en envío:", err);
-    setError("Hubo un problema al enviar el formulario.");
-    alert("❌ Error al enviar el formulario. Intenta nuevamente.");
-  } finally {
-    setLoading(false);
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify(result),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+      body: JSON.stringify({ success: false, message: error.message }),
+    };
   }
-};
+}
 
