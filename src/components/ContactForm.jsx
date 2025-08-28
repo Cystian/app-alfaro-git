@@ -77,6 +77,7 @@ const ContactForm = () => {
       console.log("Respuesta del servidor:", result);
 console.log("Respuesta cruda------------------:", result);
       if (result.ok || result.success) {
+        console.log("Disparando toast......................");
         toast.success("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
