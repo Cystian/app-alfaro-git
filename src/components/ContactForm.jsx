@@ -15,7 +15,6 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  // Manejo de cambios en inputs
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -24,7 +23,6 @@ const ContactForm = () => {
     }));
   }, []);
 
-  // Validaciones básicas
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{6,15}$/;
@@ -44,65 +42,58 @@ const ContactForm = () => {
     return true;
   };
 
-  // Envío de formulario
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!validateForm()) return;
-
-  if (!executeRecaptcha) {
-    toast.error("Error: reCAPTCHA aún no está listo.");
-    return;
-  }
-
-  try {
-    setLoading(true);
-
-    // Ejecutar reCAPTCHA
-    const recaptchaToken = await executeRecaptcha("contact_form");
-
-    const payload = {
-      ...formData,
-      recaptchaToken,
-    };
-
-    // Llamada a la Netlify Function sendForm
-    const response = await fetch("/.netlify/functions/sendForm", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const result = await response.json();
-    console.log("Respuesta del servidor:", result);
-
-    if (result.ok) {
-      toast.success("✅ Tu mensaje fue enviado correctamente");
-      setFormData({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        categoria: "",
-        mensaje: "",
-        privacidadAceptada: false,
-      });
-    } else {
-      toast.error("❌ Error al enviar: " + (result.error || "Inténtalo de nuevo"));
-      console.log("Detalle:", result.detalle || result.error);
+    if (!executeRecaptcha) {
+      toast.error("Error: reCAPTCHA aún no está listo.");
+      return;
     }
-  } catch (error) {
-    console.error("Error al enviar:", error);
-    toast.error("⚠️ Error de conexión, intenta de nuevo");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    try {
+      setLoading(true);
+
+      const recaptchaToken = await executeRecaptcha("contact_form");
+
+      const payload = { ...formData, recaptchaToken };
+
+      const response = await fetch("/.netlify/functions/sendForm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      console.log("Respuesta del servidor:", result);
+
+      if (result?.ok) {
+        toast.success("✅ Formulario enviado con éxito");
+        setFormData({
+          nombre: "",
+          telefono: "",
+          correo: "",
+          categoria: "",
+          mensaje: "",
+          privacidadAceptada: false,
+        });
+      } else {
+        toast.error("❌ Error al enviar: " + (result?.error || "Inténtalo de nuevo"));
+        console.log("Detalle:", result?.detalle || result?.error);
+      }
+    } catch (error) {
+      console.error("Error al enviar:", error);
+      toast.error("⚠️ Error de conexión");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <Toaster position="top-right" />
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Campos del formulario */}
         {/* Nombre */}
         <label className="block">
           <span className="text-sm font-medium">Nombre</span>
@@ -116,7 +107,6 @@ const handleSubmit = async (e) => {
             className="border p-2 rounded w-full mt-1"
           />
         </label>
-
         {/* Teléfono */}
         <label className="block">
           <span className="text-sm font-medium">Teléfono</span>
@@ -130,7 +120,6 @@ const handleSubmit = async (e) => {
             className="border p-2 rounded w-full mt-1"
           />
         </label>
-
         {/* Correo */}
         <label className="block">
           <span className="text-sm font-medium">Correo</span>
@@ -144,7 +133,6 @@ const handleSubmit = async (e) => {
             className="border p-2 rounded w-full mt-1"
           />
         </label>
-
         {/* Categoría */}
         <label className="block">
           <span className="text-sm font-medium">Categoría</span>
@@ -162,7 +150,6 @@ const handleSubmit = async (e) => {
             <option value="Alquiler+Ventas">Alquiler + Ventas</option>
           </select>
         </label>
-
         {/* Mensaje */}
         <label className="block">
           <span className="text-sm font-medium">Mensaje</span>
@@ -174,8 +161,7 @@ const handleSubmit = async (e) => {
             className="border p-2 rounded w-full mt-1"
           />
         </label>
-
-        {/* Política de privacidad */}
+        {/* Política */}
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
@@ -186,7 +172,6 @@ const handleSubmit = async (e) => {
           />
           <span>Acepto la política de privacidad</span>
         </label>
-
         {/* Botón */}
         <button
           type="submit"
@@ -200,7 +185,6 @@ const handleSubmit = async (e) => {
   );
 };
 
-// 👇 Envolvemos el form dentro del Provider
 export default function ContactFormWrapper() {
   return (
     <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_KEY}>
