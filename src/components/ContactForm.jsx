@@ -87,8 +87,8 @@ console.log("Respuesta cruda------------------:", result);
           privacidadAceptada: false,
         });
       } else {
-        toast.error("Hubo un error al enviar ❌");
-        console.log("Detalle:", result.detalle || result.error);
+     toast.error("Hubo un error al enviar ❌");
+  console.log("Detalle:", result.detalle || result.error || result.message);
       }
     } catch (error) {
       console.error("Error al enviar:", error);
