@@ -1,4 +1,4 @@
-// Si tu entorno ya tiene fetch nativo, puedes quitar esta línea 
+// Si tu entorno ya tiene fetch nativo, puedes quitar esta línea
 import fetch from "node-fetch";
 
 export async function handler(event, context) {
@@ -15,6 +15,7 @@ export async function handler(event, context) {
     };
   }
 
+  // Solo permitir POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -23,13 +24,14 @@ export async function handler(event, context) {
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },
-      body: JSON.stringify({ ok: false, message: "Método no permitido" }),
+      body: JSON.stringify({ ok: false, error: "Método no permitido" }),
     };
   }
 
   try {
     const data = JSON.parse(event.body);
 
+    // URL de tu Apps Script
     const scriptURL =
       "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec";
 
@@ -50,7 +52,8 @@ export async function handler(event, context) {
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },
-      body: JSON.stringify(result), // <-- Devuelve exactamente lo que Apps Script retorna
+      // Devuelve exactamente lo que retorna el Apps Script
+      body: JSON.stringify(result),
     };
   } catch (error) {
     return {
