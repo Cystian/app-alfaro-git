@@ -78,7 +78,7 @@ const ContactForm = () => {
 console.log("Propiedad success---------------:", result.success);
 
       
-      if (result && result.success === true) {
+      if (result.success === true) {
         toast.success("Formulario enviado con éxito ✅");
         // 🔄 Resetear formulario
         setFormData({
