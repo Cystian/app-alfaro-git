@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import toast from "react-hot-toast";
+import toast from "react-hot-toast"; // ✅ solo importamos toast
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -75,9 +75,8 @@ const ContactForm = () => {
 
       const result = await response.json();
       console.log("Respuesta del servidor:", result);
-console.log("Respuesta cruda------------------:", result);
+
       if (result.ok || result.success) {
-        console.log("Disparando toast......................");
         toast.success("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
@@ -88,8 +87,8 @@ console.log("Respuesta cruda------------------:", result);
           privacidadAceptada: false,
         });
       } else {
-     toast.error("Hubo un error al enviar ❌");
-  console.log("Detalle:", result.detalle || result.error || result.message);
+        toast.error("Hubo un error al enviar ❌");
+        console.log("Detalle:", result.detalle || result.error || result.message);
       }
     } catch (error) {
       console.error("Error al enviar:", error);
@@ -100,103 +99,100 @@ console.log("Respuesta cruda------------------:", result);
   };
 
   return (
-    <>
-      <Toaster position="top-right" />
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Nombre */}
-        <label className="block">
-          <span className="text-sm font-medium">Nombre</span>
-          <input
-            type="text"
-            name="nombre"
-            placeholder="Tu nombre"
-            onChange={handleChange}
-            value={formData.nombre}
-            required
-            className="border p-2 rounded w-full mt-1"
-          />
-        </label>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Nombre */}
+      <label className="block">
+        <span className="text-sm font-medium">Nombre</span>
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Tu nombre"
+          onChange={handleChange}
+          value={formData.nombre}
+          required
+          className="border p-2 rounded w-full mt-1"
+        />
+      </label>
 
-        {/* Teléfono */}
-        <label className="block">
-          <span className="text-sm font-medium">Teléfono</span>
-          <input
-            type="text"
-            name="telefono"
-            placeholder="Tu teléfono"
-            onChange={handleChange}
-            value={formData.telefono}
-            required
-            className="border p-2 rounded w-full mt-1"
-          />
-        </label>
+      {/* Teléfono */}
+      <label className="block">
+        <span className="text-sm font-medium">Teléfono</span>
+        <input
+          type="text"
+          name="telefono"
+          placeholder="Tu teléfono"
+          onChange={handleChange}
+          value={formData.telefono}
+          required
+          className="border p-2 rounded w-full mt-1"
+        />
+      </label>
 
-        {/* Correo */}
-        <label className="block">
-          <span className="text-sm font-medium">Correo</span>
-          <input
-            type="email"
-            name="correo"
-            placeholder="Tu correo"
-            onChange={handleChange}
-            value={formData.correo}
-            required
-            className="border p-2 rounded w-full mt-1"
-          />
-        </label>
+      {/* Correo */}
+      <label className="block">
+        <span className="text-sm font-medium">Correo</span>
+        <input
+          type="email"
+          name="correo"
+          placeholder="Tu correo"
+          onChange={handleChange}
+          value={formData.correo}
+          required
+          className="border p-2 rounded w-full mt-1"
+        />
+      </label>
 
-        {/* Categoría */}
-        <label className="block">
-          <span className="text-sm font-medium">Categoría</span>
-          <select
-            name="categoria"
-            onChange={handleChange}
-            value={formData.categoria}
-            required
-            className="border p-2 rounded w-full mt-1"
-          >
-            <option value="">Seleccione categoría</option>
-            <option value="Informes">Informes</option>
-            <option value="Alquiler">Alquiler</option>
-            <option value="Ventas">Ventas</option>
-            <option value="Alquiler+Ventas">Alquiler + Ventas</option>
-          </select>
-        </label>
-
-        {/* Mensaje */}
-        <label className="block">
-          <span className="text-sm font-medium">Mensaje</span>
-          <textarea
-            name="mensaje"
-            placeholder="Escribe tu mensaje..."
-            onChange={handleChange}
-            value={formData.mensaje}
-            className="border p-2 rounded w-full mt-1"
-          />
-        </label>
-
-        {/* Política de privacidad */}
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            name="privacidadAceptada"
-            checked={formData.privacidadAceptada}
-            onChange={handleChange}
-            required
-          />
-          <span>Acepto la política de privacidad</span>
-        </label>
-
-        {/* Botón */}
-        <button
-          type="submit"
-          disabled={loading}
-          className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+      {/* Categoría */}
+      <label className="block">
+        <span className="text-sm font-medium">Categoría</span>
+        <select
+          name="categoria"
+          onChange={handleChange}
+          value={formData.categoria}
+          required
+          className="border p-2 rounded w-full mt-1"
         >
-          {loading ? "⏳ Enviando..." : "Enviar"}
-        </button>
-      </form>
-    </>
+          <option value="">Seleccione categoría</option>
+          <option value="Informes">Informes</option>
+          <option value="Alquiler">Alquiler</option>
+          <option value="Ventas">Ventas</option>
+          <option value="Alquiler+Ventas">Alquiler + Ventas</option>
+        </select>
+      </label>
+
+      {/* Mensaje */}
+      <label className="block">
+        <span className="text-sm font-medium">Mensaje</span>
+        <textarea
+          name="mensaje"
+          placeholder="Escribe tu mensaje..."
+          onChange={handleChange}
+          value={formData.mensaje}
+          className="border p-2 rounded w-full mt-1"
+        />
+      </label>
+
+      {/* Política de privacidad */}
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          name="privacidadAceptada"
+          checked={formData.privacidadAceptada}
+          onChange={handleChange}
+          required
+        />
+        <span>Acepto la política de privacidad</span>
+      </label>
+
+      {/* Botón */}
+      <button
+        type="submit"
+        disabled={loading}
+        className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed`}
+      >
+        {loading ? "⏳ Enviando..." : "Enviar"}
+      </button>
+    </form>
   );
 };
 
@@ -208,5 +204,4 @@ export default function ContactFormWrapper() {
     </GoogleReCaptchaProvider>
   );
 }
-
 
