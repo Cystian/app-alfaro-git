@@ -5,7 +5,7 @@ import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
-import toast, { Toaster } from "react-hot-toast"; // ✅ `toast` y `Toaster` solo aquí
+import  { Toaster } from "react-hot-toast"; // ✅ `toast` y `Toaster` solo aquí
 
 export default function Home() {
   return (
