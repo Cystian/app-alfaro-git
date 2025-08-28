@@ -76,7 +76,7 @@ const ContactForm = () => {
       const result = await response.json();
       console.log("Respuesta del servidor:", result);
 console.log("Respuesta cruda------------------:", result);
-      if (result.ok) {
+      if (result.ok || result.success) {
         toast.success("Formulario enviado con éxito ✅");
         setFormData({
           nombre: "",
