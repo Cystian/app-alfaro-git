@@ -73,7 +73,12 @@ const ContactForm = () => {
       const result = await response.json();
       console.log("Respuesta del servidor:", result);
 
-      if (result.success) {
+
+      console.log("Objeto result-------------:", result);
+console.log("Propiedad success---------------:", result.success);
+
+      
+      if (result && result.success === true) {
         toast.success("Formulario enviado con éxito ✅");
         // 🔄 Resetear formulario
         setFormData({
