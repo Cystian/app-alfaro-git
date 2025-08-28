@@ -15,13 +15,6 @@ export default function Home() {
 
         <section>
           <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
-          {/* 🔔 Botón de prueba */}
-          <button
-            onClick={() => toast.success("Toast de prueba ✅")}
-            className="bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Test Toast
-          </button>
           <FeaturedProperties />
         </section>
 
