@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from "react";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 const ContactForm = () => {
@@ -9,214 +8,136 @@ const ContactForm = () => {
     correo: "",
     categoria: "",
     mensaje: "",
-    privacidadAceptada: false,
   });
 
-  const [loading, setLoading] = useState(false);
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
-  const handleChange = useCallback((e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }, []);
-
-  const validateForm = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{6,15}$/;
-
-    if (!emailRegex.test(formData.correo)) {
-      toast.error("Correo inválido ❌");
-      return false;
-    }
-    if (!phoneRegex.test(formData.telefono)) {
-      toast.error("Teléfono inválido (solo números, 6-15 dígitos)");
-      return false;
-    }
-    if (!formData.privacidadAceptada) {
-      toast.error("Debes aceptar la política de privacidad");
-      return false;
-    }
-    return true;
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-
-    if (!executeRecaptcha) {
-      toast.error("Error: reCAPTCHA aún no está listo.");
-      return;
-    }
 
     try {
-      setLoading(true);
-
-      const recaptchaToken = await executeRecaptcha("contact_form");
-      const payload = { ...formData, recaptchaToken };
-
-      const result = await toast.promise(
-        (async () => {
-          const response = await fetch("/.netlify/functions/sendForm", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-          const data = await response.json();
-          if (data.success !== true) {
-            throw new Error(data.message || data.error || "Error al enviar");
-          }
-          return data;
-        })(),
-        {
-          loading: "Enviando…",
-          success: "Formulario enviado con éxito ✅",
-          error: "Hubo un error al enviar ❌",
-        },
-        { duration: 4000 }
-      );
-
-      console.log("Respuesta del servidor:", result);
-      setFormData({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        categoria: "",
-        mensaje: "",
-        privacidadAceptada: false,
+      const response = await fetch("https://tu-api.com/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      const result = await response.json();
+      console.log("Respuesta del servidor:", result);
+
+      if (result.success) {
+        toast.success("Formulario enviado con éxito ✅");
+        setFormData({ nombre: "", telefono: "", correo: "", categoria: "", mensaje: "" });
+      } else {
+        toast.error("Hubo un error al enviar el formulario ❌");
+      }
     } catch (error) {
       console.error("Error al enviar:", error);
-    } finally {
-      setLoading(false);
+      toast.error("Error en la conexión con el servidor ⚠️");
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-      {/* Encabezado */}
-      <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">Contáctanos</h2>
-      <p className="text-center text-gray-500 mb-6 text-sm">
-        Completa el formulario y nos pondremos en contacto contigo.
-      </p>
-
-      {/* Formulario */}
+    <div className="max-w-lg mx-auto mt-12 p-8 bg-white shadow-xl rounded-2xl border border-gray-100">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        📩 Contáctanos
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Nombre */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Nombre completo
+          </label>
           <input
             type="text"
             name="nombre"
-            placeholder="Ej. Juan Pérez"
-            onChange={handleChange}
             value={formData.nombre}
+            onChange={handleChange}
             required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            placeholder="Ej: Juan Pérez"
           />
         </div>
 
         {/* Teléfono */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Teléfono
+          </label>
           <input
-            type="text"
+            type="tel"
             name="telefono"
-            placeholder="Ej. +51 999 999 999"
-            onChange={handleChange}
             value={formData.telefono}
+            onChange={handleChange}
             required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            placeholder="Ej: +51 987654321"
           />
         </div>
 
         {/* Correo */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Correo</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Correo electrónico
+          </label>
           <input
             type="email"
             name="correo"
-            placeholder="ejemplo@correo.com"
-            onChange={handleChange}
             value={formData.correo}
+            onChange={handleChange}
             required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            placeholder="Ej: correo@ejemplo.com"
           />
         </div>
 
         {/* Categoría */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Categoría
+          </label>
           <select
             name="categoria"
-            onChange={handleChange}
             value={formData.categoria}
+            onChange={handleChange}
             required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
           >
-            <option value="">Seleccione categoría</option>
-            <option value="Informes">Informes</option>
-            <option value="Alquiler">Alquiler</option>
-            <option value="Ventas">Ventas</option>
-            <option value="Alquiler+Ventas">Alquiler + Ventas</option>
+            <option value="">Selecciona una opción</option>
+            <option value="consulta">Consulta</option>
+            <option value="soporte">Soporte</option>
+            <option value="otro">Otro</option>
           </select>
         </div>
 
         {/* Mensaje */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Mensaje
+          </label>
           <textarea
             name="mensaje"
-            placeholder="Escribe tu mensaje..."
-            onChange={handleChange}
             value={formData.mensaje}
-            rows="4"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
-          />
-        </div>
-
-        {/* Política de privacidad */}
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            name="privacidadAceptada"
-            checked={formData.privacidadAceptada}
             onChange={handleChange}
+            rows="4"
             required
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
+            placeholder="Escribe tu mensaje aquí..."
           />
-          <span className="text-sm text-gray-600">
-            Acepto la política de privacidad
-          </span>
         </div>
 
         {/* Botón */}
         <button
           type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold 
-                     py-3 rounded-lg shadow-md transition-all duration-200 
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition transform hover:scale-[1.02]"
         >
-          {loading ? "⏳ Enviando..." : "Enviar mensaje"}
+          🚀 Enviar
         </button>
       </form>
     </div>
   );
 };
 
-// Provider reCAPTCHA
-export default function ContactFormWrapper() {
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_KEY}>
-      <ContactForm />
-    </GoogleReCaptchaProvider>
-  );
-}
+export default ContactForm;
