@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import toast from "react-hot-toast"; // ✅ solo `toastt`
+import toast from "react-hot-toast";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,6 @@ const ContactForm = () => {
   const [loading, setLoading] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
 
-  // 🔄 Manejo de cambios en inputs
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -24,7 +23,6 @@ const ContactForm = () => {
     }));
   }, []);
 
-  // ✅ Validaciones básicas
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{6,15}$/;
@@ -43,60 +41,63 @@ const ContactForm = () => {
     }
     return true;
   };
-  // 📤 Envío de formulario
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     if (!executeRecaptcha) {
       toast.error("Error: reCAPTCHA aún no está listo.");
       return;
     }
+
     try {
       setLoading(true);
 
-      // Ejecutar reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
-
       const payload = { ...formData, recaptchaToken };
 
-      // Llamada a la Netlify Function sendForm
-      const response = await fetch("/.netlify/functions/sendForm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      // 🎯 UX pro: toast de carga + éxito/fracaso
+      const result = await toast.promise(
+        (async () => {
+          const response = await fetch("/.netlify/functions/sendForm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          // Fuerza error si success no es true para que caiga en el toast de error
+          if (data.success !== true) {
+            throw new Error(data.message || data.error || "Error al enviar");
+          }
+          return data;
+        })(),
+        {
+          loading: "Enviando…",
+          success: "Formulario enviado con éxito ✅",
+          error: "Hubo un error al enviar ❌",
+        },
+        { duration: 4000 }
+      );
 
-      const result = await response.json();
+      // Si llegamos aquí es porque success === true
       console.log("Respuesta del servidor:", result);
-      console.log("Objeto result-------------:", result);
-      console.log("Propiedad success---------------:", result.success);
-      // 👇 fuerza conversión booleana
-      if (result.success === true || String(result.success) === "true") {
-        console.log("🎉 Entrando al IF, success vale:", result.success);
-        toast.success("Formulario enviado con éxito ✅", { duration: 4000 });
-        // 🔄 Resetear formulario después del toast
-        setFormData({
-          nombre: "",
-          telefono: "",
-          correo: "",
-          categoria: "",
-          mensaje: "",
-          privacidadAceptada: false,
-        });
-      } else {
-        toast.error("Hubo un error al enviar ❌");
-        console.log("Detalle:", result.detalle || result.error || result.message);
-      }
+      setFormData({
+        nombre: "",
+        telefono: "",
+        correo: "",
+        categoria: "",
+        mensaje: "",
+        privacidadAceptada: false,
+      });
     } catch (error) {
       console.error("Error al enviar:", error);
-      toast.error("Error de conexión ⚠️");
+      // El toast de error ya lo muestra toast.promise
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Nombre */}
@@ -112,6 +113,7 @@ const ContactForm = () => {
           className="border p-2 rounded w-full mt-1"
         />
       </label>
+
       {/* Teléfono */}
       <label className="block">
         <span className="text-sm font-medium">Teléfono</span>
@@ -193,8 +195,8 @@ const ContactForm = () => {
     </form>
   );
 };
-toast("🔥 Esto es un toast de prueba12");
-// 👇 Envolvemos el form dentro del Provider
+
+// Provider reCAPTCHA
 export default function ContactFormWrapper() {
   return (
     <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_KEY}>
