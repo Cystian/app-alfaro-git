@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import toast from "react-hot-toast"; // ✅ solo `toast`
+import toast from "react-hot-toast"; // ✅ solo `toastt`
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
