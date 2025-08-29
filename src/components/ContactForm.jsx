@@ -72,15 +72,15 @@ const ContactForm = () => {
 
       const result = await response.json();
       console.log("Respuesta del servidor:", result);
-
-
       console.log("Objeto result-------------:", result);
-console.log("Propiedad success---------------:", result.success);
+      console.log("Propiedad success---------------:", result.success);
 
-      console.log("Entrando al IF, success vale:", result.success);
-      if (result.success === true) {
-        toast.success("Formulario enviado con éxito ✅");
-        // 🔄 Resetear formulario
+      // 👇 fuerza conversión booleana
+      if (result.success === true || String(result.success) === "true") {
+        console.log("🎉 Entrando al IF, success vale:", result.success);
+        toast.success("Formulario enviado con éxito ✅", { duration: 4000 });
+
+        // 🔄 Resetear formulario después del toast
         setFormData({
           nombre: "",
           telefono: "",
