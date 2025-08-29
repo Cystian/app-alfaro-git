@@ -31,7 +31,7 @@ export default function Home() {
       </main>
 
       {/* 🔔 Contenedor global de notificaciones */}
-      <Toaster position="top-center" reverseOrder={false} />
+       {/* <Toaster position="top-center" reverseOrder={false} /> */}
     </PageWrapper>
   );
 }
