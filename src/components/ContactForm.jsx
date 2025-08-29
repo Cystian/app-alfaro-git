@@ -57,7 +57,6 @@ const ContactForm = () => {
       const recaptchaToken = await executeRecaptcha("contact_form");
       const payload = { ...formData, recaptchaToken };
 
-      // 🎯 UX pro: toast de carga + éxito/fracaso
       const result = await toast.promise(
         (async () => {
           const response = await fetch("/.netlify/functions/sendForm", {
@@ -66,7 +65,6 @@ const ContactForm = () => {
             body: JSON.stringify(payload),
           });
           const data = await response.json();
-          // Fuerza error si success no es true para que caiga en el toast de error
           if (data.success !== true) {
             throw new Error(data.message || data.error || "Error al enviar");
           }
@@ -80,7 +78,6 @@ const ContactForm = () => {
         { duration: 4000 }
       );
 
-      // Si llegamos aquí es porque success === true
       console.log("Respuesta del servidor:", result);
       setFormData({
         nombre: "",
@@ -92,107 +89,126 @@ const ContactForm = () => {
       });
     } catch (error) {
       console.error("Error al enviar:", error);
-      // El toast de error ya lo muestra toast.promise
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Nombre */}
-      <label className="block">
-        <span className="text-sm font-medium">Nombre</span>
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Tu nombre"
-          onChange={handleChange}
-          value={formData.nombre}
-          required
-          className="border p-2 rounded w-full mt-1"
-        />
-      </label>
+    <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+      {/* Encabezado */}
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">Contáctanos</h2>
+      <p className="text-center text-gray-500 mb-6 text-sm">
+        Completa el formulario y nos pondremos en contacto contigo.
+      </p>
 
-      {/* Teléfono */}
-      <label className="block">
-        <span className="text-sm font-medium">Teléfono</span>
-        <input
-          type="text"
-          name="telefono"
-          placeholder="Tu teléfono"
-          onChange={handleChange}
-          value={formData.telefono}
-          required
-          className="border p-2 rounded w-full mt-1"
-        />
-      </label>
+      {/* Formulario */}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Nombre */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            placeholder="Ej. Juan Pérez"
+            onChange={handleChange}
+            value={formData.nombre}
+            required
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          />
+        </div>
 
-      {/* Correo */}
-      <label className="block">
-        <span className="text-sm font-medium">Correo</span>
-        <input
-          type="email"
-          name="correo"
-          placeholder="Tu correo"
-          onChange={handleChange}
-          value={formData.correo}
-          required
-          className="border p-2 rounded w-full mt-1"
-        />
-      </label>
+        {/* Teléfono */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+          <input
+            type="text"
+            name="telefono"
+            placeholder="Ej. +51 999 999 999"
+            onChange={handleChange}
+            value={formData.telefono}
+            required
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          />
+        </div>
 
-      {/* Categoría */}
-      <label className="block">
-        <span className="text-sm font-medium">Categoría</span>
-        <select
-          name="categoria"
-          onChange={handleChange}
-          value={formData.categoria}
-          required
-          className="border p-2 rounded w-full mt-1"
+        {/* Correo */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Correo</label>
+          <input
+            type="email"
+            name="correo"
+            placeholder="ejemplo@correo.com"
+            onChange={handleChange}
+            value={formData.correo}
+            required
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          />
+        </div>
+
+        {/* Categoría */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+          <select
+            name="categoria"
+            onChange={handleChange}
+            value={formData.categoria}
+            required
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                       focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
+          >
+            <option value="">Seleccione categoría</option>
+            <option value="Informes">Informes</option>
+            <option value="Alquiler">Alquiler</option>
+            <option value="Ventas">Ventas</option>
+            <option value="Alquiler+Ventas">Alquiler + Ventas</option>
+          </select>
+        </div>
+
+        {/* Mensaje */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+          <textarea
+            name="mensaje"
+            placeholder="Escribe tu mensaje..."
+            onChange={handleChange}
+            value={formData.mensaje}
+            rows="4"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                       focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
+          />
+        </div>
+
+        {/* Política de privacidad */}
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            name="privacidadAceptada"
+            checked={formData.privacidadAceptada}
+            onChange={handleChange}
+            required
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <span className="text-sm text-gray-600">
+            Acepto la política de privacidad
+          </span>
+        </div>
+
+        {/* Botón */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold 
+                     py-3 rounded-lg shadow-md transition-all duration-200 
+                     disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <option value="">Seleccione categoría</option>
-          <option value="Informes">Informes</option>
-          <option value="Alquiler">Alquiler</option>
-          <option value="Ventas">Ventas</option>
-          <option value="Alquiler+Ventas">Alquiler + Ventas</option>
-        </select>
-      </label>
-
-      {/* Mensaje */}
-      <label className="block">
-        <span className="text-sm font-medium">Mensaje</span>
-        <textarea
-          name="mensaje"
-          placeholder="Escribe tu mensaje..."
-          onChange={handleChange}
-          value={formData.mensaje}
-          className="border p-2 rounded w-full mt-1"
-        />
-      </label>
-
-      {/* Política de privacidad */}
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          name="privacidadAceptada"
-          checked={formData.privacidadAceptada}
-          onChange={handleChange}
-          required
-        />
-        <span>Acepto la política de privacidad</span>
-      </label>
-
-      {/* Botón */}
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? "⏳ Enviando..." : "Enviar"}
-      </button>
-    </form>
+          {loading ? "⏳ Enviando..." : "Enviar mensaje"}
+        </button>
+      </form>
+    </div>
   );
 };
 
