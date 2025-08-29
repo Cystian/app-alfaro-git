@@ -14,7 +14,6 @@ const ContactForm = () => {
 
   const [loading, setLoading] = useState(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
-toast("🔥 Esto es un toast de prueba1");
 
   // 🔄 Manejo de cambios en inputs
   const handleChange = useCallback((e) => {
@@ -24,13 +23,11 @@ toast("🔥 Esto es un toast de prueba1");
       [name]: type === "checkbox" ? checked : value,
     }));
   }, []);
-toast("🔥 Esto es un toast de prueba2");
 
   // ✅ Validaciones básicas
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{6,15}$/;
-toast("🔥 Esto es un toast de prueba3");
 
     if (!emailRegex.test(formData.correo)) {
       toast.error("Correo inválido ❌");
@@ -46,7 +43,6 @@ toast("🔥 Esto es un toast de prueba3");
     }
     return true;
   };
-toast("🔥 Esto es un toast de prueba4");
   // 📤 Envío de formulario
   
   const handleSubmit = async (e) => {
@@ -58,7 +54,6 @@ toast("🔥 Esto es un toast de prueba4");
       toast.error("Error: reCAPTCHA aún no está listo.");
       return;
     }
-toast("🔥 Esto es un toast de prueba5");
     try {
       setLoading(true);
 
@@ -78,12 +73,10 @@ toast("🔥 Esto es un toast de prueba5");
       console.log("Respuesta del servidor:", result);
       console.log("Objeto result-------------:", result);
       console.log("Propiedad success---------------:", result.success);
-toast("🔥 Esto es un toast de prueba6");
       // 👇 fuerza conversión booleana
       if (result.success === true || String(result.success) === "true") {
         console.log("🎉 Entrando al IF, success vale:", result.success);
         toast.success("Formulario enviado con éxito ✅", { duration: 4000 });
-toast("🔥 Esto es un toast de prueba7");
         // 🔄 Resetear formulario después del toast
         setFormData({
           nombre: "",
@@ -93,9 +86,7 @@ toast("🔥 Esto es un toast de prueba7");
           mensaje: "",
           privacidadAceptada: false,
         });
-        toast("🔥 Esto es un toast de prueba8");
       } else {
-        toast("🔥 Esto es un toast de prueba9");
         toast.error("Hubo un error al enviar ❌");
         console.log("Detalle:", result.detalle || result.error || result.message);
       }
@@ -106,7 +97,6 @@ toast("🔥 Esto es un toast de prueba7");
       setLoading(false);
     }
   };
-toast("🔥 Esto es un toast de prueba10");
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Nombre */}
@@ -122,7 +112,6 @@ toast("🔥 Esto es un toast de prueba10");
           className="border p-2 rounded w-full mt-1"
         />
       </label>
-toast("🔥 Esto es un toast de prueba11");
       {/* Teléfono */}
       <label className="block">
         <span className="text-sm font-medium">Teléfono</span>
