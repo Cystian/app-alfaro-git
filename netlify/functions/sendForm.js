@@ -46,9 +46,16 @@ export async function handler(event, context) {
       body: JSON.stringify(data),
     });
 
-    const result = await response.json();
+    const result = await response.text();
 
     console.log("✅ Respuesta de Apps Script:", result);
+
+    let result;
+    try {
+    result = JSON.parse(raw);
+    } catch {
+    result = { success: false, raw };
+    }
 
     return {
       statusCode: 200,
