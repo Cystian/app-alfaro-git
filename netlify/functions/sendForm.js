@@ -31,6 +31,10 @@ export async function handler(event, context) {
   try {
     const data = JSON.parse(event.body);
 
+    // Logs de depuración
+    console.log("📩 Data recibida en sendForm:", data);
+    console.log("📤 Enviando a Apps Script:", JSON.stringify(data));
+
     // URL de tu Apps Script
     const scriptURL =
       "https://script.google.com/macros/s/AKfycbzEGzclu1isyIGnWE8NCD3kEAWJrcE1r0whsDq4JahdC68Agkx1dvCiN6pUKPhzWP-C/exec";
@@ -44,6 +48,8 @@ export async function handler(event, context) {
 
     const result = await response.json();
 
+    console.log("✅ Respuesta de Apps Script:", result);
+
     return {
       statusCode: 200,
       headers: {
@@ -55,6 +61,8 @@ export async function handler(event, context) {
       body: JSON.stringify(result),
     };
   } catch (error) {
+    console.error("❌ Error en sendForm:", error.message);
+
     return {
       statusCode: 500,
       headers: {
@@ -66,4 +74,3 @@ export async function handler(event, context) {
     };
   }
 }
-
