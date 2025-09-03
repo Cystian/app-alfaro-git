@@ -38,16 +38,16 @@ export async function handler(event, context) {
       body: JSON.stringify(data),
     });
 
-    const text = await response.text();
-    console.log("📬 Respuesta cruda Apps Script:", text);
+const text = await response.text();
+console.log("📬 Respuesta cruda Apps Script:", text);
 
-    let result;
-    try {
-      result = JSON.parse(text);
-    } catch (err) {
-      result = { success: false, message: "Respuesta no es JSON", raw: text };
-    }
-
+let result;
+try {
+  result = JSON.parse(text);
+} catch (err) {
+  console.error("❌ No es JSON válido:", err.message);
+  result = { success: false, message: "Respuesta no es JSON", raw: text };
+}
     return {
       statusCode: 200,
       headers: { "Access-Control-Allow-Origin": "*" },
