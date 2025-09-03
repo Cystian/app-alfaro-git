@@ -68,15 +68,6 @@ const ContactForm = () => {
           });
 
           
-          const raw = await response.text();
-console.log("🌐 Raw recibido del serverless:", raw);
-
-let json;
-try {
-  json = JSON.parse(raw);
-} catch (err) {
-  console.error("❌ No se pudo parsear como JSON:", err.message);
-}
 
           
           const data = await response.json();
