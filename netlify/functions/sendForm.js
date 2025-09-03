@@ -1,9 +1,11 @@
-// Si tu entorno ya tiene fetch nativo, puedes quitar esta línea
-//import fetch from "node-fetch";
-
+// ✅ Netlify ya soporta fetch nativo, no necesitas importar node-fetch
 export async function handler(event, context) {
-  console.log("📩 Evento recibido:", event);
+  console.log("📩 Evento recibido en sendForm:", {
+    method: event.httpMethod,
+    body: event.body,
+  });
 
+  // Manejo de preflight (CORS)
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
@@ -16,49 +18,72 @@ export async function handler(event, context) {
     };
   }
 
+  // Solo permitir POST
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ success: false, message: "Método no permitido" }),
     };
   }
 
   try {
-    const data = JSON.parse(event.body);
+    // Parsear body del frontend
+    const data = JSON.parse(event.body || "{}");
     console.log("📩 Data recibida en sendForm:", data);
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycb.../exec";
+    // URL de tu Apps Script
+    const scriptURL =
+      "https://script.google.com/macros/s/AKfycb.../exec";
 
     console.log("📤 Enviando a Apps Script:", JSON.stringify(data));
 
+    // Forward request a Apps Script
     const response = await fetch(scriptURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
 
-const text = await response.text();
-console.log("📬 Respuesta cruda Apps Script:", text);
+    // Leer respuesta cruda
+    const text = await response.text();
+    console.log("📬 Respuesta cruda Apps Script:", text);
 
-let result;
-try {
-  result = JSON.parse(text);
-} catch (err) {
-  console.error("❌ No es JSON válido:", err.message);
-  result = { success: false, message: "Respuesta no es JSON", raw: text };
-}
+    // Intentar parsear como JSON
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch (err) {
+      console.error("❌ Respuesta no es JSON válido:", err.message);
+      result = {
+        success: false,
+        message: "Respuesta no es JSON",
+        raw: text,
+      };
+    }
+
     return {
       statusCode: 200,
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(result),
     };
   } catch (error) {
     console.error("❌ Error en sendForm:", error);
     return {
       statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ success: false, message: error.message }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        success: false,
+        message: error.message,
+      }),
     };
   }
 }
