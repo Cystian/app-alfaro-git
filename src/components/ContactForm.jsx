@@ -66,6 +66,19 @@ const ContactForm = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
+
+          
+          const raw = await res.text();
+console.log("🌐 Raw recibido del serverless:", raw);
+
+let json;
+try {
+  json = JSON.parse(raw);
+} catch (err) {
+  console.error("❌ No se pudo parsear como JSON:", err.message);
+}
+
+          
           const data = await response.json();
           if (data.success !== true) {
             throw new Error(data.message || data.error || "Error al enviar");
