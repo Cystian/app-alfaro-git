@@ -68,7 +68,7 @@ const ContactForm = () => {
           });
 
           
-          const raw = await res.text();
+          const raw = await response.text();
 console.log("🌐 Raw recibido del serverless:", raw);
 
 let json;
