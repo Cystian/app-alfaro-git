@@ -51,6 +51,11 @@ export async function handler(event, context) {
     const text = await response.text();
     console.log("📬 Respuesta cruda Apps Script:", text);
 
+    console.log("🔎 Tipo de contenido recibido:", response.headers.get("content-type"));
+console.log("🔎 Status HTTP Apps Script:", response.status);
+console.log("🔎 Texto exacto recibido:", JSON.stringify(text));
+
+
     // Intentar parsear como JSON
     let result;
     try {
