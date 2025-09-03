@@ -44,60 +44,57 @@ const ContactForm = () => {
 
 //////////////////////////////////////////
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-  if (!executeRecaptcha) {
-    toast.error("Error: reCAPTCHA aún no está listo.");
-    return;
-  }
+    if (!executeRecaptcha) {
+      toast.error("Error: reCAPTCHA aún no está listo.");
+      return;
+    }
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const recaptchaToken = await executeRecaptcha("contact_form");
-    const payload = { ...formData, recaptchaToken };
+      const recaptchaToken = await executeRecaptcha("contact_form");
+      const payload = { ...formData, recaptchaToken };
 
-    const result = await toast.promise(
-      (async () => {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwXYZ123456789/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const data = await response.json();
-        if (!data.ok) {
-          throw new Error(data.message || data.error || "Error al enviar");
-        }
-        return data;
-      })(),
-      {
-        loading: "Enviando…",
-        success: "Formulario enviado con éxito ✅",
-        error: "Hubo un error al enviar ❌",
-      },
-      { duration: 4000 }
-    );
+      const result = await toast.promise(
+        (async () => {
+          const response = await fetch("/.netlify/functions/sendForm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          if (data.success !== true) {
+            throw new Error(data.message || data.error || "Error al enviar");
+          }
+          return data;
+        })(),
+        {
+          loading: "Enviando…",
+          success: "Formulario enviado con éxito ✅",
+          error: "Hubo un error al enviar ❌",
+        },
+        { duration: 4000 }
+      );
 
-    console.log("Respuesta del servidor:", result);
-    setFormData({
-      nombre: "",
-      telefono: "",
-      correo: "",
-      categoria: "",
-      mensaje: "",
-      privacidadAceptada: false,
-    });
-  } catch (error) {
-    console.error("Error al enviar:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
+      console.log("Respuesta del servidor:", result);
+      setFormData({
+        nombre: "",
+        telefono: "",
+        correo: "",
+        categoria: "",
+        mensaje: "",
+        privacidadAceptada: false,
+      });
+    } catch (error) {
+      console.error("Error al enviar:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   ///////////////////////////////////
 
