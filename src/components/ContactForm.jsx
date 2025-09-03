@@ -42,57 +42,64 @@ const ContactForm = () => {
     return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+//////////////////////////////////////////
 
-    if (!executeRecaptcha) {
-      toast.error("Error: reCAPTCHA aún no está listo.");
-      return;
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validateForm()) return;
 
-    try {
-      setLoading(true);
+  if (!executeRecaptcha) {
+    toast.error("Error: reCAPTCHA aún no está listo.");
+    return;
+  }
 
-      const recaptchaToken = await executeRecaptcha("contact_form");
-      const payload = { ...formData, recaptchaToken };
+  try {
+    setLoading(true);
 
-      const result = await toast.promise(
-        (async () => {
-          const response = await fetch("/.netlify/functions/sendForm", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-          const data = await response.json();
-          if (data.success !== true) {
-            throw new Error(data.message || data.error || "Error al enviar");
-          }
-          return data;
-        })(),
-        {
-          loading: "Enviando…",
-          success: "Formulario enviado con éxito ✅",
-          error: "Hubo un error al enviar ❌",
-        },
-        { duration: 4000 }
-      );
+    const recaptchaToken = await executeRecaptcha("contact_form");
+    const payload = { ...formData, recaptchaToken };
 
-      console.log("Respuesta del servidor:", result);
-      setFormData({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        categoria: "",
-        mensaje: "",
-        privacidadAceptada: false,
-      });
-    } catch (error) {
-      console.error("Error al enviar:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const result = await toast.promise(
+      (async () => {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwXYZ123456789/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        if (!data.ok) {
+          throw new Error(data.message || data.error || "Error al enviar");
+        }
+        return data;
+      })(),
+      {
+        loading: "Enviando…",
+        success: "Formulario enviado con éxito ✅",
+        error: "Hubo un error al enviar ❌",
+      },
+      { duration: 4000 }
+    );
+
+    console.log("Respuesta del servidor:", result);
+    setFormData({
+      nombre: "",
+      telefono: "",
+      correo: "",
+      categoria: "",
+      mensaje: "",
+      privacidadAceptada: false,
+    });
+  } catch (error) {
+    console.error("Error al enviar:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+  ///////////////////////////////////
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
