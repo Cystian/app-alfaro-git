@@ -36,7 +36,7 @@ export async function handler(event, context) {
 
     // URL de tu Apps Script
     const scriptURL =
-      "https://script.google.com/macros/s/AKfycby4cr1aLRj3R_MJGrVX39RrXoPO6fUWcloIZaIatfQ52Q5p-1L_Mu8oW7WDmlmytGQ2/exec";
+      "https://script.google.com/macros/s/AKfycbw3bNJNLgKjk-ZXkyCKe9knM64OfOeG1ZwZVUgf98bGZtp6yHd9XFjFRuVeb_s11rmo/exec";
 
     console.log("📤 Enviando a Apps Script:", JSON.stringify(data));
 
