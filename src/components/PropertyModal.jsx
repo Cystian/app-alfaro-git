@@ -234,7 +234,7 @@ const PropertyModal = ({ property, onClose }) => {
                 )}
               </div>
 
-              /////
+  
 
               <div className="relative w-full h-64 rounded-xl overflow-hidden">
   {/* Mapa embebido */}
@@ -248,16 +248,7 @@ const PropertyModal = ({ property, onClose }) => {
     src={`https://maps.google.com/maps?q=${lat},${lng}&z=16&output=embed`}
   />
 
-  {/* Overlay del marcador simulado */}
-  <div
-    className="absolute w-6 h-6 bg-red-600 rounded-full border-2 border-white shadow-lg"
-    style={{
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      pointerEvents: "none",
-    }}
-  ></div>
+
 </div>
               
 
