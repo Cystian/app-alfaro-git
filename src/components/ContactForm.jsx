@@ -42,8 +42,6 @@ const ContactForm = () => {
     return true;
   };
 
-//////////////////////////////////////////
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -56,6 +54,7 @@ const ContactForm = () => {
     try {
       setLoading(true);
 
+      // Obtener token reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
       const payload = { ...formData, recaptchaToken };
 
@@ -67,9 +66,6 @@ const ContactForm = () => {
             body: JSON.stringify(payload),
           });
 
-          
-
-          
           const data = await response.json();
           if (data.success !== true) {
             throw new Error(data.message || data.error || "Error al enviar");
@@ -84,7 +80,9 @@ const ContactForm = () => {
         { duration: 4000 }
       );
 
-      console.log("Respuesta del servidor:", result);
+      console.log("📩 Respuesta del servidor:", result);
+
+      // Reset form
       setFormData({
         nombre: "",
         telefono: "",
@@ -94,23 +92,19 @@ const ContactForm = () => {
         privacidadAceptada: false,
       });
     } catch (error) {
-      console.error("Error al enviar:", error);
+      console.error("❌ Error al enviar:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  ///////////////////////////////////
-
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-      {/* Encabezado */}
       <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">Contáctanos</h2>
       <p className="text-center text-gray-500 mb-6 text-sm">
         Completa el formulario y nos pondremos en contacto contigo.
       </p>
 
-      {/* Formulario */}
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Nombre */}
         <div>
@@ -200,9 +194,7 @@ const ContactForm = () => {
             required
             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
           />
-          <span className="text-sm text-gray-600">
-            Acepto la política de privacidad
-          </span>
+          <span className="text-sm text-gray-600">Acepto la política de privacidad</span>
         </div>
 
         {/* Botón */}
