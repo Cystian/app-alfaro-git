@@ -14,16 +14,9 @@ const FeaturedProperties = ({ filters }) => {
     const fetchProperties = async () => {
       setLoading(true);
       try {
-        let url = "";
-
-        if (!filters) {
-          // 👉 Endpoint por defecto: propiedades destacadas
-          url = "/.netlify/functions/getProperties";
-        } else {
-          // 👉 Endpoint de búsqueda: construye querystring a partir de los filtros
-          const query = new URLSearchParams(filters).toString();
-          url = `/.netlify/functions/getPropertyDinamic?${query}`;
-        }
+        let url = filters
+          ? `/.netlify/functions/getPropertyDinamic?${new URLSearchParams(filters).toString()}`
+          : "/.netlify/functions/getProperties";
 
         const res = await fetch(url);
         const data = await res.json();
@@ -37,8 +30,7 @@ const FeaturedProperties = ({ filters }) => {
           status: p.status?.trim(),
         }));
 
-        if (Array.isArray(cleanData)) setProperties(cleanData);
-        else setProperties([]);
+        setProperties(Array.isArray(cleanData) ? cleanData : []);
       } catch (err) {
         console.error("Error al traer propiedades:", err);
         setProperties([]);
@@ -48,69 +40,41 @@ const FeaturedProperties = ({ filters }) => {
     };
 
     fetchProperties();
-  }, [filters]); // 👈 se ejecuta cada vez que cambian los filtros
+  }, [filters]);
 
-  const openPopup = (property) => {
-    setSelectedProperty(property);
-  };
+  const openPopup = (property) => setSelectedProperty(property);
+  const closePopup = () => setSelectedProperty(null);
 
-  const closePopup = () => {
-    setSelectedProperty(null);
-  };
-
-  if (loading)
-    return <p className="text-center py-8">Cargando propiedades...</p>;
-  if (!properties || properties.length === 0)
-    return (
-      <p className="text-center py-8">No hay propiedades disponibles.</p>
-    );
+  if (loading) return <p className="text-center py-8">Cargando propiedades...</p>;
+  if (!properties.length) return <p className="text-center py-8">No hay propiedades disponibles.</p>;
 
   return (
     <div className="w-full relative">
-      <h2 className="text-2xl font-bold mb-4 text-center">Propiedades destacadas</h2>
-
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
         loop
         autoplay={{ delay: 2000, disableOnInteraction: false }}
         speed={3000}
-        breakpoints={{
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-        }}
+        breakpoints={{ 640:{slidesPerView:1}, 768:{slidesPerView:2}, 1024:{slidesPerView:3} }}
       >
         {properties.map((property) => (
           <SwiperSlide key={property.id}>
             <div className="bg-white shadow-md rounded-2xl overflow-hidden flex flex-col">
-              <img
-                src={property.image}
-                alt={property.title || "Propiedad"}
-                className="h-48 w-full object-cover"
-              />
+              <img src={property.image} alt={property.title || "Propiedad"} className="h-48 w-full object-cover"/>
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-bold mb-1">{property.title}</h3>
                 <p className="text-sm text-gray-600 mb-1">{property.location}</p>
-                <p className="text-blue-600 font-semibold mb-2">
-                  {property.price}
-                </p>
+                <p className="text-blue-600 font-semibold mb-2">{property.price}</p>
                 <p className="text-xs text-gray-500 mb-4">{property.status}</p>
-
                 <div className="mt-auto flex gap-2">
-                  <a
-                    href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition"
-                  >
+                  <a href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
+                     target="_blank" rel="noopener noreferrer"
+                     className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition">
                     Contactar
                   </a>
-
-                  <button
-                    onClick={() => openPopup(property)}
-                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
-                  >
+                  <button onClick={() => openPopup(property)}
+                          className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition">
                     Ver flyer
                   </button>
                 </div>
@@ -120,9 +84,7 @@ const FeaturedProperties = ({ filters }) => {
         ))}
       </Swiper>
 
-      {selectedProperty && (
-        <PropertyModal property={selectedProperty} onClose={closePopup} />
-      )}
+      {selectedProperty && <PropertyModal property={selectedProperty} onClose={closePopup} />}
     </div>
   );
 };
