@@ -14,10 +14,18 @@ exports.handler = async (event) => {
     status = "",
   } = event.queryStringParameters || {};
 
+  console.log("📌 Parámetros recibidos:", {
+    title,
+    location,
+    modality,
+    type,
+    status,
+  });
+
   try {
     const result = await pool.query(
       `
-      SELECT id, title, image, price, location, status, modality, type
+      SELECT id, title, price, location, status, modality, type
       FROM properties
       WHERE ($1 = '' OR title ILIKE '%' || $1 || '%')
         AND ($2 = '' OR location ILIKE '%' || $2 || '%')
@@ -32,15 +40,13 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify(Array.isArray(result.rows) ? result.rows : []),
+      body: JSON.stringify(result.rows || []),
     };
   } catch (err) {
-    console.error("❌ Error en getPropertyDinamic:", err);
+    console.error("❌ Error en getPropertyDinamic:", err.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: "Error al traer propiedades" }),
     };
   }
 };
-
-
