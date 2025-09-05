@@ -17,7 +17,7 @@ const SearchBanner = ({ onSearch }) => {
     setTimeout(() => setShowText(true), 200);
   }, []);
 
-  // 🔹 Llamada a API serverless para traer opciones
+  // 🔹 Carga opciones dinámicas desde Netlify Function
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -41,14 +41,13 @@ const SearchBanner = ({ onSearch }) => {
     e.preventDefault();
 
     const filters = {
-      location: distritos.join(","),   // distritos seleccionados
-      modality: modalidades.join(","), // modalidad seleccionada
-      type: tipos.join(","),           // tipo seleccionado
-      status: soloDisponibles ? "Disponible" : "", // filtro extra
+      location: distritos.join(","),
+      modality: modalidades.join(","),
+      type: tipos.join(","),
+      status: soloDisponibles ? "Disponible" : "",
     };
 
-    console.log("🔎 Enviando filtros:", filters);
-    onSearch(filters); // 👈 avisa al padre (Home)
+    onSearch(filters); // envía filtros al padre
   };
 
   return (
@@ -67,46 +66,39 @@ const SearchBanner = ({ onSearch }) => {
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 transition-all duration-1000 ease-out
             ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
-          style={{
-            textShadow: `
-              2px 2px 4px rgba(0, 0, 0),
-              0 0 6px rgba(255, 0, 0)
-            `,
-          }}
+          style={{ textShadow: `2px 2px 4px rgba(0,0,0), 0 0 6px rgba(255,0,0)` }}
         >
           Tenemos el lugar perfecto para ti
         </h2>
 
         <form
           className="grid grid-cols-1 md:grid-cols-5 gap-4"
-          onSubmit={handleSubmit} // 👈 usa el nuevo handleSubmit
+          onSubmit={handleSubmit}
         >
           <CustomSelect
             label="Distrito"
             options={distritosOptions}
             selected={distritos}
             setSelected={setDistritos}
-            includeSelectAll={true}
+            includeSelectAll
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
           />
-
           <CustomSelect
             label="Modalidad"
             options={modalidadesOptions}
             selected={modalidades}
             setSelected={setModalidades}
-            includeSelectAll={true}
+            includeSelectAll
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
           />
-
           <CustomSelect
             label="Tipo"
             options={tiposOptions}
             selected={tipos}
             setSelected={setTipos}
-            includeSelectAll={true}
+            includeSelectAll
             openDropdown={openDropdown}
             setOpenDropdown={setOpenDropdown}
           />
@@ -125,9 +117,7 @@ const SearchBanner = ({ onSearch }) => {
               />
               <span
                 className="absolute top-[2px] left-[2px] w-4 h-4 bg-no-repeat bg-center bg-contain pointer-events-none"
-                style={{
-                  backgroundImage: soloDisponibles ? "url('/check2.png')" : "none",
-                }}
+                style={{ backgroundImage: soloDisponibles ? "url('/check2.png')" : "none" }}
               />
               Solo disponibles
             </label>
@@ -138,11 +128,7 @@ const SearchBanner = ({ onSearch }) => {
               type="submit"
               disabled={!isSearchEnabled}
               className={`w-full py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300
-                ${
-                  isSearchEnabled
-                    ? "bg-azul-primario hover:bg-azul-primario-dark text-white cursor-pointer"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
+                ${isSearchEnabled ? "bg-azul-primario hover:bg-azul-primario-dark text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
             >
               Buscar
             </button>
@@ -150,20 +136,14 @@ const SearchBanner = ({ onSearch }) => {
         </form>
       </div>
 
-      <style>
-        {`
-          @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-          }
-          .float-text {
-            animation: float 3s ease-in-out infinite;
-          }
-        `}
-      </style>
+      <style>{`
+        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+        .float-text { animation: float 3s ease-in-out infinite; }
+      `}</style>
     </section>
   );
 };
 
 export default SearchBanner;
+
 
