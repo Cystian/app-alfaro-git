@@ -9,33 +9,23 @@ exports.handler = async (event) => {
   const {
     title = "",
     location = "",
-    modality = "",
-    type = "",
     status = "",
   } = event.queryStringParameters || {};
 
-  console.log("📌 Parámetros recibidos:", {
-    title,
-    location,
-    modality,
-    type,
-    status,
-  });
+  console.log("📌 Parámetros recibidos:", { title, location, status });
 
   try {
     const result = await pool.query(
       `
-      SELECT id, title, price, location, status, modality, type
+      SELECT id, title, image, price, location, status, bedrooms, bathrooms, area, latitude, longitude
       FROM properties
       WHERE ($1 = '' OR title ILIKE '%' || $1 || '%')
         AND ($2 = '' OR location ILIKE '%' || $2 || '%')
-        AND ($3 = '' OR modality ILIKE '%' || $3 || '%')
-        AND ($4 = '' OR type ILIKE '%' || $4 || '%')
-        AND ($5 = '' OR status ILIKE '%' || $5 || '%')
+        AND ($3 = '' OR status ILIKE '%' || $3 || '%')
       ORDER BY RANDOM()
       LIMIT 20;
       `,
-      [title, location, modality, type, status]
+      [title, location, status]
     );
 
     return {
