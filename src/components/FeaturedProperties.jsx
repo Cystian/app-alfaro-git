@@ -18,7 +18,7 @@ const FeaturedProperties = ({ filters }) => {
 
         if (!filters) {
           // 👉 Endpoint por defecto: propiedades destacadas
-          url = "/.netlify/functions/getProperties";
+          url = "/.netlify/functions/getPropertyDinamic";
         } else {
           // 👉 Endpoint de búsqueda: construye querystring a partir de los filtros
           const query = new URLSearchParams(filters).toString();
