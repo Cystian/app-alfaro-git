@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
-const SearchBanner = () => {
+const SearchBanner = ({ onSearch }) => {
   const [distritosOptions, setDistritosOptions] = useState([]);
   const [modalidadesOptions, setModalidadesOptions] = useState([]);
   const [tiposOptions, setTiposOptions] = useState([]);
@@ -17,7 +17,7 @@ const SearchBanner = () => {
     setTimeout(() => setShowText(true), 200);
   }, []);
 
-  // 🔹 Llamada a API serverless
+  // 🔹 Llamada a API serverless para traer opciones
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -34,13 +34,32 @@ const SearchBanner = () => {
     fetchOptions();
   }, []);
 
-  const isSearchEnabled = distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
+  const isSearchEnabled =
+    distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const filters = {
+      location: distritos.join(","),   // distritos seleccionados
+      modality: modalidades.join(","), // modalidad seleccionada
+      type: tipos.join(","),           // tipo seleccionado
+      status: soloDisponibles ? "Disponible" : "", // filtro extra
+    };
+
+    console.log("🔎 Enviando filtros:", filters);
+    onSearch(filters); // 👈 avisa al padre (Home)
+  };
 
   return (
     <section className="relative w-full h-[350px] flex flex-col items-center justify-center mt-6 px-4">
       <div
         className="absolute inset-0 rounded-3xl overflow-hidden"
-        style={{ backgroundImage: "url('/baner_aa.png')", backgroundSize: "cover", backgroundPosition: "center" }}
+        style={{
+          backgroundImage: "url('/baner_aa.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
         aria-hidden="true"
       ></div>
 
@@ -52,7 +71,7 @@ const SearchBanner = () => {
             textShadow: `
               2px 2px 4px rgba(0, 0, 0),
               0 0 6px rgba(255, 0, 0)
-            `
+            `,
           }}
         >
           Tenemos el lugar perfecto para ti
@@ -60,7 +79,7 @@ const SearchBanner = () => {
 
         <form
           className="grid grid-cols-1 md:grid-cols-5 gap-4"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit} // 👈 usa el nuevo handleSubmit
         >
           <CustomSelect
             label="Distrito"
@@ -93,7 +112,10 @@ const SearchBanner = () => {
           />
 
           <div className="flex items-center space-x-2 mt-7 md:mt-0">
-            <label htmlFor="disponible" className="relative cursor-pointer select-none text-sm text-gray-700">
+            <label
+              htmlFor="disponible"
+              className="relative cursor-pointer select-none text-sm text-gray-700"
+            >
               <input
                 id="disponible"
                 type="checkbox"
@@ -103,7 +125,9 @@ const SearchBanner = () => {
               />
               <span
                 className="absolute top-[2px] left-[2px] w-4 h-4 bg-no-repeat bg-center bg-contain pointer-events-none"
-                style={{ backgroundImage: soloDisponibles ? "url('/check2.png')" : "none" }}
+                style={{
+                  backgroundImage: soloDisponibles ? "url('/check2.png')" : "none",
+                }}
               />
               Solo disponibles
             </label>
@@ -114,9 +138,10 @@ const SearchBanner = () => {
               type="submit"
               disabled={!isSearchEnabled}
               className={`w-full py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300
-                ${isSearchEnabled
-                  ? "bg-azul-primario hover:bg-azul-primario-dark text-white cursor-pointer"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ${
+                  isSearchEnabled
+                    ? "bg-azul-primario hover:bg-azul-primario-dark text-white cursor-pointer"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
               Buscar
@@ -141,3 +166,4 @@ const SearchBanner = () => {
 };
 
 export default SearchBanner;
+
