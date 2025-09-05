@@ -1,5 +1,4 @@
-import React from "react";
-import PropertyCard from "../components/PropertyCard";
+import React, { useState } from "react";
 import ContactForm from "../components/ContactForm";
 import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
@@ -7,14 +6,20 @@ import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 
 export default function Home() {
+  const [searchFilters, setSearchFilters] = useState(null);
+
+  const handleSearch = (newFilters) => {
+    setSearchFilters(newFilters); // activa búsqueda
+  };
+
   return (
     <PageWrapper>
       <main className="space-y-12 p-4 sm:p-8">
-        <SearchBanner />
+        <SearchBanner onSearch={handleSearch} />
 
         <section>
           <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
-          <FeaturedProperties />
+          <FeaturedProperties filters={searchFilters} />
         </section>
 
         <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow">
