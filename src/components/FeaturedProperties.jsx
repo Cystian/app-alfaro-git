@@ -18,11 +18,11 @@ const FeaturedProperties = ({ filters }) => {
 
         if (!filters) {
           // 👉 Endpoint por defecto: propiedades destacadas
-          url = "/.netlify/functions/getPropertyDinamic";
+          url = "/.netlify/functions/getProperties";
         } else {
           // 👉 Endpoint de búsqueda: construye querystring a partir de los filtros
           const query = new URLSearchParams(filters).toString();
-          url = `/.netlify/functions/searchProperties?${query}`;
+          url = `/.netlify/functions/getPropertyDinamic?${query}`;
         }
 
         const res = await fetch(url);
