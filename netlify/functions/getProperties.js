@@ -1,11 +1,11 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 
 const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL, // URL de NeonDB en variables de entorno
+  connectionString: process.env.NEON_DB_URL,
   ssl: { rejectUnauthorized: false },
 });
 
-exports.handler = async (event, context) => {
+exports.handler = async () => {
   try {
     const result = await pool.query(`
       SELECT id, title, image, price, location, status
@@ -13,15 +13,9 @@ exports.handler = async (event, context) => {
       ORDER BY RANDOM()
       LIMIT 10
     `);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result.rows),
-    };
+    return { statusCode: 200, body: JSON.stringify(result.rows) };
   } catch (err) {
     console.error(err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error al traer propiedades' }),
-    };
+    return { statusCode: 500, body: JSON.stringify({ message: "Error al traer propiedades" }) };
   }
 };
