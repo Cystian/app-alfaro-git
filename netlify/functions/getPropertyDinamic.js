@@ -6,11 +6,13 @@ const pool = new Pool({
 });
 
 exports.handler = async (event) => {
-  console.log("queryStringParameters:", event.queryStringParameters);
-
-  // Solo estos filtros por ahora
-  const { title = "", location = "", status = "" } =
-    event.queryStringParameters || {};
+  const {
+    title = "",
+    location = "",
+    modality = "",
+    type = "",
+    status = "",
+  } = event.queryStringParameters || {};
 
   try {
     const result = await pool.query(
@@ -19,24 +21,24 @@ exports.handler = async (event) => {
       FROM properties
       WHERE ($1 = '' OR title ILIKE '%' || $1 || '%')
         AND ($2 = '' OR location ILIKE '%' || $2 || '%')
-        AND ($3 = '' OR status ILIKE '%' || $3 || '%')
+        AND ($3 = '' OR modality ILIKE '%' || $3 || '%')
+        AND ($4 = '' OR type ILIKE '%' || $4 || '%')
+        AND ($5 = '' OR status ILIKE '%' || $5 || '%')
       ORDER BY RANDOM()
       LIMIT 20;
-    `,
-      [title, location, status]
+      `,
+      [title, location, modality, type, status]
     );
-
-    console.log("result.rows:", result.rows);
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result.rows), // siempre un array
+      body: JSON.stringify(Array.isArray(result.rows) ? result.rows : []),
     };
   } catch (err) {
-    console.error("❌ Error en getPropertyDinamic:", err.stack);
+    console.error("❌ Error en getPropertyDinamic:", err);
     return {
-      statusCode: 200, // 👈 para que frontend no rompa
-      body: JSON.stringify([]), // devuelve array vacío en vez de error
+      statusCode: 500,
+      body: JSON.stringify({ message: "Error al traer propiedades" }),
     };
   }
 };
