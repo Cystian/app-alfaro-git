@@ -5,16 +5,29 @@ import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import PropertyModal from "./PropertyModal";
 
-const FeaturedProperties = () => {
+const FeaturedProperties = ({ filters }) => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/.netlify/functions/getProperties");
+        let url = "";
+
+        if (!filters) {
+          // 👉 Endpoint por defecto: propiedades destacadas
+          url = "/.netlify/functions/getProperties";
+        } else {
+          // 👉 Endpoint de búsqueda: construye querystring a partir de los filtros
+          const query = new URLSearchParams(filters).toString();
+          url = `/.netlify/functions/searchProperties?${query}`;
+        }
+
+        const res = await fetch(url);
         const data = await res.json();
+
         const cleanData = data.map((p) => ({
           ...p,
           image: p.image?.trim(),
@@ -23,15 +36,19 @@ const FeaturedProperties = () => {
           location: p.location?.trim(),
           status: p.status?.trim(),
         }));
+
         if (Array.isArray(cleanData)) setProperties(cleanData);
+        else setProperties([]);
       } catch (err) {
         console.error("Error al traer propiedades:", err);
+        setProperties([]);
       } finally {
         setLoading(false);
       }
     };
+
     fetchProperties();
-  }, []);
+  }, [filters]); // 👈 se ejecuta cada vez que cambian los filtros
 
   const openPopup = (property) => {
     setSelectedProperty(property);
@@ -41,8 +58,12 @@ const FeaturedProperties = () => {
     setSelectedProperty(null);
   };
 
-  if (loading) return <p className="text-center py-8">Cargando propiedades...</p>;
-  if (!properties || properties.length === 0) return <p className="text-center py-8">No hay propiedades disponibles.</p>;
+  if (loading)
+    return <p className="text-center py-8">Cargando propiedades...</p>;
+  if (!properties || properties.length === 0)
+    return (
+      <p className="text-center py-8">No hay propiedades disponibles.</p>
+    );
 
   return (
     <div className="w-full relative">
@@ -71,7 +92,9 @@ const FeaturedProperties = () => {
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-bold mb-1">{property.title}</h3>
                 <p className="text-sm text-gray-600 mb-1">{property.location}</p>
-                <p className="text-blue-600 font-semibold mb-2">{property.price}</p>
+                <p className="text-blue-600 font-semibold mb-2">
+                  {property.price}
+                </p>
                 <p className="text-xs text-gray-500 mb-4">{property.status}</p>
 
                 <div className="mt-auto flex gap-2">
@@ -97,7 +120,6 @@ const FeaturedProperties = () => {
         ))}
       </Swiper>
 
-      {/* Modal con miniaturas */}
       {selectedProperty && (
         <PropertyModal property={selectedProperty} onClose={closePopup} />
       )}
