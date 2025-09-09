@@ -6,20 +6,41 @@ const pool = new Pool({
 });
 
 exports.handler = async (event) => {
-  const { title = "", location = "", status = "" } = event.queryStringParameters || {};
+  let { title = "", location = "", status = "" } = event.queryStringParameters || {};
 
   try {
+    // Convertir los parámetros en arrays si vienen separados por coma
+    const titleArr = title ? title.split(",") : [];
+    const locationArr = location ? location.split(",") : [];
+    const statusArr = status ? status.split(",") : [];
+
     const result = await pool.query(
       `
       SELECT id, title, image, price, location, status, bedrooms, bathrooms, area
       FROM properties
-      WHERE ($1 = '' OR title ILIKE '%' || $1 || '%')
-        AND ($2 = '' OR location ILIKE '%' || $2 || '%')
-        AND ($3 = '' OR status ILIKE '%' || $3 || '%')
+      WHERE (
+        $1::text[] IS NULL OR EXISTS (
+          SELECT 1 FROM unnest($1::text[]) t WHERE title ILIKE '%' || t || '%'
+        )
+      )
+      AND (
+        $2::text[] IS NULL OR EXISTS (
+          SELECT 1 FROM unnest($2::text[]) l WHERE location ILIKE '%' || l || '%'
+        )
+      )
+      AND (
+        $3::text[] IS NULL OR EXISTS (
+          SELECT 1 FROM unnest($3::text[]) s WHERE status ILIKE '%' || s || '%'
+        )
+      )
       ORDER BY RANDOM()
-      LIMIT 20;
+      LIMIT 100;
       `,
-      [title, location, status]
+      [
+        titleArr.length ? titleArr : null,
+        locationArr.length ? locationArr : null,
+        statusArr.length ? statusArr : null,
+      ]
     );
 
     return {
