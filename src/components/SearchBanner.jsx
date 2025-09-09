@@ -42,9 +42,9 @@ const SearchBanner = ({ onSearch }) => {
 
     const filters = {
       location: distritos.join(","),
-      modality: modalidades.join(","),
-      type: tipos.join(","),
-      status: soloDisponibles ? "Disponible" : "",
+      status: modalidades.join(","),
+      title: tipos.join(","),
+      status2: soloDisponibles ? "Disponible" : "",
     };
 
     onSearch(filters); // envía filtros al padre
