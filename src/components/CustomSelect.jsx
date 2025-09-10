@@ -44,12 +44,14 @@ const CustomSelect = ({
     }
   };
 
-  const displayValue =
-    selected.length === options.length
-      ? `Todos los ${label}`
-      : selected.length > 0
-      ? selected.join(", ")
-      : `Seleccione ${label}`;
+const displayValue =
+  selected.length === options.length
+    ? `Todos los ${label}`
+    : selected.length > 0
+    ? selected.join(", ")
+    : label === "Tipo"
+    ? "Seleccione Tipo de Inmueble"
+    : `Seleccione ${label}`;
 
   const toggleDropdown = () => {
     setOpenDropdown(isOpen ? null : label);
@@ -104,5 +106,6 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+
 
 
