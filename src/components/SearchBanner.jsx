@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
+import * as Slider from "@radix-ui/react-slider";
 
 const SearchBanner = ({ onSearch }) => {
   const [distritosOptions, setDistritosOptions] = useState([]);
@@ -9,7 +10,8 @@ const SearchBanner = ({ onSearch }) => {
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
-  const [soloDisponibles, setSoloDisponibles] = useState(false);
+  const [priceRange, setPriceRange] = useState([0, 10000]); // rango inicial
+
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
 
@@ -44,14 +46,15 @@ const SearchBanner = ({ onSearch }) => {
       location: distritos.join(","),
       status: modalidades.join(","),
       title: tipos.join(","),
-      status2: soloDisponibles ? "Disponible" : "",
+      priceMin: priceRange[0], // opcional
+      priceMax: priceRange[1], // opcional
     };
 
     onSearch(filters); // envía filtros al padre
   };
 
   return (
-    <section className="relative w-full h-[350px] flex flex-col items-center justify-center mt-6 px-4">
+    <section className="relative w-full h-[380px] flex flex-col items-center justify-center mt-6 px-4">
       <div
         className="absolute inset-0 rounded-3xl overflow-hidden"
         style={{
@@ -103,26 +106,32 @@ const SearchBanner = ({ onSearch }) => {
             setOpenDropdown={setOpenDropdown}
           />
 
-          <div className="flex items-center space-x-2 mt-7 md:mt-0">
-            <label
-              htmlFor="disponible"
-              className="relative cursor-pointer select-none text-sm text-gray-700"
-            >
-              <input
-                id="disponible"
-                type="checkbox"
-                checked={soloDisponibles}
-                onChange={() => setSoloDisponibles(!soloDisponibles)}
-                className="appearance-none w-5 h-5 border border-gray-400 rounded cursor-pointer checked:bg-transparent checked:border-transparent"
-              />
-              <span
-                className="absolute top-[2px] left-[2px] w-4 h-4 bg-no-repeat bg-center bg-contain pointer-events-none"
-                style={{ backgroundImage: soloDisponibles ? "url('/check2.png')" : "none" }}
-              />
-              Solo disponibles
+          {/* 🔹 Rango de precios opcional */}
+          <div className="col-span-1 md:col-span-2 flex flex-col justify-center">
+            <label className="text-sm font-medium text-gray-700 mb-2">
+              Rango de precios (opcional)
             </label>
+            <Slider.Root
+              className="relative flex items-center w-full h-5"
+              min={0}
+              max={10000}
+              step={500}
+              value={priceRange}
+              onValueChange={setPriceRange}
+            >
+              <Slider.Track className="bg-gray-200 relative flex-1 h-1 rounded-full">
+                <Slider.Range className="absolute bg-blue-500 h-1 rounded-full" />
+              </Slider.Track>
+              <Slider.Thumb className="block w-4 h-4 bg-white border border-blue-500 rounded-full shadow" />
+              <Slider.Thumb className="block w-4 h-4 bg-white border border-blue-500 rounded-full shadow" />
+            </Slider.Root>
+            <div className="flex justify-between mt-2 text-sm text-gray-600">
+              <span>Mín: S/ {priceRange[0]}</span>
+              <span>Máx: S/ {priceRange[1]}</span>
+            </div>
           </div>
 
+          {/* Botón buscar */}
           <div className="flex justify-center items-center">
             <button
               type="submit"
@@ -145,5 +154,6 @@ const SearchBanner = ({ onSearch }) => {
 };
 
 export default SearchBanner;
+
 
 
