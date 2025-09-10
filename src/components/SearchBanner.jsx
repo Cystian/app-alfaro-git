@@ -84,7 +84,7 @@ const SearchBanner = ({ onSearch }) => {
           className="flex flex-wrap gap-4 justify-center items-end"
           onSubmit={handleSubmit}
         >
-          <div className="w-full sm:w-40">
+          <div className="w-full sm:w-45">
             <CustomSelect
               label="Distrito"
               options={distritosOptions}
@@ -96,7 +96,7 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          <div className="w-full sm:w-40">
+          <div className="w-full sm:w-45">
             <CustomSelect
               label="Modalidad"
               options={modalidadesOptions}
@@ -108,7 +108,7 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          <div className="w-full sm:w-40">
+          <div className="w-full sm:w-45">
             <CustomSelect
               label="Tipo"
               options={tiposOptions}
