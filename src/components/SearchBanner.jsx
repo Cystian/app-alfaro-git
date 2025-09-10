@@ -84,7 +84,7 @@ const SearchBanner = ({ onSearch }) => {
           className="flex flex-wrap gap-4 justify-center items-end"
           onSubmit={handleSubmit}
         >
-          <div className="w-full sm:w-52">
+          <div className="w-full sm:w-48">
             <CustomSelect
               label="Distrito"
               options={distritosOptions}
@@ -96,7 +96,7 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          <div className="w-full sm:w-52">
+          <div className="w-full sm:w-48">
             <CustomSelect
               label="Modalidad"
               options={modalidadesOptions}
@@ -121,7 +121,7 @@ const SearchBanner = ({ onSearch }) => {
           </div>
 
           {/* 🔹 Rango de precios opcional */}
-          <div className="w-full sm:w-56 flex flex-col justify-center">
+          <div className="w-full sm:w-60 flex flex-col justify-center">
             <label className="text-sm font-medium text-gray-700 mb-2">
               Rango de precios (opcional)
             </label>
