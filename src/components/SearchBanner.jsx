@@ -65,49 +65,63 @@ const SearchBanner = ({ onSearch }) => {
         aria-hidden="true"
       ></div>
 
-      <div className="relative z-10 w-full max-w-5xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
+      <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
         <h2
-          className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-4 sm:mb-6 transition-all duration-1000 ease-out
-            ${showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"}`}
-          style={{ textShadow: `2px 2px 4px rgba(0,0,0), 0 0 6px rgba(255,0,0)` }}
+          className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out
+            ${
+              showText
+                ? "opacity-100 translate-y-0 float-text"
+                : "opacity-0 translate-y-5"
+            }`}
+          style={{
+            textShadow: `2px 2px 4px rgba(0,0,0), 0 0 6px rgba(255,0,0)`,
+          }}
         >
           Tenemos el lugar perfecto para ti
         </h2>
 
         <form
-          className="grid grid-cols-1 md:grid-cols-5 gap-4"
+          className="flex flex-wrap gap-4 justify-center items-end"
           onSubmit={handleSubmit}
         >
-          <CustomSelect
-            label="Distrito"
-            options={distritosOptions}
-            selected={distritos}
-            setSelected={setDistritos}
-            includeSelectAll
-            openDropdown={openDropdown}
-            setOpenDropdown={setOpenDropdown}
-          />
-          <CustomSelect
-            label="Modalidad"
-            options={modalidadesOptions}
-            selected={modalidades}
-            setSelected={setModalidades}
-            includeSelectAll
-            openDropdown={openDropdown}
-            setOpenDropdown={setOpenDropdown}
-          />
-          <CustomSelect
-            label="Tipo"
-            options={tiposOptions}
-            selected={tipos}
-            setSelected={setTipos}
-            includeSelectAll
-            openDropdown={openDropdown}
-            setOpenDropdown={setOpenDropdown}
-          />
+          <div className="w-full sm:w-40">
+            <CustomSelect
+              label="Distrito"
+              options={distritosOptions}
+              selected={distritos}
+              setSelected={setDistritos}
+              includeSelectAll
+              openDropdown={openDropdown}
+              setOpenDropdown={setOpenDropdown}
+            />
+          </div>
+
+          <div className="w-full sm:w-40">
+            <CustomSelect
+              label="Modalidad"
+              options={modalidadesOptions}
+              selected={modalidades}
+              setSelected={setModalidades}
+              includeSelectAll
+              openDropdown={openDropdown}
+              setOpenDropdown={setOpenDropdown}
+            />
+          </div>
+
+          <div className="w-full sm:w-40">
+            <CustomSelect
+              label="Tipo"
+              options={tiposOptions}
+              selected={tipos}
+              setSelected={setTipos}
+              includeSelectAll
+              openDropdown={openDropdown}
+              setOpenDropdown={setOpenDropdown}
+            />
+          </div>
 
           {/* 🔹 Rango de precios opcional */}
-          <div className="col-span-1 md:col-span-2 flex flex-col justify-center">
+          <div className="w-full sm:w-64 flex flex-col justify-center">
             <label className="text-sm font-medium text-gray-700 mb-2">
               Rango de precios (opcional)
             </label>
@@ -132,12 +146,16 @@ const SearchBanner = ({ onSearch }) => {
           </div>
 
           {/* Botón buscar */}
-          <div className="flex justify-center items-center">
+          <div className="w-full sm:w-auto flex justify-center items-center">
             <button
               type="submit"
               disabled={!isSearchEnabled}
-              className={`w-full py-2 px-4 rounded-lg font-semibold shadow-md transition-all duration-300
-                ${isSearchEnabled ? "bg-azul-primario hover:bg-azul-primario-dark text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
+              className={`w-full sm:w-auto py-2 px-6 rounded-lg font-semibold shadow-md transition-all duration-300
+                ${
+                  isSearchEnabled
+                    ? "bg-azul-primario hover:bg-azul-primario-dark text-white"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
             >
               Buscar
             </button>
@@ -146,7 +164,10 @@ const SearchBanner = ({ onSearch }) => {
       </div>
 
       <style>{`
-        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+        @keyframes float {
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
         .float-text { animation: float 3s ease-in-out infinite; }
       `}</style>
     </section>
