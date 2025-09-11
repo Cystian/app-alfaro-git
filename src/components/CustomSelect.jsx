@@ -87,15 +87,15 @@ const displayValue =
                   : selected.includes(option)
               }
             >
-              <input
-                type="checkbox"
-                readOnly
-                checked={
-                  (option === "Todos" && selected.length === options.length) ||
-                  (option !== "Todos" && selected.includes(option))
-                }
-                className="custom-checkbox mr-2"
-              />
+             <input
+  type="checkbox"
+  readOnly
+  checked={
+    (option === "Todos" && selected.length === options.length) ||
+    (option !== "Todos" && selected.includes(option))
+  }
+  className="w-3 h-3 mr-2 accent-azul-primario"
+/>
               <span>{option}</span>
             </li>
           ))}
@@ -106,6 +106,7 @@ const displayValue =
 };
 
 export default CustomSelect;
+
 
 
 
