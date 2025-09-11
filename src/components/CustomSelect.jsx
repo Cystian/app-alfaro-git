@@ -44,14 +44,16 @@ const CustomSelect = ({
     }
   };
 
-const displayValue =
-  selected.length === options.length
-    ? `Todos los ${label}`
-    : selected.length > 0
-    ? selected.join(", ")
-    : label === "Tipo"
-    ? "Seleccione Tipo de Inmueble"
-    : `Seleccione ${label}`;
+  const displayValue =
+    options.length === 0
+      ? `Cargando ${label}...`
+      : selected.length === options.length && options.length > 0
+      ? `Todos los ${label}`
+      : selected.length > 0
+      ? selected.join(", ")
+      : label === "Tipo"
+      ? "Seleccione Tipo de Inmueble"
+      : `Seleccione ${label}`;
 
   const toggleDropdown = () => {
     setOpenDropdown(isOpen ? null : label);
@@ -69,7 +71,7 @@ const displayValue =
         <span className="text-sm text-gray-700">{displayValue}</span>
       </button>
 
-      {isOpen && (
+      {isOpen && options.length > 0 && (
         <ul
           className="dropdown-menu animate-slide-down"
           role="listbox"
@@ -87,15 +89,15 @@ const displayValue =
                   : selected.includes(option)
               }
             >
-             <input
-  type="checkbox"
-  readOnly
-  checked={
-    (option === "Todos" && selected.length === options.length) ||
-    (option !== "Todos" && selected.includes(option))
-  }
-  className="w-3 h-3 mr-2 accent-azul-primario"
-/>
+              <input
+                type="checkbox"
+                readOnly
+                checked={
+                  (option === "Todos" && selected.length === options.length) ||
+                  (option !== "Todos" && selected.includes(option))
+                }
+                className="w-3 h-3 mr-2 accent-azul-primario"
+              />
               <span>{option}</span>
             </li>
           ))}
@@ -106,7 +108,6 @@ const displayValue =
 };
 
 export default CustomSelect;
-
 
 
 
