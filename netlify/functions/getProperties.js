@@ -1,4 +1,3 @@
-
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -13,10 +12,14 @@ exports.handler = async (event) => {
       location = [],
       status = [],
       title = [],
-      priceMin = 0,
-      priceMax = 400000,
+      priceMin,
+      priceMax,
       limit, // opcional
     } = JSON.parse(event.body || "{}");
+
+    // 🔹 Definir valores por defecto SOLO si no se tocaron
+    const minPrice = typeof priceMin === "number" ? priceMin : 0;
+    const maxPrice = typeof priceMax === "number" ? priceMax : 400000;
 
     // 🔹 Construir query base con filtros
     let query = `
@@ -34,8 +37,8 @@ exports.handler = async (event) => {
       location.length > 0 ? location : null,
       status.length > 0 ? status : null,
       title.length > 0 ? title : null,
-      priceMin,
-      priceMax,
+      minPrice,
+      maxPrice,
     ];
 
     // 🔹 Aplicar limit solo si viene como parámetro (ej. reel destacado)
