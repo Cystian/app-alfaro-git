@@ -141,8 +141,8 @@ const SearchBanner = ({ onSearch }) => {
               <Slider.Thumb className="block w-4 h-4 bg-white border border-blue-500 rounded-full shadow" />
             </Slider.Root>
             <div className="flex justify-between mt-2 text-sm text-gray-600">
-              <span>Mín: S/ {priceRange[0]}</span>
-              <span>Máx: S/ {priceRange[1]}</span>
+             <span>Mín: S/ {priceRange[0].toLocaleString("es-PE")}</span>
+              <span>Máx: S/ {priceRange[1].toLocaleString("es-PE")}</span>
             </div>
           </div>
 
