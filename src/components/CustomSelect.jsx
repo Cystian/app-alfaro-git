@@ -9,6 +9,7 @@ const CustomSelect = ({
   includeSelectAll = false,
   openDropdown,
   setOpenDropdown,
+  loading = false, // 🔹 nuevo: se puede pasar loading desde el padre
 }) => {
   const wrapperRef = useRef(null);
 
@@ -45,8 +46,10 @@ const CustomSelect = ({
   };
 
   const displayValue =
-    options.length === 0
+    loading
       ? `Cargando ${label}...`
+      : options.length === 0
+      ? `No hay ${label} disponibles`
       : selected.length === options.length && options.length > 0
       ? `Todos los ${label}`
       : selected.length > 0
@@ -56,7 +59,9 @@ const CustomSelect = ({
       : `Seleccione ${label}`;
 
   const toggleDropdown = () => {
-    setOpenDropdown(isOpen ? null : label);
+    if (!loading && options.length > 0) {
+      setOpenDropdown(isOpen ? null : label);
+    }
   };
 
   return (
@@ -67,6 +72,7 @@ const CustomSelect = ({
         onClick={toggleDropdown}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        disabled={loading || options.length === 0}
       >
         <span className="text-sm text-gray-700">{displayValue}</span>
       </button>
@@ -108,6 +114,7 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+
 
 
 
