@@ -39,16 +39,30 @@ const SearchBanner = ({ onSearch }) => {
   const isSearchEnabled =
     distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
-  const handleSubmit = (e) => {
+  // 🔹 Nuevo handleSubmit que envía filtros al endpoint search-properties
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const filters = {
-      location: distritos.join(","),
-      status: modalidades.join(","),
-      title: tipos.join(","),
+      location: distritos,       // array de strings
+      status: modalidades,       // array de strings
+      title: tipos,              // array de strings
       priceMin: priceRange[0],
       priceMax: priceRange[1],
+      // no enviamos limit para búsqueda general
     };
-    onSearch(filters); // envía filtros al padre
+
+    try {
+      const res = await fetch("/.netlify/functions/search-properties", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+      });
+      const data = await res.json();
+      onSearch(data); // envía resultados al componente padre
+    } catch (err) {
+      console.error("Error al buscar propiedades:", err);
+    }
   };
 
   return (
@@ -141,7 +155,7 @@ const SearchBanner = ({ onSearch }) => {
               <Slider.Thumb className="block w-4 h-4 bg-white border border-blue-500 rounded-full shadow" />
             </Slider.Root>
             <div className="flex justify-between mt-2 text-sm text-gray-600">
-             <span>Mín: S/ {priceRange[0].toLocaleString("es-PE")}</span>
+              <span>Mín: S/ {priceRange[0].toLocaleString("es-PE")}</span>
               <span>Máx: S/ {priceRange[1].toLocaleString("es-PE")}</span>
             </div>
           </div>
@@ -178,3 +192,4 @@ const SearchBanner = ({ onSearch }) => {
 };
 
 export default SearchBanner;
+
