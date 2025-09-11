@@ -53,7 +53,7 @@ const SearchBanner = ({ onSearch }) => {
     };
 
     try {
-      const res = await fetch("/.netlify/functions/search-properties", {
+      const res = await fetch("/.netlify/functions/getProperties", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filters),
