@@ -10,7 +10,7 @@ const SearchBanner = ({ onSearch }) => {
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 10000]); // rango inicial
+  const [priceRange, setPriceRange] = useState([0, 400000]); // rango inicial
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
@@ -128,8 +128,8 @@ const SearchBanner = ({ onSearch }) => {
             <Slider.Root
               className="relative flex items-center w-full h-5"
               min={0}
-              max={10000}
-              step={500}
+              max={400000}
+              step={10000}
               value={priceRange}
               onValueChange={setPriceRange}
             >
