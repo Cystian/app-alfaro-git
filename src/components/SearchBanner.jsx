@@ -10,7 +10,7 @@ const SearchBanner = ({ onSearch }) => {
   const [distritos, setDistritos] = useState([]);
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 300000]); // rango inicial
+  const [priceRange, setPriceRange] = useState([0, 400000]); // rango inicial
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
