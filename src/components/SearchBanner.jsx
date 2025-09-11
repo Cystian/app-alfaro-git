@@ -40,30 +40,31 @@ const SearchBanner = ({ onSearch }) => {
     distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
   // 🔹 Nuevo handleSubmit que envía filtros al endpoint search-properties
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const filters = {
-      location: distritos,       // array de strings
-      status: modalidades,       // array de strings
-      title: tipos,              // array de strings
-      priceMin: priceRange[0],
-      priceMax: priceRange[1],
-      // no enviamos limit para búsqueda general
-    };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch("/.netlify/functions/getProperties", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filters),
-      });
-      const data = await res.json();
-      onSearch(data); // envía resultados al componente padre
-    } catch (err) {
-      console.error("Error al buscar propiedades:", err);
-    }
+  const filters = {
+    location: distritos,       // enviar array de strings
+    status: modalidades,       // enviar array de strings
+    title: tipos,              // enviar array de strings
+    priceMin: priceRange[0],   // valor mínimo del slider
+    priceMax: priceRange[1],   // valor máximo del slider
   };
+
+  try {
+    const res = await fetch("/.netlify/functions/getProperties", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(filters),
+    });
+
+    const data = await res.json();
+    onSearch(data); // envía resultados al componente padre
+  } catch (err) {
+    console.error("Error al buscar propiedades:", err);
+  }
+};
 
   return (
     <section className="relative w-full h-[380px] flex flex-col items-center justify-center mt-6 px-4">
