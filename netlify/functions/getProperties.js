@@ -14,34 +14,28 @@ exports.handler = async (event) => {
       title = [],
       priceMin,
       priceMax,
-      limit, // opcional
+      limit, // opcional (para propiedades destacadas)
     } = JSON.parse(event.body || "{}");
 
     // 🔹 Definir valores por defecto SOLO si no se tocaron
     const minPrice = typeof priceMin === "number" ? priceMin : 0;
     const maxPrice = typeof priceMax === "number" ? priceMax : 400000;
 
-    // 🔹 Construir query base con filtros
+    // 🔹 Construir query base
     let query = `
       SELECT id, title, image, price, location, status
       FROM properties
       WHERE 
-        ($1::text[] IS NULL OR location = ANY($1))
-        AND ($2::text[] IS NULL OR status = ANY($2))
-        AND ($3::text[] IS NULL OR title = ANY($3))
+        location = ANY($1)
+        AND status = ANY($2)
+        AND title = ANY($3)
         AND price BETWEEN $4 AND $5
       ORDER BY RANDOM()
     `;
 
-    const params = [
-      location.length > 0 ? location : null,
-      status.length > 0 ? status : null,
-      title.length > 0 ? title : null,
-      minPrice,
-      maxPrice,
-    ];
+    const params = [location, status, title, minPrice, maxPrice];
 
-    // 🔹 Aplicar limit solo si viene como parámetro (ej. reel destacado)
+    // 🔹 Si viene "limit", lo aplicamos (solo propiedades destacadas)
     if (limit) {
       query += " LIMIT $6";
       params.push(limit);
@@ -61,4 +55,3 @@ exports.handler = async (event) => {
     };
   }
 };
-
