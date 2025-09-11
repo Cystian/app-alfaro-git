@@ -1,3 +1,4 @@
+
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -8,11 +9,17 @@ const pool = new Pool({
 exports.handler = async (event) => {
   try {
     // 🔹 Parsear filtros desde el body
-    const { location = [], status = [], title = [], priceMin = 0, priceMax = 400000 } = JSON.parse(event.body || "{}");
+    const {
+      location = [],
+      status = [],
+      title = [],
+      priceMin = 0,
+      priceMax = 400000,
+      limit, // opcional
+    } = JSON.parse(event.body || "{}");
 
-    // 🔹 Construir query con filtros
-    const result = await pool.query(
-      `
+    // 🔹 Construir query base con filtros
+    let query = `
       SELECT id, title, image, price, location, status
       FROM properties
       WHERE 
@@ -21,20 +28,34 @@ exports.handler = async (event) => {
         AND ($3::text[] IS NULL OR title = ANY($3))
         AND price BETWEEN $4 AND $5
       ORDER BY RANDOM()
-      LIMIT 10
-      `,
-      [
-        location.length > 0 ? location : null,
-        status.length > 0 ? status : null,
-        title.length > 0 ? title : null,
-        priceMin,
-        priceMax,
-      ]
-    );
+    `;
 
-    return { statusCode: 200, body: JSON.stringify(result.rows) };
+    const params = [
+      location.length > 0 ? location : null,
+      status.length > 0 ? status : null,
+      title.length > 0 ? title : null,
+      priceMin,
+      priceMax,
+    ];
+
+    // 🔹 Aplicar limit solo si viene como parámetro (ej. reel destacado)
+    if (limit) {
+      query += " LIMIT $6";
+      params.push(limit);
+    }
+
+    const result = await pool.query(query, params);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.rows),
+    };
   } catch (err) {
     console.error("Error en búsqueda:", err);
-    return { statusCode: 500, body: JSON.stringify({ message: "Error al traer propiedades" }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Error al traer propiedades" }),
+    };
   }
 };
+
