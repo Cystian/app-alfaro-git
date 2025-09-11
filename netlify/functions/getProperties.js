@@ -7,38 +7,44 @@ const pool = new Pool({
 
 exports.handler = async (event) => {
   try {
-    // 🔹 Parsear filtros desde el body
     const {
       location = [],
       status = [],
       title = [],
       priceMin,
       priceMax,
-      limit, // opcional (para propiedades destacadas)
     } = JSON.parse(event.body || "{}");
 
     // 🔹 Definir valores por defecto SOLO si no se tocaron
     const minPrice = typeof priceMin === "number" ? priceMin : 0;
     const maxPrice = typeof priceMax === "number" ? priceMax : 400000;
 
-    // 🔹 Construir query base
+    // 🔹 Verificar si realmente vinieron filtros
+    const hasFilters =
+      location.length > 0 || status.length > 0 || title.length > 0 || priceMin !== undefined || priceMax !== undefined;
+
     let query = `
       SELECT id, title, image, price, location, status
       FROM properties
       WHERE 
-        location = ANY($1)
-        AND status = ANY($2)
-        AND title = ANY($3)
+        ($1::text[] IS NULL OR location = ANY($1))
+        AND ($2::text[] IS NULL OR status = ANY($2))
+        AND ($3::text[] IS NULL OR title = ANY($3))
         AND price BETWEEN $4 AND $5
       ORDER BY RANDOM()
     `;
 
-    const params = [location, status, title, minPrice, maxPrice];
+    const params = [
+      location.length > 0 ? location : null,
+      status.length > 0 ? status : null,
+      title.length > 0 ? title : null,
+      minPrice,
+      maxPrice,
+    ];
 
-    // 🔹 Si viene "limit", lo aplicamos (solo propiedades destacadas)
-    if (limit) {
-      query += " LIMIT $6";
-      params.push(limit);
+    // 🔹 Si no hay filtros → limitar a 10 (destacados)
+    if (!hasFilters) {
+      query += " LIMIT 10";
     }
 
     const result = await pool.query(query, params);
