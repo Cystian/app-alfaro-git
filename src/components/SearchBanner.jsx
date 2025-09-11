@@ -12,8 +12,8 @@ const SearchBanner = ({ onSearch }) => {
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
 
-  const [priceRange, setPriceRange] = useState([0, 400000]); 
-  const [sliderTouched, setSliderTouched] = useState(false); // 👈 nuevo estado
+  const [priceRange, setPriceRange] = useState([0, 400000]); // rango inicial
+  const [sliderTouched, setSliderTouched] = useState(false); // 🔹 Detecta si se movió
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
 
@@ -40,13 +40,7 @@ const SearchBanner = ({ onSearch }) => {
   const isSearchEnabled =
     distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
-  // 🔹 Manejo de cambio en el slider
-  const handlePriceChange = (value) => {
-    setPriceRange(value);
-    setSliderTouched(true); // 👈 marca que ya fue tocado
-  };
-
-  // 🔹 Envío de filtros
+  // 🔹 Nuevo handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,9 +48,13 @@ const SearchBanner = ({ onSearch }) => {
       location: distritos,
       status: modalidades,
       title: tipos,
-      priceMin: sliderTouched ? priceRange[0] : 0,        // 👈 usa valor del slider o default
-      priceMax: sliderTouched ? priceRange[1] : 400000,   // 👈 usa valor del slider o default
     };
+
+    // Solo enviamos rango si el usuario movió el slider
+    if (sliderTouched) {
+      filters.priceMin = priceRange[0];
+      filters.priceMax = priceRange[1];
+    }
 
     try {
       const res = await fetch("/.netlify/functions/getProperties", {
@@ -142,7 +140,7 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          {/* 🔹 Rango de precios opcional */}
+          {/* 🔹 Slider de rango opcional */}
           <div className="w-full sm:w-60 flex flex-col justify-center">
             <label className="text-sm font-medium text-gray-700 mb-2">
               Rango de precios (opcional)
@@ -153,7 +151,10 @@ const SearchBanner = ({ onSearch }) => {
               max={400000}
               step={10000}
               value={priceRange}
-              onValueChange={handlePriceChange} // 👈 usamos el handler
+              onValueChange={(val) => {
+                setPriceRange(val);
+                setSliderTouched(true); // 🔹 Marca cuando se toca el slider
+              }}
             >
               <Slider.Track className="bg-gray-200 relative flex-1 h-1 rounded-full">
                 <Slider.Range className="absolute bg-blue-500 h-1 rounded-full" />
