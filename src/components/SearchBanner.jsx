@@ -15,6 +15,8 @@ const SearchBanner = ({ onSearch }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
 
+  const [loading, setLoading] = useState(true); // 🔹 indicador de carga
+
   useEffect(() => {
     setTimeout(() => setShowText(true), 200);
   }, []);
@@ -23,6 +25,7 @@ const SearchBanner = ({ onSearch }) => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
+        setLoading(true);
         const res = await fetch("/.netlify/functions/get-options");
         const data = await res.json();
 
@@ -31,6 +34,8 @@ const SearchBanner = ({ onSearch }) => {
         setTiposOptions(data.tipos || []);
       } catch (error) {
         console.error("Error cargando opciones:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchOptions();
@@ -43,11 +48,11 @@ const SearchBanner = ({ onSearch }) => {
     e.preventDefault();
 
     const filters = {
-      location: distritos,      // 🔹 ahora es array
-      status: modalidades,      // 🔹 ahora es array
-      title: tipos,             // 🔹 ahora es array
-      priceMin: priceRange[0],  // opcional
-      priceMax: priceRange[1],  // opcional
+      location: distritos,      // array
+      status: modalidades,      // array
+      title: tipos,             // array
+      priceMin: priceRange[0],
+      priceMax: priceRange[1],
     };
 
     onSearch(filters); // envía filtros al padre
@@ -93,6 +98,7 @@ const SearchBanner = ({ onSearch }) => {
               includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
+              loading={loading}
             />
           </div>
 
@@ -105,6 +111,7 @@ const SearchBanner = ({ onSearch }) => {
               includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
+              loading={loading}
             />
           </div>
 
@@ -117,6 +124,7 @@ const SearchBanner = ({ onSearch }) => {
               includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
+              loading={loading}
             />
           </div>
 
