@@ -12,7 +12,8 @@ const SearchBanner = ({ onSearch }) => {
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
 
-  const [priceRange, setPriceRange] = useState([0, 400000]); // rango inicial
+  const [priceRange, setPriceRange] = useState([0, 400000]); 
+  const [sliderTouched, setSliderTouched] = useState(false); // 👈 nuevo estado
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
 
@@ -39,32 +40,37 @@ const SearchBanner = ({ onSearch }) => {
   const isSearchEnabled =
     distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
-  // 🔹 Nuevo handleSubmit que envía filtros al endpoint search-properties
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const filters = {
-    location: distritos,       // enviar array de strings
-    status: modalidades,       // enviar array de strings
-    title: tipos,              // enviar array de strings
-    priceMin: priceRange[0],   // valor mínimo del slider
-    priceMax: priceRange[1],   // valor máximo del slider
+  // 🔹 Manejo de cambio en el slider
+  const handlePriceChange = (value) => {
+    setPriceRange(value);
+    setSliderTouched(true); // 👈 marca que ya fue tocado
   };
 
-  try {
-    const res = await fetch("/.netlify/functions/getProperties", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(filters),
-    });
+  // 🔹 Envío de filtros
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const data = await res.json();
-    onSearch(data); // envía resultados al componente padre
-  } catch (err) {
-    console.error("Error al buscar propiedades:", err);
-  }
-};
+    const filters = {
+      location: distritos,
+      status: modalidades,
+      title: tipos,
+      priceMin: sliderTouched ? priceRange[0] : 0,        // 👈 usa valor del slider o default
+      priceMax: sliderTouched ? priceRange[1] : 400000,   // 👈 usa valor del slider o default
+    };
+
+    try {
+      const res = await fetch("/.netlify/functions/getProperties", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+      });
+
+      const data = await res.json();
+      onSearch(data);
+    } catch (err) {
+      console.error("Error al buscar propiedades:", err);
+    }
+  };
 
   return (
     <section className="relative w-full h-[380px] flex flex-col items-center justify-center mt-6 px-4">
@@ -147,7 +153,7 @@ const handleSubmit = async (e) => {
               max={400000}
               step={10000}
               value={priceRange}
-              onValueChange={setPriceRange}
+              onValueChange={handlePriceChange} // 👈 usamos el handler
             >
               <Slider.Track className="bg-gray-200 relative flex-1 h-1 rounded-full">
                 <Slider.Range className="absolute bg-blue-500 h-1 rounded-full" />
@@ -193,4 +199,5 @@ const handleSubmit = async (e) => {
 };
 
 export default SearchBanner;
+
 
