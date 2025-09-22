@@ -199,7 +199,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(120, 120, 120);
-    doc.text("www.tuempresa.com - contacto@tuempresa.com - +51 999 999 999", 40, pageHeight - 30);
+    doc.text("www.inmobiliariaalbertoalfaro.com.pe - albertoalfaro@inmobiliariaalbertoalfaro.com - +51 940 221 494", 40, pageHeight - 30);
     doc.text(`Página ${pageNum}`, pageWidth - 60, pageHeight - 30);
   };
 
