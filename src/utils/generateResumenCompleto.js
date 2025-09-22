@@ -3,5 +3,5 @@ export const generateResumenCompleto = (propData) => {
   sessionStorage.setItem("propDataResumen", JSON.stringify(propData));
 
   // Abrir nueva pestaña
-  window.open("/propiedades/resumen", "_blank");
+  window.open("/pages/resumen", "_blank");
 };
