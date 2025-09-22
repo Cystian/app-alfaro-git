@@ -10,6 +10,8 @@ import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
 import NuestraHistoria from "./pages/NuestraHistoria";
 import Conocenos from "./pages/Conocenos";
+import PropertyResumenPage from "../pages/PropertyResumenPage";
+
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,7 @@ const router = createBrowserRouter([
       { path: "blog", element: <Blog /> },
       { path: "nuestrahistoria", element: <NuestraHistoria /> },
       { path: "conocenos", element: <Conocenos /> },
+      { path: "propiedades/resumen", element: <PropertyResumenPage /> },
     ],
   },
 ]);
