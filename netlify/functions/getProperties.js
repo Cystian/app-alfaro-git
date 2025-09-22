@@ -1,3 +1,4 @@
+// netlify/functions/getProperties.js
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -7,78 +8,61 @@ const pool = new Pool({
 
 exports.handler = async (event) => {
   try {
-    let params = {};
-    if (event.httpMethod === "GET") {
-      params = event.queryStringParameters || {};
-    } else {
-      params = JSON.parse(event.body || "{}");
-    }
+    let { title = "", location = "", status = "" } = event.queryStringParameters || {};
 
-    // Normalizamos: si vienen como string separados por coma → los pasamos a array
-    const parseToArray = (val) => {
-      if (!val) return [];
-      if (Array.isArray(val)) return val;
-      return val.split(",").map((v) => v.trim());
-    };
+    console.log("Filtros recibidos:", { title, location, status });
 
-    const locations = parseToArray(params.location);
-    const statuses = parseToArray(params.status);
-    const titles = parseToArray(params.title);
+    // Convertir a arrays, limpiar espacios
+    const titleArr = title ? title.split(",").map((t) => t.trim()) : [];
+    const locationArr = location ? location.split(",").map((l) => l.trim()) : [];
+    const statusArr = status ? status.split(",").map((s) => s.trim()) : [];
 
+    // Construir query dinámico
     let query = `
-      SELECT id, title, image, price, location, status
+      SELECT id, title, image, price, location, status, bedrooms, bathrooms, area
       FROM properties
-      WHERE 1 = 1
+      WHERE 1=1
     `;
 
     const queryParams = [];
     let i = 1;
 
-    // Filtro por distrito
-    if (locations.length > 0) {
-      query += ` AND location = ANY($${i++})`;
-      queryParams.push(locations);
+    if (locationArr.length) {
+      query += ` AND (${locationArr.map(() => `location ILIKE $${i++}`).join(" OR ")})`;
+      locationArr.forEach((l) => queryParams.push(`%${l}%`));
     }
 
-    // Filtro por modalidad (Alquiler/Venta/etc)
-    if (statuses.length > 0) {
-      query += ` AND (`;
-      query += statuses.map((_, idx) => `status ILIKE $${i + idx}`).join(" OR ");
-      query += `)`;
-      queryParams.push(...statuses.map((s) => `%${s}%`));
-      i += statuses.length;
+    if (statusArr.length) {
+      query += ` AND (${statusArr.map(() => `status ILIKE $${i++}`).join(" OR ")})`;
+      statusArr.forEach((s) => queryParams.push(`%${s}%`));
     }
 
-    // Filtro por tipo de propiedad (Departamento, Casa, etc)
-    if (titles.length > 0) {
-      query += ` AND (`;
-      query += titles.map((_, idx) => `title ILIKE $${i + idx}`).join(" OR ");
-      query += `)`;
-      queryParams.push(...titles.map((t) => `%${t}%`));
-      i += titles.length;
+    if (titleArr.length) {
+      query += ` AND (${titleArr.map(() => `title ILIKE $${i++}`).join(" OR ")})`;
+      titleArr.forEach((t) => queryParams.push(`%${t}%`));
     }
 
-    query += " ORDER BY RANDOM()";
+    // Si no hay filtro → limitar a 10
+    if (!titleArr.length && !locationArr.length && !statusArr.length) {
+      query += " ORDER BY RANDOM() LIMIT 10";
+    } else {
+      query += " ORDER BY RANDOM()";
+    }
+
+    console.log("Query generada:", query);
+    console.log("Parámetros:", queryParams);
 
     const result = await pool.query(query, queryParams);
-
-    // Debug prints 👇
-    console.log("➡️ Query ejecutada:", query);
-    console.log("➡️ Parámetros:", queryParams);
-    console.log("✅ Resultados encontrados:", result.rows.length);
 
     return {
       statusCode: 200,
       body: JSON.stringify(result.rows),
     };
   } catch (err) {
-    console.error("❌ Error al buscar propiedades:", err);
+    console.error("❌ Error al traer propiedades:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        message: "Error al traer propiedades",
-        error: err.message,
-      }),
+      body: JSON.stringify({ message: "Error al traer propiedades", error: err.message }),
     };
   }
 };
