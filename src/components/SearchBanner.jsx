@@ -14,9 +14,7 @@ const SearchBanner = ({ onSearch }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => setShowText(true), 200);
-  }, []);
+  useEffect(() => setTimeout(() => setShowText(true), 200), []);
 
   // 🔹 Carga opciones dinámicas desde Netlify Function
   useEffect(() => {
@@ -24,6 +22,8 @@ const SearchBanner = ({ onSearch }) => {
       try {
         const res = await fetch("/.netlify/functions/get-options");
         const data = await res.json();
+
+        // Espera distritos agrupados [{departamento, distritos:[{id, nombre}]}]
         setDistritosOptions(data.distritos || []);
         setModalidadesOptions(data.modalidades || []);
         setTiposOptions(data.tipos || []);
@@ -37,19 +37,20 @@ const SearchBanner = ({ onSearch }) => {
   const isSearchEnabled =
     distritos.length > 0 || modalidades.length > 0 || tipos.length > 0;
 
-  // 🔹 handleSubmit con GET + prints
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Convierte distritos agrupados a un array plano de nombres
+    const flatDistritos = distritos.join ? distritos : distritos;
+
     const filters = {
-      location: distritos.join(","), // convertir array en string
+      location: flatDistritos.join(","),
       status: modalidades.join(","),
       title: tipos.join(","),
     };
 
     console.log("➡️ Filtros enviados:", filters);
-
-    onSearch(filters); // pasamos los filtros a FeaturedProperties
+    onSearch(filters); // pasa los filtros a FeaturedProperties
   };
 
   return (
@@ -79,10 +80,7 @@ const SearchBanner = ({ onSearch }) => {
         </h2>
 
         {/* Formulario de búsqueda */}
-        <form
-          className="flex flex-wrap gap-4 justify-center items-end"
-          onSubmit={handleSubmit}
-        >
+        <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
           <div className="w-full sm:w-48">
             <CustomSelect
               label="Distrito"
@@ -151,5 +149,4 @@ const SearchBanner = ({ onSearch }) => {
 };
 
 export default SearchBanner;
-
 
