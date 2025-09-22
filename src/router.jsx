@@ -10,7 +10,7 @@ import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
 import NuestraHistoria from "./pages/NuestraHistoria";
 import Conocenos from "./pages/Conocenos";
-import PropertyResumenPage from "../pages/PropertyResumenPage";
+import PropertyResumenPage from "./pages/PropertyResumenPage";
 
 
 const router = createBrowserRouter([
