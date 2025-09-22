@@ -8,6 +8,7 @@ import "swiper/css/thumbs";
 import "swiper/css/effect-fade";
 import { Navigation, Pagination, Autoplay, Thumbs, EffectFade } from "swiper/modules";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
+import { generatePropertyPdf } from "../utils/generateResumenCompleto";
 
 const PropertyModal = ({ property, onClose }) => {
   const [details, setDetails] = useState(null);
@@ -292,6 +293,16 @@ const PropertyModal = ({ property, onClose }) => {
                   <img src="/flyer.png" alt="Flyer" className="w-5 h-5 mr-2" />
                   Descargar Flyer
                 </button>
+
+                {/* Botón Resumen Completo */}
+                <button
+                  onClick={() => generatePropertyPdf(propData.id)}
+                  className="inline-flex items-center bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition"
+                    >
+                <img src="/documento.png" alt="Resumen" className="w-5 h-5 mr-2" />
+            Ver Resumen
+              </button>
+                
               </div>
             </div>
           </>
