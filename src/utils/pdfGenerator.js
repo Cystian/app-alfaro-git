@@ -40,7 +40,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     } catch (e) {}
   }
 
-  y += 280;
+  y += 300;
 
   // 🔹 Título principal
   doc.setFontSize(30);
@@ -49,7 +49,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.text(property.title || "Propiedad Exclusiva", 40, y);
   y += 15;
 
-  doc.setDrawColor(212, 175, 55);
+  doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
   y += 25;
@@ -60,6 +60,10 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     const thumbHeight = 60;
     let xThumb = 40;
     let yThumb = y;
+    
+      // Elegante rojo para bordes
+  doc.setDrawColor(153, 0, 0); // rojo burdeos elegante
+    
     for (let i = 0; i < subProperties.length && i < 4; i++) {
       const sub = subProperties[i];
       if (sub.image) {
