@@ -1,23 +1,25 @@
-const { Pool } = require("pg");
-
-const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL,
-  ssl: { rejectUnauthorized: false },
-});
-
 exports.handler = async (event) => {
   try {
-    const {
-      location = [],
-      status = [],
-      title = [],
-    } = JSON.parse(event.body || "{}");
+    let location = [];
+    let status = [];
+    let title = [];
 
-    // 🔹 Verificar si realmente vinieron filtros
+    if (event.httpMethod === "GET") {
+      // Leer de query params
+      const qs = event.queryStringParameters || {};
+      location = qs.location ? [qs.location] : [];
+      status = qs.status ? [qs.status] : [];
+      title = qs.title ? [qs.title] : [];
+    } else {
+      // Leer de body JSON (POST)
+      const body = JSON.parse(event.body || "{}");
+      location = body.location || [];
+      status = body.status || [];
+      title = body.title || [];
+    }
+
     const hasFilters =
-      (location && location.length > 0) ||
-      (status && status.length > 0) ||
-      (title && title.length > 0);
+      location.length > 0 || status.length > 0 || title.length > 0;
 
     let query = `
       SELECT id, title, image, price, location, status
@@ -35,7 +37,6 @@ exports.handler = async (event) => {
       title.length > 0 ? title : null,
     ];
 
-    // 🔹 Si no hay filtros → limitar a 10
     if (!hasFilters) {
       query += " LIMIT 10";
     }
