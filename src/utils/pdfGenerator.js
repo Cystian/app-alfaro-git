@@ -42,18 +42,6 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   y += 110;
 
-  // 🔹 Imagen del mapa de ubicación (si tiene coordenadas)
-  if (property.latitude && property.longitude) {
-    try {
-      const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${property.latitude},${property.longitude}&zoom=16&size=600x300&markers=color:red%7C${property.latitude},${property.longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
-      const mapBase64 = await getBase64FromUrl(mapUrl);
-      doc.addImage(mapBase64, "PNG", 15, y, 180, 100);
-      y += 110;
-    } catch (e) {
-      console.warn("No se pudo cargar la imagen del mapa.");
-    }
-  }
-
   // Título
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
