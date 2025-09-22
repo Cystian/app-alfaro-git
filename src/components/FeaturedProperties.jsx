@@ -9,29 +9,27 @@ const FeaturedProperties = ({ filters }) => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false); // controla si se hizo búsqueda
 
   useEffect(() => {
     const fetchProperties = async () => {
       setLoading(true);
       try {
-        let url = "/.netlify/functions/getProperties";
+        let data;
 
-        if (filters) {
-          const params = new URLSearchParams();
-
-          if (filters.location) params.append("location", filters.location);
-          if (filters.status) params.append("status", filters.status);
-          if (filters.title) params.append("title", filters.title);
-
-          url += `?${params.toString()}`;
+        if (filters && (filters.location || filters.status || filters.title)) {
+          // fetch con filtros solo si el usuario hizo búsqueda
+          const res = await fetch("/.netlify/functions/getProperties?" + new URLSearchParams(filters));
+          data = await res.json();
+          setHasSearched(true); // activamos que ya hubo búsqueda
+        } else if (!hasSearched) {
+          // primera carga: propiedades destacadas random
+          const res = await fetch("/.netlify/functions/getProperties");
+          data = await res.json();
+        } else {
+          // Si ya buscó y filtros son vacíos, no cambiar nada
+          return;
         }
-
-        console.log("➡️ URL de propiedades:", url);
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        console.log("✅ Resultados obtenidos:", data);
 
         const cleanData = data.map((p) => ({
           ...p,
@@ -44,7 +42,7 @@ const FeaturedProperties = ({ filters }) => {
 
         setProperties(Array.isArray(cleanData) ? cleanData : []);
       } catch (err) {
-        console.error("❌ Error al traer propiedades:", err);
+        console.error("Error al traer propiedades:", err);
         setProperties([]);
       } finally {
         setLoading(false);
@@ -52,7 +50,7 @@ const FeaturedProperties = ({ filters }) => {
     };
 
     fetchProperties();
-  }, [filters]);
+  }, [filters, hasSearched]);
 
   const openPopup = (property) => setSelectedProperty(property);
   const closePopup = () => setSelectedProperty(null);
