@@ -1,4 +1,3 @@
-// src/components/SearchBanner.jsx
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -7,9 +6,9 @@ const SearchBanner = ({ onSearch }) => {
   const [modalidadesOptions, setModalidadesOptions] = useState([]);
   const [tiposOptions, setTiposOptions] = useState([]);
 
-  const [distritos, setDistritos] = useState("");
-  const [modalidades, setModalidades] = useState("");
-  const [tipos, setTipos] = useState("");
+  const [distritos, setDistritos] = useState([]);
+  const [modalidades, setModalidades] = useState([]);
+  const [tipos, setTipos] = useState([]);
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
@@ -34,16 +33,16 @@ const SearchBanner = ({ onSearch }) => {
     fetchOptions();
   }, []);
 
-  const isSearchEnabled = distritos && modalidades && tipos;
+  const isSearchEnabled = distritos.length > 0 || modalidades.length > 0 || tipos.length > 0;
 
-  // 🔹 handleSubmit con GET + prints
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const params = new URLSearchParams();
-    if (distritos) params.append("location", distritos);
-    if (modalidades) params.append("status", modalidades);
-    if (tipos) params.append("title", tipos);
+
+    if (distritos.length) params.append("location", distritos.join(","));
+    if (modalidades.length) params.append("status", modalidades.join(","));
+    if (tipos.length) params.append("title", tipos.join(","));
 
     const url = `/.netlify/functions/getProperties?${params.toString()}`;
     console.log("➡️ URL generada:", url);
@@ -55,6 +54,7 @@ const SearchBanner = ({ onSearch }) => {
       onSearch(data);
     } catch (err) {
       console.error("❌ Error al buscar propiedades:", err);
+      onSearch([]);
     }
   };
 
@@ -75,23 +75,17 @@ const SearchBanner = ({ onSearch }) => {
       <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out ${
-            showText
-              ? "opacity-100 translate-y-0 float-text"
-              : "opacity-0 translate-y-5"
+            showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"
           }`}
           style={{
-            textShadow:
-              "2px 2px 4px rgba(0,0,0,0.6), 0 0 6px rgba(255,0,0,0.4)",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.6), 0 0 6px rgba(255,0,0,0.4)",
           }}
         >
           Tenemos el lugar perfecto para ti
         </h2>
 
         {/* Formulario de búsqueda */}
-        <form
-          className="flex flex-wrap gap-4 justify-center items-end"
-          onSubmit={handleSubmit}
-        >
+        <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
           <div className="w-full sm:w-48">
             <CustomSelect
               label="Distrito"
@@ -100,6 +94,7 @@ const SearchBanner = ({ onSearch }) => {
               setSelected={setDistritos}
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
+              includeSelectAll
             />
           </div>
 
@@ -111,6 +106,7 @@ const SearchBanner = ({ onSearch }) => {
               setSelected={setModalidades}
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
+              includeSelectAll
             />
           </div>
 
@@ -122,6 +118,7 @@ const SearchBanner = ({ onSearch }) => {
               setSelected={setTipos}
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
+              includeSelectAll
             />
           </div>
 
