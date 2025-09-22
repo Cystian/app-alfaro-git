@@ -1,3 +1,4 @@
+// src/components/SearchBanner.jsx
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -33,29 +34,22 @@ const SearchBanner = ({ onSearch }) => {
     fetchOptions();
   }, []);
 
-  const isSearchEnabled = distritos.length > 0 || modalidades.length > 0 || tipos.length > 0;
+  const isSearchEnabled =
+    distritos.length > 0 || modalidades.length > 0 || tipos.length > 0;
 
+  // 🔹 handleSubmit con GET + prints
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const params = new URLSearchParams();
+    const filters = {
+      location: distritos.join(","), // convertir array en string
+      status: modalidades.join(","),
+      title: tipos.join(","),
+    };
 
-    if (distritos.length) params.append("location", distritos.join(","));
-    if (modalidades.length) params.append("status", modalidades.join(","));
-    if (tipos.length) params.append("title", tipos.join(","));
+    console.log("➡️ Filtros enviados:", filters);
 
-    const url = `/.netlify/functions/getProperties?${params.toString()}`;
-    console.log("➡️ URL generada:", url);
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      console.log("✅ Resultados obtenidos:", data);
-      onSearch(data);
-    } catch (err) {
-      console.error("❌ Error al buscar propiedades:", err);
-      onSearch([]);
-    }
+    onSearch(filters); // pasamos los filtros a FeaturedProperties
   };
 
   return (
@@ -85,16 +79,19 @@ const SearchBanner = ({ onSearch }) => {
         </h2>
 
         {/* Formulario de búsqueda */}
-        <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-wrap gap-4 justify-center items-end"
+          onSubmit={handleSubmit}
+        >
           <div className="w-full sm:w-48">
             <CustomSelect
               label="Distrito"
               options={distritosOptions}
               selected={distritos}
               setSelected={setDistritos}
+              includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
-              includeSelectAll
             />
           </div>
 
@@ -104,9 +101,9 @@ const SearchBanner = ({ onSearch }) => {
               options={modalidadesOptions}
               selected={modalidades}
               setSelected={setModalidades}
+              includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
-              includeSelectAll
             />
           </div>
 
@@ -116,9 +113,9 @@ const SearchBanner = ({ onSearch }) => {
               options={tiposOptions}
               selected={tipos}
               setSelected={setTipos}
+              includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
-              includeSelectAll
             />
           </div>
 
