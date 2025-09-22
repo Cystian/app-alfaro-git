@@ -1,6 +1,7 @@
 // src/utils/pdfGenerator.js
 import jsPDF from "jspdf";
 
+// Convierte URL a base64
 const getBase64FromUrl = async (url) => {
   const response = await fetch(url);
   const blob = await response.blob();
@@ -13,90 +14,92 @@ const getBase64FromUrl = async (url) => {
 };
 
 export const generatePropertyPdf = async (property, subProperties = []) => {
-  const doc = new jsPDF({ unit: "pt", format: "a4" });
+  const doc = new jsPDF("p", "pt", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  let y = 40;
 
-  // 🔹 Función para obtener URL absoluta de /public
   const getPublicUrl = (fileName) => `${window.location.origin}/${fileName}`;
 
-  // 🔹 Función auxiliar para agregar ícono + texto dentro de tarjeta
-  const addIconText = async (iconFile, label, value, x = 40, yPos = y) => {
-    const lineHeight = 16;
-    try {
-      const base64Icon = await getBase64FromUrl(getPublicUrl(iconFile));
-      doc.addImage(base64Icon, "PNG", x, yPos - 4, 12, 12);
-    } catch (e) {
-      console.warn(`No se pudo cargar el icono ${iconFile}`);
-    }
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.text(`${label}:`, x + 18, yPos + 4);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(11);
-    doc.text(`${value}`, x + 60, yPos + 4);
-    return yPos + lineHeight;
-  };
+  let y = 40; // margen superior
 
-  // 🔹 Función para agregar separador
-  const addSeparator = (yPos) => {
-    doc.setDrawColor(200);
-    doc.setLineWidth(0.5);
-    doc.line(40, yPos, pageWidth - 40, yPos);
-    return yPos + 10;
-  };
-
-  // 🔹 Agregar logo
+  // 🔹 Logo superior izquierdo
   try {
     const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.png"));
-    doc.addImage(logoBase64, "PNG", pageWidth - 100, 20, 60, 30);
+    doc.addImage(logoBase64, "PNG", 40, y, 60, 30);
   } catch (e) {
     console.warn("No se pudo cargar el logo.");
   }
 
-  // 🔹 Imagen principal
+  y += 50;
+
+  // 🔹 Imagen principal con sombra simulada
   if (property.image) {
     try {
       const base64Main = await getBase64FromUrl(property.image);
-      doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 80, 200);
+      doc.setFillColor(245, 245, 245); // sombra gris
+      doc.rect(38, y + 2, pageWidth - 80, 260, "F");
+      doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 80, 260);
     } catch (e) {
       console.warn("No se pudo cargar la imagen principal.");
     }
   }
 
-  y += 210;
+  y += 280;
 
-  // 🔹 Título de la propiedad
-  doc.setFontSize(18);
+  // 🔹 Título principal
+  doc.setFontSize(26);
   doc.setFont("helvetica", "bold");
-  doc.setTextColor(50, 50, 50);
+  doc.setTextColor(60, 60, 60);
   doc.text(property.title || "Propiedad", 40, y);
-  y += 25;
+  y += 10;
+  // Línea separadora dorada
+  doc.setDrawColor(200, 180, 100);
+  doc.setLineWidth(1.5);
+  doc.line(40, y, pageWidth - 40, y);
+  y += 20;
 
-  // 🔹 Tarjeta de datos clave (fondo gris)
-  doc.setFillColor(245, 245, 245);
-  doc.rect(35, y, pageWidth - 70, 100, "F");
-  let cardY = y + 15;
+  // 🔹 Función auxiliar para ícono + texto
+  const addIconText = async (iconFile, text, x = 40, yPos = y) => {
+    try {
+      const base64Icon = await getBase64FromUrl(getPublicUrl(iconFile));
+      doc.addImage(base64Icon, "PNG", x, yPos - 4, 18, 18);
+      doc.setFontSize(13);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(60, 60, 60);
+      doc.text(text, x + 25, yPos + 12);
+      return yPos + 30;
+    } catch (e) {
+      doc.text(text, x, yPos);
+      return yPos + 30;
+    }
+  };
 
-  if (property.price) cardY = await addIconText("precio.png", "Precio", `S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 50, cardY);
-  if (property.area) cardY = await addIconText("area.png", "Área", `${property.area} m²`, 50, cardY);
-  if (property.bedrooms) cardY = await addIconText("dormi.png", "Dormitorios", `${property.bedrooms}`, 50, cardY);
-  if (property.bathrooms) cardY = await addIconText("bano.png", "Baños", `${property.bathrooms}`, 50, cardY);
-  if (property.location) cardY = await addIconText("maps.png", "Ubicación", property.location, 50, cardY);
+  // 🔹 Datos clave
+  if (property.price)
+    y = await addIconText(
+      "precio.png",
+      `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,
+      40,
+      y
+    );
+  if (property.area)
+    y = await addIconText("area.png", `Área: ${property.area} m²`, 40, y);
+  if (property.bedrooms)
+    y = await addIconText("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
+  if (property.bathrooms)
+    y = await addIconText("bano.png", `Baños: ${property.bathrooms}`, 40, y);
+  if (property.location)
+    y = await addIconText("maps.png", `Ubicación: ${property.location}`, 40, y);
 
-  y = y + 110;
+  y += 10;
 
-  // 🔹 Separador
-  y = addSeparator(y);
-
-  // 🔹 Descripción
+  // 🔹 Descripción general
   if (property.description) {
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    const lines = doc.splitTextToSize(property.description, pageWidth - 80);
-    doc.text(lines, 40, y);
-    y += lines.length * 14 + 10;
+    const descLines = doc.splitTextToSize(property.description, pageWidth - 80);
+    doc.text(descLines, 40, y);
+    y += descLines.length * 16;
   }
 
   // 🔹 Subpropiedades
@@ -105,56 +108,62 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     doc.addPage();
     y = 40;
 
-    // Imagen subpropiedad
+    // Imagen subpropiedad con sombra
     if (sub.image) {
       try {
         const base64Sub = await getBase64FromUrl(sub.image);
+        doc.setFillColor(245, 245, 245);
+        doc.rect(38, y + 2, pageWidth - 80, 180, "F");
         doc.addImage(base64Sub, "JPEG", 40, y, pageWidth - 80, 180);
       } catch (e) {
         console.warn("No se pudo cargar la imagen de subpropiedad.");
       }
     }
-    y += 190;
+    y += 200;
 
     // Título subpropiedad
-    doc.setFontSize(16);
+    doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
+    doc.setTextColor(60, 60, 60);
     doc.text(sub.title || `Sub Propiedad ${i + 1}`, 40, y);
-    y += 20;
+    y += 10;
+    doc.setDrawColor(200, 180, 100);
+    doc.setLineWidth(1);
+    doc.line(40, y, pageWidth - 40, y);
+    y += 15;
 
-    // Descripción subpropiedad
+    // Descripción y contenido adicional
     if (sub.text_content) {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal");
       const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
       doc.text(lines, 40, y);
-      y += lines.length * 14 + 10;
+      y += lines.length * 14;
     }
-
-    // Información adicional (opcional)
     if (sub.content) {
       doc.setFontSize(11);
       doc.setFont("helvetica", "italic");
       const lines = doc.splitTextToSize(sub.content, pageWidth - 80);
       doc.text(lines, 40, y);
-      y += lines.length * 14 + 10;
+      y += lines.length * 14;
     }
-
-    // Numeración de página
-    const pageNumber = i + 2; // primera página = 1
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(120);
-    doc.text(`Página ${pageNumber}`, pageWidth - 60, pageHeight - 30);
   }
 
-  // 🔹 Pie de página primera página
-  doc.setFontSize(9);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(120);
-  doc.text("Inmobiliaria - Contacto: info@inmobiliaria.com", 40, pageHeight - 30);
-  doc.text(`Página 1`, pageWidth - 60, pageHeight - 30);
+  // 🔹 Pie de página con contacto y numeración
+  const addFooter = (pageNum) => {
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(120, 120, 120);
+    doc.text("www.tuempresa.com - contacto@tuempresa.com - +51 999 999 999", 40, pageHeight - 30);
+    doc.text(`Página ${pageNum}`, pageWidth - 60, pageHeight - 30);
+  };
 
-  // 🔹 Guardar PDF
+  const pageCount = doc.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    addFooter(i);
+  }
+
+  // 🔹 Guardar PDF final
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
