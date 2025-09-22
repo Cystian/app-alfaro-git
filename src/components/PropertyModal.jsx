@@ -295,13 +295,13 @@ const PropertyModal = ({ property, onClose }) => {
                 </button>
 
                 {/* Botón Resumen Completo */}
-                <button
-                  onClick={() => generatePropertyPdf(propData.id)}
-                  className="inline-flex items-center bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition"
-                    >
-                <img src="/documento.png" alt="Resumen" className="w-5 h-5 mr-2" />
-            Ver Resumen
-              </button>
+            <button
+                 onClick={() => generateResumenCompleto(propData)}
+               className="inline-flex items-center bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition"
+               >
+               <img src="/documento.png" alt="Resumen" className="w-5 h-5 mr-2" />
+              Ver Resumen
+            </button>
                 
               </div>
             </div>
