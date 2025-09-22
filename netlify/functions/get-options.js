@@ -20,16 +20,29 @@ export async function handler() {
   try {
     await client.connect();
 
+    // 🔹 Consultas
     const [distritosResult, modalidadesResult, tiposResult] = await Promise.all([
-      client.query("SELECT nombre FROM distritos ORDER BY nombre ASC"),
+      client.query("SELECT id, nombre, departamento FROM distritos ORDER BY departamento, nombre ASC"),
       client.query("SELECT nombre FROM modalidades ORDER BY nombre ASC"),
       client.query("SELECT nombre FROM tipos ORDER BY nombre ASC"),
     ]);
 
+    // 🔹 Agrupar distritos por departamento
+    const groupedDistritos = distritosResult.rows.reduce((acc, row) => {
+      if (!acc[row.departamento]) acc[row.departamento] = [];
+      acc[row.departamento].push({ id: row.id, nombre: row.nombre });
+      return acc;
+    }, {});
+
+    const distritosOptions = Object.keys(groupedDistritos).map((dep) => ({
+      departamento: dep,
+      distritos: groupedDistritos[dep],
+    }));
+
     return {
       statusCode: 200,
       body: JSON.stringify({
-        distritos: distritosResult.rows.map((row) => row.nombre),
+        distritos: distritosOptions,
         modalidades: modalidadesResult.rows.map((row) => row.nombre),
         tipos: tiposResult.rows.map((row) => row.nombre),
       }),
@@ -50,5 +63,3 @@ export async function handler() {
     );
   }
 }
-
-
