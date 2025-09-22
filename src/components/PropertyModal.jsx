@@ -8,7 +8,7 @@ import "swiper/css/thumbs";
 import "swiper/css/effect-fade";
 import { Navigation, Pagination, Autoplay, Thumbs, EffectFade } from "swiper/modules";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
-import { generatePropertyPdf } from "../utils/generateResumenCompleto";
+import { generateResumenCompleto } from "../utils/generateResumenCompleto";
 
 const PropertyModal = ({ property, onClose }) => {
   const [details, setDetails] = useState(null);
