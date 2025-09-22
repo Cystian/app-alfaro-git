@@ -1,4 +1,4 @@
-// src/utils/pdfLuxuryGenerator.js
+// src/utils/pdfGenerator.js
 import jsPDF from "jspdf";
 
 const getBase64FromUrl = async (url) => {
@@ -12,7 +12,7 @@ const getBase64FromUrl = async (url) => {
   });
 };
 
-export const generatePropertyPdfLuxury = async (property, subProperties = []) => {
+export const generatePropertyPdf = async (property, subProperties = []) => {
   const doc = new jsPDF("p", "pt", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
