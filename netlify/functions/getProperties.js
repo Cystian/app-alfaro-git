@@ -1,45 +1,39 @@
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.NEON_DB_URL,
+  ssl: { rejectUnauthorized: false },
+});
+
 exports.handler = async (event) => {
   try {
-    let location = [];
-    let status = [];
-    let title = [];
+    const { location, status, title } = JSON.parse(event.body || "{}");
 
-    if (event.httpMethod === "GET") {
-      // Leer de query params
-      const qs = event.queryStringParameters || {};
-      location = qs.location ? [qs.location] : [];
-      status = qs.status ? [qs.status] : [];
-      title = qs.title ? [qs.title] : [];
-    } else {
-      // Leer de body JSON (POST)
-      const body = JSON.parse(event.body || "{}");
-      location = body.location || [];
-      status = body.status || [];
-      title = body.title || [];
-    }
+    // Normalizar los filtros → siempre como array
+    const loc = location && location.length ? location : [];
+    const stat = status && status.length ? status : [];
+    const titl = title && title.length ? title : [];
 
-    const hasFilters =
-      location.length > 0 || status.length > 0 || title.length > 0;
+    console.log("📌 Filtros recibidos:", { loc, stat, titl });
 
     let query = `
       SELECT id, title, image, price, location, status
       FROM properties
-      WHERE 
-        (ARRAY_LENGTH($1::text[], 1) IS NULL OR location = ANY($1))
-        AND (ARRAY_LENGTH($2::text[], 1) IS NULL OR status = ANY($2))
-        AND (ARRAY_LENGTH($3::text[], 1) IS NULL OR title = ANY($3))
+      WHERE (array_length($1::text[], 1) IS NULL OR location = ANY($1))
+        AND (array_length($2::text[], 1) IS NULL OR status = ANY($2))
+        AND (array_length($3::text[], 1) IS NULL OR title = ANY($3))
       ORDER BY RANDOM()
     `;
 
-    const params = [
-      location.length > 0 ? location : null,
-      status.length > 0 ? status : null,
-      title.length > 0 ? title : null,
-    ];
+    const params = [loc.length ? loc : null, stat.length ? stat : null, titl.length ? titl : null];
 
-    if (!hasFilters) {
+    // Si no hay filtros → limitar resultados
+    if (!loc.length && !stat.length && !titl.length) {
       query += " LIMIT 10";
     }
+
+    console.log("📌 Query:", query);
+    console.log("📌 Params:", params);
 
     const result = await pool.query(query, params);
 
@@ -48,10 +42,11 @@ exports.handler = async (event) => {
       body: JSON.stringify(result.rows),
     };
   } catch (err) {
-    console.error("Error en búsqueda:", err);
+    console.error("❌ Error en búsqueda:", err.message);
+    console.error("Stack:", err.stack);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error al traer propiedades" }),
+      body: JSON.stringify({ message: "Error al traer propiedades", error: err.message }),
     };
   }
 };
