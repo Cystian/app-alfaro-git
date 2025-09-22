@@ -72,8 +72,8 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     }
   };
 
-  // Datos clave
-  if (property.price) y = await addIconText("precio.png", `Precio: ${property.price}`, 15, y);
+  // Datos clave 
+  if (property.price) y = await addIconText("precio.png", `Precio: S/ {Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 15, y);
   if (property.area) y = await addIconText("area.png", `Área: ${property.area} m²`, 15, y);
   if (property.bedrooms) y = await addIconText("dormi.png", `Dormitorios: ${property.bedrooms}`, 15, y);
   if (property.bathrooms) y = await addIconText("bano.png", `Baños: ${property.bathrooms}`, 15, y);
