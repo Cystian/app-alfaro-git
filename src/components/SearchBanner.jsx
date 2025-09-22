@@ -35,7 +35,7 @@ const SearchBanner = ({ onSearch }) => {
   }, []);
 
   const isSearchEnabled =
-    distritos.length > 0 || modalidades.length > 0 || tipos.length > 0;
+    distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
