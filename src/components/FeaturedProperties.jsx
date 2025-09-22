@@ -84,7 +84,7 @@ const FeaturedProperties = ({ filters }) => {
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-bold mb-1">{property.title}</h3>
                 <p className="text-sm text-gray-600 mb-1">{property.location}</p>
-                <p className="text-blue-600 font-semibold mb-2">{property.price}</p>
+                <p className="text-blue-600 font-semibold mb-2"> S/ {Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
                 <p className="text-xs text-gray-500 mb-4">{property.status}</p>
                 <div className="mt-auto flex gap-2">
                   <a
