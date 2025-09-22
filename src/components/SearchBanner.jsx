@@ -1,7 +1,6 @@
 // src/components/SearchBanner.jsx
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
-import * as Slider from "@radix-ui/react-slider";
 
 const SearchBanner = ({ onSearch }) => {
   const [distritosOptions, setDistritosOptions] = useState([]);
@@ -12,8 +11,6 @@ const SearchBanner = ({ onSearch }) => {
   const [modalidades, setModalidades] = useState([]);
   const [tipos, setTipos] = useState([]);
 
-  const [priceRange, setPriceRange] = useState([0, 400000]); // rango inicial
-  const [sliderTouched, setSliderTouched] = useState(false); // 🔹 Detecta si se movió
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
 
@@ -40,7 +37,7 @@ const SearchBanner = ({ onSearch }) => {
   const isSearchEnabled =
     distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
-  // 🔹 Nuevo handleSubmit
+  // 🔹 handleSubmit limpio
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,12 +46,6 @@ const SearchBanner = ({ onSearch }) => {
       status: modalidades,
       title: tipos,
     };
-
-    // Solo enviamos rango si el usuario movió el slider
-    if (sliderTouched) {
-      filters.priceMin = priceRange[0];
-      filters.priceMax = priceRange[1];
-    }
 
     try {
       const res = await fetch("/.netlify/functions/getProperties", {
@@ -138,34 +129,6 @@ const SearchBanner = ({ onSearch }) => {
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
             />
-          </div>
-
-          {/* 🔹 Slider de rango opcional */}
-          <div className="w-full sm:w-60 flex flex-col justify-center">
-            <label className="text-sm font-medium text-gray-700 mb-2">
-              Rango de precios (opcional)
-            </label>
-            <Slider.Root
-              className="relative flex items-center w-full h-5"
-              min={0}
-              max={400000}
-              step={10000}
-              value={priceRange}
-              onValueChange={(val) => {
-                setPriceRange(val);
-                setSliderTouched(true); // 🔹 Marca cuando se toca el slider
-              }}
-            >
-              <Slider.Track className="bg-gray-200 relative flex-1 h-1 rounded-full">
-                <Slider.Range className="absolute bg-blue-500 h-1 rounded-full" />
-              </Slider.Track>
-              <Slider.Thumb className="block w-4 h-4 bg-white border border-blue-500 rounded-full shadow" />
-              <Slider.Thumb className="block w-4 h-4 bg-white border border-blue-500 rounded-full shadow" />
-            </Slider.Root>
-            <div className="flex justify-between mt-2 text-sm text-gray-600">
-              <span>Mín: S/ {priceRange[0].toLocaleString("es-PE")}</span>
-              <span>Máx: S/ {priceRange[1].toLocaleString("es-PE")}</span>
-            </div>
           </div>
 
           {/* Botón buscar */}
