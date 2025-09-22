@@ -7,9 +7,9 @@ const SearchBanner = ({ onSearch }) => {
   const [modalidadesOptions, setModalidadesOptions] = useState([]);
   const [tiposOptions, setTiposOptions] = useState([]);
 
-  const [distritos, setDistritos] = useState([]);
-  const [modalidades, setModalidades] = useState([]);
-  const [tipos, setTipos] = useState([]);
+  const [distritos, setDistritos] = useState("");
+  const [modalidades, setModalidades] = useState("");
+  const [tipos, setTipos] = useState("");
 
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showText, setShowText] = useState(false);
@@ -34,30 +34,27 @@ const SearchBanner = ({ onSearch }) => {
     fetchOptions();
   }, []);
 
-  const isSearchEnabled =
-    distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
+  const isSearchEnabled = distritos && modalidades && tipos;
 
-  // 🔹 handleSubmit limpio
+  // 🔹 handleSubmit con GET + prints
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const filters = {
-      location: distritos,
-      status: modalidades,
-      title: tipos,
-    };
+    const params = new URLSearchParams();
+    if (distritos) params.append("location", distritos);
+    if (modalidades) params.append("status", modalidades);
+    if (tipos) params.append("title", tipos);
+
+    const url = `/.netlify/functions/getProperties?${params.toString()}`;
+    console.log("➡️ URL generada:", url);
 
     try {
-      const res = await fetch("/.netlify/functions/getProperties", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filters),
-      });
-
+      const res = await fetch(url);
       const data = await res.json();
+      console.log("✅ Resultados obtenidos:", data);
       onSearch(data);
     } catch (err) {
-      console.error("Error al buscar propiedades:", err);
+      console.error("❌ Error al buscar propiedades:", err);
     }
   };
 
@@ -101,7 +98,6 @@ const SearchBanner = ({ onSearch }) => {
               options={distritosOptions}
               selected={distritos}
               setSelected={setDistritos}
-              includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
             />
@@ -113,7 +109,6 @@ const SearchBanner = ({ onSearch }) => {
               options={modalidadesOptions}
               selected={modalidades}
               setSelected={setModalidades}
-              includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
             />
@@ -125,7 +120,6 @@ const SearchBanner = ({ onSearch }) => {
               options={tiposOptions}
               selected={tipos}
               setSelected={setTipos}
-              includeSelectAll
               openDropdown={openDropdown}
               setOpenDropdown={setOpenDropdown}
             />
