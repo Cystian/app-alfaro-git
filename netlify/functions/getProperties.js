@@ -7,46 +7,56 @@ const pool = new Pool({
 
 exports.handler = async (event) => {
   try {
-    const { location, status, title } = JSON.parse(event.body || "{}");
+    let params = {};
+    if (event.httpMethod === "GET") {
+      params = event.queryStringParameters || {};
+    } else {
+      params = JSON.parse(event.body || "{}");
+    }
 
-    // Normalizar los filtros → siempre como array
-    const loc = location && location.length ? location : [];
-    const stat = status && status.length ? status : [];
-    const titl = title && title.length ? title : [];
+    const location = params.location || "";
+    const status = params.status || "";
+    const title = params.title || "";
 
-    console.log("📌 Filtros recibidos:", { loc, stat, titl });
-
+    // Construir query con ILIKE para permitir coincidencias parciales
     let query = `
       SELECT id, title, image, price, location, status
       FROM properties
-      WHERE (array_length($1::text[], 1) IS NULL OR location = ANY($1))
-        AND (array_length($2::text[], 1) IS NULL OR status = ANY($2))
-        AND (array_length($3::text[], 1) IS NULL OR title = ANY($3))
-      ORDER BY RANDOM()
+      WHERE 1 = 1
     `;
 
-    const params = [loc.length ? loc : null, stat.length ? stat : null, titl.length ? titl : null];
+    const queryParams = [];
+    let i = 1;
 
-    // Si no hay filtros → limitar resultados
-    if (!loc.length && !stat.length && !titl.length) {
-      query += " LIMIT 10";
+    if (location) {
+      query += ` AND location ILIKE $${i++}`;
+      queryParams.push(`%${location}%`);
     }
 
-    console.log("📌 Query:", query);
-    console.log("📌 Params:", params);
+    if (status) {
+      query += ` AND status ILIKE $${i++}`;
+      queryParams.push(`%${status}%`);
+    }
 
-    const result = await pool.query(query, params);
+    if (title) {
+      query += ` AND title ILIKE $${i++}`;
+      queryParams.push(`%${title}%`);
+    }
+
+    query += " ORDER BY RANDOM()";
+
+    const result = await pool.query(query, queryParams);
 
     return {
       statusCode: 200,
       body: JSON.stringify(result.rows),
     };
   } catch (err) {
-    console.error("❌ Error en búsqueda:", err.message);
-    console.error("Stack:", err.stack);
+    console.error("Error al buscar departamentos en Chao:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: "Error al traer propiedades", error: err.message }),
     };
   }
 };
+
