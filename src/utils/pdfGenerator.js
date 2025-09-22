@@ -155,7 +155,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     doc.text(sub.title || `Sub Propiedad ${i + 1}`, 40, y);
     y += 12;
 
-    doc.setDrawColor(212, 175, 55);
+   doc.setDrawColor(153, 0, 0);
     doc.setLineWidth(1);
     doc.line(40, y, pageWidth - 40, y);
     y += 18;
