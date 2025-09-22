@@ -10,50 +10,61 @@ exports.handler = async (event) => {
     let params = {};
     if (event.httpMethod === "GET") {
       params = event.queryStringParameters || {};
-      if (params.location) params.location = params.location.split(",");
-      if (params.status) params.status = params.status.split(",");
-      if (params.title) params.title = params.title.split(",");
     } else {
       params = JSON.parse(event.body || "{}");
     }
 
-    const location = params.location || [];
-    const status = params.status || [];
-    const title = params.title || [];
+    // Normalizamos: si vienen como string separados por coma → los pasamos a array
+    const parseToArray = (val) => {
+      if (!val) return [];
+      if (Array.isArray(val)) return val;
+      return val.split(",").map((v) => v.trim());
+    };
 
-    console.log("📌 Filtros recibidos:", { location, status, title });
+    const locations = parseToArray(params.location);
+    const statuses = parseToArray(params.status);
+    const titles = parseToArray(params.title);
 
     let query = `
       SELECT id, title, image, price, location, status
       FROM properties
-      WHERE 1=1
+      WHERE 1 = 1
     `;
 
     const queryParams = [];
     let i = 1;
 
-    if (location.length > 0) {
-      query += ` AND location ILIKE ANY($${i++})`;
-      queryParams.push(location.map(l => `%${l}%`));
+    // Filtro por distrito
+    if (locations.length > 0) {
+      query += ` AND location = ANY($${i++})`;
+      queryParams.push(locations);
     }
 
-    if (status.length > 0) {
-      query += ` AND status ILIKE ANY($${i++})`;
-      queryParams.push(status.map(s => `%${s}%`));
+    // Filtro por modalidad (Alquiler/Venta/etc)
+    if (statuses.length > 0) {
+      query += ` AND (`;
+      query += statuses.map((_, idx) => `status ILIKE $${i + idx}`).join(" OR ");
+      query += `)`;
+      queryParams.push(...statuses.map((s) => `%${s}%`));
+      i += statuses.length;
     }
 
-    if (title.length > 0) {
-      query += ` AND title ILIKE ANY($${i++})`;
-      queryParams.push(title.map(t => `%${t}%`));
+    // Filtro por tipo de propiedad (Departamento, Casa, etc)
+    if (titles.length > 0) {
+      query += ` AND (`;
+      query += titles.map((_, idx) => `title ILIKE $${i + idx}`).join(" OR ");
+      query += `)`;
+      queryParams.push(...titles.map((t) => `%${t}%`));
+      i += titles.length;
     }
 
     query += " ORDER BY RANDOM()";
 
-    console.log("📝 Query generada:", query);
-    console.log("🔑 Params usados:", queryParams);
-
     const result = await pool.query(query, queryParams);
 
+    // Debug prints 👇
+    console.log("➡️ Query ejecutada:", query);
+    console.log("➡️ Parámetros:", queryParams);
     console.log("✅ Resultados encontrados:", result.rows.length);
 
     return {
@@ -64,8 +75,10 @@ exports.handler = async (event) => {
     console.error("❌ Error al buscar propiedades:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error al traer propiedades", error: err.message }),
+      body: JSON.stringify({
+        message: "Error al traer propiedades",
+        error: err.message,
+      }),
     };
   }
 };
-
