@@ -14,21 +14,24 @@ const FeaturedProperties = ({ filters }) => {
     const fetchProperties = async () => {
       setLoading(true);
       try {
-        let data;
+        let url = "/.netlify/functions/getProperties";
 
         if (filters) {
-          // POST con filtros
-          const res = await fetch("/.netlify/functions/getPropertyDinamic", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(filters),
-          });
-          data = await res.json();
-        } else {
-          // Primer reel (destacadas) con límite 10
-          const res = await fetch("/.netlify/functions/getProperties");
-          data = await res.json();
+          const params = new URLSearchParams();
+
+          if (filters.location) params.append("location", filters.location);
+          if (filters.status) params.append("status", filters.status);
+          if (filters.title) params.append("title", filters.title);
+
+          url += `?${params.toString()}`;
         }
+
+        console.log("➡️ URL de propiedades:", url);
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        console.log("✅ Resultados obtenidos:", data);
 
         const cleanData = data.map((p) => ({
           ...p,
@@ -41,7 +44,7 @@ const FeaturedProperties = ({ filters }) => {
 
         setProperties(Array.isArray(cleanData) ? cleanData : []);
       } catch (err) {
-        console.error("Error al traer propiedades:", err);
+        console.error("❌ Error al traer propiedades:", err);
         setProperties([]);
       } finally {
         setLoading(false);
