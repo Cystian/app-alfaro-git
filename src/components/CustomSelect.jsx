@@ -1,4 +1,3 @@
-// src/components/CustomSelect.jsx
 import React, { useRef, useEffect } from "react";
 
 const CustomSelect = ({
@@ -11,17 +10,14 @@ const CustomSelect = ({
   setOpenDropdown,
 }) => {
   const wrapperRef = useRef(null);
-
-  const fullOptions = includeSelectAll ? ["Todos", ...options] : options;
+  const isGrouped = options.length > 0 && options[0].departamento !== undefined; // detectar si es distritos agrupados
   const isOpen = openDropdown === label;
 
   // Cierra el dropdown al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        if (isOpen) {
-          setOpenDropdown(null);
-        }
+        if (isOpen) setOpenDropdown(null);
       }
     }
 
@@ -31,10 +27,10 @@ const CustomSelect = ({
 
   const handleSelect = (option) => {
     if (option === "Todos") {
-      if (selected.length === options.length) {
+      if (selected.length === getAllOptions().length) {
         setSelected([]);
       } else {
-        setSelected([...options]);
+        setSelected(getAllOptions());
       }
     } else {
       if (selected.includes(option)) {
@@ -45,8 +41,14 @@ const CustomSelect = ({
     }
   };
 
-  const displayValue =
-    selected.length === options.length
+  const getAllOptions = () => {
+    if (isGrouped) {
+      return options.flatMap((g) => g.distritos.map((d) => d.nombre));
+    }
+    return options;
+  };
+
+  const displayValue = selected.length === getAllOptions().length
       ? `Todos los ${label}`
       : selected.length > 0
       ? selected.join(", ")
@@ -54,9 +56,7 @@ const CustomSelect = ({
       ? "Seleccione Tipo de Inmueble"
       : `Seleccione ${label}`;
 
-  const toggleDropdown = () => {
-    setOpenDropdown(isOpen ? null : label);
-  };
+  const toggleDropdown = () => setOpenDropdown(isOpen ? null : label);
 
   return (
     <div className="relative w-full" ref={wrapperRef}>
@@ -72,34 +72,67 @@ const CustomSelect = ({
 
       {isOpen && (
         <ul
-          className="dropdown-menu animate-slide-down"
+          className="dropdown-menu animate-slide-down max-h-60 overflow-y-auto"
           role="listbox"
           aria-label={label}
         >
-          {fullOptions.map((option) => (
+          {includeSelectAll && (
             <li
-              key={option}
               className="dropdown-item flex items-center cursor-pointer"
-              onClick={() => handleSelect(option)}
+              onClick={() => handleSelect("Todos")}
               role="option"
-              aria-selected={
-                option === "Todos"
-                  ? selected.length === options.length
-                  : selected.includes(option)
-              }
+              aria-selected={selected.length === getAllOptions().length}
             >
               <input
                 type="checkbox"
                 readOnly
-                checked={
-                  (option === "Todos" && selected.length === options.length) ||
-                  (option !== "Todos" && selected.includes(option))
-                }
+                checked={selected.length === getAllOptions().length}
                 className="w-3 h-3 mr-2 accent-azul-primario"
               />
-              <span>{option}</span>
+              <span>Todos</span>
             </li>
-          ))}
+          )}
+
+          {isGrouped
+            ? options.map((group) => (
+                <li key={group.departamento} className="px-2 py-1">
+                  <strong className="block text-gray-500 mb-1">{group.departamento}</strong>
+                  {group.distritos.map((distrito) => (
+                    <div
+                      key={distrito.id}
+                      className="dropdown-item flex items-center cursor-pointer pl-4"
+                      onClick={() => handleSelect(distrito.nombre)}
+                      role="option"
+                      aria-selected={selected.includes(distrito.nombre)}
+                    >
+                      <input
+                        type="checkbox"
+                        readOnly
+                        checked={selected.includes(distrito.nombre)}
+                        className="w-3 h-3 mr-2 accent-azul-primario"
+                      />
+                      <span>{distrito.nombre}</span>
+                    </div>
+                  ))}
+                </li>
+              ))
+            : getAllOptions().map((option) => (
+                <li
+                  key={option}
+                  className="dropdown-item flex items-center cursor-pointer"
+                  onClick={() => handleSelect(option)}
+                  role="option"
+                  aria-selected={selected.includes(option)}
+                >
+                  <input
+                    type="checkbox"
+                    readOnly
+                    checked={selected.includes(option)}
+                    className="w-3 h-3 mr-2 accent-azul-primario"
+                  />
+                  <span>{option}</span>
+                </li>
+              ))}
         </ul>
       )}
     </div>
@@ -107,3 +140,5 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+
+
