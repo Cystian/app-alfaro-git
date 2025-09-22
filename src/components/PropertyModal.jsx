@@ -199,7 +199,7 @@ const PropertyModal = ({ property, onClose }) => {
               {propData.price && (
                 <div className="flex justify-center items-center gap-2 mb-2">
                   <img src="/precio.png" alt="Precio" className="w-5 h-5" />
-                  <p className="font-semibold text-blue-600">{propData.price}</p>
+                  <p className="font-semibold text-blue-600">S/ {propData.price}</p>
                 </div>
               )}
 
