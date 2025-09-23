@@ -167,8 +167,9 @@ if (property.location) {
 y += 15;
 
 // 🔹 Descripción general en una segunda página (HTML completo)
+    doc.addPage();
 if (property.description) {
-      doc.addPage();
+    
   await new Promise((resolve) => {
 
 
