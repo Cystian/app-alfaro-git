@@ -6,18 +6,17 @@ export default function PropertyResumenPage() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Aquí simulas el consumo desde tu API/BD
-    const fetchData = async () => {
+    const fetchProperty = async () => {
       try {
-        const res = await fetch(`/api/propiedades/${id}`); // 🔹 Ajusta tu endpoint
+        const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
         const json = await res.json();
         setData(json);
       } catch (error) {
-        console.error("Error cargando datos:", error);
+        console.error("Error cargando propiedad:", error);
       }
     };
 
-    fetchData();
+    fetchProperty();
   }, [id]);
 
   return (
@@ -29,15 +28,10 @@ export default function PropertyResumenPage() {
 
       {data ? (
         <div className="mt-4">
-          <p>
-            <strong>Título:</strong> {data.title}
-          </p>
-          <p>
-            <strong>Precio:</strong> {data.price}
-          </p>
-          <p>
-            <strong>Ubicación:</strong> {data.location}
-          </p>
+          <p><strong>Título:</strong> {data.title}</p>
+          <p><strong>Precio:</strong> {data.price}</p>
+          <p><strong>Ubicación:</strong> {data.location}</p>
+          {/* Puedes expandir con más campos */}
         </div>
       ) : (
         <p>Cargando datos...</p>
