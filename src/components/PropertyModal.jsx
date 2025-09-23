@@ -295,13 +295,19 @@ const PropertyModal = ({ property, onClose }) => {
                 </button>
 
                 {/* Botón Resumen Completo */}
-            <button
-                 onClick={() => generateResumenCompleto(propData)}
-               className="inline-flex items-center bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition"
-               >
-               <img src="/documento.png" alt="Resumen" className="w-5 h-5 mr-2" />
-              Ver Resumen
-            </button>
+        <button
+  onClick={() => {
+    // Guardamos el objeto completo en sessionStorage
+    sessionStorage.setItem("propDataResumen", JSON.stringify(propData));
+
+    // Abrimos la ruta con el ID en la URL (útil para QR, compartir enlace, etc.)
+    window.open(`/propiedades/resumen/${propData.id}`, "_blank");
+  }}
+  className="inline-flex items-center bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-900 transition"
+>
+  <img src="/documento.png" alt="Resumen" className="w-5 h-5 mr-2" />
+  Ver Resumen
+</button>
                 
               </div>
             </div>
