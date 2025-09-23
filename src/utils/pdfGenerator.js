@@ -114,48 +114,49 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   y += 15;
 
-  // 🔹 Segunda página: Descripción HTML
-  if (property.description) {
-    doc.addPage();
-    doc.setPage(doc.getNumberOfPages()); // 🔹 Aseguramos foco
-    const yDesc = 60;
-    doc.setFillColor(248, 248, 252);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
+  // 🔹 Segunda página para la descripción
+if (property.description) {
+  doc.addPage();                // crear la página nueva
+  doc.setPage(doc.getNumberOfPages()); // asegurarnos de que estamos en la nueva página
 
-    // Título sección
-    doc.setFontSize(22);
-    doc.setFont("times", "bold");
-    doc.setTextColor(45, 45, 60);
-    doc.text("Descripción General", 40, yDesc);
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const yStart = 60;
+  const marginX = 40;
 
-    doc.setDrawColor(153, 0, 0);
-    doc.setLineWidth(1.5);
-    doc.line(40, yDesc + 20, pageWidth - 40, yDesc + 20);
+  // Fondo
+  doc.setFillColor(248, 248, 252);
+  doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-    // Bloque de fondo
-    const boxX = 40;
-    const boxY = yDesc + 40;
-    const boxWidth = pageWidth - 80;
-    const boxHeight = pageHeight - boxY - 60;
-    doc.setFillColor(250, 250, 250);
-    doc.roundedRect(boxX, boxY, boxWidth, boxHeight, 8, 8, "F");
+  // Título sección
+  doc.setFontSize(22);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Descripción General", marginX, yStart);
 
-    // Render HTML
-    const container = document.createElement("div");
-    container.style.width = `${boxWidth - 20}px`;
-    container.innerHTML = property.description;
+  // Línea
+  doc.setDrawColor(153, 0, 0);
+  doc.setLineWidth(1.5);
+  doc.line(marginX, yStart + 20, pageWidth - marginX, yStart + 20);
 
-    await new Promise((resolve) => {
-      doc.html(container, {
-        x: boxX + 10,
-        y: boxY + 10,
-        width: boxWidth - 20,
-        windowWidth: boxWidth,
-        autoPaging: true,
-        callback: () => resolve(),
-      });
+  // Contenedor HTML
+  const container = document.createElement("div");
+  container.style.width = `${pageWidth - 2 * marginX}px`;
+  container.innerHTML = property.description;
+
+  // Render HTML en la página nueva
+  await new Promise((resolve) => {
+    doc.html(container, {
+      x: marginX,
+      y: yStart + 40,
+      width: pageWidth - 2 * marginX,
+      windowWidth: pageWidth - 2 * marginX,
+      autoPaging: true, // si es muy largo, crea páginas adicionales
+      callback: () => resolve(),
     });
-  }
+  });
+}
+
 
   // 🔹 Subpropiedades detalladas (2 por página)
   for (let i = 0; i < subProperties.length; i += 2) {
