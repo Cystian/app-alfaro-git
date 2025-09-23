@@ -12,46 +12,6 @@ const getBase64FromUrl = async (url) => {
   });
 };
 
-// 🔹 Render HTML seguro en segunda página
-const renderDescriptionPage = async (doc, description) => {
-  return new Promise((resolve) => {
-    doc.addPage();
-    doc.setPage(doc.getNumberOfPages());
-
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const marginX = 40;
-    const yStart = 60;
-
-    // Fondo y título
-    doc.setFillColor(248, 248, 252);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-    doc.setFontSize(22);
-    doc.setFont("times", "bold");
-    doc.setTextColor(45, 45, 60);
-    doc.text("Descripción General", marginX, yStart);
-
-    doc.setDrawColor(153, 0, 0);
-    doc.setLineWidth(1.5);
-    doc.line(marginX, yStart + 20, pageWidth - marginX, yStart + 20);
-
-    // Contenedor HTML
-    const container = document.createElement("div");
-    container.style.width = `${pageWidth - 2 * marginX}px`;
-    container.innerHTML = description;
-
-    doc.html(container, {
-      x: marginX,
-      y: yStart + 40,
-      width: pageWidth - 2 * marginX,
-      windowWidth: pageWidth - 2 * marginX,
-      autoPaging: true,
-      callback: () => resolve(),
-    });
-  });
-};
-
 export const generatePropertyPdf = async (property, subProperties = []) => {
   const doc = new jsPDF("p", "pt", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -60,7 +20,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   const getPublicUrl = (fileName) => `${window.location.origin}/${fileName}`;
 
-  // 🔹 Fondo portada
+  // 🔹 Fondo elegante
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
@@ -109,8 +69,8 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     const thumbHeight = 60;
     let xThumb = 40;
     let yThumb = y;
-    doc.setDrawColor(153, 0, 0);
 
+    doc.setDrawColor(153, 0, 0); // rojo burdeos elegante
     for (let i = 0; i < subProperties.length && i < 4; i++) {
       const sub = subProperties[i];
       if (sub.image) {
@@ -125,7 +85,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     y += thumbHeight + 25;
   }
 
-  // 🔹 Función tarjetas premium
+  // 🔹 Función tarjetas premium con gradiente
   const addCardLuxury = async (iconFile, text, x = 40, yPos = y) => {
     const cardWidth = pageWidth - 80;
     const cardHeight = 32;
@@ -148,7 +108,12 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   // 🔹 Datos clave
   if (property.price) {
-    y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
+    y = await addCardLuxury(
+      "precio.png",
+      `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,
+      40,
+      y
+    );
   }
   if (property.area) {
     y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
@@ -165,50 +130,85 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   y += 15;
 
-  // 🔹 Descripción general (segunda página)
+  // 🔹 Descripción general en segunda página
   if (property.description) {
-    await renderDescriptionPage(doc, property.description);
+    await new Promise((resolve) => {
+      doc.addPage();
+      doc.setFillColor(248, 248, 252);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+      // Título sección
+      let yDesc = 60;
+      doc.setFontSize(22);
+      doc.setFont("times", "bold");
+      doc.setTextColor(45, 45, 60);
+      doc.text("Descripción General", 40, yDesc);
+
+      yDesc += 20;
+      doc.setDrawColor(153, 0, 0);
+      doc.setLineWidth(1.5);
+      doc.line(40, yDesc, pageWidth - 40, yDesc);
+
+      // Bloque de fondo
+      yDesc += 30;
+      const boxX = 40;
+      const boxWidth = pageWidth - 80;
+      const boxHeight = pageHeight - yDesc - 60;
+      doc.setFillColor(250, 250, 250);
+      doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
+
+      // Render HTML
+      doc.html(property.description, {
+        x: boxX + 10,
+        y: yDesc + 10,
+        width: boxWidth - 20,
+        windowWidth: boxWidth,
+        autoPaging: "text",
+        callback: () => resolve(),
+      });
+    });
   }
 
-  // 🔹 Subpropiedades detalladas (2 por página)
+  // 🔹 Subpropiedades detalladas 2 por página
+  const renderSub = async (sub, yStart) => {
+    if (!sub) return yStart;
+    if (sub.image) {
+      try {
+        const base64Sub = await getBase64FromUrl(sub.image);
+        doc.setFillColor(240, 240, 245);
+        doc.roundedRect(38, yStart + 2, pageWidth - 76, 160, 8, 8, "F");
+        doc.addImage(base64Sub, "JPEG", 40, yStart, pageWidth - 76, 160);
+      } catch (e) {}
+    }
+    yStart += 180;
+    doc.setFontSize(20);
+    doc.setFont("times", "bold");
+    doc.setTextColor(45, 45, 60);
+    doc.text(sub.content || "Sub Propiedad", 40, yStart);
+    yStart += 12;
+    doc.setDrawColor(153, 0, 0);
+    doc.setLineWidth(1);
+    doc.line(40, yStart, pageWidth - 40, yStart);
+    yStart += 18;
+    if (sub.text_content) {
+      doc.setFontSize(11);
+      doc.setFont("times", "normal");
+      doc.setTextColor(70, 70, 80);
+      const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
+      doc.text(lines, 40, yStart);
+      yStart += lines.length * 14;
+    }
+    return yStart;
+  };
+
   for (let i = 0; i < subProperties.length; i += 2) {
     doc.addPage();
     doc.setFillColor(248, 248, 252);
     doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-    const renderSub = (sub, yStart) => {
-      if (!sub) return yStart;
-      if (sub.image) {
-        try {
-          const base64Sub = await getBase64FromUrl(sub.image);
-          doc.setFillColor(240, 240, 245);
-          doc.roundedRect(38, yStart + 2, pageWidth - 76, 160, 8, 8, "F");
-          doc.addImage(base64Sub, "JPEG", 40, yStart, pageWidth - 76, 160);
-        } catch (e) {}
-      }
-      yStart += 180;
-      doc.setFontSize(20);
-      doc.setFont("times", "bold");
-      doc.setTextColor(45, 45, 60);
-      doc.text(sub.content || "Sub Propiedad", 40, yStart);
-      yStart += 12;
-      doc.setDrawColor(153, 0, 0);
-      doc.setLineWidth(1);
-      doc.line(40, yStart, pageWidth - 40, yStart);
-      yStart += 18;
-      if (sub.text_content) {
-        doc.setFontSize(11);
-        doc.setFont("times", "normal");
-        doc.setTextColor(70, 70, 80);
-        const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
-        doc.text(lines, 40, yStart);
-        yStart += lines.length * 14;
-      }
-      return yStart;
-    };
-
     let yTop = 40;
     yTop = await renderSub(subProperties[i], yTop);
+
     if (subProperties[i + 1]) {
       let yBottom = pageHeight / 2 + 20;
       yBottom = await renderSub(subProperties[i + 1], yBottom);
@@ -235,7 +235,11 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(120, 120, 120);
-    doc.text("www.inmobiliariaalbertoalfaro.com.pe - albertoalfaro@inmobiliariaalbertoalfaro.com - +51 940 221 494", 40, pageHeight - 30);
+    doc.text(
+      "www.inmobiliariaalbertoalfaro.com.pe - albertoalfaro@inmobiliariaalbertoalfaro.com - +51 940 221 494",
+      40,
+      pageHeight - 30
+    );
     doc.text(`Página ${pageNum}`, pageWidth - 60, pageHeight - 30);
   };
 
