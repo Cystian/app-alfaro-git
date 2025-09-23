@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       { path: "blog", element: <Blog /> },
       { path: "nuestrahistoria", element: <NuestraHistoria /> },
       { path: "conocenos", element: <Conocenos /> },
-      { path: "propiedades/resumen", element: <PropertyResumenPage /> },
+      {  path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
     ],
   },
 ]);
