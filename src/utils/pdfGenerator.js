@@ -1,6 +1,5 @@
 // src/utils/pdfGenerator.js
 import jsPDF from "jspdf";
-import QRCode from "qrcode";
 
 const getBase64FromUrl = async (url) => {
   const response = await fetch(url);
@@ -25,20 +24,24 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-// 🔹 Logo + QR
+// 🔹 Logo + QR dinámico
 try {
   const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.png"));
   doc.addImage(logoBase64, "PNG", 40, 20, 60, 30);
-  
-  // Generar QR dinámico
+
+  // URL destino del QR
   const qrUrl = `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`;
-  const qrBase64 = await QRCode.toDataURL(qrUrl, { width: 60, margin: 1 });
-  
-  // Agregar QR al lado derecho del logo
+
+  // API pública para generar el QR
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrUrl)}`;
+
+  // Obtener QR en base64 y pintarlo
+  const qrBase64 = await getBase64FromUrl(qrApiUrl);
   doc.addImage(qrBase64, "PNG", pageWidth - 100, 20, 60, 60);
 } catch (e) {
   console.error("Error al cargar logo o QR:", e);
 }
+
 
   // 🔹 Imagen principal
   if (property.image) {
