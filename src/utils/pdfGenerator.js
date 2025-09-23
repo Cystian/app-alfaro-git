@@ -166,57 +166,62 @@ if (property.location) {
 
 y += 15;
 
-// 🔹 Descripción general en una segunda página (HTML completo)
-    doc.addPage();
+// 🔹 Descripción general en segunda página
 if (property.description) {
-    
+  // 1️⃣ Añadir nueva página ANTES de renderizar
+  doc.addPage();
+
+  // 2️⃣ Fondo y título
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  let yDesc = 60;
+
+  doc.setFillColor(248, 248, 252);
+  doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+  doc.setFontSize(22);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Descripción General", 40, yDesc);
+
+  yDesc += 20;
+  doc.setDrawColor(153, 0, 0);
+  doc.setLineWidth(1.5);
+  doc.line(40, yDesc, pageWidth - 40, yDesc);
+
+  // 3️⃣ Fondo del bloque
+  yDesc += 30;
+  const boxX = 40;
+  const boxWidth = pageWidth - 80;
+  const boxHeight = pageHeight - yDesc - 60;
+
+  doc.setFillColor(250, 250, 250);
+  doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
+
+  // 4️⃣ Contenedor HTML
+  const container = document.createElement("div");
+  container.style.width = `${boxWidth - 20}px`;
+  container.innerHTML = property.description;
+
+  // 5️⃣ Render HTML con espera completa
   await new Promise((resolve) => {
-
-
-    // Fondo
-    doc.setFillColor(248, 248, 252);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-    // Título sección
-    let yDesc = 60;
-    doc.setFontSize(22);
-    doc.setFont("times", "bold");
-    doc.setTextColor(45, 45, 60);
-    doc.text("Descripción General", 40, yDesc);
-
-    yDesc += 20;
-    doc.setDrawColor(153, 0, 0);
-    doc.setLineWidth(1.5);
-    doc.line(40, yDesc, pageWidth - 40, yDesc);
-
-    // Bloque de fondo para la descripción
-    yDesc += 30;
-    const boxX = 40;
-    const boxWidth = pageWidth - 80;
-    const boxHeight = pageHeight - yDesc - 60;
-
-    doc.setFillColor(250, 250, 250);
-    doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
-
-    // Crear un contenedor invisible en el DOM
-    const container = document.createElement("div");
-    container.style.width = `${boxWidth - 20}px`; // ancho del bloque de texto
-    container.innerHTML = property.description;
-
-    // Renderizar HTML dentro del PDF
     doc.html(container, {
       x: boxX + 10,
       y: yDesc + 10,
       width: boxWidth - 20,
       windowWidth: boxWidth,
-      autoPaging: "text", // crea nuevas páginas si el contenido no cabe
-      callback: function () {
-        console.log("Descripción HTML renderizada correctamente ✅");
-        resolve(); // desbloquea la ejecución de lo siguiente
-      },
+      autoPaging: "text",
+      callback: () => resolve(), // desbloquea para continuar
     });
   });
 }
+
+
+
+
+
+
+  
 
   // 🔹 Subpropiedades detalladas (2 por página)
   for (let i = 0; i < subProperties.length; i += 2) {
