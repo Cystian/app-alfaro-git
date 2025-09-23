@@ -116,41 +116,119 @@ y = 100;
     }
   };
 
-// 🔹 Datos clave en lado izquierdo
-const leftX = 40;
-let leftY = y; // donde empieza tu bloque de tarjetas
-const colWidth = pageWidth / 2 - 60; // ancho mitad izquierda
-
-if (property.price)
-  leftY = await addCardLuxury(
+// 🔹 Datos clave
+if (property.price) {
+  y = await addCardLuxury(
     "precio.png",
-    `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,
-    leftX,
-    leftY
+    `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { 
+      minimumFractionDigits: 2 
+    })}`,
+    40,
+    y
   );
-if (property.area) leftY = await addCardLuxury("area.png", `Área: ${property.area} m²`, leftX, leftY);
-if (property.bedrooms) leftY = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, leftX, leftY);
-if (property.bathrooms) leftY = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, leftX, leftY);
-if (property.location) leftY = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, leftX, leftY);
+}
 
-// 🔹 Descripción en lado derecho
+if (property.area) {
+  y = await addCardLuxury(
+    "area.png",
+    `Área: ${property.area} m²`,
+    40,
+    y
+  );
+}
+
+if (property.bedrooms) {
+  y = await addCardLuxury(
+    "dormi.png",
+    `Dormitorios: ${property.bedrooms}`,
+    40,
+    y
+  );
+}
+
+if (property.bathrooms) {
+  y = await addCardLuxury(
+    "bano.png",
+    `Baños: ${property.bathrooms}`,
+    40,
+    y
+  );
+}
+
+if (property.location) {
+  y = await addCardLuxury(
+    "maps.png",
+    `Ubicación: ${property.location}`,
+    40,
+    y
+  );
+}
+
+y += 15;
+
+
+  // 🔹 Descripción general en una segunda página
 if (property.description) {
-  const rightX = pageWidth / 2 + 10;  // arranca en mitad de la hoja
-  const rightY = y;                   // mismo nivel donde comienzan las tarjetas
-  const rightWidth = pageWidth / 2 - 50;
-  const rightHeight = pageHeight - rightY - 100;
+  doc.addPage();
 
-  // Fondo del bloque derecho
+  // Fondo
+  doc.setFillColor(248, 248, 252);
+  doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+  // Título sección
+  let yDesc = 60;
+  doc.setFontSize(22);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Descripción General", 40, yDesc);
+
+  yDesc += 20;
+  doc.setDrawColor(153, 0, 0);
+  doc.setLineWidth(1.5);
+  doc.line(40, yDesc, pageWidth - 40, yDesc);
+
+  // Bloque de texto
+  yDesc += 30;
+  const boxX = 40;
+  const boxWidth = pageWidth - 80;
+  const boxHeight = pageHeight - yDesc - 60;
+
   doc.setFillColor(250, 250, 250);
-  doc.roundedRect(rightX - 2, rightY - 2, rightWidth + 4, rightHeight, 8, 8, "F");
+  doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
 
   // Texto dentro
-  doc.setFontSize(11);
+  doc.setFontSize(12);
   doc.setFont("times", "normal");
   doc.setTextColor(70, 70, 80);
 
-  const descLines = doc.splitTextToSize(property.description, rightWidth - 20);
-  doc.text(descLines, rightX + 10, rightY + 20);
+  const descLines = doc.splitTextToSize(property.description, boxWidth - 20);
+
+  let textY = yDesc + 25;
+  const maxLines = Math.floor((boxHeight - 40) / 16);
+  const firstPageLines = descLines.slice(0, maxLines);
+  const remainingLines = descLines.slice(maxLines);
+
+  doc.text(firstPageLines, boxX + 10, textY);
+
+  // Si la descripción es demasiado larga, añadir más páginas
+  if (remainingLines.length > 0) {
+    let chunk = remainingLines;
+    while (chunk.length > 0) {
+      doc.addPage();
+      doc.setFillColor(248, 248, 252);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+      let yExtra = 60;
+      doc.setFontSize(12);
+      doc.setFont("times", "normal");
+      doc.setTextColor(70, 70, 80);
+
+      const chunkLines = chunk.slice(0, 40); // 40 líneas por página
+      doc.text(chunkLines, 40, yExtra);
+
+      chunk = chunk.slice(40);
+    }
+  }
 }
 
 
