@@ -167,7 +167,7 @@ if (property.location) {
 y += 15;
 
 
-  // 🔹 Descripción general en una segunda página
+ // 🔹 Descripción general en una segunda página (HTML completo)
 if (property.description) {
   doc.addPage();
 
@@ -187,7 +187,7 @@ if (property.description) {
   doc.setLineWidth(1.5);
   doc.line(40, yDesc, pageWidth - 40, yDesc);
 
-  // Bloque de texto
+  // Bloque de texto (fondo)
   yDesc += 30;
   const boxX = 40;
   const boxWidth = pageWidth - 80;
@@ -196,39 +196,17 @@ if (property.description) {
   doc.setFillColor(250, 250, 250);
   doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
 
-  // Texto dentro
-  doc.setFontSize(12);
-  doc.setFont("times", "normal");
-  doc.setTextColor(70, 70, 80);
-
-  const descLines = doc.splitTextToSize(property.description, boxWidth - 20);
-
-  let textY = yDesc + 25;
-  const maxLines = Math.floor((boxHeight - 40) / 16);
-  const firstPageLines = descLines.slice(0, maxLines);
-  const remainingLines = descLines.slice(maxLines);
-
-  doc.text(firstPageLines, boxX + 10, textY);
-
-  // Si la descripción es demasiado larga, añadir más páginas
-  if (remainingLines.length > 0) {
-    let chunk = remainingLines;
-    while (chunk.length > 0) {
-      doc.addPage();
-      doc.setFillColor(248, 248, 252);
-      doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-      let yExtra = 60;
-      doc.setFontSize(12);
-      doc.setFont("times", "normal");
-      doc.setTextColor(70, 70, 80);
-
-      const chunkLines = chunk.slice(0, 40); // 40 líneas por página
-      doc.text(chunkLines, 40, yExtra);
-
-      chunk = chunk.slice(40);
+  // Render HTML dentro del bloque
+  await doc.html(property.description, {
+    x: boxX + 10,
+    y: yDesc + 10,
+    width: boxWidth - 20,
+    windowWidth: boxWidth, // ayuda al wrapping
+    autoPaging: "text",    // genera nuevas páginas si no cabe
+    callback: function (doc) {
+      console.log("Descripción HTML renderizada correctamente ✅");
     }
-  }
+  });
 }
 
 
