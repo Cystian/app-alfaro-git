@@ -168,10 +168,10 @@ y += 15;
 
 // 🔹 Descripción general en segunda página
 if (property.description) {
-  // 1️⃣ Añadir nueva página ANTES de renderizar
-  doc.addPage();
+  doc.addPage(); // 1️⃣ nueva página
+  doc.setPage(doc.getNumberOfPages()); // 2️⃣ asegurarnos que el foco esté aquí
 
-  // 2️⃣ Fondo y título
+  // Fondo y título
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   let yDesc = 60;
@@ -189,29 +189,28 @@ if (property.description) {
   doc.setLineWidth(1.5);
   doc.line(40, yDesc, pageWidth - 40, yDesc);
 
-  // 3️⃣ Fondo del bloque
+  // Bloque de fondo
   yDesc += 30;
   const boxX = 40;
   const boxWidth = pageWidth - 80;
   const boxHeight = pageHeight - yDesc - 60;
-
   doc.setFillColor(250, 250, 250);
   doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
 
-  // 4️⃣ Contenedor HTML
+  // Contenedor HTML
   const container = document.createElement("div");
   container.style.width = `${boxWidth - 20}px`;
   container.innerHTML = property.description;
 
-  // 5️⃣ Render HTML con espera completa
+  // Renderizado HTML asegurando que se quede en esta página
   await new Promise((resolve) => {
     doc.html(container, {
       x: boxX + 10,
       y: yDesc + 10,
       width: boxWidth - 20,
       windowWidth: boxWidth,
-      autoPaging: "text",
-      callback: () => resolve(), // desbloquea para continuar
+      autoPaging: true, // si el texto es muy largo, genera más páginas desde aquí
+      callback: () => resolve(),
     });
   });
 }
