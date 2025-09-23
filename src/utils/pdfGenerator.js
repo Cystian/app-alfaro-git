@@ -168,8 +168,9 @@ y += 15;
 
 // 🔹 Descripción general en una segunda página (HTML completo)
 if (property.description) {
+      doc.addPage();
   await new Promise((resolve) => {
-    doc.addPage();
+
 
     // Fondo
     doc.setFillColor(248, 248, 252);
