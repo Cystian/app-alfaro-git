@@ -165,7 +165,7 @@ y = 100;
     doc.setFontSize(20);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
-    doc.text(sub1.title || `Sub Propiedad ${i + 1}`, 40, yTop);
+    doc.text(sub1.content || `Sub Propiedad ${i + 1}`, 40, yTop);
     yTop += 12;
 
     doc.setDrawColor(153, 0, 0);
@@ -182,14 +182,7 @@ y = 100;
       yTop += lines.length * 14;
     }
 
-    if (sub1.content) {
-      doc.setFontSize(11);
-      doc.setFont("times", "italic");
-      doc.setTextColor(90, 90, 90);
-      const lines = doc.splitTextToSize(sub1.content, pageWidth - 80);
-      doc.text(lines, 40, yTop);
-      yTop += lines.length * 14;
-    }
+
 
     // ================== Segunda subpropiedad (abajo) ==================
     if (subProperties[i + 1]) {
@@ -209,7 +202,7 @@ y = 100;
       doc.setFontSize(20);
       doc.setFont("times", "bold");
       doc.setTextColor(45, 45, 60);
-      doc.text(sub2.title || `Sub Propiedad ${i + 2}`, 40, yBottom);
+      doc.text(sub2.content || `Sub Propiedad ${i + 2}`, 40, yBottom);
       yBottom += 12;
 
       doc.setDrawColor(153, 0, 0);
@@ -226,14 +219,7 @@ y = 100;
         yBottom += lines.length * 14;
       }
 
-      if (sub2.content) {
-        doc.setFontSize(11);
-        doc.setFont("times", "italic");
-        doc.setTextColor(90, 90, 90);
-        const lines = doc.splitTextToSize(sub2.content, pageWidth - 80);
-        doc.text(lines, 40, yBottom);
-        yBottom += lines.length * 14;
-      }
+   
     }
   }
   
