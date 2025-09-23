@@ -42,7 +42,7 @@ try {
   console.error("Error al cargar logo o QR:", e);
 }
 
-
+y = 100;
   // 🔹 Imagen principal
   if (property.image) {
     try {
