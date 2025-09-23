@@ -1,5 +1,7 @@
 // src/utils/pdfGenerator.js
 import jsPDF from "jspdf";
+import { addDescriptionPage } from "./addDescriptionPage";
+
 
 const getBase64FromUrl = async (url) => {
   const response = await fetch(url);
