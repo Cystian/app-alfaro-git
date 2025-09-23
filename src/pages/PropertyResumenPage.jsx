@@ -11,6 +11,8 @@ export default function PropertyResumenPage() {
         const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
         const json = await res.json();
         console.log(data);
+         console.log(res);
+        console.log(id);
         setData(json);
       } catch (error) {
         console.error("Error cargando propiedad:", error);
