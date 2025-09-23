@@ -116,30 +116,43 @@ y = 100;
     }
   };
 
-  // 🔹 Datos clave
-  if (property.price)
-    y = await addCardLuxury(
-      "precio.png",
-      `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,
-      40,
-      y
-    );
-  if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
-  if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
-  if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
-  if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
+// 🔹 Datos clave en lado izquierdo
+const leftX = 40;
+let leftY = y; // donde empieza tu bloque de tarjetas
+const colWidth = pageWidth / 2 - 60; // ancho mitad izquierda
 
-  y += 15;
+if (property.price)
+  leftY = await addCardLuxury(
+    "precio.png",
+    `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,
+    leftX,
+    leftY
+  );
+if (property.area) leftY = await addCardLuxury("area.png", `Área: ${property.area} m²`, leftX, leftY);
+if (property.bedrooms) leftY = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, leftX, leftY);
+if (property.bathrooms) leftY = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, leftX, leftY);
+if (property.location) leftY = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, leftX, leftY);
 
-  // 🔹 Descripción principal
-  if (property.description) {
-    doc.setFontSize(12);
-    doc.setFont("times", "normal");
-    doc.setTextColor(70, 70, 80);
-    const descLines = doc.splitTextToSize(property.description, pageWidth - 80);
-    doc.text(descLines, 40, y);
-    y += descLines.length * 16;
-  }
+// 🔹 Descripción en lado derecho
+if (property.description) {
+  const rightX = pageWidth / 2 + 10;  // arranca en mitad de la hoja
+  const rightY = y;                   // mismo nivel donde comienzan las tarjetas
+  const rightWidth = pageWidth / 2 - 50;
+  const rightHeight = pageHeight - rightY - 100;
+
+  // Fondo del bloque derecho
+  doc.setFillColor(250, 250, 250);
+  doc.roundedRect(rightX - 2, rightY - 2, rightWidth + 4, rightHeight, 8, 8, "F");
+
+  // Texto dentro
+  doc.setFontSize(11);
+  doc.setFont("times", "normal");
+  doc.setTextColor(70, 70, 80);
+
+  const descLines = doc.splitTextToSize(property.description, rightWidth - 20);
+  doc.text(descLines, rightX + 10, rightY + 20);
+}
+
 
 
   // 🔹 Subpropiedades detalladas (2 por página)
