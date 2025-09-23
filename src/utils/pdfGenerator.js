@@ -141,57 +141,102 @@ y = 100;
     y += descLines.length * 16;
   }
 
-  // 🔹 Subpropiedades detalladas
-  for (let i = 0; i < subProperties.length; i++) {
-    const sub = subProperties[i];
+
+  // 🔹 Subpropiedades detalladas (2 por página)
+  for (let i = 0; i < subProperties.length; i += 2) {
     doc.addPage();
     doc.setFillColor(248, 248, 252);
     doc.rect(0, 0, pageWidth, pageHeight, "F");
-    y = 40;
 
-    // Imagen principal subpropiedad
-    if (sub.image) {
+    // ================== Primera subpropiedad (arriba) ==================
+    let yTop = 40;
+    const sub1 = subProperties[i];
+
+    if (sub1.image) {
       try {
-        const base64Sub = await getBase64FromUrl(sub.image);
+        const base64Sub1 = await getBase64FromUrl(sub1.image);
         doc.setFillColor(240, 240, 245);
-        doc.roundedRect(38, y + 2, pageWidth - 76, 180, 8, 8, "F");
-        doc.addImage(base64Sub, "JPEG", 40, y, pageWidth - 76, 180);
+        doc.roundedRect(38, yTop + 2, pageWidth - 76, 160, 8, 8, "F");
+        doc.addImage(base64Sub1, "JPEG", 40, yTop, pageWidth - 76, 160);
       } catch (e) {}
     }
 
-    y += 200;
-
-    // Título subpropiedad
+    yTop += 180;
     doc.setFontSize(20);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
-    doc.text(sub.title || `Sub Propiedad ${i + 1}`, 40, y);
-    y += 12;
+    doc.text(sub1.title || `Sub Propiedad ${i + 1}`, 40, yTop);
+    yTop += 12;
 
-   doc.setDrawColor(153, 0, 0);
+    doc.setDrawColor(153, 0, 0);
     doc.setLineWidth(1);
-    doc.line(40, y, pageWidth - 40, y);
-    y += 18;
+    doc.line(40, yTop, pageWidth - 40, yTop);
+    yTop += 18;
 
-    if (sub.text_content) {
+    if (sub1.text_content) {
       doc.setFontSize(11);
       doc.setFont("times", "normal");
       doc.setTextColor(70, 70, 80);
-      const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
-      doc.text(lines, 40, y);
-      y += lines.length * 14;
+      const lines = doc.splitTextToSize(sub1.text_content, pageWidth - 80);
+      doc.text(lines, 40, yTop);
+      yTop += lines.length * 14;
     }
 
-    if (sub.content) {
+    if (sub1.content) {
       doc.setFontSize(11);
       doc.setFont("times", "italic");
       doc.setTextColor(90, 90, 90);
-      const lines = doc.splitTextToSize(sub.content, pageWidth - 80);
-      doc.text(lines, 40, y);
-      y += lines.length * 14;
+      const lines = doc.splitTextToSize(sub1.content, pageWidth - 80);
+      doc.text(lines, 40, yTop);
+      yTop += lines.length * 14;
+    }
+
+    // ================== Segunda subpropiedad (abajo) ==================
+    if (subProperties[i + 1]) {
+      let yBottom = pageHeight / 2 + 20;
+      const sub2 = subProperties[i + 1];
+
+      if (sub2.image) {
+        try {
+          const base64Sub2 = await getBase64FromUrl(sub2.image);
+          doc.setFillColor(240, 240, 245);
+          doc.roundedRect(38, yBottom + 2, pageWidth - 76, 160, 8, 8, "F");
+          doc.addImage(base64Sub2, "JPEG", 40, yBottom, pageWidth - 76, 160);
+        } catch (e) {}
+      }
+
+      yBottom += 180;
+      doc.setFontSize(20);
+      doc.setFont("times", "bold");
+      doc.setTextColor(45, 45, 60);
+      doc.text(sub2.title || `Sub Propiedad ${i + 2}`, 40, yBottom);
+      yBottom += 12;
+
+      doc.setDrawColor(153, 0, 0);
+      doc.setLineWidth(1);
+      doc.line(40, yBottom, pageWidth - 40, yBottom);
+      yBottom += 18;
+
+      if (sub2.text_content) {
+        doc.setFontSize(11);
+        doc.setFont("times", "normal");
+        doc.setTextColor(70, 70, 80);
+        const lines = doc.splitTextToSize(sub2.text_content, pageWidth - 80);
+        doc.text(lines, 40, yBottom);
+        yBottom += lines.length * 14;
+      }
+
+      if (sub2.content) {
+        doc.setFontSize(11);
+        doc.setFont("times", "italic");
+        doc.setTextColor(90, 90, 90);
+        const lines = doc.splitTextToSize(sub2.content, pageWidth - 80);
+        doc.text(lines, 40, yBottom);
+        yBottom += lines.length * 14;
+      }
     }
   }
-
+  
   // 🔹 Marca de agua “Exclusivo”
   const addWatermark = () => {
     const totalPages = doc.getNumberOfPages();
