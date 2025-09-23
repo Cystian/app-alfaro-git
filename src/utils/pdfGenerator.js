@@ -132,10 +132,11 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   y += 15;
 
-  // 🔹 Descripción general en segunda página
- if (property.description) {
-  await addDescriptionPage(doc, property.description, pageWidth, pageHeight);
+// 🔹 Descripción general en segunda página
+if (property.description) {
+  await addDescriptionPage(doc, property); // pasar todo el objeto property
 }
+
 
   // 🔹 Subpropiedades detalladas 2 por página
   const renderSub = async (sub, yStart) => {
