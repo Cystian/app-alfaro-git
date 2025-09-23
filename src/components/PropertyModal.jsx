@@ -186,7 +186,10 @@ const PropertyModal = ({ property, onClose }) => {
             <div className="mt-4 p-4 text-center text-gray-700">
               {propData.description && (
                 <p className="mb-3">
-                  <strong>Descripción:</strong> {propData.description}
+                  <strong>Descripción:</strong>
+<div style={{ whiteSpace: "pre-wrap" }}>
+  {propData.description}
+</div>
                 </p>
               )}
               {propData.status && (
