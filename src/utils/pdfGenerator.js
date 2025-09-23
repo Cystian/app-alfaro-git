@@ -253,5 +253,5 @@ y = 100;
     addFooter(i);
   }
 
-  doc.save(`${property.title || "propiedad"}_luxury.pdf`);
+  doc.save(`${property.title || "propiedad"}.pdf`);
 };
