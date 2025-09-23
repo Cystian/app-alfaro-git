@@ -27,7 +27,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 // 🔹 Logo + QR dinámico
 try {
   const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.png"));
-  doc.addImage(logoBase64, "PNG", 40, 20,120, 60);
+  doc.addImage(logoBase64, "PNG", 40, 20,160, 60);
 
   // URL destino del QR
   const qrUrl = `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`;
