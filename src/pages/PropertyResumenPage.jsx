@@ -6,20 +6,12 @@ export default function PropertyResumenPage() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const fetchProperty = async () => {
-      try {
-        const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
-        const json = await res.json();
-        console.log(data);
-         console.log(res);
-        console.log(id);
-        setData(json);
-      } catch (error) {
-        console.error("Error cargando propiedad:", error);
-      }
+    const fetchData = async () => {
+      const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
+      const result = await res.json();
+      setData(result);
     };
-
-    fetchProperty();
+    fetchData();
   }, [id]);
 
   return (
@@ -29,15 +21,32 @@ export default function PropertyResumenPage() {
         <strong>ID:</strong> {id}
       </p>
 
-      {data ? (
+      {data && data.property ? (
         <div className="mt-4">
-          <p><strong>Título:</strong> {data.title}</p>
-          <p><strong>Precio:</strong> {data.price}</p>
-          <p><strong>Ubicación:</strong> {data.location}</p>
-          {/* Puedes expandir con más campos */}
+          <p><strong>Título:</strong> {data.property.title}</p>
+          <p><strong>Precio:</strong> {data.property.price}</p>
+          <p><strong>Ubicación:</strong> {data.property.location}</p>
+          <p><strong>Descripción:</strong> {data.property.description}</p>
+          <p><strong>Dormitorios:</strong> {data.property.bedrooms}</p>
+          <p><strong>Baños:</strong> {data.property.bathrooms}</p>
+          <p><strong>Área:</strong> {data.property.area} m²</p>
+
+          <h2 className="text-xl font-semibold mt-6">Subpropiedades</h2>
+          <ul>
+            {data.subProperties.map((sub) => (
+              <li key={sub.id} className="mt-2">
+                <p>{sub.content}</p>
+                <img
+                  src={sub.image}
+                  alt={sub.text_content}
+                  className="w-64 rounded-lg shadow"
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       ) : (
-        <p>Cargando datos...</p>
+        <p>No se encontraron datos en memoria.</p>
       )}
     </div>
   );
