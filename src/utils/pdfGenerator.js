@@ -117,9 +117,15 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
 
   y += 20;
+
+    doc.setDrawColor(153, 0, 0);
+  doc.setLineWidth(2);
+  doc.line(40, y, pageWidth - 40, y);
+  y += 20;
+
   
    // 🔹 Título miniaturas
-    doc.setFontSize(14);
+    doc.setFontSize(16);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
     doc.text("Fotos detalladas del inmueble", 40, y);
@@ -133,13 +139,14 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 const maxPerRow = 6; // Máximo de miniaturas por fila
 const spacingX = 18;  // 🔹 Ajuste de espacio horizontal (un poco más para que no choquen)
 const spacingY = 28;  // 🔹 Ajuste de espacio vertical
-const thumbWidth = 50; // 🔹 Ancho aumentado de la miniatura
-const thumbHeight = 35; // 🔹 Alto aumentado de la miniatura
+const thumbWidth = 70; // 🔹 Ancho aumentado de la miniatura
+const thumbHeight =55; // 🔹 Alto aumentado de la miniatura
 let xThumb = 40; // Posición inicial X
 let yThumb = y;  // Posición inicial Y
 
 for (let i = 0; i < subProperties.length; i++) {
   const sub = subProperties[i];
+    console.log("Sub propiedad #" + i, sub);
   if (sub.image) {
     try {
       const base64Sub = await getBase64FromUrl(sub.image);
@@ -184,6 +191,12 @@ y = yThumb + thumbHeight + spacingY;
     y = yThumb + thumbHeight + 25;
  
   }
+
+      doc.setDrawColor(153, 0, 0);
+  doc.setLineWidth(2);
+  doc.line(40, y, pageWidth - 40, y);
+  y += 20;
+
 
   // 🔹 Tarjetas redes sociales
   doc.setFontSize(16);
