@@ -161,7 +161,7 @@ for (let i = 0; i < subProperties.length; i++) {
       doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
 
       // Añade el nombre de la subpropiedad debajo de la imagen
-      const textY = yThumb + thumbHeight + 6;
+      const textY = yThumb + thumbHeight + 10;//mayor margen entre el titulo y la imagen
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50, 50, 50);
