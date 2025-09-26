@@ -64,13 +64,15 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.line(40, y, pageWidth - 40, y);
   y += 15;
 
-  // 🔹 Descripción general (fuente 10) en la primera página
+
+    // 🔹 Descripción general (HTML) - Primera página
   if (property.description) {
-    doc.setFontSize(10);
-    doc.setFont("times", "normal");
-    doc.setTextColor(70, 70, 80);
-    const lines = doc.splitTextToSize(property.description, pageWidth - 80);
-    doc.text(lines, 40, y);
+    await doc.html(property.description, {
+      x: 40,
+      y: y,
+      width: pageWidth - 80,
+      windowWidth: 800,
+    });
   }
 
   // 🔹 Segunda página: datos clave + subpropiedades
