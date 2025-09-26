@@ -134,6 +134,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
 // 🔹 Descripción general en segunda página
 if (property.description) {
+    doc.addPage();
   await addDescriptionPage(doc, property); // pasar todo el objeto property
 }
 
