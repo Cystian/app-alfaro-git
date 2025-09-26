@@ -5,7 +5,8 @@ export const addDescriptionPage = async (doc, property) => {
   const pageHeight = doc.internal.pageSize.getHeight();
 
   return new Promise((resolve) => {
-
+    // 👇 asegura que trabajamos sobre la última página creada
+    doc.setPage(doc.getNumberOfPages());
 
     // Fondo
     doc.setFillColor(248, 248, 252);
