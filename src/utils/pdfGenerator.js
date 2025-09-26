@@ -117,35 +117,65 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
 
   y += 20;
-
-
-  // 🔹 Subpropiedades miniaturas
-  if (subProperties.length) {
-    const thumbWidth = 80;
-    const thumbHeight = 60;
-    let xThumb = 40;
-    let yThumb = y;
-
-    doc.setDrawColor(153, 0, 0); // rojo burdeos elegante
-    for (let i = 0; i < subProperties.length && i < 4; i++) {
-      const sub = subProperties[i];
-      if (sub.image) {
-        try {
-          const base64Sub = await getBase64FromUrl(sub.image);
-          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
-          doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
-          xThumb += thumbWidth + 15;
-        } catch (e) {}
-      }
-    }
-    y = yThumb + thumbHeight + 25;
-
-    // 🔹 Título miniaturas
+  
+   // 🔹 Título miniaturas
     doc.setFontSize(14);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
     doc.text("Fotos detalladas del inmueble", 40, y);
     y += 20;
+
+  // 🔹 Subpropiedades miniaturas
+  if (subProperties.length) {
+
+ //
+
+const maxPerRow = 6; // Máximo de miniaturas por fila
+const spacingX = 15;  // Espacio horizontal entre miniaturas
+const spacingY = 25;  // Espacio vertical entre filas (incluye espacio para texto)
+const thumbWidth = 40; // Ancho de la miniatura
+const thumbHeight = 30; // Alto de la miniatura
+let xThumb = 40; // Posición inicial X
+let yThumb = y;  // Posición inicial Y
+
+for (let i = 0; i < subProperties.length; i++) {
+  const sub = subProperties[i];
+  if (sub.image) {
+    try {
+      const base64Sub = await getBase64FromUrl(sub.image);
+
+      // Dibuja el marco de la miniatura
+      doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
+
+      // Inserta la imagen
+      doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
+
+      // Añade el nombre de la subpropiedad debajo de la imagen
+      const textY = yThumb + thumbHeight + 5;
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(50, 50, 50);
+      doc.text(sub.name || "", xThumb + thumbWidth / 2, textY, { align: "center" });
+
+      // Mueve xThumb para la próxima miniatura
+      xThumb += thumbWidth + spacingX;
+
+      // Si llegamos al final de la fila, reiniciamos xThumb y bajamos yThumb
+      if ((i + 1) % maxPerRow === 0) {
+        xThumb = 40;
+        yThumb += thumbHeight + spacingY;
+      }
+
+    } catch (e) {
+      console.error("Error cargando subpropiedad:", e);
+    }
+  }
+}
+
+
+//
+    y = yThumb + thumbHeight + 25;
+ 
   }
 
   // 🔹 Tarjetas redes sociales
