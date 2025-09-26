@@ -152,7 +152,7 @@ for (let i = 0; i < subProperties.length; i++) {
       const base64Sub = await getBase64FromUrl(sub.image);
 
       // 🔹 Define color de borde (rojo burdeos elegante)
-      doc.setDrawColor(153, 0, 0);
+      doc.setDrawColor(220, 220, 220);
 
       // Dibuja el marco de la miniatura
       doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
@@ -165,7 +165,7 @@ for (let i = 0; i < subProperties.length; i++) {
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50, 50, 50);
-      doc.text(sub.name || "", xThumb + thumbWidth / 2, textY, { align: "center" });
+      doc.text(sub.content || "", xThumb + thumbWidth / 2, textY, { align: "center" });
 
       // Mueve xThumb para la próxima miniatura
       xThumb += thumbWidth + spacingX;
