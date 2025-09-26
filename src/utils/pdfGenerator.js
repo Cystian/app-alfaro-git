@@ -214,3 +214,4 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
+
