@@ -1,49 +1,39 @@
-import jsPDF from "jspdf";
-
-export const addDescriptionPage = async (doc, property) => {
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-
+export const addDescriptionPage = async (doc, description) => {
   return new Promise((resolve) => {
-    // 👇 asegura que trabajamos sobre la ÚLTIMA página (la recién creada)
-    doc.setPage(doc.getNumberOfPages());
+    doc.addPage(); // Crea nueva página automáticamente
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
     // Fondo
     doc.setFillColor(248, 248, 252);
     doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-    // Título sección
-    let yDesc = 60;
+    // Título
     doc.setFontSize(22);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
-    doc.text("Descripción General", 40, yDesc);
+    doc.text("Descripción General", 40, 60);
 
-    yDesc += 20;
     doc.setDrawColor(153, 0, 0);
     doc.setLineWidth(1.5);
-    doc.line(40, yDesc, pageWidth - 40, yDesc);
+    doc.line(40, 85, pageWidth - 40, 85);
 
-    // Bloque de texto (fondo)
-    yDesc += 30;
+    // Bloque de texto
     const boxX = 40;
+    const boxY = 100;
     const boxWidth = pageWidth - 80;
-    const boxHeight = pageHeight - yDesc - 60;
+    const boxHeight = pageHeight - boxY - 60;
 
     doc.setFillColor(250, 250, 250);
-    doc.roundedRect(boxX, yDesc, boxWidth, boxHeight, 8, 8, "F");
+    doc.roundedRect(boxX, boxY, boxWidth, boxHeight, 8, 8, "F");
 
-    // Render HTML dentro del bloque
-    doc.html(property.description, {
+    // Renderizado HTML
+    doc.html(description, {
       x: boxX + 10,
-      y: yDesc + 10,
+      y: boxY + 10,
       width: boxWidth - 20,
       windowWidth: boxWidth,
-      autoPaging: "text",
-      callback: function () {
-        resolve(); // desbloquea la ejecución
-      },
+      callback: () => resolve(),
     });
   });
 };
-
