@@ -134,8 +134,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
 // 🔹 Descripción general en segunda página
 if (property.description) {
-  doc.addPage();         // crea la segunda página
-  doc.setPage(doc.getNumberOfPages()); // asegura que el puntero está en la última página
+  doc.addPage(); // crea página 2
   await addDescriptionPage(doc, property);
 }
 
