@@ -148,7 +148,9 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   y += thumbHeight + 25;
 
   // 🔹 Tarjeta redes sociales y WhatsApp
-  y = await addCardLuxury("whatsapp.png", "Nuestras Redes Sociales y WhatsApp", 40, y);
+  y = await addCardLuxury("whatsapp.png", "WhatsApp: +51 940 221 494", 40, y);
+y = await addCardLuxury("facebook.png", "Facebook: Inmobiliaria Alberto Alfaro", 40, y);
+y = await addCardLuxury("tiktok.png", "TikTok: @inmobiliariaalfaro", 40, y);
 
   // 🔹 Subpropiedades detalladas 2 por página
   const renderSub = async (sub, yStart) => {
