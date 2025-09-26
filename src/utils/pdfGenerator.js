@@ -21,11 +21,11 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   const getPublicUrl = (fileName) => `${window.location.origin}/${fileName}`;
 
-  // 🔹 Fondo degradado luxury (sutil)
-  doc.setFillColor(245, 245, 250);
+  // 🔹 Fondo elegante
+  doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-  // 🔹 Logo + QR
+  // 🔹 Logo + QR dinámico
   try {
     const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.png"));
     doc.addImage(logoBase64, "PNG", 40, 20, 160, 60);
@@ -40,62 +40,60 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   y = 100;
 
-  // 🔹 Imagen principal con sombra y bordes redondeados
+  // 🔹 Imagen principal
   if (property.image) {
     try {
       const base64Main = await getBase64FromUrl(property.image);
-      doc.setFillColor(255, 255, 255);
-      doc.roundedRect(38, y + 2, pageWidth - 76, 260, 12, 12, "F");
-      doc.setDrawColor(200, 200, 200);
-      doc.setLineWidth(1.5);
-      doc.roundedRect(38, y + 2, pageWidth - 76, 260, 12, 12, "D");
+      doc.setFillColor(240, 240, 245);
+      doc.roundedRect(38, y + 2, pageWidth - 76, 260, 8, 8, "F");
       doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 76, 260);
     } catch (e) {}
   }
-  y += 280;
 
-  // 🔹 Título elegante
-  doc.setFontSize(32);
+  y += 300;
+
+  // 🔹 Título principal
+  doc.setFontSize(30);
   doc.setFont("times", "bold");
-  doc.setTextColor(35, 35, 50);
+  doc.setTextColor(45, 45, 60);
   doc.text(property.title || "Propiedad Exclusiva", 40, y);
-  y += 12;
+  y += 15;
 
-  // 🔹 Separador luxury
   doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
-  y += 20;
+  y += 25;
 
-  // 🔹 Descripción general (fuente pequeña luxury)
+  // 🔹 Descripción general (HTML) - Primera página
   if (property.description) {
-    doc.setFontSize(10);
-    doc.setFont("times", "normal");
-    doc.setTextColor(60, 60, 70);
-
-    const lines = doc.splitTextToSize(property.description, pageWidth - 80);
-    doc.text(lines, 40, y);
+    await doc.html(property.description, {
+      x: 40,
+      y: y,
+      width: pageWidth - 80,
+      windowWidth: 800,
+    });
   }
 
-  // 🔹 Segunda página: datos clave + miniaturas
+  // 🔹 Segunda página: Datos clave + miniaturas subpropiedades
   doc.addPage();
-  y = 50;
+  doc.setFillColor(248, 248, 252);
+  doc.rect(0, 0, pageWidth, pageHeight, "F");
+  y = 40;
 
-  // 🔹 Datos clave luxury cards
+  // 🔹 Función tarjetas premium con gradiente
   const addCardLuxury = async (iconFile, text, x = 40, yPos = y) => {
     const cardWidth = pageWidth - 80;
-    const cardHeight = 36;
+    const cardHeight = 32;
     try {
       const iconBase64 = await getBase64FromUrl(getPublicUrl(iconFile));
-      doc.setFillColor(250, 250, 255);
-      doc.setDrawColor(220, 220, 230);
-      doc.setLineWidth(0.8);
-      doc.roundedRect(x, yPos, cardWidth, cardHeight, 8, 8, "FD");
-      doc.addImage(iconBase64, "PNG", x + 10, yPos + 10, 16, 16);
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(220, 220, 220);
+      doc.roundedRect(x, yPos, cardWidth, cardHeight, 6, 6, "FD");
+      doc.addImage(iconBase64, "PNG", x + 8, yPos + 8, 16, 16);
       doc.setFontSize(13);
       doc.setFont("helvetica", "bold");
-      doc.setTextColor(40, 40, 50);
-      doc.text(text, x + 36, yPos + 24);
+      doc.setTextColor(50, 50, 50);
+      doc.text(text, x + 34, yPos + 20);
       return yPos + cardHeight + 12;
     } catch (e) {
       doc.text(text, x, yPos + 20);
@@ -103,18 +101,19 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     }
   };
 
-  y = property.price ? await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y) : y;
-  y = property.area ? await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y) : y;
-  y = property.bedrooms ? await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y) : y;
-  y = property.bathrooms ? await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y) : y;
-  y = property.location ? await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y) : y;
+  // 🔹 Datos clave
+  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
+  if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
+  if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
+  if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
+  if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
 
-  y += 10;
+  y += 25;
 
-  // 🔹 Miniaturas subpropiedades luxury
+  // 🔹 Miniaturas subpropiedades
   if (subProperties.length) {
-    const thumbWidth = 90;
-    const thumbHeight = 65;
+    const thumbWidth = 80;
+    const thumbHeight = 60;
     let xThumb = 40;
     let yThumb = y;
     for (let i = 0; i < subProperties.length && i < 4; i++) {
@@ -122,60 +121,64 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
       if (sub.image) {
         try {
           const base64Sub = await getBase64FromUrl(sub.image);
-          doc.setDrawColor(180, 180, 190);
-          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 6, 6, "D");
+          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
           doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
-          xThumb += thumbWidth + 20;
+          xThumb += thumbWidth + 15;
         } catch (e) {}
       }
     }
   }
 
-  // 🔹 Página 3+: Subpropiedades detalladas luxury
+  // 🔹 Subpropiedades detalladas (desde tercera página)
   const renderSub = async (sub, yStart) => {
     if (!sub) return yStart;
+    doc.addPage();
+    doc.setFillColor(248, 248, 252);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+    yStart = 40;
+
+    // Imagen subpropiedad
     if (sub.image) {
       try {
         const base64Sub = await getBase64FromUrl(sub.image);
-        doc.setFillColor(250, 250, 255);
-        doc.roundedRect(38, yStart, pageWidth - 76, 170, 10, 10, "F");
-        doc.setDrawColor(210, 210, 220);
-        doc.setLineWidth(1);
-        doc.roundedRect(38, yStart, pageWidth - 76, 170, 10, 10, "D");
-        doc.addImage(base64Sub, "JPEG", 40, yStart + 5, pageWidth - 76, 160);
+        doc.setFillColor(240, 240, 245);
+        doc.roundedRect(38, yStart + 2, pageWidth - 76, 160, 8, 8, "F");
+        doc.addImage(base64Sub, "JPEG", 40, yStart, pageWidth - 76, 160);
       } catch (e) {}
     }
+
     yStart += 180;
-    doc.setFontSize(18);
+
+    // Título subpropiedad
+    doc.setFontSize(20);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
     doc.text(sub.content || "Sub Propiedad", 40, yStart);
-    yStart += 14;
+    yStart += 12;
+
+    doc.setDrawColor(153, 0, 0);
+    doc.setLineWidth(1);
+    doc.line(40, yStart, pageWidth - 40, yStart);
+    yStart += 18;
+
+    // Descripción subpropiedad (HTML)
     if (sub.text_content) {
-      doc.setFontSize(10);
-      doc.setFont("times", "normal");
-      doc.setTextColor(70, 70, 80);
-      const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
-      doc.text(lines, 40, yStart);
-      yStart += lines.length * 12;
+      await doc.html(sub.text_content, {
+        x: 40,
+        y: yStart,
+        width: pageWidth - 80,
+        windowWidth: 800,
+      });
     }
+
     return yStart;
   };
 
-  for (let i = 0; i < subProperties.length; i += 2) {
-    doc.addPage();
-    doc.setFillColor(245, 245, 250);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-    let yTop = 40;
-    yTop = await renderSub(subProperties[i], yTop);
-
-    if (subProperties[i + 1]) {
-      let yBottom = pageHeight / 2 + 20;
-      yBottom = await renderSub(subProperties[i + 1], yBottom);
-    }
+  for (let i = 0; i < subProperties.length; i++) {
+    await renderSub(subProperties[i], 40);
   }
 
-  // 🔹 Marca de agua diagonal luxury
+  // 🔹 Marca de agua
   const addWatermark = () => {
     const totalPages = doc.getNumberOfPages();
     for (let p = 1; p <= totalPages; p++) {
@@ -183,14 +186,14 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
       doc.setFontSize(60);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(200, 200, 200);
-      doc.setGState(new doc.GState({ opacity: 0.08 }));
+      doc.setGState(new doc.GState({ opacity: 0.1 }));
       doc.text("EXCLUSIVO", pageWidth / 2, pageHeight / 2, { align: "center", angle: 45 });
       doc.setGState(new doc.GState({ opacity: 1 }));
     }
   };
   addWatermark();
 
-  // 🔹 Pie de página luxury
+  // 🔹 Pie de página
   const addFooter = (pageNum) => {
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
@@ -202,6 +205,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     );
     doc.text(`Página ${pageNum}`, pageWidth - 60, pageHeight - 30);
   };
+
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -210,4 +214,3 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
-
