@@ -62,11 +62,15 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
-  y += 25;
+  y += 15;
 
-  // 🔹 Descripción general (primera página)
+  // 🔹 Descripción general (fuente 10) en la primera página
   if (property.description) {
-    await addDescriptionPage(doc, property.description);
+    doc.setFontSize(10);
+    doc.setFont("times", "normal");
+    doc.setTextColor(70, 70, 80);
+    const lines = doc.splitTextToSize(property.description, pageWidth - 80);
+    doc.text(lines, 40, y);
   }
 
   // 🔹 Segunda página: datos clave + subpropiedades
@@ -96,6 +100,13 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     }
   };
 
+  // 🔹 Título para descripciones específicas
+  doc.setFontSize(16);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Descripciones Específicas", 40, y);
+  y += 20;
+  
   // 🔹 Datos clave (segunda página)
   if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
   if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
@@ -103,14 +114,8 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
   if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
 
-  y += 25;
-
-  // 🔹 Título para descripciones específicas
-  doc.setFontSize(16);
-  doc.setFont("times", "bold");
-  doc.setTextColor(45, 45, 60);
-  doc.text("Descripciones Específicas", 40, y);
   y += 20;
+
 
   // 🔹 Subpropiedades miniaturas
   if (subProperties.length) {
