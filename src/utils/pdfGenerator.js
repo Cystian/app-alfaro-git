@@ -131,10 +131,10 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
  //
 
 const maxPerRow = 6; // Máximo de miniaturas por fila
-const spacingX = 15;  // Espacio horizontal entre miniaturas
-const spacingY = 25;  // Espacio vertical entre filas (incluye espacio para texto)
-const thumbWidth = 40; // Ancho de la miniatura
-const thumbHeight = 30; // Alto de la miniatura
+const spacingX = 18;  // 🔹 Ajuste de espacio horizontal (un poco más para que no choquen)
+const spacingY = 28;  // 🔹 Ajuste de espacio vertical
+const thumbWidth = 50; // 🔹 Ancho aumentado de la miniatura
+const thumbHeight = 35; // 🔹 Alto aumentado de la miniatura
 let xThumb = 40; // Posición inicial X
 let yThumb = y;  // Posición inicial Y
 
@@ -144,6 +144,9 @@ for (let i = 0; i < subProperties.length; i++) {
     try {
       const base64Sub = await getBase64FromUrl(sub.image);
 
+      // 🔹 Define color de borde (rojo burdeos elegante)
+      doc.setDrawColor(153, 0, 0);
+
       // Dibuja el marco de la miniatura
       doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
 
@@ -151,7 +154,7 @@ for (let i = 0; i < subProperties.length; i++) {
       doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
 
       // Añade el nombre de la subpropiedad debajo de la imagen
-      const textY = yThumb + thumbHeight + 5;
+      const textY = yThumb + thumbHeight + 6;
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50, 50, 50);
@@ -171,6 +174,10 @@ for (let i = 0; i < subProperties.length; i++) {
     }
   }
 }
+
+// 🔹 Ajuste final: bajar Y para que no se monte el siguiente contenido
+y = yThumb + thumbHeight + spacingY;
+
 
 
 //
