@@ -5,9 +5,8 @@ export const addDescriptionPage = async (doc, property) => {
   const pageHeight = doc.internal.pageSize.getHeight();
 
   return new Promise((resolve) => {
-    // 👇 crea una nueva página (segunda página)
-    doc.addPage();
-    doc.setPage(doc.getNumberOfPages()); // fuerza movernos a la nueva página
+    // 👇 asegura que trabajamos sobre la ÚLTIMA página (la recién creada)
+    doc.setPage(doc.getNumberOfPages());
 
     // Fondo
     doc.setFillColor(248, 248, 252);
@@ -42,8 +41,9 @@ export const addDescriptionPage = async (doc, property) => {
       windowWidth: boxWidth,
       autoPaging: "text",
       callback: function () {
-        resolve(); // desbloquea la ejecución de lo siguiente
+        resolve(); // desbloquea la ejecución
       },
     });
   });
 };
+
