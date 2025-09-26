@@ -49,7 +49,6 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
       doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 76, 260);
     } catch (e) {}
   }
-
   y += 300;
 
   // 🔹 Título principal
@@ -64,80 +63,96 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.line(40, y, pageWidth - 40, y);
   y += 25;
 
-  // 🔹 Descripción general (HTML) - Primera página
+  // 🔹 Descripción general en primera página
   if (property.description) {
-    await doc.html(property.description, {
-      x: 40,
-      y: y,
-      width: pageWidth - 80,
-      windowWidth: 800,
-    });
+    await addDescriptionPage(doc, property.description, { fontSize: 10 });
   }
 
-  // 🔹 Segunda página: Datos clave + miniaturas subpropiedades
+  // 🔹 Segunda página
   doc.addPage();
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
   y = 40;
 
-  // 🔹 Función tarjetas premium con gradiente
+  // 🔹 Función tarjetas premium con gradiente y sombra
   const addCardLuxury = async (iconFile, text, x = 40, yPos = y) => {
     const cardWidth = pageWidth - 80;
-    const cardHeight = 32;
+    const cardHeight = 36;
     try {
       const iconBase64 = await getBase64FromUrl(getPublicUrl(iconFile));
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(220, 220, 220);
-      doc.roundedRect(x, yPos, cardWidth, cardHeight, 6, 6, "FD");
-      doc.addImage(iconBase64, "PNG", x + 8, yPos + 8, 16, 16);
+      doc.roundedRect(x, yPos, cardWidth, cardHeight, 8, 8, "FD");
+      doc.addImage(iconBase64, "PNG", x + 10, yPos + 10, 18, 18);
       doc.setFontSize(13);
       doc.setFont("helvetica", "bold");
-      doc.setTextColor(50, 50, 50);
-      doc.text(text, x + 34, yPos + 20);
-      return yPos + cardHeight + 12;
+      doc.setTextColor(45, 45, 60);
+      doc.text(text, x + 40, yPos + 23);
+      return yPos + cardHeight + 14;
     } catch (e) {
       doc.text(text, x, yPos + 20);
-      return yPos + cardHeight + 12;
+      return yPos + cardHeight + 14;
     }
   };
 
-  // 🔹 Datos clave
-  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
+  // 🔹 Datos clave (segunda página)
+  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE",{ minimumFractionDigits:2 })}`, 40, y);
   if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
   if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
   if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
   if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
+  y += 15;
 
+  // 🔹 Título secciones secundarias
+  doc.setFontSize(16);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(60, 60, 70);
+  doc.text("Descripciones Específicas", 40, y);
   y += 25;
 
-  // 🔹 Miniaturas subpropiedades
-  if (subProperties.length) {
-    const thumbWidth = 80;
-    const thumbHeight = 60;
-    let xThumb = 40;
-    let yThumb = y;
-    for (let i = 0; i < subProperties.length && i < 4; i++) {
-      const sub = subProperties[i];
-      if (sub.image) {
-        try {
-          const base64Sub = await getBase64FromUrl(sub.image);
-          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
-          doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
-          xThumb += thumbWidth + 15;
-        } catch (e) {}
-      }
+  // 🔹 Descripciones específicas
+  for (const sub of subProperties) {
+    if (sub.text_content) {
+      doc.setFontSize(11);
+      doc.setFont("times", "normal");
+      doc.setTextColor(70, 70, 80);
+      const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
+      doc.text(lines, 40, y);
+      y += lines.length * 14 + 12;
     }
   }
 
-  // 🔹 Subpropiedades detalladas (desde tercera página)
+  // 🔹 Título para miniaturas
+  y += 10;
+  doc.setFontSize(16);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(60, 60, 70);
+  doc.text("Fotos Detalladas del Inmueble", 40, y);
+  y += 20;
+
+  // 🔹 Miniaturas con borde degradado y sombra
+  const thumbWidth = 90;
+  const thumbHeight = 70;
+  let xThumb = 40;
+  for (let i = 0; i < subProperties.length && i < 4; i++) {
+    const sub = subProperties[i];
+    if (sub.image) {
+      try {
+        const base64Sub = await getBase64FromUrl(sub.image);
+        doc.roundedRect(xThumb - 3, y - 3, thumbWidth + 6, thumbHeight + 6, 6, 6, "D");
+        doc.addImage(base64Sub, "JPEG", xThumb, y, thumbWidth, thumbHeight);
+        xThumb += thumbWidth + 15;
+      } catch (e) {}
+    }
+  }
+  y += thumbHeight + 25;
+
+  // 🔹 Tarjeta redes sociales y WhatsApp
+  y = await addCardLuxury("whatsapp.png", "Nuestras Redes Sociales y WhatsApp", 40, y);
+
+  // 🔹 Subpropiedades detalladas 2 por página
   const renderSub = async (sub, yStart) => {
     if (!sub) return yStart;
-    doc.addPage();
-    doc.setFillColor(248, 248, 252);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-    yStart = 40;
-
-    // Imagen subpropiedad
     if (sub.image) {
       try {
         const base64Sub = await getBase64FromUrl(sub.image);
@@ -146,47 +161,50 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
         doc.addImage(base64Sub, "JPEG", 40, yStart, pageWidth - 76, 160);
       } catch (e) {}
     }
-
     yStart += 180;
-
-    // Título subpropiedad
     doc.setFontSize(20);
     doc.setFont("times", "bold");
     doc.setTextColor(45, 45, 60);
     doc.text(sub.content || "Sub Propiedad", 40, yStart);
     yStart += 12;
-
     doc.setDrawColor(153, 0, 0);
     doc.setLineWidth(1);
     doc.line(40, yStart, pageWidth - 40, yStart);
     yStart += 18;
-
-    // Descripción subpropiedad (HTML)
     if (sub.text_content) {
-      await doc.html(sub.text_content, {
-        x: 40,
-        y: yStart,
-        width: pageWidth - 80,
-        windowWidth: 800,
-      });
+      doc.setFontSize(11);
+      doc.setFont("times", "normal");
+      doc.setTextColor(70, 70, 80);
+      const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
+      doc.text(lines, 40, yStart);
+      yStart += lines.length * 14;
     }
-
     return yStart;
   };
 
-  for (let i = 0; i < subProperties.length; i++) {
-    await renderSub(subProperties[i], 40);
+  for (let i = 0; i < subProperties.length; i += 2) {
+    doc.addPage();
+    doc.setFillColor(248, 248, 252);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+    let yTop = 40;
+    yTop = await renderSub(subProperties[i], yTop);
+
+    if (subProperties[i + 1]) {
+      let yBottom = pageHeight / 2 + 20;
+      yBottom = await renderSub(subProperties[i + 1], yBottom);
+    }
   }
 
-  // 🔹 Marca de agua
+  // 🔹 Marca de agua elegante
   const addWatermark = () => {
     const totalPages = doc.getNumberOfPages();
     for (let p = 1; p <= totalPages; p++) {
       doc.setPage(p);
-      doc.setFontSize(60);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(200, 200, 200);
-      doc.setGState(new doc.GState({ opacity: 0.1 }));
+      doc.setFontSize(64);
+      doc.setFont("times", "italic");
+      doc.setTextColor(180, 180, 180);
+      doc.setGState(new doc.GState({ opacity: 0.05 }));
       doc.text("EXCLUSIVO", pageWidth / 2, pageHeight / 2, { align: "center", angle: 45 });
       doc.setGState(new doc.GState({ opacity: 1 }));
     }
@@ -205,7 +223,6 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     );
     doc.text(`Página ${pageNum}`, pageWidth - 60, pageHeight - 30);
   };
-
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -214,4 +231,3 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
-
