@@ -28,7 +28,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   // 🔹 Logo + QR dinámico
   try {
     const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.jpeg"));
-    doc.addImage(logoBase64, "PNG", 40, 20, 160, 60);
+    doc.addImage(logoBase64, "PNG", 40, 20, 100, 60);
 
     const qrUrl = `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`;
     const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrUrl)}`;
@@ -161,7 +161,7 @@ for (let i = 0; i < subProperties.length; i++) {
       doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
 
       // Añade el nombre de la subpropiedad debajo de la imagen
-      const textY = yThumb + thumbHeight + 10;//mayor margen entre el titulo y la imagen
+      const textY = yThumb + thumbHeight + 16;//mayor margen entre el titulo y la imagen
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50, 50, 50);
