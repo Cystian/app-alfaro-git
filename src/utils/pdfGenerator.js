@@ -49,6 +49,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
       doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 76, 260);
     } catch (e) {}
   }
+
   y += 300;
 
   // 🔹 Título principal
@@ -63,96 +64,101 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.line(40, y, pageWidth - 40, y);
   y += 25;
 
-  // 🔹 Descripción general en primera página
+  // 🔹 Descripción general (primera página)
   if (property.description) {
-    await addDescriptionPage(doc, property.description, { fontSize: 10 });
+    await addDescriptionPage(doc, property.description);
   }
 
-  // 🔹 Segunda página
+  // 🔹 Segunda página: datos clave + subpropiedades
   doc.addPage();
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
-  y = 40;
+  y = 50;
 
-  // 🔹 Función tarjetas premium con gradiente y sombra
+  // 🔹 Función tarjetas premium
   const addCardLuxury = async (iconFile, text, x = 40, yPos = y) => {
     const cardWidth = pageWidth - 80;
-    const cardHeight = 36;
+    const cardHeight = 32;
     try {
       const iconBase64 = await getBase64FromUrl(getPublicUrl(iconFile));
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(220, 220, 220);
-      doc.roundedRect(x, yPos, cardWidth, cardHeight, 8, 8, "FD");
-      doc.addImage(iconBase64, "PNG", x + 10, yPos + 10, 18, 18);
+      doc.roundedRect(x, yPos, cardWidth, cardHeight, 6, 6, "FD");
+      doc.addImage(iconBase64, "PNG", x + 8, yPos + 8, 16, 16);
       doc.setFontSize(13);
       doc.setFont("helvetica", "bold");
-      doc.setTextColor(45, 45, 60);
-      doc.text(text, x + 40, yPos + 23);
-      return yPos + cardHeight + 14;
+      doc.setTextColor(50, 50, 50);
+      doc.text(text, x + 34, yPos + 20);
+      return yPos + cardHeight + 12;
     } catch (e) {
       doc.text(text, x, yPos + 20);
-      return yPos + cardHeight + 14;
+      return yPos + cardHeight + 12;
     }
   };
 
   // 🔹 Datos clave (segunda página)
-  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE",{ minimumFractionDigits:2 })}`, 40, y);
+  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
   if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
   if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
   if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
   if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
-  y += 15;
 
-  // 🔹 Título secciones secundarias
-  doc.setFontSize(16);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(60, 60, 70);
-  doc.text("Descripciones Específicas", 40, y);
   y += 25;
 
-  // 🔹 Descripciones específicas
-  for (const sub of subProperties) {
-    if (sub.text_content) {
-      doc.setFontSize(11);
-      doc.setFont("times", "normal");
-      doc.setTextColor(70, 70, 80);
-      const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
-      doc.text(lines, 40, y);
-      y += lines.length * 14 + 12;
-    }
-  }
-
-  // 🔹 Título para miniaturas
-  y += 10;
+  // 🔹 Título para descripciones específicas
   doc.setFontSize(16);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(60, 60, 70);
-  doc.text("Fotos Detalladas del Inmueble", 40, y);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Descripciones Específicas", 40, y);
   y += 20;
 
-  // 🔹 Miniaturas con borde degradado y sombra
-  const thumbWidth = 90;
-  const thumbHeight = 70;
-  let xThumb = 40;
-  for (let i = 0; i < subProperties.length && i < 4; i++) {
-    const sub = subProperties[i];
-    if (sub.image) {
-      try {
-        const base64Sub = await getBase64FromUrl(sub.image);
-        doc.roundedRect(xThumb - 3, y - 3, thumbWidth + 6, thumbHeight + 6, 6, 6, "D");
-        doc.addImage(base64Sub, "JPEG", xThumb, y, thumbWidth, thumbHeight);
-        xThumb += thumbWidth + 15;
-      } catch (e) {}
+  // 🔹 Subpropiedades miniaturas
+  if (subProperties.length) {
+    const thumbWidth = 80;
+    const thumbHeight = 60;
+    let xThumb = 40;
+    let yThumb = y;
+
+    doc.setDrawColor(153, 0, 0); // rojo burdeos elegante
+    for (let i = 0; i < subProperties.length && i < 4; i++) {
+      const sub = subProperties[i];
+      if (sub.image) {
+        try {
+          const base64Sub = await getBase64FromUrl(sub.image);
+          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
+          doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
+          xThumb += thumbWidth + 15;
+        } catch (e) {}
+      }
     }
+    y = yThumb + thumbHeight + 25;
+
+    // 🔹 Título miniaturas
+    doc.setFontSize(14);
+    doc.setFont("times", "bold");
+    doc.setTextColor(45, 45, 60);
+    doc.text("Fotos detalladas del inmueble", 40, y);
+    y += 20;
   }
-  y += thumbHeight + 25;
 
-  // 🔹 Tarjeta redes sociales y WhatsApp
-  y = await addCardLuxury("whatsapp.png", "WhatsApp: +51 940 221 494", 40, y);
-y = await addCardLuxury("facebook.png", "Facebook: Inmobiliaria Alberto Alfaro", 40, y);
-y = await addCardLuxury("tiktok.png", "TikTok: @inmobiliariaalfaro", 40, y);
+  // 🔹 Tarjetas redes sociales
+  doc.setFontSize(16);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Conéctate con nosotros", 40, y);
+  y += 20;
 
-  // 🔹 Subpropiedades detalladas 2 por página
+  const socialCards = [
+    { icon: "facebook.png", text: "Facebook: /InmobiliariaAlbertoAlfaro" },
+    { icon: "instagram.png", text: "Instagram: @InmobiliariaAlbertoAlfaro" },
+    { icon: "whatsapp.png", text: "WhatsApp: +51 940 221 494" },
+  ];
+
+  for (const social of socialCards) {
+    y = await addCardLuxury(social.icon, social.text, 40, y);
+  }
+
+  // 🔹 Subpropiedades detalladas 2 por página (tercera página en adelante)
   const renderSub = async (sub, yStart) => {
     if (!sub) return yStart;
     if (sub.image) {
@@ -174,12 +180,12 @@ y = await addCardLuxury("tiktok.png", "TikTok: @inmobiliariaalfaro", 40, y);
     doc.line(40, yStart, pageWidth - 40, yStart);
     yStart += 18;
     if (sub.text_content) {
-      doc.setFontSize(11);
+      doc.setFontSize(10); // más pequeño para descripciones largas
       doc.setFont("times", "normal");
       doc.setTextColor(70, 70, 80);
       const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
       doc.text(lines, 40, yStart);
-      yStart += lines.length * 14;
+      yStart += lines.length * 12;
     }
     return yStart;
   };
@@ -198,15 +204,15 @@ y = await addCardLuxury("tiktok.png", "TikTok: @inmobiliariaalfaro", 40, y);
     }
   }
 
-  // 🔹 Marca de agua elegante
+  // 🔹 Marca de agua
   const addWatermark = () => {
     const totalPages = doc.getNumberOfPages();
     for (let p = 1; p <= totalPages; p++) {
       doc.setPage(p);
-      doc.setFontSize(64);
-      doc.setFont("times", "italic");
-      doc.setTextColor(180, 180, 180);
-      doc.setGState(new doc.GState({ opacity: 0.05 }));
+      doc.setFontSize(60);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(200, 200, 200);
+      doc.setGState(new doc.GState({ opacity: 0.1 }));
       doc.text("EXCLUSIVO", pageWidth / 2, pageHeight / 2, { align: "center", angle: 45 });
       doc.setGState(new doc.GState({ opacity: 1 }));
     }
@@ -225,6 +231,7 @@ y = await addCardLuxury("tiktok.png", "TikTok: @inmobiliariaalfaro", 40, y);
     );
     doc.text(`Página ${pageNum}`, pageWidth - 60, pageHeight - 30);
   };
+
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -233,3 +240,4 @@ y = await addCardLuxury("tiktok.png", "TikTok: @inmobiliariaalfaro", 40, y);
 
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
+
