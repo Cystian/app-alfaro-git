@@ -208,6 +208,7 @@ y = yThumb + thumbHeight + spacingY;
   const socialCards = [
     { icon: "facebook.png", text: "Facebook: /InmobiliariaAlbertoAlfaro" },
     { icon: "instagram.png", text: "Instagram: @InmobiliariaAlbertoAlfaro" },
+    { icon: "tiktok.png", text: "Tiktok: @InmobiliariaAlbertoAlfaro" },
     { icon: "whatsapp.png", text: "WhatsApp: +51 940 221 494" },
   ];
 
