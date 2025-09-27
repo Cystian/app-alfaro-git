@@ -277,11 +277,11 @@ const PropertyModal = ({ property, onClose }) => {
 
               {/* Botones */}
               <div className="flex justify-center gap-3 mt-6">
-           <a
+     <a
   href="https://wa.me/51940221494?text=Hola, me interesa la propiedad"
   target="_blank"
   rel="noopener noreferrer"
-  className="inline-flex items-center gap-2 border-2 border-[#820000] text-[#820000] bg-white py-2 px-4 rounded-lg hover:bg-[#820000] hover:text-white transition"
+  className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline"
 >
   {/* Ícono de WhatsApp en SVG */}
   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="w-5 h-5">
