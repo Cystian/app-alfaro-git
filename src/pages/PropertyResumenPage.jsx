@@ -116,23 +116,7 @@ export default function PropertyResumenPage() {
           <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-        {/* Botones flotantes */}
-        <div className="fixed bottom-8 right-8 flex flex-col gap-4">
-          <a
-            href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${data?.property?.title || ''}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-transform transform hover:scale-110"
-          >
-            <FaWhatsapp size={24} />
-          </a>
-          <button
-            className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-transform transform hover:scale-110"
-            onClick={() => alert('Generar PDF (pendiente integración)')}
-          >
-            <FaFilePdf size={24} />
-          </button>
-        </div>
+  
 
         {/* Modal para imagen grande */}
         {selectedSub && (
