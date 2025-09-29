@@ -12,7 +12,7 @@ exports.handler = async (event) => {
 
     console.log("Filtros recibidos:", { title, location, status, mode });
 
-    // Arrays de filtros
+    // Convertimos los filtros a arrays
     const titleArr = title ? title.split(",").map((t) => t.trim()) : [];
     const locationArr = location ? location.split(",").map((l) => l.trim()) : [];
     const statusArr = status ? status.split(",").map((s) => s.trim()) : [];
@@ -25,7 +25,7 @@ exports.handler = async (event) => {
     const queryParams = [];
     let i = 1;
 
-    // Filtros dinámicos
+    // 🔹 Filtros dinámicos
     if (locationArr.length) {
       query += ` AND (${locationArr.map(() => `location ILIKE $${i++}`).join(" OR ")})`;
       locationArr.forEach((l) => queryParams.push(`%${l}%`));
@@ -39,17 +39,16 @@ exports.handler = async (event) => {
       titleArr.forEach((t) => queryParams.push(`%${t}%`));
     }
 
-    // 🔹 Si es modo destacados → las 6 más recientes
+    // 🔹 Lógica de orden
     if (mode === "featured") {
+      // Carrusel: las 6 más recientes
       query += " ORDER BY created_at DESC LIMIT 6";
+    } else if (titleArr.length || locationArr.length || statusArr.length) {
+      // Grid de resultados: todas las propiedades filtradas
+      query += " ORDER BY created_at DESC";
     } else {
-      // 🔹 Si hay búsqueda → todas las propiedades coincidentes, ordenadas por fecha
-      if (titleArr.length || locationArr.length || statusArr.length) {
-        query += " ORDER BY created_at DESC";
-      } else {
-        // 🔹 Si no hay búsqueda ni modo especial → devolver todas ordenadas
-        query += " ORDER BY created_at DESC";
-      }
+      // Primera carga o sin filtros: todas por fecha
+      query += " ORDER BY created_at DESC";
     }
 
     console.log("Query generada:", query);
