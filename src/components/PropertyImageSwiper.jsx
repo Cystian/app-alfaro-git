@@ -1,7 +1,7 @@
 // src/components/PropertyImageSwiper.jsx
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs, EffectFade } from "swiper/modules";
+import { Navigation, Thumbs, EffectFade, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
@@ -15,10 +15,14 @@ const PropertyImageSwiper = ({ images, labels, propTitle }) => {
     <div className="p-4">
       {/* Swiper principal */}
       <Swiper
-        modules={[Navigation, Thumbs, EffectFade]}
+        modules={[Navigation, Thumbs, EffectFade, Autoplay]}
         navigation
         effect="fade"
         loop
+        autoplay={{
+          delay: 3500, // ⏱ cada 3.5 segundos
+          disableOnInteraction: false, // sigue aunque el usuario toque flechas/miniaturas
+        }}
         spaceBetween={10}
         thumbs={{ swiper: thumbsSwiper }}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
@@ -74,3 +78,4 @@ const PropertyImageSwiper = ({ images, labels, propTitle }) => {
 };
 
 export default PropertyImageSwiper;
+
