@@ -8,12 +8,13 @@ import {
   FaTag,
   FaTimes,
 } from "react-icons/fa";
+import { generatePropertyPdf } from "../utils/pdfGenerator"; // asegúrate de importar tu función
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
-  const [isClosing, setIsClosing] = useState(false); // Nuevo estado para salida animada
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,19 +27,17 @@ export default function PropertyResumenPage() {
     fetchData();
   }, [id]);
 
-  // Formatear precio
   const formatPrice = (price) => {
     if (!price) return "";
     return `S/ ${Number(price).toLocaleString("es-PE")}`;
   };
 
-  // Manejo de cierre con animación
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setSelectedSub(null);
       setIsClosing(false);
-    }, 300); // igual al tiempo de la animación
+    }, 300);
   };
 
   return (
@@ -62,44 +61,36 @@ export default function PropertyResumenPage() {
         </h1>
         <hr className="border-gray-300 mb-6" />
 
-        {/* Datos principales */}
         {data && data.property ? (
-          <>
+          <div>
+            {/* Datos principales */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaMapMarkerAlt className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Ubicación</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.location}
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.location}</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaRulerCombined className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Área</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.area} m²
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.area} m²</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaBed className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Dormitorios</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.bedrooms}
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.bedrooms}</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaBath className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Baños</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.bathrooms}
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.bathrooms}</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
@@ -113,11 +104,9 @@ export default function PropertyResumenPage() {
               </div>
             </div>
 
-            {/* Descripción principal con HTML */}
+            {/* Descripción */}
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                Descripción
-              </h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
               <div
                 className="text-gray-700"
                 dangerouslySetInnerHTML={{ __html: data.property.description }}
@@ -126,9 +115,7 @@ export default function PropertyResumenPage() {
 
             {/* Subpropiedades */}
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                Subpropiedades
-              </h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subpropiedades</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.subProperties.map((sub) => (
                   <li
@@ -148,53 +135,45 @@ export default function PropertyResumenPage() {
                 ))}
               </ul>
 
+              {/* Botones */}
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <button
+                  onClick={() => generatePropertyPdf(data.property, data.subProperties)}
+                  className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5"
+                  >
+                    <path d="M5 20h14v-2H5v2zM12 2l-6 6h4v6h4V8h4l-6-6z" />
+                  </svg>
+                  Descargar Flyer
+                </button>
 
- {/* Botones debajo de Subpropiedades */}
-  <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-    {/* Descargar Flyer */}
-    <button
-      onClick={() => generatePropertyPdf(data.property, data.subProperties)}
-      className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
-      style={{ textDecoration: "none" }}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        className="w-5 h-5"
-      >
-        <path d="M5 20h14v-2H5v2zM12 2l-6 6h4v6h4V8h4l-6-6z" />
-      </svg>
-      Descargar Flyer
-    </button>
-
-    {/* Buscar más propiedades */}
-    <button
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
-      style={{ textDecoration: "none" }}
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-        className="w-5 h-5"
-      >
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
-      Buscar más propiedades
-    </button>
-    
-
-
-              
+                <button
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                  className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5"
+                  >
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                  </svg>
+                  Buscar más propiedades
+                </button>
+              </div>
             </div>
-          </>
+          </div>
         ) : (
           <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-        {/* Modal con entrada y salida suave */}
+        {/* Modal */}
         {selectedSub && (
           <div
             className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${
@@ -221,9 +200,7 @@ export default function PropertyResumenPage() {
               />
               <div>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {selectedSub.isMain
-                    ? selectedSub.title
-                    : selectedSub.content}
+                  {selectedSub.isMain ? selectedSub.title : selectedSub.content}
                 </h2>
                 {!selectedSub.isMain && selectedSub.text_content && (
                   <p className="text-gray-700">{selectedSub.text_content}</p>
@@ -234,24 +211,12 @@ export default function PropertyResumenPage() {
         )}
       </div>
 
-      {/* Animaciones personalizadas */}
+      {/* Animaciones */}
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0 }
-          to { opacity: 1 }
-        }
-        @keyframes fadeOut {
-          from { opacity: 1 }
-          to { opacity: 0 }
-        }
-        @keyframes zoomIn {
-          from { transform: scale(0.8); opacity: 0 }
-          to { transform: scale(1); opacity: 1 }
-        }
-        @keyframes zoomOut {
-          from { transform: scale(1); opacity: 1 }
-          to { transform: scale(0.8); opacity: 0 }
-        }
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+        @keyframes fadeOut { from { opacity: 1 } to { opacity: 0 } }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+        @keyframes zoomOut { from { transform: scale(1); opacity: 1 } to { transform: scale(0.8); opacity: 0 } }
         .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
         .animate-fadeOut { animation: fadeOut 0.5s ease-in forwards; }
         .animate-zoomIn { animation: zoomIn 0.5s ease-out forwards; }
@@ -260,4 +225,3 @@ export default function PropertyResumenPage() {
     </div>
   );
 }
-
