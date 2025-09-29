@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaWhatsapp, FaFilePdf } from "react-icons/fa";
+import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaWhatsapp, FaFilePdf, FaTag } from "react-icons/fa";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
@@ -18,6 +18,19 @@ export default function PropertyResumenPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
+
+        {/* Foto principal */}
+        {data?.property?.image && (
+          <div className="mb-6 rounded-xl overflow-hidden shadow-lg cursor-pointer group">
+            <img
+              src={data.property.image}
+              alt={data.property.title}
+              className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+              onClick={() => window.open(data.property.image, "_blank")}
+            />
+          </div>
+        )}
+
         {/* Título */}
         <h1 className="text-4xl font-bold text-gray-800 mb-4">{data?.property?.title || "Resumen de Propiedad"}</h1>
         <hr className="border-gray-300 mb-6" />
@@ -55,8 +68,11 @@ export default function PropertyResumenPage() {
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-                <p className="text-gray-500 text-sm mr-2">Precio</p>
-                <p className="font-semibold text-lg text-red-600">{data.property.price}</p>
+                <FaTag className="text-red-600 mr-3" />
+                <div>
+                  <p className="text-gray-500 text-sm">Precio</p>
+                  <p className="font-semibold text-lg text-red-600">{data.property.price}</p>
+                </div>
               </div>
             </div>
 
@@ -71,11 +87,12 @@ export default function PropertyResumenPage() {
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subpropiedades</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.subProperties.map((sub) => (
-                  <li key={sub.id} className="relative group rounded-lg overflow-hidden shadow-lg">
+                  <li key={sub.id} className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer">
                     <img
                       src={sub.image}
                       alt={sub.text_content}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      onClick={() => window.open(sub.image, "_blank")}
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm font-medium">
                       {sub.content}
