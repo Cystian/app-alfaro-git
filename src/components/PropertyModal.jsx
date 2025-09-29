@@ -320,6 +320,3 @@ const PropertyModal = ({ property, onClose }) => {
   );
 };
 
-export default PropertyModal;
-
-
