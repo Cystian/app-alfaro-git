@@ -25,14 +25,18 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-  // 🔹 Logo + QR dinámico
-  try {
-    const logoBase64 = await getBase64FromUrl(getPublicUrl("logo.jpeg"));
-    doc.addImage(logoBase64, "PNG", 40, 20, 80, 60);
+  // 🔹 Precarga íconos + logo + QR en paralelo
+  const iconFiles = ["logo.jpeg","precio.png","area.png","dormi.png","bano.png","maps.png","facebook.png","instagram.png","tiktok.png","whatsapp.png"];
+  const iconsBase64 = {};
+  await Promise.all(iconFiles.map(async file => {
+    iconsBase64[file] = await getBase64FromUrl(getPublicUrl(file));
+  }));
 
+  // 🔹 Logo + QR
+  try {
+    doc.addImage(iconsBase64["logo.jpeg"], "PNG", 40, 20, 80, 60);
     const qrUrl = `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`;
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrUrl)}`;
-    const qrBase64 = await getBase64FromUrl(qrApiUrl);
+    const qrBase64 = await getBase64FromUrl(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrUrl)}`);
     doc.addImage(qrBase64, "PNG", pageWidth - 100, 20, 60, 60);
   } catch (e) {
     console.error("Error al cargar logo o QR:", e);
@@ -41,15 +45,15 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   y = 100;
 
   // 🔹 Imagen principal
+  let mainImageBase64 = null;
   if (property.image) {
     try {
-      const base64Main = await getBase64FromUrl(property.image);
+      mainImageBase64 = await getBase64FromUrl(property.image);
       doc.setFillColor(240, 240, 245);
       doc.roundedRect(38, y + 2, pageWidth - 76, 260, 8, 8, "F");
-      doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 76, 260);
+      doc.addImage(mainImageBase64, "JPEG", 40, y, pageWidth - 76, 260);
     } catch (e) {}
   }
-
   y += 300;
 
   // 🔹 Título principal
@@ -64,8 +68,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.line(40, y, pageWidth - 40, y);
   y += 15;
 
-
-    // 🔹 Descripción general (HTML) - Primera página
+  // 🔹 Descripción general (HTML)
   if (property.description) {
     await doc.html(property.description, {
       x: 40,
@@ -75,7 +78,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     });
   }
 
-  // 🔹 Segunda página: datos clave + subpropiedades
+  // 🔹 Segunda página
   doc.addPage();
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
@@ -86,7 +89,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     const cardWidth = pageWidth - 80;
     const cardHeight = 32;
     try {
-      const iconBase64 = await getBase64FromUrl(getPublicUrl(iconFile));
+      const iconBase64 = iconsBase64[iconFile];
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(220, 220, 220);
       doc.roundedRect(x, yPos, cardWidth, cardHeight, 6, 6, "FD");
@@ -102,101 +105,71 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     }
   };
 
-  // 🔹 Título para descripciones específicas
+  // 🔹 Datos clave
   doc.setFontSize(16);
   doc.setFont("times", "bold");
   doc.setTextColor(45, 45, 60);
   doc.text("Descripciones Específicas", 40, y);
   y += 20;
-  
-  // 🔹 Datos clave (segunda página)
-  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
-  if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
-  if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
-  if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
-  if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
+
+  const dataCards = [];
+  if (property.price) dataCards.push(addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y));
+  if (property.area) dataCards.push(addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y));
+  if (property.bedrooms) dataCards.push(addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y));
+  if (property.bathrooms) dataCards.push(addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y));
+  if (property.location) dataCards.push(addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y));
+
+  const dataYs = await Promise.all(dataCards);
+  y = Math.max(...dataYs);
 
   y += 20;
-
-    doc.setDrawColor(153, 0, 0);
+  doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
   y += 20;
 
-  
-   // 🔹 Título miniaturas
-    doc.setFontSize(16);
-    doc.setFont("times", "bold");
-    doc.setTextColor(45, 45, 60);
-    doc.text("Fotos detalladas del inmueble", 40, y);
-    y += 20;
+  // 🔹 Miniaturas subpropiedades (precargar en paralelo)
+  let subImagesBase64 = await Promise.all(subProperties.map(sub => sub.image ? getBase64FromUrl(sub.image) : null));
 
-  // 🔹 Subpropiedades miniaturas
+  doc.setFontSize(16);
+  doc.setFont("times", "bold");
+  doc.setTextColor(45, 45, 60);
+  doc.text("Fotos detalladas del inmueble", 40, y);
+  y += 20;
+
   if (subProperties.length) {
+    const maxPerRow = 6;
+    const spacingX = 18;
+    const spacingY = 28;
+    const thumbWidth = 70;
+    const thumbHeight = 55;
+    let xThumb = 40;
+    let yThumb = y;
 
- //
+    for (let i = 0; i < subProperties.length; i++) {
+      const sub = subProperties[i];
+      const base64Sub = subImagesBase64[i];
+      if (!base64Sub) continue;
 
-const maxPerRow = 6; // Máximo de miniaturas por fila
-const spacingX = 18;  // 🔹 Ajuste de espacio horizontal (un poco más para que no choquen)
-const spacingY = 28;  // 🔹 Ajuste de espacio vertical
-const thumbWidth = 70; // 🔹 Ancho aumentado de la miniatura
-const thumbHeight =55; // 🔹 Alto aumentado de la miniatura
-let xThumb = 40; // Posición inicial X
-let yThumb = y;  // Posición inicial Y
-
-for (let i = 0; i < subProperties.length; i++) {
-  const sub = subProperties[i];
-    console.log("Sub propiedad #" + i, sub);
-  if (sub.image) {
-    try {
-      const base64Sub = await getBase64FromUrl(sub.image);
-
-      // 🔹 Define color de borde (rojo burdeos elegante)
       doc.setDrawColor(220, 220, 220);
-
-      // Dibuja el marco de la miniatura
       doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
-
-      // Inserta la imagen
       doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
 
-      // Añade el nombre de la subpropiedad debajo de la imagen
-      const textY = yThumb + thumbHeight + 16;//mayor margen entre el titulo y la imagen
+      const textY = yThumb + thumbHeight + 16;
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.setTextColor(50, 50, 50);
       doc.text(sub.content || "", xThumb + thumbWidth / 2, textY, { align: "center" });
 
-      // Mueve xThumb para la próxima miniatura
       xThumb += thumbWidth + spacingX;
-
-      // Si llegamos al final de la fila, reiniciamos xThumb y bajamos yThumb
       if ((i + 1) % maxPerRow === 0) {
         xThumb = 40;
         yThumb += thumbHeight + spacingY;
       }
-
-    } catch (e) {
-      console.error("Error cargando subpropiedad:", e);
     }
-  }
-}
 
-// 🔹 Ajuste final: bajar Y para que no se monte el siguiente contenido
-y = yThumb + thumbHeight + spacingY;
-
-
-
-//
     y = yThumb + thumbHeight + 25;
- 
   }
-
-      doc.setDrawColor(153, 0, 0);
-  doc.setLineWidth(2);
-  doc.line(40, y, pageWidth - 40, y);
-  y += 20;
-
 
   // 🔹 Tarjetas redes sociales
   doc.setFontSize(16);
@@ -212,11 +185,10 @@ y = yThumb + thumbHeight + spacingY;
     { icon: "whatsapp.png", text: "WhatsApp: +51 940 221 494" },
   ];
 
-  for (const social of socialCards) {
-    y = await addCardLuxury(social.icon, social.text, 40, y);
-  }
+  const socialYs = await Promise.all(socialCards.map(social => addCardLuxury(social.icon, social.text, 40, y)));
+  y = Math.max(...socialYs);
 
-  // 🔹 Subpropiedades detalladas 2 por página (tercera página en adelante)
+  // 🔹 Subpropiedades detalladas 2 por página
   const renderSub = async (sub, yStart) => {
     if (!sub) return yStart;
     if (sub.image) {
@@ -238,7 +210,7 @@ y = yThumb + thumbHeight + spacingY;
     doc.line(40, yStart, pageWidth - 40, yStart);
     yStart += 18;
     if (sub.text_content) {
-      doc.setFontSize(10); // más pequeño para descripciones largas
+      doc.setFontSize(10);
       doc.setFont("times", "normal");
       doc.setTextColor(70, 70, 80);
       const lines = doc.splitTextToSize(sub.text_content, pageWidth - 80);
@@ -298,4 +270,3 @@ y = yThumb + thumbHeight + spacingY;
 
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
-
