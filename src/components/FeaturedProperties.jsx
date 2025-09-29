@@ -48,8 +48,8 @@ const FeaturedProperties = () => {
                 <p className="text-gray-500">{prop.location}</p>
 
                 {/* Tipo de propiedad */}
-                {prop.type && (
-                  <p className="text-sm text-gray-600 mt-1">{prop.type}</p>
+                {prop.status && (
+                  <p className="text-sm text-gray-600 mt-1">{prop.status}</p>
                 )}
 
                 <p className="text-red-600 font-bold mt-2">
