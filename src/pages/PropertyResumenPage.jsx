@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaWhatsapp, FaFilePdf, FaTag } from "react-icons/fa";
+import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaWhatsapp, FaFilePdf, FaTag, FaTimes } from "react-icons/fa";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [selectedSub, setSelectedSub] = useState(null); // Para el modal
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +15,12 @@ export default function PropertyResumenPage() {
     };
     fetchData();
   }, [id]);
+
+  // Formatear precio
+  const formatPrice = (price) => {
+    if (!price) return "";
+    return `S/ ${Number(price).toLocaleString("es-PE")}`;
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -26,7 +33,7 @@ export default function PropertyResumenPage() {
               src={data.property.image}
               alt={data.property.title}
               className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              onClick={() => window.open(data.property.image, "_blank")}
+              onClick={() => setSelectedSub({ ...data.property, isMain: true })}
             />
           </div>
         )}
@@ -35,7 +42,7 @@ export default function PropertyResumenPage() {
         <h1 className="text-4xl font-bold text-gray-800 mb-4">{data?.property?.title || "Resumen de Propiedad"}</h1>
         <hr className="border-gray-300 mb-6" />
 
-        {/* Datos principales con íconos */}
+        {/* Datos principales */}
         {data && data.property ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
@@ -71,7 +78,7 @@ export default function PropertyResumenPage() {
                 <FaTag className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Precio</p>
-                  <p className="font-semibold text-lg text-red-600">{data.property.price}</p>
+                  <p className="font-semibold text-lg text-red-600">{formatPrice(data.property.price)}</p>
                 </div>
               </div>
             </div>
@@ -87,12 +94,15 @@ export default function PropertyResumenPage() {
               <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subpropiedades</h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.subProperties.map((sub) => (
-                  <li key={sub.id} className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer">
+                  <li
+                    key={sub.id}
+                    className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer"
+                    onClick={() => setSelectedSub(sub)}
+                  >
                     <img
                       src={sub.image}
                       alt={sub.text_content}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                      onClick={() => window.open(sub.image, "_blank")}
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm font-medium">
                       {sub.content}
@@ -123,6 +133,40 @@ export default function PropertyResumenPage() {
             <FaFilePdf size={24} />
           </button>
         </div>
+
+        {/* Modal para imagen grande */}
+        {selectedSub && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+            <div className="bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4">
+              <button
+                className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
+                onClick={() => setSelectedSub(null)}
+              >
+                <FaTimes size={24} />
+              </button>
+              <img
+                src={selectedSub.image}
+                alt={selectedSub.content || selectedSub.title}
+                className="w-full h-96 object-cover rounded-lg mb-4"
+              />
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                  {selectedSub.isMain ? selectedSub.title : selectedSub.content}
+                </h2>
+                {!selectedSub.isMain && selectedSub.text_content && (
+                  <p className="text-gray-700">{selectedSub.text_content}</p>
+                )}
+                {selectedSub.isMain && (
+                  <p className="text-gray-700">{selectedSub.description}</p>
+                )}
+                {selectedSub.price && !selectedSub.isMain && (
+                  <p className="text-red-600 font-semibold mt-2">Precio: {formatPrice(selectedSub.price)}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
