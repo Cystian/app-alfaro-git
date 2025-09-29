@@ -103,7 +103,7 @@ export default function PropertyResumenPage() {
             </div>
           </>
         ) : (
-          <p className="text-gray-600">No se encontraron datos en memoria.</p>
+          <p className="text-gray-600">Cargando Datos...</p>
         )}
 
         {/* Botones flotantes */}
