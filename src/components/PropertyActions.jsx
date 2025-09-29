@@ -4,7 +4,7 @@ import { generatePropertyPdf } from "../utils/pdfGenerator";
 
 const PropertyActions = ({ propData, subProperties }) => {
   return (
-    <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6 px-4">
+ <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6 px-4 py-4">
       {/* WhatsApp */}
       <a
         href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${propData.title}`}
@@ -64,4 +64,5 @@ const PropertyActions = ({ propData, subProperties }) => {
 };
 
 export default PropertyActions;
+
 
