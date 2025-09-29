@@ -6,6 +6,7 @@ export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null); // Para el modal
+  const [isModalVisible, setIsModalVisible] = useState(false); // Control animación
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +23,18 @@ export default function PropertyResumenPage() {
     return `S/ ${Number(price).toLocaleString("es-PE")}`;
   };
 
+  // Abrir modal
+  const openModal = (sub) => {
+    setSelectedSub(sub);
+    setIsModalVisible(true);
+  };
+
+  // Cerrar modal con animación
+  const closeModal = () => {
+    setIsModalVisible(false);
+    setTimeout(() => setSelectedSub(null), 300); // espera animación
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
@@ -33,7 +46,7 @@ export default function PropertyResumenPage() {
               src={data.property.image}
               alt={data.property.title}
               className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              onClick={() => setSelectedSub({ ...data.property, isMain: true })}
+              onClick={() => openModal({ ...data.property, isMain: true })}
             />
           </div>
         )}
@@ -43,7 +56,7 @@ export default function PropertyResumenPage() {
         <hr className="border-gray-300 mb-6" />
 
         {/* Datos principales */}
-        {data && data.property ? (
+        {data && data.property && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
@@ -83,7 +96,7 @@ export default function PropertyResumenPage() {
               </div>
             </div>
 
-            {/* Descripción principal con HTML */}
+            {/* Descripción principal */}
             <div className="mb-6">
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
               <div
@@ -100,7 +113,7 @@ export default function PropertyResumenPage() {
                   <li
                     key={sub.id}
                     className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                    onClick={() => setSelectedSub(sub)}
+                    onClick={() => openModal(sub)}
                   >
                     <img
                       src={sub.image}
@@ -115,23 +128,21 @@ export default function PropertyResumenPage() {
               </ul>
             </div>
           </>
-        ) : (
-          <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-        {/* Modal para imagen grande */}
+        {/* Modal con animación */}
         {selectedSub && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
-            onClick={() => setSelectedSub(null)}
+            className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${isModalVisible ? "opacity-100" : "opacity-0"}`}
+            onClick={closeModal}
           >
             <div
-              className="bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4"
-              onClick={(e) => e.stopPropagation()} // Evita que se cierre al hacer click dentro del modal
+              className={`bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4 transform transition-all duration-300 ${isModalVisible ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
-                onClick={() => setSelectedSub(null)}
+                onClick={closeModal}
               >
                 <FaTimes size={24} />
               </button>
@@ -144,7 +155,6 @@ export default function PropertyResumenPage() {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                   {selectedSub.isMain ? selectedSub.title : selectedSub.content}
                 </h2>
-                {/* Solo la descripción de subpropiedades */}
                 {!selectedSub.isMain && selectedSub.text_content && (
                   <p className="text-gray-700">{selectedSub.text_content}</p>
                 )}
