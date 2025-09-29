@@ -147,6 +147,47 @@ export default function PropertyResumenPage() {
                   </li>
                 ))}
               </ul>
+
+
+ {/* Botones debajo de Subpropiedades */}
+  <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+    {/* Descargar Flyer */}
+    <button
+      onClick={() => generatePropertyPdf(data.property, data.subProperties)}
+      className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+      style={{ textDecoration: "none" }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        className="w-5 h-5"
+      >
+        <path d="M5 20h14v-2H5v2zM12 2l-6 6h4v6h4V8h4l-6-6z" />
+      </svg>
+      Descargar Flyer
+    </button>
+
+    {/* Buscar más propiedades */}
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+      style={{ textDecoration: "none" }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        className="w-5 h-5"
+      >
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+      </svg>
+      Buscar más propiedades
+    </button>
+    
+
+
+              
             </div>
           </>
         ) : (
