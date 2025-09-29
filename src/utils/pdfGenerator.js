@@ -2,6 +2,7 @@
 import jsPDF from "jspdf";
 import { addDescriptionPage } from "./addDescriptionPage";
 
+// 🔹 Convierte URL a Base64
 const getBase64FromUrl = async (url) => {
   const response = await fetch(url);
   const blob = await response.blob();
@@ -13,6 +14,7 @@ const getBase64FromUrl = async (url) => {
   });
 };
 
+// 🔹 Generador de PDF de propiedad
 export const generatePropertyPdf = async (property, subProperties = []) => {
   const doc = new jsPDF("p", "pt", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -25,19 +27,27 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-  // 🔹 Precarga íconos + logo + QR en paralelo
-  const iconFiles = ["logo.jpeg","precio.png","area.png","dormi.png","bano.png","maps.png","facebook.png","instagram.png","tiktok.png","whatsapp.png"];
-  const iconsBase64 = {};
-  await Promise.all(iconFiles.map(async file => {
-    iconsBase64[file] = await getBase64FromUrl(getPublicUrl(file));
-  }));
+  // 🔹 Precarga paralela de imágenes principales y QR
+  const urlsToLoad = [
+    getPublicUrl("logo.jpeg"),
+    `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
+      `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`
+    )}`,
+  ];
 
-  // 🔹 Logo + QR
+  if (property.image) urlsToLoad.push(property.image);
+  subProperties.forEach((sub) => sub.image && urlsToLoad.push(sub.image));
+
+  const base64Images = await Promise.all(urlsToLoad.map(getBase64FromUrl));
+
+  let imgIndex = 0;
+
+  // 🔹 Logo
   try {
-    doc.addImage(iconsBase64["logo.jpeg"], "PNG", 40, 20, 80, 60);
-    const qrUrl = `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`;
-    const qrBase64 = await getBase64FromUrl(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrUrl)}`);
-    doc.addImage(qrBase64, "PNG", pageWidth - 100, 20, 60, 60);
+    doc.addImage(base64Images[imgIndex++], "PNG", 40, 20, 80, 60);
+
+    // 🔹 QR dinámico
+    doc.addImage(base64Images[imgIndex++], "PNG", pageWidth - 100, 20, 60, 60);
   } catch (e) {
     console.error("Error al cargar logo o QR:", e);
   }
@@ -45,15 +55,15 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   y = 100;
 
   // 🔹 Imagen principal
-  let mainImageBase64 = null;
   if (property.image) {
     try {
-      mainImageBase64 = await getBase64FromUrl(property.image);
+      const base64Main = base64Images[imgIndex++];
       doc.setFillColor(240, 240, 245);
       doc.roundedRect(38, y + 2, pageWidth - 76, 260, 8, 8, "F");
-      doc.addImage(mainImageBase64, "JPEG", 40, y, pageWidth - 76, 260);
+      doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 76, 260);
     } catch (e) {}
   }
+
   y += 300;
 
   // 🔹 Título principal
@@ -78,7 +88,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     });
   }
 
-  // 🔹 Segunda página
+  // 🔹 Segunda página: datos clave + subpropiedades
   doc.addPage();
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
@@ -89,7 +99,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     const cardWidth = pageWidth - 80;
     const cardHeight = 32;
     try {
-      const iconBase64 = iconsBase64[iconFile];
+      const iconBase64 = await getBase64FromUrl(getPublicUrl(iconFile));
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(220, 220, 220);
       doc.roundedRect(x, yPos, cardWidth, cardHeight, 6, 6, "FD");
@@ -105,38 +115,43 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     }
   };
 
-  // 🔹 Datos clave
+  // 🔹 Título para descripciones específicas
   doc.setFontSize(16);
   doc.setFont("times", "bold");
   doc.setTextColor(45, 45, 60);
   doc.text("Descripciones Específicas", 40, y);
   y += 20;
 
-  const dataCards = [];
-  if (property.price) dataCards.push(addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y));
-  if (property.area) dataCards.push(addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y));
-  if (property.bedrooms) dataCards.push(addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y));
-  if (property.bathrooms) dataCards.push(addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y));
-  if (property.location) dataCards.push(addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y));
-
-  const dataYs = await Promise.all(dataCards);
-  y = Math.max(...dataYs);
+  // 🔹 Datos clave (segunda página)
+  if (property.price)
+    y = await addCardLuxury(
+      "precio.png",
+      `Precio: S/ ${Number(property.price).toLocaleString("es-PE", {
+        minimumFractionDigits: 2,
+      })}`,
+      40,
+      y
+    );
+  if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
+  if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
+  if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
+  if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
 
   y += 20;
+
   doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
   y += 20;
 
-  // 🔹 Miniaturas subpropiedades (precargar en paralelo)
-  let subImagesBase64 = await Promise.all(subProperties.map(sub => sub.image ? getBase64FromUrl(sub.image) : null));
-
+  // 🔹 Título miniaturas
   doc.setFontSize(16);
   doc.setFont("times", "bold");
   doc.setTextColor(45, 45, 60);
   doc.text("Fotos detalladas del inmueble", 40, y);
   y += 20;
 
+  // 🔹 Subpropiedades miniaturas
   if (subProperties.length) {
     const maxPerRow = 6;
     const spacingX = 18;
@@ -148,28 +163,39 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
     for (let i = 0; i < subProperties.length; i++) {
       const sub = subProperties[i];
-      const base64Sub = subImagesBase64[i];
-      if (!base64Sub) continue;
+      console.log("Sub propiedad #" + i, sub);
+      if (sub.image) {
+        try {
+          const base64Sub = base64Images[imgIndex++];
+          doc.setDrawColor(220, 220, 220);
+          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
+          doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
 
-      doc.setDrawColor(220, 220, 220);
-      doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
-      doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
+          const textY = yThumb + thumbHeight + 16;
+          doc.setFontSize(9);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(50, 50, 50);
+          doc.text(sub.content || "", xThumb + thumbWidth / 2, textY, { align: "center" });
 
-      const textY = yThumb + thumbHeight + 16;
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(50, 50, 50);
-      doc.text(sub.content || "", xThumb + thumbWidth / 2, textY, { align: "center" });
+          xThumb += thumbWidth + spacingX;
 
-      xThumb += thumbWidth + spacingX;
-      if ((i + 1) % maxPerRow === 0) {
-        xThumb = 40;
-        yThumb += thumbHeight + spacingY;
+          if ((i + 1) % maxPerRow === 0) {
+            xThumb = 40;
+            yThumb += thumbHeight + spacingY;
+          }
+        } catch (e) {
+          console.error("Error cargando subpropiedad:", e);
+        }
       }
     }
 
     y = yThumb + thumbHeight + 25;
   }
+
+  doc.setDrawColor(153, 0, 0);
+  doc.setLineWidth(2);
+  doc.line(40, y, pageWidth - 40, y);
+  y += 20;
 
   // 🔹 Tarjetas redes sociales
   doc.setFontSize(16);
@@ -185,15 +211,16 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     { icon: "whatsapp.png", text: "WhatsApp: +51 940 221 494" },
   ];
 
-  const socialYs = await Promise.all(socialCards.map(social => addCardLuxury(social.icon, social.text, 40, y)));
-  y = Math.max(...socialYs);
+  for (const social of socialCards) {
+    y = await addCardLuxury(social.icon, social.text, 40, y);
+  }
 
   // 🔹 Subpropiedades detalladas 2 por página
   const renderSub = async (sub, yStart) => {
     if (!sub) return yStart;
     if (sub.image) {
       try {
-        const base64Sub = await getBase64FromUrl(sub.image);
+        const base64Sub = base64Images[imgIndex++];
         doc.setFillColor(240, 240, 245);
         doc.roundedRect(38, yStart + 2, pageWidth - 76, 160, 8, 8, "F");
         doc.addImage(base64Sub, "JPEG", 40, yStart, pageWidth - 76, 160);
