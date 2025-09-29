@@ -1,45 +1,50 @@
-// ✅ Página Home: integra todo
+// ✅ Página principal que orquesta todo
 import React, { useState, useEffect } from "react";
-import PageWrapper from "../components/PageWrapper";
-import SearchBanner from "../components/SearchBanner";
-import ResultsGrid from "../components/ResultsGrid";
-import FeaturedProperties from "../components/FeaturedProperties";
-import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import ContactForm from "../components/ContactForm";
+import SearchBanner from "../components/SearchBanner";
+import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
+import PageWrapper from "../components/PageWrapper";
+import FeaturedProperties from "../components/FeaturedProperties";
+import ResultsGrid from "../components/ResultsGrid";
 
 export default function Home() {
-  const [filters, setFilters] = useState(null);
+  const [searchFilters, setSearchFilters] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
-  // 🔹 Cuando el usuario busca, obtenemos grid de resultados
+  const handleSearch = (newFilters) => {
+    setSearchFilters(newFilters);
+  };
+
+  // 🔹 Actualiza resultados del grid cuando cambian los filtros
   useEffect(() => {
-    if (!filters) return;
-    fetch("/.netlify/functions/getProperties?" + new URLSearchParams(filters))
+    if (!searchFilters) return;
+    const params = new URLSearchParams(searchFilters).toString();
+    fetch(`/.netlify/functions/getProperties?${params}`)
       .then((res) => res.json())
       .then((data) => setSearchResults(data))
-      .catch((err) => console.error("❌ Error en resultados:", err));
-  }, [filters]);
+      .catch((err) => console.error("Error en búsqueda:", err));
+  }, [searchFilters]);
 
   return (
     <PageWrapper>
       <main className="space-y-12 p-4 sm:p-8">
-        {/* Banner con búsqueda */}
-        <SearchBanner onSearch={setFilters} />
+        {/* Banner de búsqueda */}
+        <SearchBanner onSearch={handleSearch} />
 
-        {/* Grid de resultados: solo aparece si hay búsqueda */}
+        {/* Grid de resultados solo si hay búsqueda */}
         {searchResults.length > 0 && <ResultsGrid properties={searchResults} />}
 
-        {/* Carrusel de destacadas: siempre 6 más recientes */}
+        {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
         <FeaturedProperties />
 
-        {/* Secciones de branding y contacto */}
+        {/* Redes sociales */}
         <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow">
           <SocialMediaCallToAction />
         </section>
+
+        {/* Contacto */}
         <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4">
-            ¿Tienes dudas? Contáctanos
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">¿Tienes dudas? Contáctanos</h2>
           <ContactForm />
         </section>
       </main>
