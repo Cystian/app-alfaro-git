@@ -16,9 +16,11 @@ export default function PropertyResumenPage() {
     fetchData();
   }, [id]);
 
-  const formatPrice = (price) => price ? `S/ ${Number(price).toLocaleString("es-PE")}` : "";
-
-  const closeModal = () => setSelectedSub(null);
+  // Formatear precio
+  const formatPrice = (price) => {
+    if (!price) return "";
+    return `S/ ${Number(price).toLocaleString("es-PE")}`;
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -81,10 +83,13 @@ export default function PropertyResumenPage() {
               </div>
             </div>
 
-            {/* Descripción */}
+            {/* Descripción principal con HTML */}
             <div className="mb-6">
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
-              <p className="text-gray-700">{data.property.description}</p>
+              <div
+                className="text-gray-700"
+                dangerouslySetInnerHTML={{ __html: data.property.description }}
+              />
             </div>
 
             {/* Subpropiedades */}
@@ -114,19 +119,19 @@ export default function PropertyResumenPage() {
           <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-        {/* Modal */}
+        {/* Modal para imagen grande */}
         {selectedSub && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 cursor-pointer"
-            onClick={closeModal}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
+            onClick={() => setSelectedSub(null)}
           >
             <div
-              className="bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4 cursor-auto"
-              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4"
+              onClick={(e) => e.stopPropagation()} // Evita que se cierre al hacer click dentro del modal
             >
               <button
                 className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
-                onClick={closeModal}
+                onClick={() => setSelectedSub(null)}
               >
                 <FaTimes size={24} />
               </button>
@@ -139,7 +144,7 @@ export default function PropertyResumenPage() {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                   {selectedSub.isMain ? selectedSub.title : selectedSub.content}
                 </h2>
-                {/* Mostrar descripción solo si es subpropiedad */}
+                {/* Solo la descripción de subpropiedades */}
                 {!selectedSub.isMain && selectedSub.text_content && (
                   <p className="text-gray-700">{selectedSub.text_content}</p>
                 )}
@@ -152,3 +157,4 @@ export default function PropertyResumenPage() {
     </div>
   );
 }
+
