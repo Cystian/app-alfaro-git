@@ -10,7 +10,7 @@ const PropertyActions = ({ propData, subProperties }) => {
         href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${propData.title}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline"
+          className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ const PropertyActions = ({ propData, subProperties }) => {
       {/* Descargar PDF */}
       <button
         onClick={() => generatePropertyPdf(propData, subProperties)}
-        className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline"
+         className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const PropertyActions = ({ propData, subProperties }) => {
         href={`/propiedades/resumen/${propData.id}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline"
+         className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,5 +64,6 @@ const PropertyActions = ({ propData, subProperties }) => {
 };
 
 export default PropertyActions;
+
 
 
