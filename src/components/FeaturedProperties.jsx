@@ -1,117 +1,63 @@
+// ✅ Carrusel de propiedades destacadas: siempre 6 más recientes
 import React, { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/autoplay";
-import { Autoplay } from "swiper/modules";
-import PropertyModal from "./PropertyModal";
+import Slider from "react-slick";
 
-const FeaturedProperties = ({ filters }) => {
+export default function FeaturedProperties() {
   const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedProperty, setSelectedProperty] = useState(null);
-  const [hasSearched, setHasSearched] = useState(false); // controla si se hizo búsqueda
 
   useEffect(() => {
-    const fetchProperties = async () => {
-      setLoading(true);
-      try {
-        let data;
+    fetch("/.netlify/functions/getProperties?mode=featured")
+      .then((res) => res.json())
+      .then((data) => setProperties(data))
+      .catch((err) => console.error("❌ Error en destacados:", err));
+  }, []);
 
-        if (filters && (filters.location || filters.status || filters.title)) {
-          // fetch con filtros solo si el usuario hizo búsqueda
-          const res = await fetch("/.netlify/functions/getProperties?" + new URLSearchParams(filters));
-          data = await res.json();
-          setHasSearched(true); // activamos que ya hubo búsqueda
-        } else if (!hasSearched) {
-          // primera carga: propiedades destacadas random
-          const res = await fetch("/.netlify/functions/getProperties");
-          data = await res.json();
-        } else {
-          // Si ya buscó y filtros son vacíos, no cambiar nada
-          return;
-        }
+  if (!properties || properties.length === 0) return null;
 
-        const cleanData = data.map((p) => ({
-          ...p,
-          image: p.image?.trim(),
-          title: p.title?.trim(),
-          price: p.price?.trim(),
-          location: p.location?.trim(),
-          status: p.status?.trim(),
-        }));
-
-        setProperties(Array.isArray(cleanData) ? cleanData : []);
-      } catch (err) {
-        console.error("Error al traer propiedades:", err);
-        setProperties([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProperties();
-  }, [filters, hasSearched]);
-
-  const openPopup = (property) => setSelectedProperty(property);
-  const closePopup = () => setSelectedProperty(null);
-
-  if (loading) return <p className="text-center py-8">Cargando propiedades...</p>;
-  if (!properties.length)
-    return <p className="text-center py-8">No hay propiedades disponibles.</p>;
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 500,
+    responsive: [
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 640, settings: { slidesToShow: 1 } },
+    ],
+  };
 
   return (
-    <div className="w-full relative">
-      <Swiper
-        modules={[Autoplay]}
-        spaceBetween={20}
-        loop
-        autoplay={{ delay: 2000, disableOnInteraction: false }}
-        speed={3000}
-        breakpoints={{
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-        }}
-      >
-        {properties.map((property) => (
-          <SwiperSlide key={property.id}>
-            <div className="bg-white shadow-md rounded-2xl overflow-hidden flex flex-col">
+    <section>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+        Propiedades destacadas
+      </h2>
+
+      <Slider {...settings}>
+        {properties.map((prop, index) => (
+          <div key={prop.id} className="p-3">
+            <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden">
+              {/* Contador */}
+              <div className="absolute top-2 left-2 bg-black bg-opacity-60 text-white text-xs font-bold px-2 py-1 rounded-lg">
+                {index + 1}/{properties.length}
+              </div>
+
               <img
-                src={property.image}
-                alt={property.title || "Propiedad"}
-                className="h-48 w-full object-cover"
+                src={prop.image}
+                alt={prop.title}
+                className="w-full h-56 object-cover"
               />
-              <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-lg font-bold mb-1">{property.title}</h3>
-                <p className="text-sm text-gray-600 mb-1">{property.location}</p>
-                <p className="text-blue-600 font-semibold mb-2"> S/ {Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
-                <p className="text-xs text-gray-500 mb-4">{property.status}</p>
-                <div className="mt-auto flex gap-2">
-                  <a
-                    href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition"
-                  >
-                    Contactar
-                  </a>
-                  <button
-                    onClick={() => openPopup(property)}
-                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
-                  >
-                    Ver flyer
-                  </button>
-                </div>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold">{prop.title}</h3>
+                <p className="text-sm text-gray-500">{prop.location}</p>
+                <p className="text-red-600 font-bold mt-2">
+                  S/ {Number(prop.price).toLocaleString("es-PE")}
+                </p>
               </div>
             </div>
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
-
-      {selectedProperty && <PropertyModal property={selectedProperty} onClose={closePopup} />}
-    </div>
+      </Slider>
+    </section>
   );
-};
-
-export default FeaturedProperties;
-
+}
