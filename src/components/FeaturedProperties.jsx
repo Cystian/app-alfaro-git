@@ -55,7 +55,7 @@ const FeaturedProperties = () => {
                   <p className="text-sm text-gray-600 mt-1">{prop.status}</p>
                 )}
 
-           
+              </p> 
 
                 {/* Botones */}
                 <div className="mt-auto flex gap-2">
