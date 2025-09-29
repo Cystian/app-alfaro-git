@@ -1,11 +1,13 @@
-// ✅ Carrusel de propiedades destacadas (6 más recientes)
+// src/components/FeaturedProperties.jsx
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
+import PropertyModal from "./PropertyModal";
 
 const FeaturedProperties = () => {
   const [properties, setProperties] = useState([]);
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -20,6 +22,9 @@ const FeaturedProperties = () => {
     fetchFeatured();
   }, []);
 
+  const openPopup = (prop) => setSelectedProperty(prop);
+  const closePopup = () => setSelectedProperty(null);
+
   return (
     <section className="mb-12">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Propiedades destacadas</h2>
@@ -33,22 +38,51 @@ const FeaturedProperties = () => {
       >
         {properties.map((prop, index) => (
           <SwiperSlide key={prop.id}>
-            <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
               <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
                 {index + 1}/{properties.length}
               </div>
               <img src={prop.image} alt={prop.title} className="w-full h-48 object-cover" />
-              <div className="p-4">
+              <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-semibold">{prop.title}</h3>
                 <p className="text-gray-500">{prop.location}</p>
+
+                {/* Tipo de propiedad */}
+                {prop.type && (
+                  <p className="text-sm text-gray-600 mt-1">{prop.type}</p>
+                )}
+
                 <p className="text-red-600 font-bold mt-2">
                   S/ {Number(prop.price).toLocaleString("es-PE")}
                 </p>
+
+                {/* Botones */}
+                <div className="mt-auto flex gap-2">
+                  <a
+                    href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${prop.title}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition"
+                  >
+                    Contactar
+                  </a>
+                  <button
+                    onClick={() => openPopup(prop)}
+                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
+                  >
+                    Ver flyer
+                  </button>
+                </div>
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* PropertyModal */}
+      {selectedProperty && (
+        <PropertyModal property={selectedProperty} onClose={closePopup} />
+      )}
     </section>
   );
 };
