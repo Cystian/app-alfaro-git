@@ -1,4 +1,4 @@
-// ✅ Grid de propiedades: "Mis resultados"
+// ✅ Grid de resultados de búsqueda: "Mis resultados"
 import React from "react";
 
 export default function ResultsGrid({ properties }) {
