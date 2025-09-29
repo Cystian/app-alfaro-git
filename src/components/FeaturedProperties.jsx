@@ -52,12 +52,10 @@ const FeaturedProperties = () => {
                 
                 {/* Tipo de propiedad */}
                 {prop.status && (
-                  <p className="text-sm text-gray-600 mt-1">{prop.status}</p>
+                  <p className="text-sm text-gray-600 mt-2 mb-2">{prop.status}</p>
                 )}
 
-              </p> 
-
-                {/* Botones */}
+                    {/* Botones */}
                 <div className="mt-auto flex gap-2">
                   <a
                     href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${prop.title}`}
