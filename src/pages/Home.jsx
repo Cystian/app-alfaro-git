@@ -1,31 +1,51 @@
-import React, { useState } from "react";
+// ✅ Página principal que orquesta todo
+import React, { useState, useEffect } from "react";
 import ContactForm from "../components/ContactForm";
 import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
+import ResultsGrid from "../components/ResultsGrid";
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (newFilters) => {
-    setSearchFilters(newFilters); // activa búsqueda
+    setSearchFilters(newFilters);
   };
+
+  // Llamada a BD cuando cambian filtros
+  useEffect(() => {
+    if (!searchFilters) return;
+
+    const params = new URLSearchParams(searchFilters).toString();
+    fetch(`/.netlify/functions/getProperties?${params}`)
+      .then((res) => res.json())
+      .then((data) => setSearchResults(data))
+      .catch((err) => console.error("❌ Error en búsqueda:", err));
+  }, [searchFilters]);
 
   return (
     <PageWrapper>
       <main className="space-y-12 p-4 sm:p-8">
+        {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
 
-        <section>
-          <h2 className="text-2xl font-bold mb-4">Propiedades destacadas</h2>
-          <FeaturedProperties filters={searchFilters} />
-        </section>
+        {/* Grid de resultados (solo si hay búsqueda) */}
+        {searchResults.length > 0 && (
+          <ResultsGrid properties={searchResults} />
+        )}
 
+        {/* Carrusel de propiedades destacadas */}
+        <FeaturedProperties />
+
+        {/* Redes sociales */}
         <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow">
           <SocialMediaCallToAction />
         </section>
 
+        {/* Contacto */}
         <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
           <h2 className="text-xl font-semibold mb-4">
             ¿Tienes dudas? Contáctanos
