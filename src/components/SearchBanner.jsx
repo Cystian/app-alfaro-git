@@ -1,4 +1,4 @@
-// src/components/SearchBanner.jsx
+// ✅ Manteniendo tu SearchBanner actual, ya listo
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -22,8 +22,6 @@ const SearchBanner = ({ onSearch }) => {
       try {
         const res = await fetch("/.netlify/functions/get-options");
         const data = await res.json();
-
-        // Espera distritos agrupados [{departamento, distritos:[{id, nombre}]}]
         setDistritosOptions(data.distritos || []);
         setModalidadesOptions(data.modalidades || []);
         setTiposOptions(data.tipos || []);
@@ -39,18 +37,13 @@ const SearchBanner = ({ onSearch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Convierte distritos agrupados a un array plano de nombres
     const flatDistritos = distritos.join ? distritos : distritos;
-
     const filters = {
       location: flatDistritos.join(","),
       status: modalidades.join(","),
       title: tipos.join(","),
     };
-
-    console.log("➡️ Filtros enviados:", filters);
-    onSearch(filters); // pasa los filtros a FeaturedProperties
+    onSearch(filters); // activa grid
   };
 
   return (
@@ -79,7 +72,6 @@ const SearchBanner = ({ onSearch }) => {
           Tenemos el lugar perfecto para ti
         </h2>
 
-        {/* Formulario de búsqueda */}
         <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
           <div className="w-full sm:w-48">
             <CustomSelect
@@ -92,7 +84,6 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
-
           <div className="w-full sm:w-48">
             <CustomSelect
               label="Modalidad"
@@ -104,7 +95,6 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
-
           <div className="w-full sm:w-52">
             <CustomSelect
               label="Tipo"
@@ -116,8 +106,6 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
-
-          {/* Botón buscar */}
           <div className="w-full sm:w-auto flex justify-center items-center">
             <button
               type="submit"
@@ -134,7 +122,6 @@ const SearchBanner = ({ onSearch }) => {
         </form>
       </div>
 
-      {/* Animación */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
