@@ -2,7 +2,6 @@
 import jsPDF from "jspdf";
 import { addDescriptionPage } from "./addDescriptionPage";
 
-// 🔹 Convierte URL a Base64
 const getBase64FromUrl = async (url) => {
   const response = await fetch(url);
   const blob = await response.blob();
@@ -14,7 +13,6 @@ const getBase64FromUrl = async (url) => {
   });
 };
 
-// 🔹 Generador de PDF de propiedad
 export const generatePropertyPdf = async (property, subProperties = []) => {
   const doc = new jsPDF("p", "pt", "a4");
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -23,45 +21,38 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   const getPublicUrl = (fileName) => `${window.location.origin}/${fileName}`;
 
+  // 🔹 Preparar todas las URLs de imágenes
+  const mainImagesUrls = [
+    getPublicUrl("logo.jpeg"),
+    `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
+      `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`
+    )}`
+  ];
+  if (property.image) mainImagesUrls.push(property.image);
+
+  const subImagesUrls = subProperties.filter(sub => sub.image).map(sub => sub.image);
+
+  // 🔹 Precargar todas las imágenes en paralelo
+  const [logoBase64, qrBase64, mainBase64, ...subImagesBase64] = await Promise.all([
+    ...mainImagesUrls.map(getBase64FromUrl),
+    ...subImagesUrls.map(getBase64FromUrl)
+  ]);
+
   // 🔹 Fondo elegante
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-  // 🔹 Precarga paralela de imágenes principales y QR
-  const urlsToLoad = [
-    getPublicUrl("logo.jpeg"),
-    `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-      `https://inmobiliariaalfaro.netlify.app/propiedades/resumen/${property.id}`
-    )}`,
-  ];
-
-  if (property.image) urlsToLoad.push(property.image);
-  subProperties.forEach((sub) => sub.image && urlsToLoad.push(sub.image));
-
-  const base64Images = await Promise.all(urlsToLoad.map(getBase64FromUrl));
-
-  let imgIndex = 0;
-
-  // 🔹 Logo
-  try {
-    doc.addImage(base64Images[imgIndex++], "PNG", 40, 20, 80, 60);
-
-    // 🔹 QR dinámico
-    doc.addImage(base64Images[imgIndex++], "PNG", pageWidth - 100, 20, 60, 60);
-  } catch (e) {
-    console.error("Error al cargar logo o QR:", e);
-  }
+  // 🔹 Logo y QR
+  doc.addImage(logoBase64, "PNG", 40, 20, 80, 60);
+  doc.addImage(qrBase64, "PNG", pageWidth - 100, 20, 60, 60);
 
   y = 100;
 
   // 🔹 Imagen principal
-  if (property.image) {
-    try {
-      const base64Main = base64Images[imgIndex++];
-      doc.setFillColor(240, 240, 245);
-      doc.roundedRect(38, y + 2, pageWidth - 76, 260, 8, 8, "F");
-      doc.addImage(base64Main, "JPEG", 40, y, pageWidth - 76, 260);
-    } catch (e) {}
+  if (property.image && mainBase64) {
+    doc.setFillColor(240, 240, 245);
+    doc.roundedRect(38, y + 2, pageWidth - 76, 260, 8, 8, "F");
+    doc.addImage(mainBase64, "JPEG", 40, y, pageWidth - 76, 260);
   }
 
   y += 300;
@@ -78,7 +69,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   doc.line(40, y, pageWidth - 40, y);
   y += 15;
 
-  // 🔹 Descripción general (HTML)
+  // 🔹 Descripción general
   if (property.description) {
     await doc.html(property.description, {
       x: 40,
@@ -88,7 +79,7 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     });
   }
 
-  // 🔹 Segunda página: datos clave + subpropiedades
+  // 🔹 Segunda página: datos clave + miniaturas
   doc.addPage();
   doc.setFillColor(248, 248, 252);
   doc.rect(0, 0, pageWidth, pageHeight, "F");
@@ -115,43 +106,32 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     }
   };
 
-  // 🔹 Título para descripciones específicas
+  // 🔹 Datos clave
   doc.setFontSize(16);
   doc.setFont("times", "bold");
   doc.setTextColor(45, 45, 60);
   doc.text("Descripciones Específicas", 40, y);
   y += 20;
 
-  // 🔹 Datos clave (segunda página)
-  if (property.price)
-    y = await addCardLuxury(
-      "precio.png",
-      `Precio: S/ ${Number(property.price).toLocaleString("es-PE", {
-        minimumFractionDigits: 2,
-      })}`,
-      40,
-      y
-    );
+  if (property.price) y = await addCardLuxury("precio.png", `Precio: S/ ${Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`, 40, y);
   if (property.area) y = await addCardLuxury("area.png", `Área: ${property.area} m²`, 40, y);
   if (property.bedrooms) y = await addCardLuxury("dormi.png", `Dormitorios: ${property.bedrooms}`, 40, y);
   if (property.bathrooms) y = await addCardLuxury("bano.png", `Baños: ${property.bathrooms}`, 40, y);
   if (property.location) y = await addCardLuxury("maps.png", `Ubicación: ${property.location}`, 40, y);
 
   y += 20;
-
   doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
   y += 20;
 
-  // 🔹 Título miniaturas
+  // 🔹 Miniaturas subpropiedades
   doc.setFontSize(16);
   doc.setFont("times", "bold");
   doc.setTextColor(45, 45, 60);
   doc.text("Fotos detalladas del inmueble", 40, y);
   y += 20;
 
-  // 🔹 Subpropiedades miniaturas
   if (subProperties.length) {
     const maxPerRow = 6;
     const spacingX = 18;
@@ -161,43 +141,34 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
     let xThumb = 40;
     let yThumb = y;
 
-    for (let i = 0; i < subProperties.length; i++) {
-      const sub = subProperties[i];
-      console.log("Sub propiedad #" + i, sub);
+    subProperties.forEach((sub, i) => {
       if (sub.image) {
-        try {
-          const base64Sub = base64Images[imgIndex++];
-          doc.setDrawColor(220, 220, 220);
-          doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
-          doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
+        const base64Sub = subImagesBase64[subImagesUrls.indexOf(sub.image)];
+        doc.setDrawColor(220, 220, 220);
+        doc.roundedRect(xThumb - 2, yThumb - 2, thumbWidth + 4, thumbHeight + 4, 4, 4, "D");
+        doc.addImage(base64Sub, "JPEG", xThumb, yThumb, thumbWidth, thumbHeight);
+        const textY = yThumb + thumbHeight + 16;
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(50, 50, 50);
+        doc.text(sub.content || "", xThumb + thumbWidth / 2, textY, { align: "center" });
 
-          const textY = yThumb + thumbHeight + 16;
-          doc.setFontSize(9);
-          doc.setFont("helvetica", "normal");
-          doc.setTextColor(50, 50, 50);
-          doc.text(sub.content || "", xThumb + thumbWidth / 2, textY, { align: "center" });
-
-          xThumb += thumbWidth + spacingX;
-
-          if ((i + 1) % maxPerRow === 0) {
-            xThumb = 40;
-            yThumb += thumbHeight + spacingY;
-          }
-        } catch (e) {
-          console.error("Error cargando subpropiedad:", e);
+        xThumb += thumbWidth + spacingX;
+        if ((i + 1) % maxPerRow === 0) {
+          xThumb = 40;
+          yThumb += thumbHeight + spacingY;
         }
       }
-    }
-
+    });
     y = yThumb + thumbHeight + 25;
   }
 
+  // 🔹 Tarjetas redes sociales
   doc.setDrawColor(153, 0, 0);
   doc.setLineWidth(2);
   doc.line(40, y, pageWidth - 40, y);
   y += 20;
 
-  // 🔹 Tarjetas redes sociales
   doc.setFontSize(16);
   doc.setFont("times", "bold");
   doc.setTextColor(45, 45, 60);
@@ -219,12 +190,13 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
   const renderSub = async (sub, yStart) => {
     if (!sub) return yStart;
     if (sub.image) {
-      try {
-        const base64Sub = base64Images[imgIndex++];
+      const idx = subImagesUrls.indexOf(sub.image);
+      if (idx >= 0) {
+        const base64Sub = subImagesBase64[idx];
         doc.setFillColor(240, 240, 245);
         doc.roundedRect(38, yStart + 2, pageWidth - 76, 160, 8, 8, "F");
         doc.addImage(base64Sub, "JPEG", 40, yStart, pageWidth - 76, 160);
-      } catch (e) {}
+      }
     }
     yStart += 180;
     doc.setFontSize(20);
@@ -297,3 +269,4 @@ export const generatePropertyPdf = async (property, subProperties = []) => {
 
   doc.save(`${property.title || "propiedad"}.pdf`);
 };
+
