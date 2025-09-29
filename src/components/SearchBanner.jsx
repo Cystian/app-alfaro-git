@@ -1,4 +1,4 @@
-// ✅ Manteniendo tu SearchBanner actual, ya listo
+// ✅ Banner de búsqueda dinámico
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -43,12 +43,12 @@ const SearchBanner = ({ onSearch }) => {
       status: modalidades.join(","),
       title: tipos.join(","),
     };
-    onSearch(filters); // activa grid
+    onSearch(filters); // pasa filtros al grid
   };
 
   return (
     <section className="relative w-full h-[380px] flex flex-col items-center justify-center mt-6 px-4">
-      {/* Fondo banner */}
+      {/* Fondo del banner */}
       <div
         className="absolute inset-0 rounded-3xl overflow-hidden"
         style={{
@@ -72,6 +72,7 @@ const SearchBanner = ({ onSearch }) => {
           Tenemos el lugar perfecto para ti
         </h2>
 
+        {/* Formulario de búsqueda */}
         <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
           <div className="w-full sm:w-48">
             <CustomSelect
@@ -106,6 +107,8 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
+
+          {/* Botón Buscar */}
           <div className="w-full sm:w-auto flex justify-center items-center">
             <button
               type="submit"
@@ -122,6 +125,7 @@ const SearchBanner = ({ onSearch }) => {
         </form>
       </div>
 
+      {/* Animación flotante */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
@@ -136,4 +140,5 @@ const SearchBanner = ({ onSearch }) => {
 };
 
 export default SearchBanner;
+
 
