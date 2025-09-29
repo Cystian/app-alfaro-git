@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaWhatsapp, FaFilePdf, FaTag, FaTimes } from "react-icons/fa";
+import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaTag, FaTimes } from "react-icons/fa";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
@@ -16,11 +16,9 @@ export default function PropertyResumenPage() {
     fetchData();
   }, [id]);
 
-  // Formatear precio
-  const formatPrice = (price) => {
-    if (!price) return "";
-    return `S/ ${Number(price).toLocaleString("es-PE")}`;
-  };
+  const formatPrice = (price) => price ? `S/ ${Number(price).toLocaleString("es-PE")}` : "";
+
+  const closeModal = () => setSelectedSub(null);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -116,15 +114,19 @@ export default function PropertyResumenPage() {
           <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-  
-
-        {/* Modal para imagen grande */}
+        {/* Modal */}
         {selectedSub && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-            <div className="bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 cursor-pointer"
+            onClick={closeModal}
+          >
+            <div
+              className="bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4 cursor-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
-                onClick={() => setSelectedSub(null)}
+                onClick={closeModal}
               >
                 <FaTimes size={24} />
               </button>
@@ -137,14 +139,9 @@ export default function PropertyResumenPage() {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
                   {selectedSub.isMain ? selectedSub.title : selectedSub.content}
                 </h2>
+                {/* Mostrar descripción solo si es subpropiedad */}
                 {!selectedSub.isMain && selectedSub.text_content && (
                   <p className="text-gray-700">{selectedSub.text_content}</p>
-                )}
-                {selectedSub.isMain && (
-                  <p className="text-gray-700">{selectedSub.description}</p>
-                )}
-                {selectedSub.price && !selectedSub.isMain && (
-                  <p className="text-red-600 font-semibold mt-2">Precio: {formatPrice(selectedSub.price)}</p>
                 )}
               </div>
             </div>
