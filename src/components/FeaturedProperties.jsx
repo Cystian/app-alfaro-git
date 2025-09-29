@@ -46,15 +46,16 @@ const FeaturedProperties = () => {
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-semibold">{prop.title}</h3>
                 <p className="text-gray-500">{prop.location}</p>
-
+                <p className="text-red-600 font-bold mt-2">
+                  S/ {Number(prop.price).toLocaleString("es-PE")}
+                </p> 
+                
                 {/* Tipo de propiedad */}
                 {prop.status && (
                   <p className="text-sm text-gray-600 mt-1">{prop.status}</p>
                 )}
 
-                <p className="text-red-600 font-bold mt-2">
-                  S/ {Number(prop.price).toLocaleString("es-PE")}
-                </p>
+           
 
                 {/* Botones */}
                 <div className="mt-auto flex gap-2">
