@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined, FaWhatsapp, FaFilePdf } from "react-icons/fa";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
@@ -15,39 +16,98 @@ export default function PropertyResumenPage() {
   }, [id]);
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Resumen Completo de Propiedad</h1>
-      <p>
-        <strong>ID:</strong> {id}
-      </p>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
+        {/* Título */}
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">{data?.property?.title || "Resumen de Propiedad"}</h1>
+        <hr className="border-gray-300 mb-6" />
 
-      {data && data.property ? (
-        <div className="mt-4">
-          <p><strong>Título:</strong> {data.property.title}</p>
-          <p><strong>Precio:</strong> {data.property.price}</p>
-          <p><strong>Ubicación:</strong> {data.property.location}</p>
-          <p><strong>Descripción:</strong> {data.property.description}</p>
-          <p><strong>Dormitorios:</strong> {data.property.bedrooms}</p>
-          <p><strong>Baños:</strong> {data.property.bathrooms}</p>
-          <p><strong>Área:</strong> {data.property.area} m²</p>
+        {/* Datos principales con íconos */}
+        {data && data.property ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
+              <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+                <FaMapMarkerAlt className="text-red-600 mr-3" />
+                <div>
+                  <p className="text-gray-500 text-sm">Ubicación</p>
+                  <p className="font-semibold text-lg">{data.property.location}</p>
+                </div>
+              </div>
+              <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+                <FaRulerCombined className="text-red-600 mr-3" />
+                <div>
+                  <p className="text-gray-500 text-sm">Área</p>
+                  <p className="font-semibold text-lg">{data.property.area} m²</p>
+                </div>
+              </div>
+              <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+                <FaBed className="text-red-600 mr-3" />
+                <div>
+                  <p className="text-gray-500 text-sm">Dormitorios</p>
+                  <p className="font-semibold text-lg">{data.property.bedrooms}</p>
+                </div>
+              </div>
+              <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+                <FaBath className="text-red-600 mr-3" />
+                <div>
+                  <p className="text-gray-500 text-sm">Baños</p>
+                  <p className="font-semibold text-lg">{data.property.bathrooms}</p>
+                </div>
+              </div>
+              <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+                <p className="text-gray-500 text-sm mr-2">Precio</p>
+                <p className="font-semibold text-lg text-red-600">{data.property.price}</p>
+              </div>
+            </div>
 
-          <h2 className="text-xl font-semibold mt-6">Subpropiedades</h2>
-          <ul>
-            {data.subProperties.map((sub) => (
-              <li key={sub.id} className="mt-2">
-                <p>{sub.content}</p>
-                <img
-                  src={sub.image}
-                  alt={sub.text_content}
-                  className="w-64 rounded-lg shadow"
-                />
-              </li>
-            ))}
-          </ul>
+            {/* Descripción */}
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
+              <p className="text-gray-700">{data.property.description}</p>
+            </div>
+
+            {/* Subpropiedades */}
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subpropiedades</h2>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {data.subProperties.map((sub) => (
+                  <li key={sub.id} className="relative group rounded-lg overflow-hidden shadow-lg">
+                    <img
+                      src={sub.image}
+                      alt={sub.text_content}
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm font-medium">
+                      {sub.content}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        ) : (
+          <p className="text-gray-600">No se encontraron datos en memoria.</p>
+        )}
+
+        {/* Botones flotantes */}
+        <div className="fixed bottom-8 right-8 flex flex-col gap-4">
+          <a
+            href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${data?.property?.title || ''}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-transform transform hover:scale-110"
+          >
+            <FaWhatsapp size={24} />
+          </a>
+          <button
+            className="bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-transform transform hover:scale-110"
+            onClick={() => alert('Generar PDF (pendiente integración)')}
+          >
+            <FaFilePdf size={24} />
+          </button>
         </div>
-      ) : (
-        <p>No se encontraron datos en memoria.</p>
-      )}
+      </div>
     </div>
   );
 }
+
