@@ -3,14 +3,18 @@ import React from "react";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 
 const PropertyActions = ({ propData, subProperties }) => {
+  const baseButtonClasses =
+    "inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline";
+
   return (
- <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6 px-4 py-4">
+    <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6 px-4 py-4">
       {/* WhatsApp */}
       <a
         href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${propData.title}`}
         target="_blank"
         rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline"
+        className={baseButtonClasses}
+        style={{ textDecoration: "none" }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -24,10 +28,11 @@ const PropertyActions = ({ propData, subProperties }) => {
         WhatsApp
       </a>
 
-      {/* Descargar PDF */}
+      {/* Descargar Flyer */}
       <button
         onClick={() => generatePropertyPdf(propData, subProperties)}
-         className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline"
+        className={baseButtonClasses}
+        style={{ textDecoration: "none" }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +50,8 @@ const PropertyActions = ({ propData, subProperties }) => {
         href={`/propiedades/resumen/${propData.id}`}
         target="_blank"
         rel="noopener noreferrer"
-         className="inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline"
+        className={baseButtonClasses}
+        style={{ textDecoration: "none" }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -64,6 +70,8 @@ const PropertyActions = ({ propData, subProperties }) => {
 };
 
 export default PropertyActions;
+
+
 
 
 
