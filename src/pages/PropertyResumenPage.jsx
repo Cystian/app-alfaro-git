@@ -139,7 +139,7 @@ export default function PropertyResumenPage() {
                   style={{ border: 0 }}
                   loading="lazy"
                   allowFullScreen
-                  src={`https://maps.google.com/maps?q=${data.property.lat},${data.property.lng}&z=16&output=embed`}
+                  src={`https://maps.google.com/maps?q=${data.property.latitude},${data.property.longitude}&z=16&output=embed`}
                 />
               </div>
             )}
