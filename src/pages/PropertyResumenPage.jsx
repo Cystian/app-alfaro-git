@@ -52,9 +52,9 @@ export default function PropertyResumenPage() {
 
   if (!data) return <p className="text-gray-600">Cargando Datos...</p>;
 
-  // Preparar arrays de imágenes y etiquetas
-  const images = data.subProperties?.map((sub) => sub.image) || [];
-  const labels = data.subProperties?.map((sub) => sub.content) || [];
+  // Preparar arrays de imágenes y etiquetas, incluyendo imagen principal
+  const images = [data.property.image, ...(data.subProperties?.map((sub) => sub.image) || [])];
+  const labels = ["Principal", ...(data.subProperties?.map((sub) => sub.content) || [])];
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -65,19 +65,21 @@ export default function PropertyResumenPage() {
           modules={[Navigation, Thumbs, EffectFade, Autoplay]}
           navigation
           effect="fade"
+          fadeEffect={{ crossFade: true }}
           loop
-          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          speed={1000}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
           spaceBetween={10}
           thumbs={{ swiper: thumbsSwiper }}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-          className="rounded-xl relative mb-6"
+          className="rounded-xl relative mb-6 shadow-lg"
         >
           {images.map((img, idx) => (
             <SwiperSlide key={idx}>
               <img
                 src={img}
-                alt={`${data.property.title} - ${labels[idx] || "Imagen"} ${idx + 1}`}
-                className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl"
+                alt={`${data.property.title} - ${labels[idx]}`}
+                className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl transition-transform duration-700 ease-in-out hover:scale-105"
                 loading="lazy"
               />
             </SwiperSlide>
@@ -104,9 +106,9 @@ export default function PropertyResumenPage() {
               <img
                 src={img}
                 alt={`Miniatura ${idx + 1}`}
-                className={`w-full h-16 sm:h-20 object-cover rounded-lg border-2 ${
-                  activeIndex === idx ? "border-blue-500" : "border-gray-300"
-                } hover:border-blue-500 transition`}
+                className={`w-full h-16 sm:h-20 object-cover rounded-lg border-2 transition-all duration-500 ${
+                  activeIndex === idx ? "border-red-600 ring-2 ring-red-600" : "border-gray-300"
+                }`}
                 loading="lazy"
               />
               {labels[idx] && (
@@ -240,4 +242,3 @@ export default function PropertyResumenPage() {
     </div>
   );
 }
-
