@@ -246,25 +246,7 @@ export default function PropertyResumenPage() {
         {/* Subpropiedades */}
         {data.subProperties && data.subProperties.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subpropiedades</h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {data.subProperties.map((sub) => (
-                <li
-                  key={sub.id}
-                  className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                >
-                  <img
-                    src={sub.image}
-                    alt={sub.content}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm font-medium">
-                    {sub.content}
-                  </div>
-                </li>
-              ))}
-            </ul>
-
+       
             {/* Botones */}
             <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
               <button
