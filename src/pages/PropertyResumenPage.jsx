@@ -130,7 +130,7 @@ export default function PropertyResumenPage() {
             </div>
 
             {/* Mapa */}
-            {data.property.lat && data.property.lng && (
+            {data.property.latitude && data.property.longitude && (
               <div className="relative w-full h-64 sm:h-80 md:h-96 mt-4 mb-8 rounded-xl overflow-hidden">
                 <iframe
                   title="Mapa de la propiedad"
@@ -202,7 +202,7 @@ export default function PropertyResumenPage() {
                   >
                     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                   </svg>
-                  Buscar más propiedades
+                  Buscar más propiedadesX
                 </button>
               </div>
             </div>
