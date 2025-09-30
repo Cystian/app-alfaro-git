@@ -13,13 +13,17 @@ import { generatePropertyPdf } from "../utils/pdfGenerator";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/thumbs"; // ✅ Estilos para Thumbs
-import "swiper/css/effect-fade"; // ✅ Estilos para EffectFade
-import { Navigation, Autoplay, Thumbs, EffectFade } from "swiper/modules"; // ✅ Agregamos Thumbs
+import "swiper/css/thumbs";
+import "swiper/css/effect-fade";
+import { Navigation, Autoplay, Thumbs, EffectFade } from "swiper/modules";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+
+  // Estados para Swiper principal + miniaturas
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +33,6 @@ export default function PropertyResumenPage() {
       const result = await res.json();
       console.log("Datos obtenidos de la BD:", result);
 
-      // Limpiar URLs de subpropiedades por si tienen saltos de línea
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
           ...sub,
@@ -49,72 +52,71 @@ export default function PropertyResumenPage() {
 
   if (!data) return <p className="text-gray-600">Cargando Datos...</p>;
 
+  // Preparar arrays de imágenes y etiquetas
+  const images = data.subProperties?.map((sub) => sub.image) || [];
+  const labels = data.subProperties?.map((sub) => sub.content) || [];
+
   return (
-  <div className="min-h-screen bg-gray-100 p-6">
-    <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
 
-       
- {/* Swiper principal */}
-      <Swiper
-        modules={[Navigation, Thumbs, EffectFade, Autoplay]}
-        navigation
-        effect="fade"
-        loop
-        autoplay={{
-          delay: 3500,
-          disableOnInteraction: false,
-        }}
-        spaceBetween={10}
-        thumbs={{ swiper: thumbsSwiper }}
-        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-        className="rounded-xl relative mb-6"
-      >
-        {images.map((img, idx) => (
-          <SwiperSlide key={idx}>
-            <img
-              src={img}
-              alt={`${data.property.title} - ${labels[idx] || "Imagen"} ${idx + 1}`}
-              className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl"
-              loading="lazy"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        {/* Swiper principal */}
+        <Swiper
+          modules={[Navigation, Thumbs, EffectFade, Autoplay]}
+          navigation
+          effect="fade"
+          loop
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          spaceBetween={10}
+          thumbs={{ swiper: thumbsSwiper }}
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+          className="rounded-xl relative mb-6"
+        >
+          {images.map((img, idx) => (
+            <SwiperSlide key={idx}>
+              <img
+                src={img}
+                alt={`${data.property.title} - ${labels[idx] || "Imagen"} ${idx + 1}`}
+                className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl"
+                loading="lazy"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-      {/* Miniaturas sincronizadas */}
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        modules={[Thumbs]}
-        spaceBetween={10}
-        slidesPerView={Math.min(images.length, 5)}
-        watchSlidesProgress
-        slideToClickedSlide
-        className="mt-4 h-20 overflow-x-auto"
-        breakpoints={{
-          320: { slidesPerView: Math.min(images.length, 3), spaceBetween: 8 },
-          640: { slidesPerView: Math.min(images.length, 4), spaceBetween: 10 },
-          1024: { slidesPerView: Math.min(images.length, 5), spaceBetween: 10 },
-        }}
-      >
-        {images.map((img, idx) => (
-          <SwiperSlide key={idx} className="cursor-pointer relative">
-            <img
-              src={img}
-              alt={`Miniatura ${idx + 1}`}
-              className={`w-full h-16 sm:h-20 object-cover rounded-lg border-2 ${
-                activeIndex === idx ? "border-blue-500" : "border-gray-300"
-              } hover:border-blue-500 transition`}
-              loading="lazy"
-            />
-            {labels[idx] && (
-              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-xs px-1 rounded">
-                {labels[idx]}
-              </span>
-            )}
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      
+        {/* Miniaturas sincronizadas */}
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          modules={[Thumbs]}
+          spaceBetween={10}
+          slidesPerView={Math.min(images.length, 5)}
+          watchSlidesProgress
+          slideToClickedSlide
+          className="mt-4 h-20 overflow-x-auto"
+          breakpoints={{
+            320: { slidesPerView: Math.min(images.length, 3), spaceBetween: 8 },
+            640: { slidesPerView: Math.min(images.length, 4), spaceBetween: 10 },
+            1024: { slidesPerView: Math.min(images.length, 5), spaceBetween: 10 },
+          }}
+        >
+          {images.map((img, idx) => (
+            <SwiperSlide key={idx} className="cursor-pointer relative">
+              <img
+                src={img}
+                alt={`Miniatura ${idx + 1}`}
+                className={`w-full h-16 sm:h-20 object-cover rounded-lg border-2 ${
+                  activeIndex === idx ? "border-blue-500" : "border-gray-300"
+                } hover:border-blue-500 transition`}
+                loading="lazy"
+              />
+              {labels[idx] && (
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-xs px-1 rounded">
+                  {labels[idx]}
+                </span>
+              )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
         {/* Título */}
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
@@ -228,7 +230,7 @@ export default function PropertyResumenPage() {
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" className="w-5 h-5">
                   <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                 </svg>
-                Buscar más propiedadesX
+                Buscar más propiedades
               </button>
             </div>
           </div>
