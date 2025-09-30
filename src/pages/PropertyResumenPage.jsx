@@ -11,9 +11,11 @@ import {
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/thumbs"; // ✅ Estilos para Thumbs
+import "swiper/css/effect-fade"; // ✅ Estilos para EffectFade
+import { Navigation, Autoplay, Thumbs, EffectFade } from "swiper/modules"; // ✅ Agregamos Thumbs
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
