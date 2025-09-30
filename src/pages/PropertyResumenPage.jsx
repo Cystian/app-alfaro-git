@@ -1,3 +1,4 @@
+// src/pages/PropertyResumenPage.jsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -15,6 +16,7 @@ export default function PropertyResumenPage() {
   const [data, setData] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
+  const [activeImage, setActiveImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +39,7 @@ export default function PropertyResumenPage() {
     setTimeout(() => {
       setSelectedSub(null);
       setIsClosing(false);
+      setActiveImage(null);
     }, 300);
   };
 
@@ -50,7 +53,10 @@ export default function PropertyResumenPage() {
               src={data.property.image}
               alt={data.property.title}
               className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              onClick={() => setSelectedSub({ ...data.property, isMain: true })}
+              onClick={() => {
+                setSelectedSub({ ...data.property, isMain: true });
+                setActiveImage(data.property.image);
+              }}
             />
           </div>
         )}
@@ -69,28 +75,36 @@ export default function PropertyResumenPage() {
                 <FaMapMarkerAlt className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Ubicación</p>
-                  <p className="font-semibold text-lg">{data.property.location}</p>
+                  <p className="font-semibold text-lg">
+                    {data.property.location}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaRulerCombined className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Área</p>
-                  <p className="font-semibold text-lg">{data.property.area} m²</p>
+                  <p className="font-semibold text-lg">
+                    {data.property.area} m²
+                  </p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaBed className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Dormitorios</p>
-                  <p className="font-semibold text-lg">{data.property.bedrooms}</p>
+                  <p className="font-semibold text-lg">
+                    {data.property.bedrooms}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaBath className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Baños</p>
-                  <p className="font-semibold text-lg">{data.property.bathrooms}</p>
+                  <p className="font-semibold text-lg">
+                    {data.property.bathrooms}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
@@ -106,22 +120,46 @@ export default function PropertyResumenPage() {
 
             {/* Descripción */}
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                Descripción
+              </h2>
               <div
                 className="text-gray-700"
-                dangerouslySetInnerHTML={{ __html: data.property.description }}
+                dangerouslySetInnerHTML={{
+                  __html: data.property.description,
+                }}
               />
             </div>
 
+            {/* Mapa */}
+            {data.property.lat && data.property.lng && (
+              <div className="relative w-full h-64 sm:h-80 md:h-96 mt-4 mb-8 rounded-xl overflow-hidden">
+                <iframe
+                  title="Mapa de la propiedad"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  src={`https://maps.google.com/maps?q=${data.property.lat},${data.property.lng}&z=16&output=embed`}
+                />
+              </div>
+            )}
+
             {/* Subpropiedades */}
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Subpropiedades</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Subpropiedades
+              </h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.subProperties.map((sub) => (
                   <li
                     key={sub.id}
                     className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                    onClick={() => setSelectedSub(sub)}
+                    onClick={() => {
+                      setSelectedSub(sub);
+                      setActiveImage(sub.image);
+                    }}
                   >
                     <img
                       src={sub.image}
@@ -138,7 +176,9 @@ export default function PropertyResumenPage() {
               {/* Botones */}
               <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
                 <button
-                  onClick={() => generatePropertyPdf(data.property, data.subProperties)}
+                  onClick={() =>
+                    generatePropertyPdf(data.property, data.subProperties)
+                  }
                   className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
                 >
                   <svg
@@ -152,21 +192,21 @@ export default function PropertyResumenPage() {
                   Descargar Flyer
                 </button>
 
-              {/* Buscar más propiedades */}
-  <button
-    onClick={() => window.open("/", "_blank")}
-    className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-      className="w-5 h-5"
-    >
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </svg>
-    Buscar más propiedades
-  </button>
+                {/* Buscar más propiedades */}
+                <button
+                  onClick={() => window.open("/", "_blank")}
+                  className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5"
+                  >
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                  </svg>
+                  Buscar más propiedades
+                </button>
               </div>
             </div>
           </div>
@@ -174,7 +214,7 @@ export default function PropertyResumenPage() {
           <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-        {/* Modal */}
+        {/* Modal con miniaturas */}
         {selectedSub && (
           <div
             className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${
@@ -194,14 +234,36 @@ export default function PropertyResumenPage() {
               >
                 <FaTimes size={24} />
               </button>
+
+              {/* Imagen principal */}
               <img
-                src={selectedSub.image}
+                src={activeImage}
                 alt={selectedSub.content || selectedSub.title}
-                className="w-full h-96 object-cover rounded-lg mb-4"
+                className="w-full h-96 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105"
               />
-              <div>
+
+              {/* Miniaturas */}
+              <div className="flex gap-3 justify-center flex-wrap">
+                {[selectedSub.image, ...(selectedSub.gallery || [])].map(
+                  (img, i) => (
+                    <img
+                      key={i}
+                      src={img}
+                      alt={`Vista ${i + 1}`}
+                      onClick={() => setActiveImage(img)}
+                      className={`w-20 h-20 object-cover rounded-md cursor-pointer transition-transform duration-200 hover:scale-110 ${
+                        activeImage === img ? "ring-4 ring-red-600" : ""
+                      }`}
+                    />
+                  )
+                )}
+              </div>
+
+              <div className="mt-4">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {selectedSub.isMain ? selectedSub.title : selectedSub.content}
+                  {selectedSub.isMain
+                    ? selectedSub.title
+                    : selectedSub.content}
                 </h2>
                 {!selectedSub.isMain && selectedSub.text_content && (
                   <p className="text-gray-700">{selectedSub.text_content}</p>
