@@ -25,6 +25,21 @@ export default function PropertyResumenPage() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // Estados para Lightbox
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxContent, setLightboxContent] = useState({
+    img: "",
+    title: "",
+    description: "",
+  });
+
+  const openLightbox = (img, title, description = "") => {
+    setLightboxContent({ img, title, description });
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(
@@ -72,15 +87,23 @@ export default function PropertyResumenPage() {
           spaceBetween={10}
           thumbs={{ swiper: thumbsSwiper }}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-          className="rounded-xl relative mb-6 shadow-lg"
+          className="rounded-xl relative mb-10 shadow-lg"
         >
           {images.map((img, idx) => (
             <SwiperSlide key={idx}>
               <img
                 src={img}
                 alt={`${data.property.title} - ${labels[idx]}`}
-                className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl transition-transform duration-700 ease-in-out hover:scale-105"
+                className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl transition-transform duration-700 ease-in-out hover:scale-105 cursor-pointer"
                 loading="lazy"
+                onClick={() => {
+                  const isMain = idx === 0;
+                  openLightbox(
+                    img,
+                    isMain ? data.property.title : labels[idx] || "Subpropiedad",
+                    isMain ? "" : data.subProperties[idx - 1]?.content || ""
+                  );
+                }}
               />
             </SwiperSlide>
           ))}
@@ -120,8 +143,37 @@ export default function PropertyResumenPage() {
           ))}
         </Swiper>
 
+        {/* Lightbox Modal */}
+        {lightboxOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"
+            onClick={closeLightbox}
+          >
+            <div
+              className="relative max-w-4xl w-full p-4 bg-white rounded-xl shadow-lg scale-95 animate-scaleIn"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={lightboxContent.img}
+                alt={lightboxContent.title}
+                className="w-full h-auto rounded-lg mb-4"
+              />
+              <h2 className="text-2xl font-bold mb-2">{lightboxContent.title}</h2>
+              {lightboxContent.description && (
+                <p className="text-gray-700">{lightboxContent.description}</p>
+              )}
+              <button
+                onClick={closeLightbox}
+                className="absolute top-4 right-4 text-gray-800 hover:text-red-600 font-bold text-2xl"
+              >
+                &times;
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Título */}
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4 mt-4">
           {data.property.title || "Resumen de Propiedad"}
         </h1>
         <hr className="border-gray-300 mb-6" />
