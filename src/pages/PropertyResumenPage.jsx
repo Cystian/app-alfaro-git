@@ -20,12 +20,6 @@ import FloatingShare from "../components/FloatingShare";
 
 export default function PropertyResumenPage() {
 
-    return (
-    <>
-      <FloatingShare />
-      {/* resto de tu código */}
-    </>
-  );
   
   const { id } = useParams();
   const [data, setData] = useState(null);
