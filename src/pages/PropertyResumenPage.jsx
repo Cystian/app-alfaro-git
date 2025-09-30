@@ -150,8 +150,8 @@ export default function PropertyResumenPage() {
             onClick={closeLightbox}
           >
             <div
-              className="relative max-w-4xl w-full p-4 bg-white rounded-xl shadow-lg scale-95 animate-scaleIn"
-              onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-3xl max-h-[90vh] overflow-auto p-4 bg-white rounded-xl shadow-lg scale-95 animate-scaleIn"
+      onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={lightboxContent.img}
