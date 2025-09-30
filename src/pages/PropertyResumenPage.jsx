@@ -31,6 +31,7 @@ export default function PropertyResumenPage() {
         `/.netlify/functions/getPropertyDetails?id=${id}`
       );
       const result = await res.json();
+        console.log("Datos obtenidos de la BD:", result); // <-- Aquí
       setData(result);
     };
     fetchData();
