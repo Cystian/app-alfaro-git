@@ -1,0 +1,55 @@
+.floating-share {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; /* cambiado de right a left */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.share-bubble {
+  background-color: rgb(220,38,38);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.share-bubble:hover {
+  transform: scale(1.1);
+}
+
+.share-icon {
+  margin-right: 8px;
+}
+
+.share-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.share-options a,
+.share-options button {
+  background: white;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(220,38,38);
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.share-options a:hover,
+.share-options button:hover {
+  transform: scale(1.2);
+}
