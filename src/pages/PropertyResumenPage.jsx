@@ -76,7 +76,7 @@ export default function PropertyResumenPage() {
         <>
       {/* resto de tu página */}
       <FloatingShare />
-    </>
+  
     
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
