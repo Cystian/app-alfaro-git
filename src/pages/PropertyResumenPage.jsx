@@ -16,38 +16,17 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import "swiper/css/effect-fade";
 import { Navigation, Autoplay, Thumbs, EffectFade } from "swiper/modules";
-
-// Botón flotante de compartir
-const FloatingShare = () => {
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: document.title,
-          text: "Mira esta propiedad que encontré",
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.error("Error al compartir:", err);
-      }
-    } else {
-      // fallback: copiar enlace
-      navigator.clipboard.writeText(window.location.href);
-      alert("Enlace copiado al portapapeles 📋");
-    }
-  };
-
-  return (
-    <button
-      onClick={handleShare}
-      className="fixed top-1/2 left-4 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full shadow-lg z-50 transition-transform transform hover:scale-110"
-    >
-      COMPARTE
-    </button>
-  );
-};
+import FloatingShare from "../components/FloatingShare";
 
 export default function PropertyResumenPage() {
+
+    return (
+    <>
+      <FloatingShare />
+      {/* resto de tu código */}
+    </>
+  );
+  
   const { id } = useParams();
   const [data, setData] = useState(null);
 
