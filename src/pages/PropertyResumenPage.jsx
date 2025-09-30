@@ -1,6 +1,6 @@
 // src/pages/PropertyResumenPage.jsx
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   FaBed,
   FaBath,
@@ -9,7 +9,12 @@ import {
   FaTag,
   FaTimes,
 } from "react-icons/fa";
-import { generatePropertyPdf } from "../utils/pdfGenerator"; // asegúrate de importar tu función
+import { generatePropertyPdf } from "../utils/pdfGenerator";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
@@ -17,6 +22,8 @@ export default function PropertyResumenPage() {
   const [selectedSub, setSelectedSub] = useState(null);
   const [isClosing, setIsClosing] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +61,7 @@ export default function PropertyResumenPage() {
               alt={data.property.title}
               className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
               onClick={() => {
-                setSelectedSub({ ...data.property, isMain: true });
+                setSelectedSub({ ...data.property, isMain: true, gallery: [] });
                 setActiveImage(data.property.image);
               }}
             />
@@ -75,36 +82,28 @@ export default function PropertyResumenPage() {
                 <FaMapMarkerAlt className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Ubicación</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.location}
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.location}</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaRulerCombined className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Área</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.area} m²
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.area} m²</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaBed className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Dormitorios</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.bedrooms}
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.bedrooms}</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
                 <FaBath className="text-red-600 mr-3" />
                 <div>
                   <p className="text-gray-500 text-sm">Baños</p>
-                  <p className="font-semibold text-lg">
-                    {data.property.bathrooms}
-                  </p>
+                  <p className="font-semibold text-lg">{data.property.bathrooms}</p>
                 </div>
               </div>
               <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
@@ -125,9 +124,7 @@ export default function PropertyResumenPage() {
               </h2>
               <div
                 className="text-gray-700"
-                dangerouslySetInnerHTML={{
-                  __html: data.property.description,
-                }}
+                dangerouslySetInnerHTML={{ __html: data.property.description }}
               />
             </div>
 
@@ -157,7 +154,7 @@ export default function PropertyResumenPage() {
                     key={sub.id}
                     className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer"
                     onClick={() => {
-                      setSelectedSub(sub);
+                      setSelectedSub({ ...sub, gallery: sub.gallery || [] });
                       setActiveImage(sub.image);
                     }}
                   >
@@ -192,7 +189,6 @@ export default function PropertyResumenPage() {
                   Descargar Flyer
                 </button>
 
-                {/* Buscar más propiedades */}
                 <button
                   onClick={() => window.open("/", "_blank")}
                   className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
@@ -214,7 +210,7 @@ export default function PropertyResumenPage() {
           <p className="text-gray-600">Cargando Datos...</p>
         )}
 
-        {/* Modal con miniaturas */}
+        {/* Modal con miniaturas tipo Swiper */}
         {selectedSub && (
           <div
             className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${
@@ -242,12 +238,18 @@ export default function PropertyResumenPage() {
                 className="w-full h-96 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105"
               />
 
-              {/* Miniaturas */}
-              <div className="flex gap-3 justify-center flex-wrap">
-                {[selectedSub.image, ...(selectedSub.gallery || [])].map(
-                  (img, i) => (
+              {/* Miniaturas con Swiper */}
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                spaceBetween={10}
+                slidesPerView={Math.min(selectedSub.gallery.length + 1, 5)}
+                navigation
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+              >
+                {[selectedSub.image, ...selectedSub.gallery].map((img, i) => (
+                  <SwiperSlide key={i}>
                     <img
-                      key={i}
                       src={img}
                       alt={`Vista ${i + 1}`}
                       onClick={() => setActiveImage(img)}
@@ -255,15 +257,13 @@ export default function PropertyResumenPage() {
                         activeImage === img ? "ring-4 ring-red-600" : ""
                       }`}
                     />
-                  )
-                )}
-              </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
               <div className="mt-4">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {selectedSub.isMain
-                    ? selectedSub.title
-                    : selectedSub.content}
+                  {selectedSub.isMain ? selectedSub.title : selectedSub.content}
                 </h2>
                 {!selectedSub.isMain && selectedSub.text_content && (
                   <p className="text-gray-700">{selectedSub.text_content}</p>
