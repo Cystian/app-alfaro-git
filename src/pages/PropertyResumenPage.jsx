@@ -1,13 +1,12 @@
 // src/pages/PropertyResumenPage.jsx
 import { useParams } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
   FaBed,
   FaBath,
   FaMapMarkerAlt,
   FaRulerCombined,
   FaTag,
-  FaTimes,
 } from "react-icons/fa";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 
@@ -19,10 +18,6 @@ import "swiper/css/navigation";
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [selectedSub, setSelectedSub] = useState(null);
-  const [isClosing, setIsClosing] = useState(false);
-  const [activeImage, setActiveImage] = useState(null);
-  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,15 +25,16 @@ export default function PropertyResumenPage() {
         `/.netlify/functions/getPropertyDetails?id=${id}`
       );
       const result = await res.json();
-      console.log("Datos obtenidos de la BD:", result); // <-- Debug
+      console.log("Datos obtenidos de la BD:", result);
+
       // Limpiar URLs de subpropiedades por si tienen saltos de línea
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
           ...sub,
           image: sub.image.trim(),
-          gallery: (sub.gallery || []).map((img) => img.trim()),
         }));
       }
+
       setData(result);
     };
     fetchData();
@@ -47,15 +43,6 @@ export default function PropertyResumenPage() {
   const formatPrice = (price) => {
     if (!price) return "";
     return `S/ ${Number(price).toLocaleString("es-PE")}`;
-  };
-
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setSelectedSub(null);
-      setIsClosing(false);
-      setActiveImage(null);
-    }, 300);
   };
 
   if (!data) return <p className="text-gray-600">Cargando Datos...</p>;
@@ -80,10 +67,6 @@ export default function PropertyResumenPage() {
                   src={sub.image}
                   alt={sub.content}
                   className="w-20 h-20 object-cover rounded-md cursor-pointer transition-transform duration-200 hover:scale-110"
-                  onClick={() => {
-                    setSelectedSub({ ...sub, gallery: sub.gallery || [] });
-                    setActiveImage(sub.image);
-                  }}
                 />
               </SwiperSlide>
             ))}
@@ -170,14 +153,10 @@ export default function PropertyResumenPage() {
                 <li
                   key={sub.id}
                   className="relative group rounded-lg overflow-hidden shadow-lg cursor-pointer"
-                  onClick={() => {
-                    setSelectedSub({ ...sub, gallery: sub.gallery || [] });
-                    setActiveImage(sub.image);
-                  }}
                 >
                   <img
                     src={sub.image}
-                    alt={sub.text_content}
+                    alt={sub.content}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm font-medium">
@@ -212,80 +191,6 @@ export default function PropertyResumenPage() {
           </div>
         )}
 
-        {/* Modal con miniaturas tipo Swiper */}
-        {selectedSub && (
-          <div
-            className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${
-              isClosing ? "animate-fadeOut" : "animate-fadeIn"
-            }`}
-            onClick={handleClose}
-          >
-            <div
-              className={`bg-white rounded-xl shadow-xl max-w-3xl w-full relative p-4 transform transition-transform duration-300 ${
-                isClosing ? "animate-zoomOut" : "animate-zoomIn"
-              }`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="absolute top-4 right-4 text-gray-700 hover:text-gray-900"
-                onClick={handleClose}
-              >
-                <FaTimes size={24} />
-              </button>
-
-              {/* Imagen principal */}
-              <img
-                src={activeImage}
-                alt={selectedSub.content || selectedSub.title}
-                className="w-full h-96 object-cover rounded-lg mb-4 transition-transform duration-300 hover:scale-105"
-              />
-
-              {/* Miniaturas con Swiper */}
-              <Swiper
-                modules={[Navigation, Autoplay]}
-                spaceBetween={10}
-                slidesPerView={Math.min(selectedSub.gallery.length + 1, 5)}
-                navigation
-                autoplay={{ delay: 3000, disableOnInteraction: false }}
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
-              >
-                {[selectedSub.image, ...selectedSub.gallery].map((img, i) => (
-                  <SwiperSlide key={i}>
-                    <img
-                      src={img}
-                      alt={`Vista ${i + 1}`}
-                      onClick={() => setActiveImage(img)}
-                      className={`w-20 h-20 object-cover rounded-md cursor-pointer transition-transform duration-200 hover:scale-110 ${
-                        activeImage === img ? "ring-4 ring-red-600" : ""
-                      }`}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-
-              <div className="mt-4">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {selectedSub.isMain ? selectedSub.title : selectedSub.content}
-                </h2>
-                {!selectedSub.isMain && selectedSub.text_content && (
-                  <p className="text-gray-700">{selectedSub.text_content}</p>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Animaciones */}
-        <style>{`
-          @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-          @keyframes fadeOut { from { opacity: 1 } to { opacity: 0 } }
-          @keyframes zoomIn { from { transform: scale(0.8); opacity: 0 } to { transform: scale(1); opacity: 1 } }
-          @keyframes zoomOut { from { transform: scale(1); opacity: 1 } to { transform: scale(0.8); opacity: 0 } }
-          .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; }
-          .animate-fadeOut { animation: fadeOut 0.5s ease-in forwards; }
-          .animate-zoomIn { animation: zoomIn 0.5s ease-out forwards; }
-          .animate-zoomOut { animation: zoomOut 0.5s ease-in forwards; }
-        `}</style>
       </div>
     </div>
   );
