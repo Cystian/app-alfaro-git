@@ -73,10 +73,9 @@ export default function PropertyResumenPage() {
   const labels = ["Principal", ...(data.subProperties?.map((sub) => sub.content) || [])];
 
   return (
-        <>
-      {/* resto de tu página */}
-      <FloatingShare />
-  
+   <>
+    {/* Botón flotante de compartir */}
+    <FloatingShare />
     
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
