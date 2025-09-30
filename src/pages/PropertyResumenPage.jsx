@@ -48,30 +48,71 @@ export default function PropertyResumenPage() {
   if (!data) return <p className="text-gray-600">Cargando Datos...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
+  <div className="min-h-screen bg-gray-100 p-6">
+    <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
 
-        {/* Miniaturas tipo Swiper antes del título */}
-        {data.subProperties && data.subProperties.length > 0 && (
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            spaceBetween={10}
-            slidesPerView={Math.min(data.subProperties.length, 5)}
-            navigation
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            className="mb-6"
-          >
-            {data.subProperties.map((sub, i) => (
-              <SwiperSlide key={i}>
-                <img
-                  src={sub.image}
-                  alt={sub.content}
-                  className="w-20 h-20 object-cover rounded-md cursor-pointer transition-transform duration-200 hover:scale-110"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
+       
+ {/* Swiper principal */}
+      <Swiper
+        modules={[Navigation, Thumbs, EffectFade, Autoplay]}
+        navigation
+        effect="fade"
+        loop
+        autoplay={{
+          delay: 3500,
+          disableOnInteraction: false,
+        }}
+        spaceBetween={10}
+        thumbs={{ swiper: thumbsSwiper }}
+        onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+        className="rounded-xl relative mb-6"
+      >
+        {images.map((img, idx) => (
+          <SwiperSlide key={idx}>
+            <img
+              src={img}
+              alt={`${data.property.title} - ${labels[idx] || "Imagen"} ${idx + 1}`}
+              className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl"
+              loading="lazy"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* Miniaturas sincronizadas */}
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        modules={[Thumbs]}
+        spaceBetween={10}
+        slidesPerView={Math.min(images.length, 5)}
+        watchSlidesProgress
+        slideToClickedSlide
+        className="mt-4 h-20 overflow-x-auto"
+        breakpoints={{
+          320: { slidesPerView: Math.min(images.length, 3), spaceBetween: 8 },
+          640: { slidesPerView: Math.min(images.length, 4), spaceBetween: 10 },
+          1024: { slidesPerView: Math.min(images.length, 5), spaceBetween: 10 },
+        }}
+      >
+        {images.map((img, idx) => (
+          <SwiperSlide key={idx} className="cursor-pointer relative">
+            <img
+              src={img}
+              alt={`Miniatura ${idx + 1}`}
+              className={`w-full h-16 sm:h-20 object-cover rounded-lg border-2 ${
+                activeIndex === idx ? "border-blue-500" : "border-gray-300"
+              } hover:border-blue-500 transition`}
+              loading="lazy"
+            />
+            {labels[idx] && (
+              <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-xs px-1 rounded">
+                {labels[idx]}
+              </span>
+            )}
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      
 
         {/* Título */}
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
