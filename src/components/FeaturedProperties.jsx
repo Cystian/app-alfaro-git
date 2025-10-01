@@ -71,6 +71,28 @@ const FeaturedProperties = () => {
                   >
                     Ver flyer
                   </button>
+
+     <a
+        href={`/propiedades/resumen/${propData.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={baseButtonClasses}
+        style={{ textDecoration: "none" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          className="w-5 h-5"
+        >
+          <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+          <path d="M14 2v6h6" />
+          <path d="M8 13h8v2H8zm0 4h5v2H8z" />
+        </svg>
+        Ver Resumen
+      </a>
+
+                  
                 </div>
               </div>
             </div>
