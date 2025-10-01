@@ -54,13 +54,13 @@ const FloatingShare = () => {
         </a>
 
         {/* TikTok */}
-        <a
-          href={`https://www.tiktok.com/share?url=${encodeURIComponent(currentUrl)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ backgroundColor: "#010101" }}
-          title="Compartir en TikTok"
-        >
+      <a
+  href={`https://www.tiktok.com/share?url=${encodeURIComponent(currentUrl)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="tiktok-btn"
+  title="Compartir en TikTok"
+>
           <SiTiktok />
         </a>
 
