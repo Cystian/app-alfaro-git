@@ -24,7 +24,7 @@ const FeaturedProperties = () => {
 
   const openPopup = (prop) => setSelectedProperty(prop);
   const closePopup = () => setSelectedProperty(null);
-
+  const baseButtonClasses = "inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline";
   return (
     <section className="mb-12">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Propiedades destacadas</h2>
