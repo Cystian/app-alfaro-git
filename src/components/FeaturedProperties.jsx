@@ -24,17 +24,23 @@ const FeaturedProperties = () => {
 
   const openPopup = (prop) => setSelectedProperty(prop);
   const closePopup = () => setSelectedProperty(null);
-  const baseButtonClasses = "inline-flex items-center gap-2 border-2 border-[#dc2626] text-[#dc2626] bg-white py-2 px-4 rounded-lg hover:bg-[#dc2626] hover:text-white transition no-underline focus:no-underline active:no-underline";
+
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Propiedades destacadas</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+        Propiedades destacadas
+      </h2>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
         loop
         autoplay={{ delay: 2000, disableOnInteraction: false }}
         speed={3000}
-        breakpoints={{ 640: { slidesPerView: 1 }, 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
       >
         {properties.map((prop, index) => (
           <SwiperSlide key={prop.id}>
@@ -42,21 +48,27 @@ const FeaturedProperties = () => {
               <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
                 {index + 1}/{properties.length}
               </div>
-              <img src={prop.image} alt={prop.title} className="w-full h-48 object-cover" />
+              <img
+                src={prop.image}
+                alt={prop.title}
+                className="w-full h-48 object-cover"
+                loading="lazy"
+              />
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-semibold">{prop.title}</h3>
                 <p className="text-gray-500">{prop.location}</p>
                 <p className="text-red-600 font-bold mt-2">
                   S/ {Number(prop.price).toLocaleString("es-PE")}
-                </p> 
-                
+                </p>
+
                 {/* Tipo de propiedad */}
                 {prop.status && (
                   <p className="text-sm text-gray-600 mt-2 mb-2">{prop.status}</p>
                 )}
 
-                    {/* Botones */}
+                {/* Botones */}
                 <div className="mt-auto flex gap-2">
+                  {/* WhatsApp */}
                   <a
                     href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${prop.title}`}
                     target="_blank"
@@ -65,34 +77,24 @@ const FeaturedProperties = () => {
                   >
                     Contactar
                   </a>
+
+                  {/* Ver Flyer (rojo) */}
                   <button
                     onClick={() => openPopup(prop)}
-                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
+                    className="flex-1 bg-red-500 text-white text-center py-2 px-3 rounded-lg hover:bg-red-600 transition"
                   >
                     Ver flyer
                   </button>
 
-     <a
-        href={`/propiedades/resumen/${prop.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={baseButtonClasses}
-        style={{ textDecoration: "none" }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          className="w-5 h-5"
-        >
-          <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
-          <path d="M14 2v6h6" />
-          <path d="M8 13h8v2H8zm0 4h5v2H8z" />
-        </svg>
-        Ver Resumen
-      </a>
-
-                  
+                  {/* Ver Resumen (azul) */}
+                  <a
+                    href={`/propiedades/resumen/${prop.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
+                  >
+                    Ver Resumen
+                  </a>
                 </div>
               </div>
             </div>
@@ -109,4 +111,3 @@ const FeaturedProperties = () => {
 };
 
 export default FeaturedProperties;
-
