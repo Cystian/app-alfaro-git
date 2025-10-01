@@ -66,6 +66,11 @@
   transform: scale(1.1);
 }
 
+/* Estilo especial para el botón TikTok */
+.share-options .tiktok-btn {
+  background: linear-gradient(135deg, #69C9D0, #010101, #EE1D52);
+}
+
 /* Animación rebote + parpadeo */
 @keyframes bounceBlink {
   0%, 100% { transform: translateY(0); opacity: 1; }
@@ -73,4 +78,3 @@
   50% { transform: translateY(0); opacity: 1; }
   75% { transform: translateY(-8px); opacity: 0.8; }
 }
-
