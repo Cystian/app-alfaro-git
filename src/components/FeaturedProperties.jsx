@@ -73,7 +73,7 @@ const FeaturedProperties = () => {
                   </button>
 
      <a
-        href={`/propiedades/resumen/${propData.id}`}
+        href={`/propiedades/resumen/${prop.id}`}
         target="_blank"
         rel="noopener noreferrer"
         className={baseButtonClasses}
