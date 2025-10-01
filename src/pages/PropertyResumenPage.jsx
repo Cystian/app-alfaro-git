@@ -17,6 +17,7 @@ import "swiper/css/thumbs";
 import "swiper/css/effect-fade";
 import { Navigation, Autoplay, Thumbs, EffectFade } from "swiper/modules";
 import FloatingShare from "../components/FloatingShare";
+import FeaturedProperties from "../components/FeaturedProperties";
 
 export default function PropertyResumenPage() {
 
@@ -272,6 +273,8 @@ export default function PropertyResumenPage() {
               </div>
             </div>
           )}
+
+            <FeaturedProperties />
         </div>
       </div>
     </>
