@@ -1,6 +1,7 @@
 import React from "react";
-import { FaShareAlt, FaWhatsapp, FaFacebook, FaTwitter, FaLink } from "react-icons/fa";
-import '../styles/FloatingShare.css';
+import { FaShareAlt, FaWhatsapp, FaFacebook, FaLink } from "react-icons/fa";
+import { SiX, SiTiktok } from "react-icons/si";
+import "../styles/FloatingShare.css";
 
 const FloatingShare = () => {
   const currentUrl = window.location.href;
@@ -19,31 +20,56 @@ const FloatingShare = () => {
 
       {/* Opciones que se despliegan al hover */}
       <div className="share-options">
+        {/* WhatsApp */}
         <a
           href={`https://wa.me/?text=${encodeURIComponent(currentUrl)}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ backgroundColor: "#25d366" }}
+          title="Compartir en WhatsApp"
         >
           <FaWhatsapp />
         </a>
+
+        {/* Facebook */}
         <a
           href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ backgroundColor: "#1877f2" }}
+          title="Compartir en Facebook"
         >
           <FaFacebook />
         </a>
+
+        {/* X (antes Twitter) */}
         <a
           href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ backgroundColor: "#1da1f2" }}
+          style={{ backgroundColor: "#000000" }}
+          title="Compartir en X"
         >
-          <FaTwitter />
+          <SiX />
         </a>
-        <button onClick={handleCopyLink} style={{ backgroundColor: "#555" }}>
+
+        {/* TikTok */}
+        <a
+          href={`https://www.tiktok.com/share?url=${encodeURIComponent(currentUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ backgroundColor: "#010101" }}
+          title="Compartir en TikTok"
+        >
+          <SiTiktok />
+        </a>
+
+        {/* Copiar enlace */}
+        <button
+          onClick={handleCopyLink}
+          style={{ backgroundColor: "#555" }}
+          title="Copiar enlace"
+        >
           <FaLink />
         </button>
       </div>
