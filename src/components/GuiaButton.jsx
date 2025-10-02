@@ -10,7 +10,7 @@ export default function GuiaButton() {
       href="https://www.youtube.com/watch?v=TU_VIDEO_ID" // reemplaza con tu enlace
       target="_blank"
       rel="noopener noreferrer"
-      className="floating-guia"
+      className="floating-guia transition no-underline hover:no-underline focus:no-underline active:no-underline"
     >
       <div className="guia-bubble">
      
