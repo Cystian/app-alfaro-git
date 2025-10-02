@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
-import Admin from "./pages/Asesores";
+import Asesores from "./pages/Asesores";
 import Blog from "./pages/Blog";
 import NuestraHistoria from "./pages/NuestraHistoria";
 import Conocenos from "./pages/Conocenos";
