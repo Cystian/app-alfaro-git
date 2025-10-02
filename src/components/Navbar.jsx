@@ -88,9 +88,14 @@ export default function Navbar() {
                   role="menu"
                   aria-label="Submenú Conócenos"
                 >
+                     <li>
+                    <a href="/acerca-de-nosotros" className="dropdown-item" role="menuitem">
+                      🙋 Acerca de Nosotros
+                    </a>
+                  </li>
                   <li>
-                    <a href="/blog" className="dropdown-item" role="menuitem">
-                      📝 Blog
+                    <a href="/contacto" className="dropdown-item" role="menuitem">
+                      📝 Contacto
                     </a>
                   </li>
                   <li>
@@ -98,18 +103,18 @@ export default function Navbar() {
                       📖 Nuestra Historia
                     </a>
                   </li>
-                  <li>
-                    <a href="/acerca-de-nosotros" className="dropdown-item" role="menuitem">
-                      🙋 Acerca de Nosotros
-                    </a>
-                  </li>
+               
                 </ul>
               )}
             </div>
 
-            {/* CONTACTO */}
-            <a href="/contacto" className="nav-link">
-              CONTACTO
+            {/* BLOG */}
+            <a href="/blog" className="nav-link">
+              BLOG
+            </a>
+                {/* ASESORES */}
+            <a href="/asesores" className="nav-link">
+              ASESORES
             </a>
           </div>
 
@@ -178,12 +183,21 @@ export default function Navbar() {
                 id="submenu-conocenos-mobile"
                 className="pl-6 border-l border-azul-primario bg-azul-primario-light animate-slide-down"
               >
-                <a
-                  href="/blog"
+
+                   <a
+                  href="/acerca-de-nosotros"
                   className="block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  📝 Blog
+                  🙋 Acerca de Nosotros
+                </a>
+                
+                <a
+                  href="/contacto"
+                  className="block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  📝 Contacto
                 </a>
                 <a
                   href="/nuestra-historia"
@@ -192,23 +206,24 @@ export default function Navbar() {
                 >
                   📖 Nuestra Historia
                 </a>
-                <a
-                  href="/acerca-de-nosotros"
-                  className="block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  🙋 Acerca de Nosotros
-                </a>
+             
               </div>
             )}
           </div>
 
           <a
-            href="/contacto"
+            href="/blog"
             className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            CONTACTO
+            BLOG
+          </a>
+              <a
+            href="/asesores"
+            className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            ASESORES
           </a>
         </div>
       )}
