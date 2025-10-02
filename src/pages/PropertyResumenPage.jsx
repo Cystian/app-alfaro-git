@@ -67,7 +67,23 @@ export default function PropertyResumenPage() {
     return `S/ ${Number(price).toLocaleString("es-PE")}`;
   };
 
-  if (!data) return <p className="text-gray-600">Cargando Datos...</p>;
+
+  if (!data) {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      {/* Emoji casita animada */}
+      <div className="flex space-x-2 text-5xl">
+        <span className="animate-bounce">🏠</span>
+        <span className="animate-bounce delay-150">🏡</span>
+        <span className="animate-bounce delay-300">🏘️</span>
+      </div>
+      <p className="mt-6 text-lg font-semibold text-gray-700">
+        Cargando propiedades...
+      </p>
+    </div>
+  );
+}
+
 
   const images = [data.property.image, ...(data.subProperties?.map((sub) => sub.image) || [])];
   const labels = ["Principal", ...(data.subProperties?.map((sub) => sub.content) || [])];
