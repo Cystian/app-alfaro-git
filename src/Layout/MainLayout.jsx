@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import GuiaButton from "./components/GuiaButton";
+import GuiaButton from "../components/GuiaButton";
 import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
