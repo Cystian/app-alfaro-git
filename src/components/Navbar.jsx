@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* LOGO */}
           <a href="/" className="flex items-center">
             <img
-              src="/logo.png"
+              src="/logo.jpeg"
               alt="Logo"
               className="h-10 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
             />
