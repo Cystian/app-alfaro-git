@@ -14,6 +14,7 @@ export default function GuiaButton() {
     >
       <div className="guia-bubble">
         <FaArrowUp className="guia-icon" />
+        <span className="guia-label">GUIA</span>
       </div>
     </a>
   );
