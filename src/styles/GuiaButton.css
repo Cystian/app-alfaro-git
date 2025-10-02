@@ -4,7 +4,7 @@
   top: 20px;
   left: 20px;
   z-index: 9999;
-  transform: rotate(-45deg); /* Apunta hacia el logo de manera diagonal */
+  /* No rotamos el contenedor, la flecha se rota dentro */
 }
 
 .guia-bubble {
@@ -23,29 +23,31 @@
 }
 
 .guia-bubble:hover {
-  transform: scale(1.2) rotate(-45deg); /* Mantener ángulo al escalar */
+  transform: scale(1.2);
 }
 
+/* Icono apuntando hacia la derecha */
 .guia-icon {
   font-size: 24px;
+  transform: rotate(45deg); /* Ajusta la flecha hacia el logo */
 }
 
 /* Rebote + parpadeo simultáneo */
 @keyframes bounceBlink {
   0%, 100% {
-    transform: translateY(0) rotate(-45deg);
+    transform: translateY(0);
     opacity: 1;
   }
   25% {
-    transform: translateY(-12px) rotate(-45deg);
+    transform: translateY(-12px);
     opacity: 0.8;
   }
   50% {
-    transform: translateY(0) rotate(-45deg);
+    transform: translateY(0);
     opacity: 1;
   }
   75% {
-    transform: translateY(-12px) rotate(-45deg);
+    transform: translateY(-12px);
     opacity: 0.8;
   }
 }
