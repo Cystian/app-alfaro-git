@@ -10,7 +10,7 @@ const FloatingWhatsApp = () => {
         href="https://wa.me/51940221494" // mi nro
         target="_blank"
         rel="noopener noreferrer"
-        className="whatsapp-bubble"
+        className="whatsapp-bubble transition no-underline hover:no-underline focus:no-underline active:no-underline"
       >
         <FaWhatsapp className="whatsapp-icon" />
         <span className="whatsapp-label">ESCRÍBENOS</span>
