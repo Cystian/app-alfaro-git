@@ -68,21 +68,54 @@ export default function PropertyResumenPage() {
   };
 
 
-  if (!data) {
+if (!data) {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      {/* Emoji casita animada */}
-      <div className="flex space-x-2 text-5xl">
-        <span className="animate-bounce">🏠</span>
-        <span className="animate-bounce delay-150">🏡</span>
-        <span className="animate-bounce delay-300">🏘️</span>
-      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-28 h-28 text-red-600"
+        viewBox="0 0 64 64"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        {/* Techo */}
+        <path d="M2 32 L32 6 L62 32" stroke="currentColor" strokeWidth="4" />
+        {/* Pared */}
+        <rect x="12" y="28" width="40" height="30" fill="currentColor" />
+        {/* Chimenea */}
+        <rect x="42" y="14" width="6" height="12" fill="currentColor" />
+        {/* Humo */}
+        <circle cx="45" cy="10" r="3" className="smoke1" />
+        <circle cx="48" cy="4" r="4" className="smoke2" />
+      </svg>
+
       <p className="mt-6 text-lg font-semibold text-gray-700">
         Cargando propiedades...
       </p>
+
+      <style>
+        {`
+          @keyframes smokeUp {
+            0% { opacity: 0; transform: translateY(10px) scale(0.5); }
+            50% { opacity: 0.7; }
+            100% { opacity: 0; transform: translateY(-20px) scale(1); }
+          }
+          .smoke1 {
+            animation: smokeUp 2s infinite;
+            fill: gray;
+          }
+          .smoke2 {
+            animation: smokeUp 3s infinite;
+            fill: lightgray;
+            animation-delay: 1s;
+          }
+        `}
+      </style>
     </div>
   );
 }
+
 
 
   const images = [data.property.image, ...(data.subProperties?.map((sub) => sub.image) || [])];
