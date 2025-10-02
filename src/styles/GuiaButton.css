@@ -1,48 +1,51 @@
-/* src/styles/GuiaButton.css */
+/* src/styles/GuiaArrow.css */
 .floating-guia {
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 9999;
+  transform: rotate(-45deg); /* Apunta hacia el logo de manera diagonal */
 }
 
 .guia-bubble {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background-color: #f43f5e; /* rojo consistente */
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: #f43f5e; /* rojo */
   color: white;
-  padding: 10px 16px;
-  border-radius: 50px;
+  border-radius: 50%;
   cursor: pointer;
   animation: bounceBlink 5.5s infinite;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+}
+
+.guia-bubble:hover {
+  transform: scale(1.2) rotate(-45deg); /* Mantener ángulo al escalar */
 }
 
 .guia-icon {
   font-size: 24px;
 }
 
-.guia-label {
-  font-weight: bold;
-  font-size: 14px;
-}
-
 /* Rebote + parpadeo simultáneo */
 @keyframes bounceBlink {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) rotate(-45deg);
     opacity: 1;
   }
   25% {
-    transform: translateY(-12px);
+    transform: translateY(-12px) rotate(-45deg);
     opacity: 0.8;
   }
   50% {
-    transform: translateY(0);
+    transform: translateY(0) rotate(-45deg);
     opacity: 1;
   }
   75% {
-    transform: translateY(-12px);
+    transform: translateY(-12px) rotate(-45deg);
     opacity: 0.8;
   }
 }
