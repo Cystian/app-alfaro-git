@@ -1,4 +1,5 @@
 // src/components/GuiaButton.jsx
+
 import React from "react";
 import { FaArrowUp } from "react-icons/fa";
 import "../styles/GuiaButton.css";
@@ -13,7 +14,6 @@ export default function GuiaButton() {
     >
       <div className="guia-bubble">
         <FaArrowUp className="guia-icon" />
-        <span className="guia-label">GUIA</span>
       </div>
     </a>
   );
