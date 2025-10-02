@@ -32,6 +32,11 @@
   transform: rotate(45deg); /* Ajusta la flecha hacia el logo */
 }
 
+.guia-label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
 /* Rebote + parpadeo simultáneo */
 @keyframes bounceBlink {
   0%, 100% {
