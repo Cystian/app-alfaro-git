@@ -35,14 +35,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* LOGO */}
-          <a href="/" className="flex items-center">
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="h-16 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
-            />
-          </a>
-
+  <div className="flex-1 flex justify-center md:justify-start">
+    <a href="/" className="flex items-center">
+      <img
+        src="/logo.png"
+        alt="Logo"
+        className="h-16 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
+      />
+    </a>
+  </div>
           {/* Menú Desktop */}
           <div className="hidden md:flex space-x-8">
 
@@ -113,15 +114,18 @@ export default function Navbar() {
           </div>
 
           {/* Botón menú móvil */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMobileMenu}
-              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-              className="text-2xl focus:outline-none"
-            >
-              {isMobileMenuOpen ? <FiX /> : <FiMenu />}
-            </button>
-          </div>
+
+  {/* Botón menú móvil */}
+  <div className="md:hidden flex items-center absolute right-4">
+    <button
+      onClick={toggleMobileMenu}
+      aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+      className="text-2xl focus:outline-none"
+    >
+      {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+    </button>
+  </div>
+          
         </div>
       </div>
 
