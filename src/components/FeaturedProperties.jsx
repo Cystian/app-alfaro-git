@@ -78,13 +78,15 @@ const FeaturedProperties = () => {
                     Contactar
                   </a>
 
-                  {/* Ver Flyer (rojo) */}
-                  <button
-                    onClick={() => openPopup(prop)}
-                    className="flex-1 bg-red-500 text-white text-center py-2 px-3 rounded-lg hover:bg-red-600 transition"
-                  >
-                    Ver flyer
-                  </button>
+            {/*
+  Ver Flyer (rojo)
+  <button
+    onClick={() => openPopup(prop)}
+    className="flex-1 bg-red-500 text-white text-center py-2 px-3 rounded-lg hover:bg-red-600 transition"
+  >
+    Ver flyer
+  </button>
+*/}
 
                   {/* Ver Resumen (azul) */}
                   <a
