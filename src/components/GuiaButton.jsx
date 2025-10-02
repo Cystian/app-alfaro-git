@@ -13,7 +13,7 @@ export default function GuiaButton() {
       className="floating-guia"
     >
       <div className="guia-bubble">
-       // <FaArrowUp className="guia-icon" />
+     
         <span className="guia-label">GUIA</span>
       </div>
     </a>
