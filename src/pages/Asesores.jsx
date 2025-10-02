@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaFacebookF, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaWhatsapp, FaUserTie } from "react-icons/fa";
 
 const Asesores = () => {
   const [asesores, setAsesores] = useState([]);
@@ -29,7 +29,17 @@ const Asesores = () => {
       </p>
 
       {loading ? (
-        <p className="text-center text-gray-500">Cargando asesores...</p>
+        // 🔹 Loader de personas ejecutivas
+        <div className="flex justify-center items-center gap-6 h-48">
+          {[...Array(5)].map((_, i) => (
+            <FaUserTie
+              key={i}
+              size={36}
+              className={`text-gray-400 animate-bounce`}
+              style={{ animationDelay: `${i * 150}ms` }}
+            />
+          ))}
+        </div>
       ) : asesores.length === 0 ? (
         <p className="text-center text-gray-500">
           No se encontraron asesores registrados.
@@ -41,14 +51,13 @@ const Asesores = () => {
               key={asesor.id}
               className="group bg-white rounded-2xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-all duration-500"
             >
-              {/* Imagen con efecto luxury */}
+              {/* Imagen luxury */}
               <div className="relative">
                 <img
                   src={asesor.img_asesores}
                   alt={asesor.name_asesores}
                   className="w-full h-72 object-cover transform group-hover:scale-110 transition duration-500"
                 />
-                {/* Overlay degradado */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
               </div>
 
@@ -92,3 +101,4 @@ const Asesores = () => {
 };
 
 export default Asesores;
+
