@@ -1,4 +1,4 @@
-// src/components/GuiaButton.jsx
+//src/components/GuiaButton.jsx
 
 import React from "react";
 import { FaArrowUp } from "react-icons/fa";
