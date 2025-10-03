@@ -46,11 +46,11 @@ const Contacto = () => {
       <MapPin className="text-[#C80000]" size={24} />
       <span className="text-gray-800 text-lg">Nuevo Chimbote-Peru</span>
     </div>
-  <div className="text-left md:text-left max-w-md">
-     <Briefcase className="text-[#C80000]" size={20} />
+     <div className="flex items-center gap-3">
+     <Briefcase className="text-[#C80000]" size={24} />
       <span className="text-gray-800 text-lg">Alberto Alfaro</span>
       <p className="text-gray-700 text-md leading-relaxed">
-        CEO & Fundador. Con más de 20 años liderando proyectos inmobiliarios, Alberto combina visión estratégica con cercanía humana, garantizando que cada cliente encuentre la propiedad ideal.
+        CEO & Fundador. Inmobiliaria Alberto Alfaro combina visión estratégica con cercanía humana, garantizando que cada cliente encuentre la propiedad ideal.
       </p>
     </div>
 
