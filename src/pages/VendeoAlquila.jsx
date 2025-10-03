@@ -61,7 +61,7 @@ const VendeoAlquila = () => {
         <section className="py-20 px-6 md:px-20">
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="text-4xl font-semibold mb-6 text-[#C80000]">
-              Publica tu Inmueble con Nosotros
+              Publica tu Propiedad con Nosotros
             </h2>
             <p className="text-[#444444] text-lg leading-relaxed mb-10 max-w-3xl mx-auto">
               Completa el siguiente formulario y nuestro equipo se pondrá en
