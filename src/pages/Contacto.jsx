@@ -44,7 +44,7 @@ const Contacto = () => {
     </div>
   <div className="text-left md:text-left max-w-md">
      <Briefcase className="text-[#C80000]" size={20} />
-      <h3 className="text-xl font-semibold text-[#C80000] mb-1">Alberto Alfaro</h3>
+      <span className="text-gray-800 text-lg">Alberto Alfaro</span>
       <p className="text-gray-700 text-md leading-relaxed">
         CEO & Fundador. Con más de 20 años liderando proyectos inmobiliarios, Alberto combina visión estratégica con cercanía humana, garantizando que cada cliente encuentre la propiedad ideal.
       </p>
