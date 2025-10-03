@@ -10,7 +10,7 @@ import Admin from "./pages/Admin";
 import Asesores from "./pages/Asesores";
 import Blog from "./pages/Blog";
 import NuestraHistoria from "./pages/NuestraHistoria";
-import Conocenos from "./pages/Conocenos";
+import Contacto from "./pages/Contacto";
 import PropertyResumenPage from "./pages/PropertyResumenPage";
 
 
@@ -23,13 +23,12 @@ const router = createBrowserRouter([
       { path: "propiedades", element: <Properties /> },
       { path: "login", element: <Login /> },
       { path: "registro", element: <Register /> },
-      { path: "nosotros", element: <About /> },
+      { path: "acerca-de-nosotros", element: <About /> },
       { path: "admin", element: <Admin /> }, // O separa esto si tiene otro layout
-          // 👇 Nuevas rutas del submenú "Conócenos"
       { path: "blog", element: <Blog /> },
        { path: "asesores", element: <Asesores /> },
-      { path: "nuestrahistoria", element: <NuestraHistoria /> },
-      { path: "conocenos", element: <Conocenos /> },
+      { path: "nuestra-historia", element: <NuestraHistoria /> },
+      { path: "contacto", element: <Contacto /> },
       {  path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
     ],
   },
