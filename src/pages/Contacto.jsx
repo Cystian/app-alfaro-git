@@ -25,15 +25,15 @@ const Contacto = () => {
   <div className="space-y-4">
     <div className="flex items-center gap-3">
       <Phone className="text-[#C80000]" size={24} />
-      <span className="text-gray-800 text-lg">+51 999 888 777</span>
+      <span className="text-gray-800 text-lg">+51 940 221 494</span>
     </div>
     <div className="flex items-center gap-3">
       <Mail className="text-[#C80000]" size={24} />
-      <span className="text-gray-800 text-lg">contacto@luxuryinmobiliaria.com</span>
+      <span className="text-gray-800 text-lg">contacto@alfaroinmobiliaria.pe</span>
     </div>
     <div className="flex items-center gap-3">
       <MapPin className="text-[#C80000]" size={24} />
-      <span className="text-gray-800 text-lg">Av. Empresarial 123, San Isidro – Lima</span>
+      <span className="text-gray-800 text-lg">Nuevo Chimbote-Peru</span>
     </div>
   </div>
 </div>
