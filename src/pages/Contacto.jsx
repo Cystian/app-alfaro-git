@@ -42,6 +42,14 @@ const Contacto = () => {
       <MapPin className="text-[#C80000]" size={24} />
       <span className="text-gray-800 text-lg">Nuevo Chimbote-Peru</span>
     </div>
+
+  <img
+    src="/inge.jpeg"
+    alt="Ingeniero"
+  className="mx-auto mb-4 w-48 sm:w-48 md:w-48 lg:w-48 h-auto object-contain"
+  />
+
+    
   </div>
 </div>
 
