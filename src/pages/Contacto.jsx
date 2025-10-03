@@ -22,12 +22,13 @@ const Contacto = () => {
   </h1>
   <p className="text-gray-700 text-lg leading-relaxed mb-8">
     En <span className="font-semibold">nuestra firma inmobiliaria</span> 
-    entendemos que cada decisión inmobiliaria es también una 
-    <span className="italic"> decisión de vida</span>. 
+     entendemos que cada decisión inmobiliaria es también una 
+   <span className="font-semibold"> decisión de vida</span>. 
     Nuestro equipo de expertos está comprometido en ofrecerte 
     un acompañamiento integral, combinando confianza, 
-    profesionalismo y cercanía.
+    profesionalismo y cercanía.  </p>
      <br />
+    <p className="text-gray-700 text-lg leading-relaxed mb-8">
     Contamos con más de <span className="font-semibold">15 años de experiencia</span> 
     en el mercado inmobiliario, gestionando propiedades de lujo, residenciales y comerciales, 
     siempre con un enfoque en la satisfacción total del cliente y la excelencia en el servicio.
