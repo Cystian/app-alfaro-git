@@ -27,6 +27,10 @@ const Contacto = () => {
     Nuestro equipo de expertos está comprometido en ofrecerte 
     un acompañamiento integral, combinando confianza, 
     profesionalismo y cercanía.
+     <br />
+    Contamos con más de <span className="font-semibold">15 años de experiencia</span> 
+    en el mercado inmobiliario, gestionando propiedades de lujo, residenciales y comerciales, 
+    siempre con un enfoque en la satisfacción total del cliente y la excelencia en el servicio.
   </p>
 
   <div className="space-y-4">
