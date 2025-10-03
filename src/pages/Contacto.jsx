@@ -1,6 +1,6 @@
 import React from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
-import SocialMediaSection from "../components/SocialMediaSection";
+import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 
 const Contacto = () => {
   return (
@@ -75,7 +75,7 @@ const Contacto = () => {
 
       {/* Redes Sociales / Social Media Section */}
       <div className="mt-20">
-        <SocialMediaSection />
+        <SocialMediaCallToAction />
       </div>
     </section>
   );
