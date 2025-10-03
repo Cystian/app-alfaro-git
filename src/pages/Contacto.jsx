@@ -10,6 +10,13 @@ const Contacto = () => {
         
 {/* Texto + Info corporativa */}
 <div className="bg-white shadow-xl rounded-3xl p-8 hover:shadow-2xl transition duration-300">
+
+  <img
+    src="/logo.jpeg"
+    alt="Logo Inmobiliaria"
+    className="mx-auto mb-4 w-32 h-auto object-contain"
+  />
+  
   <h1 className="text-4xl font-bold text-[#C80000] mb-6">
     Conócenos
   </h1>
