@@ -48,7 +48,7 @@ const Contacto = () => {
     </div>
      <div className="flex items-center gap-3">
      <Briefcase className="text-[#C80000]" size={24} />
-      <span className="text-gray-800 text-lg"> CEO & Fundador : </span> <span className="text-[#FF5A5A] text-lg">Ing. Alberto Alfaro</span>
+      <span className="text-gray-800 text-lg"> CEO & Fundador : </span> <span className="font-bold text-[#C80000] text-lg">Ing. Alberto Alfaro</span>
       </div>
 
     
