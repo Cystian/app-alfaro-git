@@ -14,7 +14,7 @@ const Contacto = () => {
   <img
     src="/logo.jpeg"
     alt="Logo Inmobiliaria"
-  className="mx-auto mb-4 w-24 sm:w-32 md:w-40 lg:w-48 h-auto object-contain"
+  className="mx-auto mb-4 w-48 sm:w-48 md:w-48 lg:w-48 h-auto object-contain"
   />
   
   <h1 className="text-4xl font-bold text-[#C80000] mb-6">
