@@ -1,5 +1,6 @@
 import React from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
+import ContactFormWrapper from "../components/ContactForm";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 
 const Contacto = () => {
@@ -42,34 +43,7 @@ const Contacto = () => {
           <h2 className="text-2xl font-semibold text-[#C80000] mb-6">
             Agenda tu consulta personalizada
           </h2>
-          <form className="space-y-5">
-            <input
-              type="text"
-              placeholder="Nombre completo"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#C80000] outline-none"
-            />
-            <input
-              type="email"
-              placeholder="Correo electrónico"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#C80000] outline-none"
-            />
-            <input
-              type="tel"
-              placeholder="Teléfono"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#C80000] outline-none"
-            />
-            <textarea
-              placeholder="Cuéntanos qué estás buscando..."
-              rows="4"
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#C80000] outline-none"
-            ></textarea>
-            <button
-              type="submit"
-              className="w-full bg-[#C80000] text-white font-semibold py-3 rounded-xl hover:bg-[#a30000] transition"
-            >
-              Enviar mensaje
-            </button>
-          </form>
+      <ContactFormWrapper />
         </div>
       </div>
 
