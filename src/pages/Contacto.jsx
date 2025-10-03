@@ -43,6 +43,7 @@ const Contacto = () => {
       <span className="text-gray-800 text-lg">Nuevo Chimbote-Peru</span>
     </div>
   <div className="text-left md:text-left max-w-md">
+     <Briefcase className="text-[#C80000]" size={20} />
       <h3 className="text-xl font-semibold text-[#C80000] mb-1">Alberto Alfaro</h3>
       <p className="text-gray-700 text-md leading-relaxed">
         CEO & Fundador. Con más de 20 años liderando proyectos inmobiliarios, Alberto combina visión estratégica con cercanía humana, garantizando que cada cliente encuentre la propiedad ideal.
