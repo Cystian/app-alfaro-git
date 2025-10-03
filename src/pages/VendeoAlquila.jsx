@@ -1,7 +1,7 @@
 import React from "react";
 import { ClipboardList, Megaphone, ShieldCheck } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
-import ContactForm from "../components/ContactForm";
+import VendeAlquilaForm from "../components/VendeAlquilaForm";
 
 const VendeoAlquila = () => {
   return (
@@ -69,8 +69,8 @@ const VendeoAlquila = () => {
               <span className="font-medium">alquilar</span> tu propiedad de la
               forma más rápida y segura.
             </p>
-            {/* Reutilización de tu ContactForm.jsx */}
-                       <ContactForm />
+            {/* Reutilización de tu VendeAlquilaForm.jsx */}
+                       <VendeAlquilaForm />
         
           </div>
         </section>
