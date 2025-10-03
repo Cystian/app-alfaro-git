@@ -40,9 +40,7 @@ const Contacto = () => {
 
         {/* Formulario de contacto */}
         <div className="bg-white shadow-xl rounded-3xl p-8 hover:shadow-2xl transition duration-300">
-          <h2 className="text-2xl font-semibold text-[#C80000] mb-6">
-            Agenda tu consulta personalizada
-          </h2>
+        
       <ContactFormWrapper />
         </div>
       </div>
