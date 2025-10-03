@@ -63,7 +63,7 @@ const Contacto = () => {
       </div>
 
       {/* Redes Sociales */}
-   <div className="mt-20 bg-white shadow-xl rounded-3xl p-8 hover:shadow-2xl transition duration-300">
+   <div className="mt-10 bg-white shadow-xl rounded-3xl p-8 hover:shadow-2xl transition duration-300">
   <SocialMediaCallToAction />
 </div>
     </section>
