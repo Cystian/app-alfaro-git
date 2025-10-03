@@ -70,9 +70,8 @@ const VendeoAlquila = () => {
               forma más rápida y segura.
             </p>
             {/* Reutilización de tu ContactForm.jsx */}
-            <div className="bg-white p-8 rounded-3xl shadow-xl">
-              <ContactForm />
-            </div>
+                       <ContactForm />
+        
           </div>
         </section>
       </div>
