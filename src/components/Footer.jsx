@@ -23,11 +23,11 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-2 text-red-500">Enlaces</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/" className="hover:text-red-400 transition no-underline">Inicio</Link></li>
-              <li><Link to="/vende-o-alquila" className="hover:text-red-400 transition no-underline">Vende o Alquila</Link></li>
-              <li><Link to="/servicios" className="hover:text-red-400 transition no-underline">Servicios</Link></li>
-              <li><Link to="/blog" className="hover:text-red-400 transition no-underline">Blog</Link></li>
-                 <li><Link to="/asesores" className="hover:text-red-400 transition no-underline">Asesores</Link></li>
+              <li><Link to="/" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Inicio</Link></li>
+              <li><Link to="/vende-o-alquila" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Vende o Alquila</Link></li>
+              <li><Link to="/servicios" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Servicios</Link></li>
+              <li><Link to="/blog" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Blog</Link></li>
+                 <li><Link to="/asesores" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Asesores</Link></li>
             </ul>
           </div>
 
