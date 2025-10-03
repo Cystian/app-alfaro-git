@@ -2,7 +2,7 @@ import React from 'react';
 
 const NuestraHistoria = () => {
   return (
-    <section className="bg-[#F5F5F5] py-4 px-6">
+    <section className="bg-[#F5F5F5] py-1 px-6">
       <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-3xl p-10 hover:shadow-2xl transition duration-300">
 
         {/* Logo */}
@@ -42,4 +42,5 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
