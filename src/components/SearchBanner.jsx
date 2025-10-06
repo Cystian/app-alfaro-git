@@ -69,7 +69,7 @@ const SearchBanner = ({ onSearch }) => {
             textShadow: "2px 2px 4px rgba(0,0,0,0.6), 0 0 6px rgba(255,0,0,0.4)",
           }}
         >
-          Tenemos el lugar perfecto para ti
+          Explora propiedades aqui
         </h2>
 
         {/* Formulario de búsqueda */}
@@ -115,8 +115,8 @@ const SearchBanner = ({ onSearch }) => {
               disabled={!isSearchEnabled}
               className={`w-full sm:w-auto py-2 px-6 rounded-lg font-semibold shadow-md transition-all duration-300 ${
                 isSearchEnabled
-                  ? "bg-azul-primario hover:bg-azul-primario-dark text-white"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  ? "bg-[#6E0000] hover:bg-[#4D0000] text-white transition-colors duration-300"
+                     : "bg-[#B85C5C] text-white/80 cursor-not-allowed"
               }`}
             >
               Buscar
