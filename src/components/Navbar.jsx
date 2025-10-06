@@ -212,7 +212,7 @@ export default function Navbar() {
           </div>
 
           <a
-            href="/blog"
+            href="/miblog/blog"
             className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
             onClick={() => setIsMobileMenuOpen(false)}
           >
