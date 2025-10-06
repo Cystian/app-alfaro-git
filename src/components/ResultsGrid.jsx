@@ -41,7 +41,7 @@ export default function ResultsGrid({ properties }) {
                   onClick={() => openPopup(property)}
                   className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition"
                 >
-                  Ver flyer
+                  Ver más
                 </button>
               </div>
             </div>
