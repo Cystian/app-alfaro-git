@@ -115,8 +115,8 @@ const SearchBanner = ({ onSearch }) => {
               disabled={!isSearchEnabled}
               className={`w-full sm:w-auto py-2 px-6 rounded-lg font-semibold shadow-md transition-all duration-300 ${
                 isSearchEnabled
-                  ? "bg-[#6E0000] hover:bg-[#4D0000] text-white transition-colors duration-300"
-                     : "bg-[#B85C5C] text-white/80 cursor-not-allowed"
+                  ? "bg-[#DC2626] hover:bg-[#B91C1C] active:bg-[#991B1B] text-white"
+       : "bg-[#FCA5A5] text-white/80 cursor-not-allowed"
               }`}
             >
               Buscar
