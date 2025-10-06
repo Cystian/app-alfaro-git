@@ -10,10 +10,9 @@ const CustomSelect = ({
   setOpenDropdown,
 }) => {
   const wrapperRef = useRef(null);
-  const isGrouped = options.length > 0 && options[0].departamento !== undefined; // detectar si es distritos agrupados
+  const isGrouped = options.length > 0 && options[0].departamento !== undefined;
   const isOpen = openDropdown === label;
 
-  // Cierra el dropdown al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -49,12 +48,12 @@ const CustomSelect = ({
   };
 
   const displayValue = selected.length === getAllOptions().length
-      ? `Todos los ${label}`
-      : selected.length > 0
-      ? selected.join(", ")
-      : label === "Tipo"
-      ? "Seleccione Tipo de Inmueble"
-      : `Seleccione ${label}`;
+    ? `Todos los ${label}`
+    : selected.length > 0
+    ? selected.join(", ")
+    : label === "Tipo"
+    ? "Seleccione Tipo de Inmueble"
+    : `Seleccione ${label}`;
 
   const toggleDropdown = () => setOpenDropdown(isOpen ? null : label);
 
@@ -87,7 +86,7 @@ const CustomSelect = ({
                 type="checkbox"
                 readOnly
                 checked={selected.length === getAllOptions().length}
-                className="w-3 h-3 mr-2 accent-azul-primario"
+                className="w-3 h-3 mr-2 accent-[#DC2626]"
               />
               <span>Todos</span>
             </li>
@@ -109,7 +108,7 @@ const CustomSelect = ({
                         type="checkbox"
                         readOnly
                         checked={selected.includes(distrito.nombre)}
-                        className="w-3 h-3 mr-2 accent-azul-primario"
+                        className="w-3 h-3 mr-2 accent-[#DC2626]"
                       />
                       <span>{distrito.nombre}</span>
                     </div>
@@ -128,7 +127,7 @@ const CustomSelect = ({
                     type="checkbox"
                     readOnly
                     checked={selected.includes(option)}
-                    className="w-3 h-3 mr-2 accent-azul-primario"
+                    className="w-3 h-3 mr-2 accent-[#DC2626]"
                   />
                   <span>{option}</span>
                 </li>
