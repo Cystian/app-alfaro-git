@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
 import Asesores from "./pages/Asesores";
-import Blog from "./pages/blog/Blog";
+import Blog from "./pages/miblog/Blog";
 import NuestraHistoria from "./pages/NuestraHistoria";
 import VendeoAlquila from "./pages/VendeoAlquila";
 import Contacto from "./pages/Contacto";
