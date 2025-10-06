@@ -51,13 +51,13 @@ const Blog = () => {
         <CategoryCard
           title="Noticias"
           description="Mantente al día con las novedades del sector y de nuestra empresa."
-             image="/miblog/blog-articulos.png"
+             image="/miblog/blog_articulos.png"
           link="/blog/noticias"
         />
         <CategoryCard
           title="Artículos"
           description="Aprende más sobre el mercado inmobiliario, consejos y análisis de expertos."
-          image="/miblog/blog-articulos.png"
+          image="/miblog/blog_articulos.png"
           link="/blog/articulos"
         />
       </div>
