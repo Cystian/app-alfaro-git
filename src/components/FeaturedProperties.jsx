@@ -79,12 +79,12 @@ const FeaturedProperties = () => {
                   </a>
 
             {/*
-  Ver Flyer (rojo)
+  Ver Flxyer (rojo)
   <button
     onClick={() => openPopup(prop)}
     className="flex-1 bg-red-500 text-white text-center py-2 px-3 rounded-lg hover:bg-red-600 transition"
   >
-    Ver flyer
+    Ver flxyer
   </button>
 */}
 
@@ -95,7 +95,7 @@ const FeaturedProperties = () => {
                     rel="noopener noreferrer"
                     className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
-                    Ver Resumen
+                    Ver más
                   </a>
                 </div>
               </div>
