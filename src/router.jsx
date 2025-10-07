@@ -34,7 +34,7 @@ const router = createBrowserRouter([
       { path: "contacto", element: <Contacto /> },
       {  path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
        {  path: "vende-o-alquila", element: <VendeoAlquila /> },
-       <Route path="/blog/noticias" element={<NoticiasPage />} /> 
+        { path: "blog/noticias", element: <NoticiasPage /> },
     ],
   },
 ]);
