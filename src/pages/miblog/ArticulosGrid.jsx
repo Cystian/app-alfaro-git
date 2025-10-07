@@ -29,12 +29,12 @@ const ArticleCard = ({ title, description, image, date, link }) => (
         {title}
       </h3>
       <p className="text-gray-600 text-sm mb-5 line-clamp-3">{description}</p>
-      <a
-        href={link}
+     <Link
+        to={`/blog/articulos/${id}`}
         className="text-red-600 hover:text-red-700 font-semibold transition-colors duration-200"
       >
         Leer más →
-      </a>
+      </Link>
     </div>
   </motion.div>
 );
