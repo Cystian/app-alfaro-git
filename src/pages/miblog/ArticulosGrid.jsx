@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // ==========================
 // Componente individual de artículo
 // ==========================
-const ArticleCard = ({ title, description, image, date, link }) => (
+const ArticleCard = ({ id,title, description, image, date, link }) => (
   <motion.div
     whileHover={{ scale: 1.02, boxShadow: "0 20px 30px rgba(0,0,0,0.15)" }}
     transition={{ type: "spring", stiffness: 200, damping: 18 }}
@@ -101,6 +101,7 @@ const ArticulosGrid = () => {
         {articulosList.map((art) => (
           <ArticleCard
             key={art.id}
+             id={art.id}
             title={art.titulo}
             description={art.descripcion}
             image={art.imagen}
