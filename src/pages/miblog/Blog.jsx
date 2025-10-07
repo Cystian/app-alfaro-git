@@ -36,7 +36,7 @@ const CategoryCard = ({ title, description, image, link }) => {
 // 💥 Página principal del blog
 const Blog = () => {
   return (
-    <section className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-10 px-4">
+   
       <div className="bg-white rounded-3xl shadow-lg w-full max-w-6xl p-8 sm:p-12">
         <div className="text-center mb-10 mt-2">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
@@ -62,7 +62,7 @@ const Blog = () => {
           />
         </div>
       </div>
-    </section>
+ 
   );
 };
 
