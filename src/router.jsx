@@ -26,24 +26,31 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "propiedades", element: <Properties /> },
+      { path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
       { path: "login", element: <Login /> },
       { path: "registro", element: <Register /> },
       { path: "acerca-de-nosotros", element: <About /> },
       { path: "servicios", element: <Servicios /> },
-      { path: "admin", element: <Admin /> }, // O separa esto si tiene otro layout
-      { path: "blog", element: <Blog /> },
-       { path: "asesores", element: <Asesores /> },
+      { path: "admin", element: <Admin /> },
+      { path: "asesores", element: <Asesores /> },
       { path: "nuestra-historia", element: <NuestraHistoria /> },
+      { path: "vende-o-alquila", element: <VendeoAlquila /> },
       { path: "contacto", element: <Contacto /> },
-      {  path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
-      { path: "noticias/:id", element: <NoticiaDetallePage /> },
-      { path: "articulos/:id", element: <ArticuloDetallePage /> },
-       {  path: "vende-o-alquila", element: <VendeoAlquila /> },
-        { path: "noticias", element: <NoticiasPage /> },
+
+      // 📘 BLOG (agrupado con subrutas)
+      {
+        path: "blog",
+        element: <Blog />,
+        children: [
+          { index: true, element: <NoticiasPage /> }, // por defecto, muestra Noticias
+          { path: "noticias", element: <NoticiasPage /> },
+          { path: "noticias/:id", element: <NoticiaDetallePage /> },
           { path: "articulos", element: <ArticulosPage /> },
+          { path: "articulos/:id", element: <ArticuloDetallePage /> },
+        ],
+      },
     ],
   },
 ]);
 
 export default router;
-
