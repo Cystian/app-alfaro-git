@@ -5,32 +5,29 @@ import { Link } from "react-router-dom";
 // ==========================
 // Componente individual de artículo
 // ==========================
-const ArticleCard = ({ id,title, description, image, date, link }) => (
+const ArticleCard = ({ id, title, description, image, date }) => (
   <motion.div
     whileHover={{ scale: 1.02, boxShadow: "0 20px 30px rgba(0,0,0,0.15)" }}
     transition={{ type: "spring", stiffness: 200, damping: 18 }}
     className="rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-2xl border border-gray-100"
   >
-    {/* Imagen principal */}
     <div className="relative h-64">
       <img
         src={image}
         alt={title}
         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
       />
-      {/* Fecha */}
       <span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-3 py-1 rounded-full font-medium">
         {date}
       </span>
     </div>
 
-    {/* Contenido textual: altura adaptable */}
     <div className="p-6 flex flex-col justify-between min-h-[200px]">
       <h3 className="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">
         {title}
       </h3>
       <p className="text-gray-600 text-sm mb-5 line-clamp-3">{description}</p>
-     <Link
+      <Link
         to={`/blog/articulos/${id}`}
         className="text-red-600 hover:text-red-700 font-semibold transition-colors duration-200"
       >
@@ -41,7 +38,7 @@ const ArticleCard = ({ id,title, description, image, date, link }) => (
 );
 
 // ==========================
-// Loader animado tipo dots (igual que noticias)
+// Loader animado tipo dots
 // ==========================
 const LoaderArticulos = () => {
   const dotVariants = {
@@ -67,18 +64,22 @@ const LoaderArticulos = () => {
 };
 
 // ==========================
-// Componente principal Grid de Artículos
+// Componente principal Grid de Artículos con filtro + paginación
 // ==========================
 const ArticulosGrid = () => {
   const [articulosList, setArticulosList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDate, setSelectedDate] = useState("");
 
-  // Traemos los artículos desde el endpoint serverless
+  const cardsPerPage = 9;
+
   useEffect(() => {
     fetch("/.netlify/functions/getArticulos")
       .then((res) => res.json())
       .then((data) => {
-        setArticulosList(data);
+        const sorted = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        setArticulosList(sorted);
         setLoading(false);
       })
       .catch((err) => {
@@ -87,21 +88,45 @@ const ArticulosGrid = () => {
       });
   }, []);
 
-  // Loader mientras carga
   if (loading) return <LoaderArticulos />;
 
-  // Render principal
+  // Filtrado por fecha
+  const filteredList = selectedDate
+    ? articulosList.filter((art) => new Date(art.fecha) >= new Date(selectedDate))
+    : articulosList;
+
+  // Paginación
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = filteredList.slice(indexOfFirstCard, indexOfLastCard);
+  const totalPages = Math.ceil(filteredList.length / cardsPerPage);
+
   return (
     <section className="w-full max-w-7xl mx-auto py-16 px-6">
-      <h2 className="text-4xl font-bold mb-12 text-gray-800 text-center tracking-wide">
-        Artículos Destacados
-      </h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-8 gap-4">
+        <h2 className="text-4xl font-bold text-gray-800 tracking-wide">Artículos Destacados</h2>
 
+        {/* Filtro por fecha */}
+        <div className="flex items-center gap-2">
+          <label className="text-gray-700 font-medium">Filtrar desde:</label>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => {
+              setSelectedDate(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="border rounded px-3 py-1 text-gray-700"
+          />
+        </div>
+      </div>
+
+      {/* Grilla de artículos */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {articulosList.map((art) => (
+        {currentCards.map((art) => (
           <ArticleCard
             key={art.id}
-             id={art.id}
+            id={art.id}
             title={art.titulo}
             description={art.descripcion}
             image={art.imagen}
@@ -110,10 +135,28 @@ const ArticulosGrid = () => {
               month: "short",
               year: "numeric",
             })}
-            link={art.link}
           />
         ))}
       </div>
+
+      {/* Paginación */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-12 flex-wrap">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-4 py-2 rounded ${
+                currentPage === i + 1
+                  ? "bg-red-600 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </section>
   );
 };
