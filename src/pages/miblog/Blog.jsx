@@ -46,7 +46,8 @@ const CategoryCard = ({ title, description, image, link }) => {
 // 💥 Página principal del blog
 const Blog = () => {
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 py-16 px-6">
+<section className="relative w-full min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 py-10 px-6">
+
       {/* Encabezado */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
