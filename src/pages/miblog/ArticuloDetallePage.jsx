@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 const ArticuloDetallePage = () => {
   const { id } = useParams();
-  const [articulo, setNoticia] = useState(null);
+  const [articulo, setArticulo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
