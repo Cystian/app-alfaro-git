@@ -14,8 +14,8 @@ import NuestraHistoria from "./pages/NuestraHistoria";
 import VendeoAlquila from "./pages/VendeoAlquila";
 import Contacto from "./pages/Contacto";
 import PropertyResumenPage from "./pages/PropertyResumenPage";
-import NoticiaDetallePage from "./miblog/NoticiaDetallePage";
-import ArticuloDetallePage from "./miblog/ArticuloDetallePage";
+import NoticiaDetallePage from "./pages/miblog/NoticiaDetallePage";
+import ArticuloDetallePage from "./pages/miblog/ArticuloDetallePage";
 import NoticiasPage from "./pages/miblog/NoticiasPage";
 import ArticulosPage from "./pages/miblog/ArticulosPage";
 
