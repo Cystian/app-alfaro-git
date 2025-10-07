@@ -15,6 +15,7 @@ import VendeoAlquila from "./pages/VendeoAlquila";
 import Contacto from "./pages/Contacto";
 import PropertyResumenPage from "./pages/PropertyResumenPage";
 import NoticiasPage from "./pages/miblog/NoticiasPage";
+import ArticulosPage from "./pages/miblog/ArticulosPage";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
       {  path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
        {  path: "vende-o-alquila", element: <VendeoAlquila /> },
         { path: "blog/noticias", element: <NoticiasPage /> },
+          { path: "blog/articulos", element: <ArticulosPage /> },
     ],
   },
 ]);
