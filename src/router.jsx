@@ -14,6 +14,8 @@ import NuestraHistoria from "./pages/NuestraHistoria";
 import VendeoAlquila from "./pages/VendeoAlquila";
 import Contacto from "./pages/Contacto";
 import PropertyResumenPage from "./pages/PropertyResumenPage";
+import NoticiaDetallePage from "./miblog/NoticiaDetallePage";
+import ArticuloDetallePage from "./miblog/ArticuloDetallePage";
 import NoticiasPage from "./pages/miblog/NoticiasPage";
 import ArticulosPage from "./pages/miblog/ArticulosPage";
 
@@ -34,6 +36,8 @@ const router = createBrowserRouter([
       { path: "nuestra-historia", element: <NuestraHistoria /> },
       { path: "contacto", element: <Contacto /> },
       {  path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
+      { path: "blog/noticias/:id", element: <NoticiaDetallePage /> },
+      { path: "blog/articulos/:id", element: <ArticuloDetallePage /> },
        {  path: "vende-o-alquila", element: <VendeoAlquila /> },
         { path: "blog/noticias", element: <NoticiasPage /> },
           { path: "blog/articulos", element: <ArticulosPage /> },
