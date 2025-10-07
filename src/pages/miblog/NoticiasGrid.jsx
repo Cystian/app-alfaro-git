@@ -41,6 +41,32 @@ const NewsCard = ({ title, description, image, date, link }) => (
 );
 
 // ==========================
+// Loader animado tipo dots
+// ==========================
+const LoaderNoticias = () => {
+  const dotVariants = {
+    animate: {
+      y: [0, -10, 0], // sube y baja
+      transition: { yoyo: Infinity, duration: 0.6, ease: "easeInOut" },
+    },
+  };
+
+  return (
+    <div className="flex justify-center items-center py-20 space-x-3">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="w-4 h-4 bg-red-600 rounded-full"
+          variants={dotVariants}
+          animate="animate"
+          transition={{ delay: i * 0.2, yoyo: Infinity, duration: 0.6 }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// ==========================
 // Componente principal que muestra la grilla de noticias
 // ==========================
 const NoticiasGrid = () => {
@@ -66,12 +92,7 @@ const NoticiasGrid = () => {
   // ==========================
   // Loader mientras se cargan las noticias
   // ==========================
-  if (loading)
-    return (
-      <p className="text-center py-20 text-gray-500 font-medium text-lg">
-        Cargando noticias ...
-      </p>
-    );
+  if (loading) return <LoaderNoticias />;
 
   // ==========================
   // Render principal
