@@ -1,20 +1,20 @@
 // functions/getArticulos.js
 const { Pool } = require("pg");
 
-// Reutilizar el pool de conexiones
+// 🔹 Configuración del pool de conexiones a la BD
 const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL, // 👈 tu .env en Netlify
-  ssl: { rejectUnauthorized: false },
+  connectionString: process.env.NEON_DB_URL, // URL de la BD en .env en Netlify
+  ssl: { rejectUnauthorized: false }, // para Neon/Postgres en Netlify
 });
 
 exports.handler = async (event, context) => {
   try {
     const rawId = event.queryStringParameters?.id;
 
-    // 🔹 Si mandan ID → traer noticia específica
+    // 🔹 Si mandan ID → traer artículo específico
     if (rawId) {
-      const noticiaId = parseInt(rawId, 10);
-      if (isNaN(noticiaId)) {
+      const articuloId = parseInt(rawId, 10);
+      if (isNaN(articuloId)) {
         return {
           statusCode: 400,
           body: JSON.stringify({ message: "Id inválido, debe ser un número" }),
@@ -24,16 +24,16 @@ exports.handler = async (event, context) => {
       const result = await pool.query(
         `
         SELECT id, titulo, descripcion, imagen, fecha, link
-        FROM noticias
+        FROM articulos
         WHERE id = $1
         `,
-        [noticiaId]
+        [articuloId]
       );
 
       if (result.rows.length === 0) {
         return {
           statusCode: 404,
-          body: JSON.stringify({ message: "Noticia no encontrada" }),
+          body: JSON.stringify({ message: "Artículo no encontrado" }),
         };
       }
 
@@ -43,11 +43,11 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 🔹 Si NO mandan ID → devolver todas las noticias
+    // 🔹 Si NO mandan ID → devolver todos los artículos
     const result = await pool.query(
       `
       SELECT id, titulo, descripcion, imagen, fecha, link
-      FROM noticias
+      FROM articulos
       ORDER BY fecha DESC
       `
     );
@@ -57,12 +57,12 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(result.rows),
     };
   } catch (error) {
-    console.error("ERROR en getNoticias:", error);
+    console.error("ERROR en getArticulos:", error);
 
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "Error al traer noticias",
+        message: "Error al traer artículos",
         error: error.message,
       }),
     };
