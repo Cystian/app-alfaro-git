@@ -100,7 +100,7 @@ const NoticiasGrid = () => {
   const totalPages = Math.ceil(filteredList.length / cardsPerPage);
 
   return (
-    <section className="w-full max-w-7xl mx-auto py-8 px-6">
+    <section className="w-full max-w-7xl mx-auto py-4 px-6">
       <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-8 gap-4">
         <h2 className="text-4xl font-bold text-gray-800 tracking-wide">Noticias Exclusivas</h2>
 
