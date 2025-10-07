@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // ==========================
 // Componente individual de noticia
 // ==========================
-const NewsCard = ({ title, description, image, date, link }) => (
+const NewsCard = ({ id,title, description, image, date, link }) => (
   <motion.div
     // Animación suave al pasar el mouse
     whileHover={{ scale: 1.02, boxShadow: "0 20px 30px rgba(0,0,0,0.15)" }}
@@ -114,6 +114,7 @@ const NoticiasGrid = () => {
           // ==========================
           <NewsCard
             key={news.id} // Key obligatoria para map
+              id={news.id} // id para pasar
             title={news.titulo} // mapear 'titulo' de BD a 'title' de componente
             description={news.descripcion} // mapear 'descripcion'
             image={news.imagen} // mapear 'imagen'
