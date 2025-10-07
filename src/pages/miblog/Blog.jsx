@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-// 💡 Card individual de categoría
 const CategoryCard = ({ title, description, image, link }) => {
   return (
     <motion.div
@@ -37,29 +36,31 @@ const CategoryCard = ({ title, description, image, link }) => {
 // 💥 Página principal del blog
 const Blog = () => {
   return (
-    <section className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-16 px-6">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
-          Blog Inmobiliario
-        </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Explora las últimas <strong>Noticias</strong> y <strong>Artículos</strong> del mercado inmobiliario.
-        </p>
-      </div>
+    <section className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-10 px-4">
+      <div className="bg-white rounded-3xl shadow-lg w-full max-w-6xl p-8 sm:p-12">
+        <div className="text-center mb-10 mt-2">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
+            Blog Inmobiliario
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Explora las últimas <strong>Noticias</strong> y <strong>Artículos</strong> del mercado inmobiliario.
+          </p>
+        </div>
 
-      <div className="grid sm:grid-cols-2 gap-8 w-full max-w-5xl">
-        <CategoryCard
-          title="Noticias"
-          description="Mantente al día con las novedades del sector y de nuestra empresa."
-             image="/miblog/blog_articulos.png"
-          link="/blog/noticias"
-        />
-        <CategoryCard
-          title="Artículos"
-          description="Aprende más sobre el mercado inmobiliario, consejos y análisis de expertos."
-          image="/miblog/blog_articulos.png"
-          link="/blog/articulos"
-        />
+        <div className="grid sm:grid-cols-2 gap-8">
+          <CategoryCard
+            title="Noticias"
+            description="Mantente al día con las novedades del sector y de nuestra empresa."
+            image="/miblog/blog_noticias.png"
+            link="/blog/noticias"
+          />
+          <CategoryCard
+            title="Artículos"
+            description="Aprende más sobre el mercado inmobiliario, consejos y análisis de expertos."
+            image="/miblog/blog_articulos.png"
+            link="/blog/articulos"
+          />
+        </div>
       </div>
     </section>
   );
