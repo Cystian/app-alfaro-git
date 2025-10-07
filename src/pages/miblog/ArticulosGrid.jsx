@@ -17,13 +17,14 @@ const ArticleCard = ({ title, description, image, date, link }) => (
         alt={title}
         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
       />
+      {/* Fecha */}
       <span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-3 py-1 rounded-full font-medium">
         {date}
       </span>
     </div>
 
-    {/* Contenido textual */}
-    <div className="p-6 flex flex-col justify-between h-48">
+    {/* Contenido textual: altura adaptable */}
+    <div className="p-6 flex flex-col justify-between min-h-[200px]">
       <h3 className="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">
         {title}
       </h3>
@@ -39,7 +40,7 @@ const ArticleCard = ({ title, description, image, date, link }) => (
 );
 
 // ==========================
-// Loader animado reutilizable
+// Loader animado tipo dots (igual que noticias)
 // ==========================
 const LoaderArticulos = () => {
   const dotVariants = {
@@ -73,7 +74,7 @@ const ArticulosGrid = () => {
 
   // Traemos los artículos desde el endpoint serverless
   useEffect(() => {
-    fetch("/.netlify/functions/getArticulos") // Cambiar endpoint según corresponda
+    fetch("/.netlify/functions/getArticulos")
       .then((res) => res.json())
       .then((data) => {
         setArticulosList(data);
@@ -85,8 +86,10 @@ const ArticulosGrid = () => {
       });
   }, []);
 
+  // Loader mientras carga
   if (loading) return <LoaderArticulos />;
 
+  // Render principal
   return (
     <section className="w-full max-w-7xl mx-auto py-16 px-6">
       <h2 className="text-4xl font-bold mb-12 text-gray-800 text-center tracking-wide">
