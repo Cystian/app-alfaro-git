@@ -30,12 +30,13 @@ const NewsCard = ({ title, description, image, date, link }) => (
         {title}
       </h3>
       <p className="text-gray-600 text-sm mb-5 line-clamp-3">{description}</p>
-      <a
-        href={link}
+      {/* Enlace a detalle usando React Router */}
+      <Link
+        to={`/blog/noticias/${id}`}
         className="text-red-600 hover:text-red-700 font-semibold transition-colors duration-200"
       >
         Leer más →
-      </a>
+      </Link>
     </div>
   </motion.div>
 );
