@@ -52,7 +52,7 @@ const SearchBanner = ({ onSearch }) => {
       <div
         className="absolute inset-0 rounded-3xl overflow-hidden"
         style={{
-          backgroundImage: "url('/baner_bb.png')",
+          backgroundImage: "url('/banner_bb.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
