@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { UserRound, Mail, BookOpen } from "lucide-react";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -90,17 +91,21 @@ export default function Navbar() {
                 >
                      <li>
                     <a href="/acerca-de-nosotros" className="dropdown-item" role="menuitem">
-                      🙋 Acerca de Nosotros
+                        <UserRound className="w-4 h-4 text-azul-primario" />
+    <span>Acerca de Nosotros</span>
                     </a>
                   </li>
                   <li>
                     <a href="/contacto" className="dropdown-item" role="menuitem">
-                      📝 Contacto
+                      <Mail className="w-4 h-4 text-azul-primario" />
+    <span>Contacto</span>
+                      
                     </a>
                   </li>
                   <li>
                     <a href="/nuestra-historia" className="dropdown-item" role="menuitem">
-                      📖 Nuestra Historia
+                        <BookOpen className="w-4 h-4 text-azul-primario" />
+    <span>Nuestra Historia</span>
                     </a>
                   </li>
                
