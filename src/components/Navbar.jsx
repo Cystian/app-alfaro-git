@@ -97,12 +97,14 @@ export default function Navbar() {
                     </a>
                   </li>
                   <li>
-                    <a href="/contacto"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
-  role="menuitem">
-                      <Mail className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
-    <span>Contacto</span>
-                      
-                    </a>
+                <a
+  href="/contacto"
+  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle"
+  role="menuitem"
+>
+  <Mail className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} />
+  <span className="text-sm text-gray-800">Contacto</span>
+</a>
                   </li>
                   <li>
                     <a href="/nuestra-historia"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
