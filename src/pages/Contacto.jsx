@@ -5,7 +5,7 @@ import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 
 const Contacto = () => {
   return (
-    <section className="bg-[#F5F5F5] py-10 px-6 md:px-20">
+    <section className="bg-[#F5F5F5] py-10 px-6 md:px-20" style={{ paddingTop: "0.5rem" }}>
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
         
         {/* Texto + Info corporativa */}
