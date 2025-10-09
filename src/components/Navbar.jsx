@@ -92,7 +92,7 @@ export default function Navbar() {
                      <li>
          <a
   href="/acerca-de-nosotros"
-  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-gray-100 transition-colors duration-200"
+  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-[#3b82f6] transition-colors duration-200"
   role="menuitem"
 >
   <UserRound
@@ -105,7 +105,7 @@ export default function Navbar() {
                   <li>
 <a
   href="/contacto"
-  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-gray-100 transition-colors duration-200"
+  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-[#3b82f6] transition-colors duration-200"
   role="menuitem"
 >
   <Mail
@@ -118,7 +118,7 @@ export default function Navbar() {
                   <li>
 <a
   href="/nuestra-historia"
-  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-gray-100 transition-colors duration-200"
+  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-[#3b82f6] transition-colors duration-200"
   role="menuitem"
 >
   <BookOpen
