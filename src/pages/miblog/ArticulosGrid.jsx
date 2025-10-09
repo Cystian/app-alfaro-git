@@ -112,52 +112,54 @@ const ArticulosGrid = () => {
 
   return (
     <section className="w-full max-w-7xl mx-auto py-4 px-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-10 gap-6">
-        <h2 className="text-4xl font-bold text-gray-800 tracking-wide">
-          Artículos Destacados
-        </h2>
+  {/* Encabezado con filtros totalmente responsivo */}
+<div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10 bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-gray-100">
+  {/* Título */}
+  <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center md:text-left">
+    Artículos Destacados
+  </h2>
 
-{/* Filtros de fecha mejorados en línea */}
-<div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 bg-gray-50 border border-gray-200 rounded-2xl p-3 shadow-sm">
-  <div className="flex items-center gap-2">
-    <label className="text-gray-700 font-medium">Desde:</label>
-    <input
-      type="date"
-      value={dateFrom}
-      onChange={(e) => {
-        setDateFrom(e.target.value);
+  {/* Panel de filtros */}
+  <div className="flex flex-wrap justify-center md:justify-end items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl p-3 shadow-inner w-full md:w-auto">
+    <div className="flex items-center gap-2">
+      <label className="text-gray-700 font-medium text-sm sm:text-base">Desde:</label>
+      <input
+        type="date"
+        value={dateFrom}
+        onChange={(e) => {
+          setDateFrom(e.target.value);
+          setCurrentPage(1);
+        }}
+        className="border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm sm:text-base"
+      />
+    </div>
+
+    <div className="flex items-center gap-2">
+      <label className="text-gray-700 font-medium text-sm sm:text-base">Hasta:</label>
+      <input
+        type="date"
+        value={dateTo}
+        onChange={(e) => {
+          setDateTo(e.target.value);
+          setCurrentPage(1);
+        }}
+        className="border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm sm:text-base"
+      />
+    </div>
+
+    <button
+      onClick={() => {
+        setDateFrom("");
+        setDateTo("");
         setCurrentPage(1);
       }}
-      className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-    />
+      className="bg-red-600 text-white px-4 py-1.5 rounded-lg font-medium hover:bg-red-700 transition-all text-sm sm:text-base"
+    >
+      Limpiar
+    </button>
   </div>
-
-  <div className="flex items-center gap-2">
-    <label className="text-gray-700 font-medium">Hasta:</label>
-    <input
-      type="date"
-      value={dateTo}
-      onChange={(e) => {
-        setDateTo(e.target.value);
-        setCurrentPage(1);
-      }}
-      className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-    />
-  </div>
-
-  <button
-    onClick={() => {
-      setDateFrom("");
-      setDateTo("");
-      setCurrentPage(1);
-    }}
-    className="bg-red-600 text-white px-4 py-1.5 rounded-lg font-medium hover:bg-red-700 transition-all"
-  >
-    Limpiar
-  </button>
 </div>
 
-      </div>
 
       {/* Grilla de artículos */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
