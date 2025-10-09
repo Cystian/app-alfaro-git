@@ -31,20 +31,20 @@ const Contacto = () => {
           <div className="space-y-5 mt-6">
             <div className="flex items-center gap-3">
               <Phone className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg md:text-xl">+51 940 221 494</span>
+              <span className="text-gray-800 text-lg md:text-x2">+51 940 221 494</span>
             </div>
             <div className="flex items-center gap-3">
               <Mail className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg md:text-xl">contacto@alfaroinmobiliaria.pe</span>
+              <span className="text-gray-800 text-lg md:text-x2">contacto@alfaroinmobiliaria.pe</span>
             </div>
             <div className="flex items-center gap-3">
               <MapPin className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg md:text-xl">Nuevo Chimbote, Perú</span>
+              <span className="text-gray-800 text-lg md:text-x2">Nuevo Chimbote, Perú</span>
             </div>
             <div className="flex items-center gap-3">
               <Briefcase className="text-[#C80000]" size={24} />
               <span className="text-gray-800 text-lg">CEO & Fundador:</span> 
-              <span className="font-bold text-[#C80000] text-lg md:text-xl"> Ing. Alberto Alfaro</span>
+              <span className="font-bold text-[#C80000] text-lg md:text-x2"> Ing. Alberto Alfaro</span>
             </div>
           </div>
         </div>
