@@ -19,8 +19,8 @@ const Asesores = () => {
   }, []);
 
   return (
-    <section className="px-6 py-14 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-extrabold text-center mb-4 tracking-wide text-gray-900">
+<section  className="px-6 py-14 max-w-7xl mx-auto"  style={{ paddingTop: "1rem" }}>
+            <h1 className="text-4xl font-extrabold text-center mb-4 tracking-wide text-gray-900">
         Nuestro Equipo de Asesores
       </h1>
       <p className="text-gray-600 text-lg text-center mb-12 max-w-3xl mx-auto">
