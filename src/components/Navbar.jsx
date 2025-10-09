@@ -91,20 +91,20 @@ export default function Navbar() {
                 >
                      <li>
                     <a href="/acerca-de-nosotros" className="dropdown-item" role="menuitem">
-                        <UserRound className="w-4 h-4 text-azul-primario" />
+                        <UserRound className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
     <span>Acerca de Nosotros</span>
                     </a>
                   </li>
                   <li>
                     <a href="/contacto" className="dropdown-item" role="menuitem">
-                      <Mail className="w-4 h-4 text-azul-primario" />
+                      <Mail className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
     <span>Contacto</span>
                       
                     </a>
                   </li>
                   <li>
                     <a href="/nuestra-historia" className="dropdown-item" role="menuitem">
-                        <BookOpen className="w-4 h-4 text-azul-primario" />
+                        <BookOpen className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
     <span>Nuestra Historia</span>
                     </a>
                   </li>
