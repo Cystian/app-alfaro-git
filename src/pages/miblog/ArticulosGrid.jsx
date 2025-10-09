@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -15,6 +15,7 @@ const ArticleCard = ({ id, title, description, image, date }) => (
       <img
         src={image}
         alt={title}
+        loading="lazy"
         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
       />
       <span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-3 py-1 rounded-full font-medium">
@@ -70,7 +71,8 @@ const ArticulosGrid = () => {
   const [articulosList, setArticulosList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedStartDate, setSelectedStartDate] = useState("");
+  const [selectedEndDate, setSelectedEndDate] = useState("");
 
   const cardsPerPage = 9;
 
@@ -78,7 +80,9 @@ const ArticulosGrid = () => {
     fetch("/.netlify/functions/getArticulos")
       .then((res) => res.json())
       .then((data) => {
-        const sorted = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        const sorted = data.sort(
+          (a, b) => new Date(b.fecha) - new Date(a.fecha)
+        );
         setArticulosList(sorted);
         setLoading(false);
       })
@@ -90,10 +94,19 @@ const ArticulosGrid = () => {
 
   if (loading) return <LoaderArticulos />;
 
-  // Filtrado por fecha
-  const filteredList = selectedDate
-    ? articulosList.filter((art) => new Date(art.fecha) >= new Date(selectedDate))
-    : articulosList;
+  // Filtrado por rango de fechas
+  const filteredList = useMemo(() => {
+    return articulosList.filter((art) => {
+      const artDate = new Date(art.fecha);
+      const from = selectedStartDate ? new Date(selectedStartDate) : null;
+      const to = selectedEndDate ? new Date(selectedEndDate) : null;
+
+      if (from && to) return artDate >= from && artDate <= to;
+      if (from) return artDate >= from;
+      if (to) return artDate <= to;
+      return true;
+    });
+  }, [articulosList, selectedStartDate, selectedEndDate]);
 
   // Paginación
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -103,22 +116,57 @@ const ArticulosGrid = () => {
 
   return (
     <section className="w-full max-w-7xl mx-auto py-4 px-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-8 gap-4">
-        <h2 className="text-4xl font-bold text-gray-800 tracking-wide">Artículos Destacados</h2>
+      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-8 gap-4 flex-wrap">
+        <h2 className="text-4xl font-bold text-gray-800 tracking-wide">
+          Artículos Destacados
+        </h2>
 
-        {/* Filtro por fecha */}
-        <div className="flex items-center gap-2">
-          <label className="text-gray-700 font-medium">Filtrar desde:</label>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => {
-              setSelectedDate(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="border rounded px-3 py-1 text-gray-700"
-          />
-        </div>
+        {/* Filtros de fecha (Desde / Hasta) */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 bg-white px-4 py-3 rounded-2xl border border-gray-200 shadow-sm flex-wrap justify-center sm:justify-end"
+        >
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Desde:
+            </label>
+            <input
+              type="date"
+              value={selectedStartDate}
+              onChange={(e) => {
+                setSelectedStartDate(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <label className="text-sm font-semibold text-gray-700">Hasta:</label>
+            <input
+              type="date"
+              value={selectedEndDate}
+              onChange={(e) => {
+                setSelectedEndDate(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm focus:ring-2 focus:ring-red-500 focus:outline-none"
+            />
+          </div>
+
+          {(selectedStartDate || selectedEndDate) && (
+            <button
+              onClick={() => {
+                setSelectedStartDate("");
+                setSelectedEndDate("");
+              }}
+              className="text-sm text-gray-500 hover:text-red-600 underline font-medium transition-colors duration-150"
+            >
+              Limpiar filtros
+            </button>
+          )}
+        </motion.div>
       </div>
 
       {/* Grilla de artículos */}
@@ -149,8 +197,8 @@ const ArticulosGrid = () => {
               className={`px-4 py-2 rounded ${
                 currentPage === i + 1
                   ? "bg-red-600 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+              } transition-colors duration-150`}
             >
               {i + 1}
             </button>
