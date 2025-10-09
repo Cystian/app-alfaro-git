@@ -19,17 +19,16 @@ const Asesores = () => {
   }, []);
 
   return (
-    <section className="px-6 py-14 max-w-6xl mx-auto">
+    <section className="px-6 py-16 max-w-7xl mx-auto">
       <h1 className="text-4xl font-extrabold text-center mb-4 tracking-wide text-gray-900">
         Nuestro Equipo de Asesores
       </h1>
-      <p className="text-gray-600 text-lg text-center mb-12 max-w-2xl mx-auto">
+      <p className="text-gray-600 text-lg text-center mb-12 max-w-3xl mx-auto">
         Expertos en bienes raíces listos para guiarte en la compra o venta de tu
         propiedad con la más alta calidad de servicio.
       </p>
 
       {loading ? (
-        // 🔹 Loader de personas ejecutivas
         <div className="flex justify-center items-center gap-6 h-48">
           {[...Array(5)].map((_, i) => (
             <FaUserTie
@@ -49,34 +48,34 @@ const Asesores = () => {
           {asesores.map((asesor) => (
             <div
               key={asesor.id}
-              className="group bg-white rounded-2xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-all duration-500"
+              className="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-b from-white/30 via-white/10 to-white/0"
             >
-              {/* Imagen luxury */}
-              <div className="relative">
+              {/* Imagen luxury con overlay elegante */}
+              <div className="relative overflow-hidden rounded-2xl">
                 <img
                   src={asesor.img_asesores}
                   alt={asesor.name_asesores}
-                  className="w-full h-72 object-cover transform group-hover:scale-110 transition duration-500"
+                  className="w-full h-72 object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent transition-opacity duration-500 group-hover:opacity-90"></div>
               </div>
 
               {/* Información */}
               <div className="absolute bottom-6 left-6 text-white z-10">
-                <h2 className="text-2xl font-bold drop-shadow-md">
+                <h2 className="text-2xl font-bold drop-shadow-lg">
                   {asesor.name_asesores}
                 </h2>
-                <p className="text-sm opacity-90">Asesor Inmobiliario</p>
+                <p className="text-sm opacity-90 tracking-wide">Asesor Inmobiliario</p>
               </div>
 
-              {/* Botones redes */}
+              {/* Botones redes luxury */}
               <div className="absolute bottom-6 right-6 flex gap-3 z-10">
                 {asesor.face_asesores && (
                   <a
                     href={asesor.face_asesores}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white text-blue-600 p-3 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition"
+                    className="bg-white text-blue-600 p-3 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transform hover:-translate-y-1 hover:scale-110 transition-all duration-300"
                   >
                     <FaFacebookF size={18} />
                   </a>
@@ -86,7 +85,7 @@ const Asesores = () => {
                     href={`https://wa.me/${asesor.wasap_asesores}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white text-green-600 p-3 rounded-full shadow-lg hover:bg-green-600 hover:text-white transition"
+                    className="bg-white text-green-600 p-3 rounded-full shadow-lg hover:bg-green-600 hover:text-white transform hover:-translate-y-1 hover:scale-110 transition-all duration-300"
                   >
                     <FaWhatsapp size={18} />
                   </a>
