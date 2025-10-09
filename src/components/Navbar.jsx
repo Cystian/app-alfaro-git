@@ -90,20 +90,23 @@ export default function Navbar() {
                   aria-label="Submenú Conócenos"
                 >
                      <li>
-                    <a href="/acerca-de-nosotros" className="dropdown-item" role="menuitem">
+                    <a href="/acerca-de-nosotros"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
+  role="menuitem" >
                         <UserRound className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
     <span>Acerca de Nosotros</span>
                     </a>
                   </li>
                   <li>
-                    <a href="/contacto" className="dropdown-item" role="menuitem">
+                    <a href="/contacto"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
+  role="menuitem">
                       <Mail className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
     <span>Contacto</span>
                       
                     </a>
                   </li>
                   <li>
-                    <a href="/nuestra-historia" className="dropdown-item" role="menuitem">
+                    <a href="/nuestra-historia"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
+  role="menuitem" >
                         <BookOpen className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
     <span>Nuestra Historia</span>
                     </a>
