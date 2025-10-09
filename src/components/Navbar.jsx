@@ -90,32 +90,41 @@ export default function Navbar() {
                   aria-label="Submenú Conócenos"
                 >
                      <li>
-                   <a
+         <a
   href="/acerca-de-nosotros"
-  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle"
+  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-gray-100 transition-colors duration-200"
   role="menuitem"
 >
-  <UserRound className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} />
+  <UserRound
+    className="w-[18px] h-[18px] shrink-0"
+    style={{ color: "#d10d0d" }}
+  />
   <span className="text-sm text-gray-800">Acerca de Nosotros</span>
 </a>
                   </li>
                   <li>
-                <a
+<a
   href="/contacto"
-  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle"
+  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-gray-100 transition-colors duration-200"
   role="menuitem"
 >
-  <Mail className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} />
+  <Mail
+    className="w-[18px] h-[18px] shrink-0"
+    style={{ color: "#d10d0d" }}
+  />
   <span className="text-sm text-gray-800">Contacto</span>
 </a>
                   </li>
                   <li>
-                         <a
+<a
   href="/nuestra-historia"
-  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle"
+  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-gray-100 transition-colors duration-200"
   role="menuitem"
 >
-  <BookOpen className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} />
+  <BookOpen
+    className="w-[18px] h-[18px] shrink-0"
+    style={{ color: "#d10d0d" }}
+  />
   <span className="text-sm text-gray-800">Nuestra Historia</span>
 </a>
                   </li>
