@@ -90,11 +90,14 @@ export default function Navbar() {
                   aria-label="Submenú Conócenos"
                 >
                      <li>
-                    <a href="/acerca-de-nosotros"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
-  role="menuitem" >
-                        <UserRound className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
-    <span>Acerca de Nosotros</span>
-                    </a>
+                   <a
+  href="/acerca-de-nosotros"
+  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle"
+  role="menuitem"
+>
+  <UserRound className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} />
+  <span className="text-sm text-gray-800">Acerca de Nosotros</span>
+</a>
                   </li>
                   <li>
                 <a
@@ -107,11 +110,14 @@ export default function Navbar() {
 </a>
                   </li>
                   <li>
-                    <a href="/nuestra-historia"  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap"
-  role="menuitem" >
-                        <BookOpen className="w-4 h-4 text-azul-primario" style={{ color: "#d10d0d" }} />
-    <span>Nuestra Historia</span>
-                    </a>
+                         <a
+  href="/nuestra-historia"
+  className="dropdown-item flex items-center gap-2 px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle"
+  role="menuitem"
+>
+  <BookOpen className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} />
+  <span className="text-sm text-gray-800">Nuestra Historia</span>
+</a>
                   </li>
                
                 </ul>
