@@ -30,7 +30,7 @@ const CategoryCard = ({ title, description, image, link }) => (
       <p className="text-sm mb-5 text-white/90 max-w-sm">{description}</p>
       <Link
         to={link}
-        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 no-underline"
+        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 no-underline hover:no-underline focus:no-underline active:no-underline"
       >
         Ver {title}
       </Link>
