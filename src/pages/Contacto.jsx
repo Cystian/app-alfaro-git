@@ -25,7 +25,7 @@ const Contacto = () => {
           </p>
 
           <p className="text-gray-700 text-lg md:text-x2 leading-relaxed mb-8">
-            Contamos con más de <span className="font-semibold">Gestionamos</span> propiedades de lujo, residenciales y comerciales, siempre con un enfoque en la satisfacción total del cliente y la excelencia en el servicio.
+           <span className="font-semibold">Gestionamos</span> propiedades de lujo, residenciales y comerciales, siempre con un enfoque en la satisfacción total del cliente y la excelencia en el servicio.
           </p>
 
           <div className="space-y-5 mt-6">
