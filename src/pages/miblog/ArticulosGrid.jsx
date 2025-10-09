@@ -117,39 +117,46 @@ const ArticulosGrid = () => {
           Artículos Destacados
         </h2>
 
-        {/* Filtros de fecha mejorados */}
-        <div className="flex flex-wrap items-center gap-3 bg-gray-50 border border-gray-200 rounded-2xl p-3 shadow-sm">
-          <label className="text-gray-700 font-medium">Desde:</label>
-          <input
-            type="date"
-            value={dateFrom}
-            onChange={(e) => {
-              setDateFrom(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-          />
-          <label className="text-gray-700 font-medium">Hasta:</label>
-          <input
-            type="date"
-            value={dateTo}
-            onChange={(e) => {
-              setDateTo(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-          />
-          <button
-            onClick={() => {
-              setDateFrom("");
-              setDateTo("");
-              setCurrentPage(1);
-            }}
-            className="ml-2 bg-red-600 text-white px-4 py-1 rounded-lg hover:bg-red-700 transition-all"
-          >
-            Limpiar
-          </button>
-        </div>
+{/* Filtros de fecha mejorados en línea */}
+<div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 bg-gray-50 border border-gray-200 rounded-2xl p-3 shadow-sm">
+  <div className="flex items-center gap-2">
+    <label className="text-gray-700 font-medium">Desde:</label>
+    <input
+      type="date"
+      value={dateFrom}
+      onChange={(e) => {
+        setDateFrom(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+    />
+  </div>
+
+  <div className="flex items-center gap-2">
+    <label className="text-gray-700 font-medium">Hasta:</label>
+    <input
+      type="date"
+      value={dateTo}
+      onChange={(e) => {
+        setDateTo(e.target.value);
+        setCurrentPage(1);
+      }}
+      className="border border-gray-300 rounded-lg px-3 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+    />
+  </div>
+
+  <button
+    onClick={() => {
+      setDateFrom("");
+      setDateTo("");
+      setCurrentPage(1);
+    }}
+    className="bg-red-600 text-white px-4 py-1.5 rounded-lg font-medium hover:bg-red-700 transition-all"
+  >
+    Limpiar
+  </button>
+</div>
+
       </div>
 
       {/* Grilla de artículos */}
