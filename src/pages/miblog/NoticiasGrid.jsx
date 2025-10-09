@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 // ==========================
-// Componente individual de noticia
+// Tarjeta individual de noticia
 // ==========================
 const NewsCard = ({ id, title, description, image, date }) => (
   <motion.div
@@ -14,7 +14,7 @@ const NewsCard = ({ id, title, description, image, date }) => (
     <div className="relative h-64">
       <img
         src={image}
-        alt={title}
+        alt={title || "Noticia sin título"}
         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
       />
       <span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-3 py-1 rounded-full font-medium">
@@ -22,7 +22,7 @@ const NewsCard = ({ id, title, description, image, date }) => (
       </span>
     </div>
 
-    <div className="p-6 flex flex-col justify-between h-48">
+    <div className="p-6 flex flex-col justify-between min-h-[200px]">
       <h3 className="text-xl font-semibold text-gray-800 mb-3 line-clamp-2">{title}</h3>
       <p className="text-gray-600 text-sm mb-5 line-clamp-3">{description}</p>
       <Link
@@ -42,7 +42,7 @@ const LoaderNoticias = () => {
   const dotVariants = {
     animate: {
       y: [0, -10, 0],
-      transition: { yoyo: Infinity, duration: 0.6, ease: "easeInOut" },
+      transition: { repeat: Infinity, duration: 0.6, ease: "easeInOut" },
     },
   };
 
@@ -54,7 +54,7 @@ const LoaderNoticias = () => {
           className="w-4 h-4 bg-red-600 rounded-full"
           variants={dotVariants}
           animate="animate"
-          transition={{ delay: i * 0.2, yoyo: Infinity, duration: 0.6 }}
+          transition={{ delay: i * 0.2 }}
         />
       ))}
     </div>
@@ -62,13 +62,14 @@ const LoaderNoticias = () => {
 };
 
 // ==========================
-// Componente principal NoticiasGrid con filtro + paginación
+// Componente principal NoticiasGrid con doble filtro de fechas + paginación
 // ==========================
 const NoticiasGrid = () => {
   const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   const cardsPerPage = 9;
 
@@ -76,7 +77,9 @@ const NoticiasGrid = () => {
     fetch("/.netlify/functions/getNoticias")
       .then((res) => res.json())
       .then((data) => {
-        const sorted = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        const sorted = data
+          .filter((n) => n.fecha) // validamos que tenga fecha
+          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
         setNewsList(sorted);
         setLoading(false);
       })
@@ -88,12 +91,18 @@ const NoticiasGrid = () => {
 
   if (loading) return <LoaderNoticias />;
 
-  // Filtrado por fecha
-  const filteredList = selectedDate
-    ? newsList.filter((news) => new Date(news.fecha) >= new Date(selectedDate))
-    : newsList;
+  // --- Filtrado por rango de fechas ---
+  const filteredList = newsList.filter((news) => {
+    const newsDate = new Date(news.fecha);
+    const from = dateFrom ? new Date(dateFrom) : null;
+    const to = dateTo ? new Date(dateTo) : null;
 
-  // Paginación
+    if (from && newsDate < from) return false;
+    if (to && newsDate > to) return false;
+    return true;
+  });
+
+  // --- Paginación ---
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = filteredList.slice(indexOfFirstCard, indexOfLastCard);
@@ -101,21 +110,51 @@ const NoticiasGrid = () => {
 
   return (
     <section className="w-full max-w-7xl mx-auto py-4 px-6">
-      <div className="flex flex-col sm:flex-row sm:justify-between items-center mb-8 gap-4">
-        <h2 className="text-4xl font-bold text-gray-800 tracking-wide">Noticias Exclusivas</h2>
+      {/* Encabezado con filtros totalmente responsivo */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10 bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-gray-100">
+        {/* Título */}
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 text-center md:text-left">
+          Noticias Exclusivas
+        </h2>
 
-        {/* Filtro por fecha */}
-        <div className="flex items-center gap-2">
-          <label className="text-gray-700 font-medium">Filtrar desde:</label>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => {
-              setSelectedDate(e.target.value);
+        {/* Panel de filtros */}
+        <div className="flex flex-wrap justify-center md:justify-end items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl p-3 shadow-inner w-full md:w-auto">
+          <div className="flex items-center gap-2">
+            <label className="text-gray-700 font-medium text-sm sm:text-base">Desde:</label>
+            <input
+              type="date"
+              value={dateFrom}
+              onChange={(e) => {
+                setDateFrom(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm sm:text-base"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <label className="text-gray-700 font-medium text-sm sm:text-base">Hasta:</label>
+            <input
+              type="date"
+              value={dateTo}
+              onChange={(e) => {
+                setDateTo(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="border border-gray-300 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all text-sm sm:text-base"
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              setDateFrom("");
+              setDateTo("");
               setCurrentPage(1);
             }}
-            className="border rounded px-3 py-1 text-gray-700"
-          />
+            className="bg-red-600 text-white px-4 py-1.5 rounded-lg font-medium hover:bg-red-700 transition-all text-sm sm:text-base"
+          >
+            Limpiar
+          </button>
         </div>
       </div>
 
@@ -128,11 +167,15 @@ const NoticiasGrid = () => {
             title={news.titulo}
             description={news.descripcion}
             image={news.imagen}
-            date={new Date(news.fecha).toLocaleDateString("es-PE", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
+            date={
+              news.fecha
+                ? new Date(news.fecha).toLocaleDateString("es-PE", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "Sin fecha"
+            }
           />
         ))}
       </div>
@@ -144,10 +187,10 @@ const NoticiasGrid = () => {
             <button
               key={i}
               onClick={() => setCurrentPage(i + 1)}
-              className={`px-4 py-2 rounded ${
+              className={`px-4 py-2 rounded transition-all ${
                 currentPage === i + 1
-                  ? "bg-red-600 text-white"
-                  : "bg-gray-200 text-gray-800"
+                  ? "bg-red-600 text-white shadow-md"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300"
               }`}
             >
               {i + 1}
