@@ -16,15 +16,15 @@ const Contacto = () => {
             className="mx-auto mb-6 w-40 md:w-48 h-auto object-contain"
           />
 
-          <h1 className="text-4xl md:text-5xl font-extrabold text-center text-[#C80000] mb-6">
+          <h1 className="text-4xl md:text-4xl font-extrabold text-center text-[#C80000] mb-6">
             Conócenos
           </h1>
 
-          <p className="text-gray-700 text-lg md:text-xl leading-relaxed mb-6">
+          <p className="text-gray-700 text-lg md:text-x2 leading-relaxed mb-6">
             En <span className="font-semibold">nuestra firma inmobiliaria</span> entendemos que cada decisión inmobiliaria es también una <span className="font-semibold">decisión de vida</span>. Nuestro equipo de expertos está comprometido en ofrecer un acompañamiento integral, combinando confianza, profesionalismo y cercanía.
           </p>
 
-          <p className="text-gray-700 text-lg md:text-xl leading-relaxed mb-8">
+          <p className="text-gray-700 text-lg md:text-x2 leading-relaxed mb-8">
             Contamos con más de <span className="font-semibold">15 años de experiencia</span> gestionando propiedades de lujo, residenciales y comerciales, siempre con un enfoque en la satisfacción total del cliente y la excelencia en el servicio.
           </p>
 
