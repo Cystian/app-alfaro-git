@@ -19,19 +19,20 @@ const NuestraHistoria = () => {
         className="relative max-w-6xl mx-auto bg-white shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500"
       >
         {/* === Banner Principal === */}
-  <div className="relative w-full h-auto md:h-[420px] overflow-hidden bg-black">
+<div className="relative w-full h-auto md:h-[420px] overflow-hidden bg-[#F5F5F5]">
   <img
     src="/nuestra-historia.png"
     alt="Banner Nuestra Historia"
     className="w-full h-auto md:h-[420px] object-contain mx-auto"
   />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
   <div className="absolute bottom-6 left-0 right-0 text-center text-white px-4">
     <p className="mt-2 text-sm md:text-base text-gray-200">
       Cuatro décadas de visión, innovación y compromiso con el desarrollo urbano
     </p>
   </div>
 </div>
+
 
         {/* === Contenido Principal === */}
         <div className="p-10 md:p-16">
@@ -235,6 +236,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
