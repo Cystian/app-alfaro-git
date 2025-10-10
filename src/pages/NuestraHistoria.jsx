@@ -9,7 +9,7 @@ const NuestraHistoria = () => {
       style={{ paddingTop: "2rem" }}
     >
       {/* Fondo decorativo */}
-      <div className="absolute inset-0 bg-[url('/nuestra-historia.png')] bg-cover bg-center opacity-10 pt-4" />
+      <div className="absolute inset-0 bg-cover bg-center opacity-10 pt-4" />
 
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -29,9 +29,7 @@ const NuestraHistoria = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           {/* Texto del banner */}
           <div className="absolute bottom-6 left-0 right-0 text-center text-white px-4">
-            <h1 className="text-3xl md:text-5xl font-extrabold tracking-wide drop-shadow-lg">
-              Nuestra Historia
-            </h1>
+         
             <p className="mt-2 text-sm md:text-base text-gray-200">
               Cuatro décadas de visión, innovación y compromiso con el desarrollo urbano
             </p>
@@ -240,6 +238,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
