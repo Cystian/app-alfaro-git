@@ -64,7 +64,7 @@ const NuestraHistoria = () => {
             className="rounded-2xl overflow-hidden shadow-md bg-white"
           >
             <img
-              src="/galerias-alfa.jpg"
+              src="/galerias-alfa.png"
               alt="Galerías Alfa"
               className="w-full h-56 object-cover"
             />
@@ -86,7 +86,7 @@ const NuestraHistoria = () => {
             className="rounded-2xl overflow-hidden shadow-md bg-white"
           >
             <img
-              src="/edificio-alfa.jpg"
+              src="/edificio-alfa.png"
               alt="Edificio Alfa"
               className="w-full h-56 object-cover"
             />
@@ -109,7 +109,7 @@ const NuestraHistoria = () => {
             className="rounded-2xl overflow-hidden shadow-md bg-white"
           >
             <img
-              src="/instituto-atlanta.jpg"
+              src="/instituto-atlanta.png"
               alt="Instituto de Turismo & Gastronomía ATLANTA"
               className="w-full h-56 object-cover"
             />
@@ -131,7 +131,7 @@ const NuestraHistoria = () => {
             className="rounded-2xl overflow-hidden shadow-md bg-white"
           >
             <img
-              src="/centros-diversion.jpg"
+              src="/centros-diversion.png"
               alt="Centros de Diversión Kankun, Boulevard Sur y Babilon Lounge"
               className="w-full h-56 object-cover"
             />
@@ -215,6 +215,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
