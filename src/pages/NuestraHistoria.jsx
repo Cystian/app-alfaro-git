@@ -6,7 +6,7 @@ const NuestraHistoria = () => {
   return (
     <section className="relative bg-[#F9F9F9] py-20 px-6 md:px-20 overflow-hidden" style={{ paddingTop: "2rem" }}>
       {/* Fondo decorativo */}
-      <div className="absolute inset-0 bg-[url('/fondo-inmobiliaria.jpg')] bg-cover bg-center opacity-10" />
+    <div className="absolute inset-0 bg-[url('/fondo-inmobiliaria.jpg')] bg-cover bg-center opacity-10 pt-4" />
 
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -215,6 +215,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
