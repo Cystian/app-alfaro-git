@@ -102,7 +102,7 @@ const NuestraHistoria = () => {
               />
               <div className="p-6">
                 <h3 className="text-xl font-bold text-[#C80000] mb-2">
-                  Edificio Alfa
+                  Edificio Empresarial Alfa
                 </h3>
                 <p className="text-gray-700 text-base leading-relaxed">
                   Inmueble empresarial conformado por un{" "}
@@ -236,6 +236,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
