@@ -192,7 +192,7 @@ const NuestraHistoria = () => {
 
             <p>
               Desde sus inicios, la firma se ha dedicado a{" "}
-              <strong>conectar a las personas con sus hogares ideales</strong>,
+              <strong>conectar a las personas con sus hogares e inversiones ideales</strong>,
               creciendo gracias a la confianza de sus clientes y al compromiso
               con la excelencia.
             </p>
@@ -236,6 +236,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
