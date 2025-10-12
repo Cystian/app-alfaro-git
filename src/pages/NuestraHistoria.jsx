@@ -52,15 +52,15 @@ const NuestraHistoria = () => {
                 inmobiliaria, construcción, educación y entretenimiento
               </span>
               . Durante su trayectoria, el grupo ha desarrollado, financiado,
-              construido, vendido y alquilado proyectos de diversa índole:
+              construido, vendido y alquilado proyectos de diversas índoles, como:
               viviendas, edificios multifamiliares, galerías comerciales, centros
               empresariales, centros de diversión, mercados de abastos y
               habilitaciones urbanas.
             </p>
 
             <p>
-              Dentro de los proyectos propios más destacados construidos por el
-              grupo se encuentran:
+              El grupo a ejecutado importantes proyectos propios de alto impacto,entre los
+              qué sobresalen:
             </p>
           </div>
 
@@ -236,6 +236,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
