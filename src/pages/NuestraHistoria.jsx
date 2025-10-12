@@ -96,7 +96,7 @@ const NuestraHistoria = () => {
               className="rounded-2xl overflow-hidden shadow-md bg-white"
             >
               <img
-                src="/edificio-alfa.png"
+                src="/edificio_alfa.png"
                 alt="Edificio Alfa"
                 className="w-full h-56 object-cover"
               />
@@ -236,6 +236,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
