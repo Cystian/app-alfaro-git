@@ -3,9 +3,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { UserRound, Mail, BookOpen } from "lucide-react";
 
 /**
- * Componente NavItemDropdown
- * - Reutilizable para Desktop y Móvil
- * - Recibe: label, key, links (array de { href, label, icon })
+ * Componente reutilizable para los dropdowns
  */
 const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isMobile, closeMobileMenu }) => {
   const isOpen = openDropdown === dropdownKey;
@@ -17,11 +15,17 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
         onClick={() => toggleDropdown(dropdownKey)}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className={`flex items-center justify-between w-full ${isMobile ? "px-4 py-3 text-left font-medium text-gray-800 hover:bg-azul-primario-light transition-colors duration-300" : "nav-link focus:outline-none space-x-1"}`}
+        className={`flex items-center justify-between w-full ${
+          isMobile
+            ? "px-4 py-3 text-left font-medium text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300 focus:outline-none"
+            : "nav-link flex items-center space-x-1 focus:outline-none"
+        }`}
       >
         <span>{label}</span>
         <svg
-          className={`w-4 h-4 transform transition-transform duration-300 ease-in-out ${isOpen ? "rotate-180 text-azul-primario" : "rotate-0 text-gray-600"}`}
+          className={`w-4 h-4 transform transition-transform duration-300 ease-in-out ${
+            isOpen ? "rotate-180 text-azul-primario" : "rotate-0 text-gray-600"
+          }`}
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -35,7 +39,11 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
       {/* Contenido del dropdown */}
       {isOpen && (
         <div
-          className={`${isMobile ? "pl-6 border-l border-azul-primario bg-azul-primario-light animate-slide-down" : "dropdown-menu animate-slide-down"}`}
+          className={`${
+            isMobile
+              ? "pl-6 border-l border-azul-primario bg-transparent animate-slide-down"
+              : "dropdown-menu animate-slide-down"
+          }`}
         >
           {[
             { href: "/acerca-de-nosotros", label: "Acerca de Nosotros", icon: <UserRound className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} /> },
@@ -45,7 +53,11 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
             <a
               key={item.href}
               href={item.href}
-              className={`${isMobile ? "block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out flex items-center gap-2" : "dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap hover:bg-[#bfdbfe] transition-colors duration-200"}`}
+              className={`flex items-center gap-2 w-full px-4 py-2 text-gray-700 transition-all duration-300 ${
+                isMobile
+                  ? "hover:border-b-2 hover:border-blue-600 bg-transparent" // solo subrayado azul, sin sombreado
+                  : "dropdown-item hover:bg-[#bfdbfe]" // Desktop mantiene hover fondo
+              }`}
               onClick={() => isMobile && closeMobileMenu()}
             >
               {item.icon}
@@ -63,7 +75,7 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const wrapperRef = useRef(null);
 
-  // Cierra dropdowns y menú móvil si se hace clic fuera
+  // Detecta clic fuera del navbar para cerrar menus
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -75,22 +87,14 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleDropdown = (key) => {
-    setOpenDropdown(openDropdown === key ? null : key);
-  };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    setOpenDropdown(null);
-  };
-
+  const toggleDropdown = (key) => setOpenDropdown(openDropdown === key ? null : key);
+  const toggleMobileMenu = () => { setIsMobileMenuOpen(!isMobileMenuOpen); setOpenDropdown(null); };
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <nav ref={wrapperRef} className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-
           {/* LOGO */}
           <div className="flex-1 flex justify-center md:justify-start">
             <a href="/" className="flex items-center">
@@ -107,7 +111,7 @@ export default function Navbar() {
             <a href="/vende-o-alquila" className="nav-link">VENDE O ALQUILA</a>
             <a href="/servicios" className="nav-link">SERVICIOS</a>
 
-            {/* Submenú CONÓCENOS */}
+            {/* Dropdown CONÓCENOS Desktop */}
             <NavItemDropdown
               label="CONÓCENOS"
               dropdownKey="conocenos"
@@ -136,14 +140,14 @@ export default function Navbar() {
       {/* Menú móvil */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
-          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
+          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
             VENDE O ALQUILA
           </a>
-          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
+          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
             SERVICIOS
           </a>
 
-          {/* Submenú CONÓCENOS móvil unificado */}
+          {/* Dropdown CONÓCENOS Móvil */}
           <NavItemDropdown
             label="CONÓCENOS"
             dropdownKey="conocenos"
@@ -153,10 +157,10 @@ export default function Navbar() {
             closeMobileMenu={closeMobileMenu}
           />
 
-          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
+          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
             BLOG
           </a>
-          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
+          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
             ASESORES
           </a>
         </div>
