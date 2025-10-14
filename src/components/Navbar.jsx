@@ -2,11 +2,68 @@ import React, { useState, useRef, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { UserRound, Mail, BookOpen } from "lucide-react";
 
+/**
+ * Componente NavItemDropdown
+ * - Reutilizable para Desktop y Móvil
+ * - Recibe: label, key, links (array de { href, label, icon })
+ */
+const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isMobile, closeMobileMenu }) => {
+  const isOpen = openDropdown === dropdownKey;
+
+  return (
+    <div className={`relative ${isMobile ? "" : "md:relative"}`}>
+      {/* Botón del dropdown */}
+      <button
+        onClick={() => toggleDropdown(dropdownKey)}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        className={`flex items-center justify-between w-full ${isMobile ? "px-4 py-3 text-left font-medium text-gray-800 hover:bg-azul-primario-light transition-colors duration-300" : "nav-link focus:outline-none space-x-1"}`}
+      >
+        <span>{label}</span>
+        <svg
+          className={`w-4 h-4 transform transition-transform duration-300 ease-in-out ${isOpen ? "rotate-180 text-azul-primario" : "rotate-0 text-gray-600"}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {/* Contenido del dropdown */}
+      {isOpen && (
+        <div
+          className={`${isMobile ? "pl-6 border-l border-azul-primario bg-azul-primario-light animate-slide-down" : "dropdown-menu animate-slide-down"}`}
+        >
+          {[
+            { href: "/acerca-de-nosotros", label: "Acerca de Nosotros", icon: <UserRound className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} /> },
+            { href: "/contacto", label: "Contacto", icon: <Mail className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} /> },
+            { href: "/nuestra-historia", label: "Nuestra Historia", icon: <BookOpen className="w-[18px] h-[18px] shrink-0" style={{ color: "#d10d0d" }} /> },
+          ].map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={`${isMobile ? "block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out flex items-center gap-2" : "dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap hover:bg-[#bfdbfe] transition-colors duration-200"}`}
+              onClick={() => isMobile && closeMobileMenu()}
+            >
+              {item.icon}
+              <span className="text-sm">{item.label}</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const wrapperRef = useRef(null);
 
+  // Cierra dropdowns y menú móvil si se hace clic fuera
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -27,227 +84,79 @@ export default function Navbar() {
     setOpenDropdown(null);
   };
 
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
-    <nav
-      ref={wrapperRef}
-      className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300"
-    >
+    <nav ref={wrapperRef} className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* LOGO */}
-  <div className="flex-1 flex justify-center md:justify-start">
-    <a href="/" className="flex items-center">
-      <img
-        src="/logo.png"
-        alt="Logo"
-        className="h-16 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
-      />
-    </a>
-  </div>
-          {/* Menú Desktop */}
-          <div className="hidden md:flex space-x-8">
-
-            {/* VENDE O ALQUILA */}
-            <a href="/vende-o-alquila" className="nav-link">
-              VENDE O ALQUILA
-            </a>
-
-            {/* SERVICIOS */}
-            <a href="/servicios" className="nav-link">
-              SERVICIOS
-            </a>
-
-            {/* CONÓCENOS con Submenú */}
-            <div className="relative">
-              <button
-                onClick={() => toggleDropdown("conocenos")}
-                className="flex items-center space-x-1 nav-link focus:outline-none"
-                aria-haspopup="true"
-                aria-expanded={openDropdown === "conocenos"}
-              >
-                <span>CONÓCENOS</span>
-                <svg
-                  className={`w-4 h-4 transform transition-transform duration-300 ease-in-out ${
-                    openDropdown === "conocenos"
-                      ? "rotate-180 text-azul-primario"
-                      : "rotate-0 text-gray-600"
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {openDropdown === "conocenos" && (
-                <ul
-                  className="dropdown-menu animate-slide-down"
-                  role="menu"
-                  aria-label="Submenú Conócenos"
-                >
-                     <li>
-         <a
-  href="/acerca-de-nosotros"
-  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-[#bfdbfe] transition-colors duration-200"
-  role="menuitem"
->
-  <UserRound
-    className="w-[18px] h-[18px] shrink-0"
-    style={{ color: "#d10d0d" }}
-  />
-  <span className="text-sm text-gray-800">Acerca de Nosotros</span>
-</a>
-                  </li>
-                  <li>
-<a
-  href="/contacto"
-  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-[#bfdbfe] transition-colors duration-200"
-  role="menuitem"
->
-  <Mail
-    className="w-[18px] h-[18px] shrink-0"
-    style={{ color: "#d10d0d" }}
-  />
-  <span className="text-sm text-gray-800">Contacto</span>
-</a>
-                  </li>
-                  <li>
-<a
-  href="/nuestra-historia"
-  className="dropdown-item flex items-center gap-2 w-full px-3 py-2 whitespace-nowrap !inline-flex !items-center !gap-2 leading-none align-middle hover:bg-[#bfdbfe] transition-colors duration-200"
-  role="menuitem"
->
-  <BookOpen
-    className="w-[18px] h-[18px] shrink-0"
-    style={{ color: "#d10d0d" }}
-  />
-  <span className="text-sm text-gray-800">Nuestra Historia</span>
-</a>
-                  </li>
-               
-                </ul>
-              )}
-            </div>
-
-            {/* BLOG */}
-            <a href="/blog" className="nav-link">
-              BLOG
-            </a>
-                {/* ASESORES */}
-            <a href="/asesores" className="nav-link">
-              ASESORES
+          <div className="flex-1 flex justify-center md:justify-start">
+            <a href="/" className="flex items-center">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-16 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
+              />
             </a>
           </div>
 
-          {/* Botón menú móvil */}
+          {/* Menú Desktop */}
+          <div className="hidden md:flex space-x-8">
+            <a href="/vende-o-alquila" className="nav-link">VENDE O ALQUILA</a>
+            <a href="/servicios" className="nav-link">SERVICIOS</a>
 
-  {/* Botón menú móvil */}
-  <div className="md:hidden flex items-center absolute right-4">
-    <button
-      onClick={toggleMobileMenu}
-      aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-      className="text-2xl focus:outline-none"
-    >
-      {isMobileMenuOpen ? <FiX /> : <FiMenu />}
-    </button>
-  </div>
-          
+            {/* Submenú CONÓCENOS */}
+            <NavItemDropdown
+              label="CONÓCENOS"
+              dropdownKey="conocenos"
+              openDropdown={openDropdown}
+              toggleDropdown={toggleDropdown}
+              isMobile={false}
+            />
+
+            <a href="/blog" className="nav-link">BLOG</a>
+            <a href="/asesores" className="nav-link">ASESORES</a>
+          </div>
+
+          {/* Botón menú móvil */}
+          <div className="md:hidden flex items-center absolute right-4">
+            <button
+              onClick={toggleMobileMenu}
+              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              className="text-2xl focus:outline-none"
+            >
+              {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Menú móvil */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
-          <a
-            href="/vende-o-alquila"
-            className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
+          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
             VENDE O ALQUILA
           </a>
-          <a
-            href="/servicios"
-            className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
+          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
             SERVICIOS
           </a>
 
-          {/* Submenú CONÓCENOS móvil */}
-          <div>
-            <button
-              onClick={() => toggleDropdown("conocenos")}
-              aria-expanded={openDropdown === "conocenos"}
-              aria-controls="submenu-conocenos-mobile"
-              className="flex justify-between items-center w-full px-4 py-3 text-left font-medium text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out focus:outline-none"
-            >
-              CONÓCENOS
-              <svg
-                className={`w-5 h-5 ml-2 transition-transform duration-300 ease-in-out ${
-                  openDropdown === "conocenos"
-                    ? "rotate-180 text-azul-primario"
-                    : "rotate-0 text-gray-600"
-                }`}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+          {/* Submenú CONÓCENOS móvil unificado */}
+          <NavItemDropdown
+            label="CONÓCENOS"
+            dropdownKey="conocenos"
+            openDropdown={openDropdown}
+            toggleDropdown={toggleDropdown}
+            isMobile={true}
+            closeMobileMenu={closeMobileMenu}
+          />
 
-            {openDropdown === "conocenos" && (
-              <div
-                id="submenu-conocenos-mobile"
-                className="pl-6 border-l border-azul-primario bg-azul-primario-light animate-slide-down"
-              >
-
-                   <a
-                  href="/acerca-de-nosotros"
-                  className="block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  🙋 Acerca de Nosotros
-                </a>
-                
-                <a
-                  href="/contacto"
-                  className="block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  📝 Contacto
-                </a>
-                <a
-                  href="/nuestra-historia"
-                  className="block px-4 py-2 text-gray-700 hover:bg-azul-primario transition-colors duration-300 ease-in-out"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  📖 Nuestra Historia
-                </a>
-             
-              </div>
-            )}
-          </div>
-
-          <a
-            href="/miblog/blog"
-            className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
+          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
             BLOG
           </a>
-              <a
-            href="/asesores"
-            className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
+          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:bg-azul-primario-light transition-colors duration-300 ease-in-out" onClick={closeMobileMenu}>
             ASESORES
           </a>
         </div>
