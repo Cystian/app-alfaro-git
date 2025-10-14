@@ -48,7 +48,7 @@ export default function Home() {
     <img 
       src="/subtitulos/tienes_dudas.png" 
       alt="Tienes Dudas" 
-      className="w-48 mx-auto" 
+      className="w-[30rem] mx-auto" 
     />
   </div>
           
