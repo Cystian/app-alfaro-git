@@ -44,7 +44,14 @@ export default function Home() {
 
         {/* Contacto */}
         <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4">¿Tienes dudas? Contáctanos</h2>
+            <div className="mb-4">
+    <img 
+      src="/subtitulos/tienes_dudas.png" 
+      alt="Tienes Dudas" 
+      className="w-48 mx-auto" 
+    />
+  </div>
+          
           <ContactForm />
         </section>
       </main>
