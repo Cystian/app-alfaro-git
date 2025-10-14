@@ -37,7 +37,7 @@ const SocialMediaSection = () => {
     loading="lazy"
   />
       
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto social-media-container">
+ <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl w-full">
         {visibleLinks.map((social, index) => {
           const colorValue = social.color_fondo || "";
           const useClass = !isHex(colorValue) && !isGradient(colorValue);
