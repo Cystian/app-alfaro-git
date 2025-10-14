@@ -15,6 +15,14 @@
   }
 }
 
+/* Ancho ≤ 767px */
+@media (max-width: 767px) {
+  .floating-guia {
+    top: 20px; /* sube el botón otra vez */
+  }
+}
+
+
 .guia-bubble {
   display: flex;
   align-items: center;
