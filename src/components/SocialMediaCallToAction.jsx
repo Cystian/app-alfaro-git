@@ -29,10 +29,14 @@ const SocialMediaSection = () => {
     color.toLowerCase().startsWith("linear-gradient");
 
   return (
-    <section className="py-8 px-4 bg-white-100">
-      <h2 className="text-center text-2xl font-bold mb-6">
-        Síguenos en nuestras redes
-      </h2>
+<section className="py-8 px-4 bg-white flex justify-center items-center">
+  <img
+    src="/subtitulos/siguenos_redes.png"
+    alt="Síguenos en nuestras redes"
+    className="max-h-16 sm:max-h-20 object-contain mx-auto"
+    loading="lazy"
+  />
+      
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-4xl mx-auto social-media-container">
         {visibleLinks.map((social, index) => {
           const colorValue = social.color_fondo || "";
