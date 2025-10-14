@@ -3,7 +3,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { UserRound, Mail, BookOpen } from "lucide-react";
 
 /**
- * Componente reutilizable para los dropdowns
+ * Componente reutilizable para dropdowns
  */
 const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isMobile, closeMobileMenu }) => {
   const isOpen = openDropdown === dropdownKey;
@@ -17,7 +17,7 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
         aria-expanded={isOpen}
         className={`flex items-center justify-between w-full ${
           isMobile
-            ? "px-4 py-3 text-left font-medium text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300 focus:outline-none"
+            ? "px-4 py-3 text-left font-medium text-gray-800 transition-colors duration-300 focus:outline-none no-underline hover:no-underline active:no-underline"
             : "nav-link flex items-center space-x-1 focus:outline-none"
         }`}
       >
@@ -53,10 +53,10 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
             <a
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2 w-full px-4 py-2 text-gray-700 transition-all duration-300 ${
+              className={`flex items-center gap-2 w-full px-4 py-2 text-gray-700 transition-colors duration-300 ${
                 isMobile
-                  ? "hover:border-b-2 hover:border-blue-600 bg-transparent" // solo subrayado azul, sin sombreado
-                  : "dropdown-item hover:bg-[#bfdbfe]" // Desktop mantiene hover fondo
+                  ? "hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline"
+                  : "dropdown-item hover:bg-[#bfdbfe]"
               }`}
               onClick={() => isMobile && closeMobileMenu()}
             >
@@ -75,7 +75,6 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const wrapperRef = useRef(null);
 
-  // Detecta clic fuera del navbar para cerrar menus
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -140,10 +139,10 @@ export default function Navbar() {
       {/* Menú móvil */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
-          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
+          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
             VENDE O ALQUILA
           </a>
-          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
+          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
             SERVICIOS
           </a>
 
@@ -157,10 +156,10 @@ export default function Navbar() {
             closeMobileMenu={closeMobileMenu}
           />
 
-          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
+          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
             BLOG
           </a>
-          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:border-b-2 hover:border-blue-600 transition-all duration-300" onClick={closeMobileMenu}>
+          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
             ASESORES
           </a>
         </div>
