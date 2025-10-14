@@ -4,6 +4,7 @@
   top: 10px;
   left: 20px;
   z-index: 9999;
+   transition: top 0.5s ease-in-out; /* <- esto suaviza el movimiento */
   /* No rotamos el contenedor, la flecha se rota dentro */
 }
 
