@@ -9,7 +9,7 @@
 
 /* ↓ Cuando el ancho es menor o igual a 1000 px ↓ */
 @media (max-width: 1350px) {
-  floating-guia {
+  floating-guia. {
     top: 75px; /* baja el botón */
   }
 }
