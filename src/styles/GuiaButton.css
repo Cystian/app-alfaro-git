@@ -1,7 +1,7 @@
 /* src/styles/GuiaButton.css */
 .floating-guia {
   position: fixed;
-  top: 20px;
+
   left: 20px;
   z-index: 9999;
   /* No rotamos el contenedor, la flecha se rota dentro */
