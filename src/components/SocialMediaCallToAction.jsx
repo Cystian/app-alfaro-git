@@ -29,11 +29,11 @@ const SocialMediaSection = () => {
     color.toLowerCase().startsWith("linear-gradient");
 
   return (
-<section className="py-8 px-4 bg-white flex justify-center items-center">
+<section className="py-8 px-4 bg-white flex flex-col items-center">
   <img
     src="/subtitulos/siguenos_redes.png"
     alt="Síguenos en nuestras redes"
-    className="max-h-16 sm:max-h-20 object-contain mx-auto"
+    className="max-h-16 sm:max-h-20 object-contain mb-8"
     loading="lazy"
   />
       
