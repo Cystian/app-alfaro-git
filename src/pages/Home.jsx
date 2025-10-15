@@ -38,7 +38,7 @@ export default function Home() {
         <FeaturedProperties />
 
         {/* Redes sociales */}
-        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow">
+        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
           <SocialMediaCallToAction />
         </section>
 
