@@ -100,7 +100,7 @@ const ContactForm = () => {
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-      <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">Contáctanos</h2>
+     // h2 className="text-2xl font-bold text-gray-800 text-center mb-2">Contáctanos</h2
       <p className="text-center text-gray-500 mb-6 text-sm">
         Completa el formulario y nos pondremos en contacto contigo.
       </p>
