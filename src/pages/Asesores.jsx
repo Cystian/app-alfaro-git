@@ -19,8 +19,8 @@ const Asesores = () => {
   }, []);
 
   return (
-<section  className="px-6 py-14 max-w-7xl mx-auto"  style={{ paddingTop: "3rem" }}>
-
+<section  id="redes" className="px-6 py-14 max-w-7xl mx-auto bg-gray-50 p-6 rounded-2xl shadow bg-white "  style={{ paddingTop: "3rem" }}>
+    
               <div className="mb-4">
     <img 
       src="/subtitulos/equipo_asesores.png" 
