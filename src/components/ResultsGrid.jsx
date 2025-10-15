@@ -18,12 +18,18 @@ export default function ResultsGrid({ properties }) {
             key={property.id}
             className="bg-white rounded-lg shadow p-4 flex flex-col"
           >
-            <img
-              src={property.image}
-              alt={property.title}
-              className="w-full h-48 object-cover rounded mb-4"
-              loading="lazy"
-            />
+  
+              <a href={`/propiedades/resumen/${property.id}`} target="_blank" rel="noopener noreferrer">
+  <img
+    src={property.image}
+    alt={property.title}
+    className="w-full h-48 object-cover rounded mb-4 cursor-pointer hover:scale-105 transition-transform"
+    loading="lazy"
+  />
+</a>
+
+
+            
             <div className="flex flex-col flex-grow">
               <h3 className="text-lg font-bold mb-1 truncate">{property.title}</h3>
               <p className="text-sm text-gray-600 mb-1 truncate">{property.location}</p>
