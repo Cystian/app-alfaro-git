@@ -4,6 +4,14 @@ export default function ResultsGrid({ properties }) {
   return (
     <div>
        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
+     <div className="mb-4">
+    <img 
+      src="/subtitulos/resultados_busqueda.png" 
+      alt="Resultados de Busqueda" 
+      className="w-[30rem] mx-auto" 
+    />
+  </div>
+         
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {properties.map((property) => (
           <div
