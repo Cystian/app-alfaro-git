@@ -33,7 +33,7 @@ const SocialMediaSection = () => {
   <img
     src="/subtitulos/siguenos_redes.png"
     alt="Síguenos en nuestras redes"
-    className="max-h-16 sm:max-h-20 object-contain mb-8"
+    className="w-[30rem] mx-auto object-contain mb-8"
     loading="lazy"
   />
       
