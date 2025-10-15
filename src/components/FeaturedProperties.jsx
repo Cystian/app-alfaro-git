@@ -55,12 +55,21 @@ const FeaturedProperties = () => {
               <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
                 {index + 1}/{properties.length}
               </div>
+                  <a
+      href={`/propiedades/resumen/${prop.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+                    
               <img
                 src={prop.image}
                 alt={prop.title}
                 className="w-full h-48 object-cover"
                 loading="lazy"
               />
+
+                     </a>
+              
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-lg font-semibold">{prop.title}</h3>
                 <p className="text-gray-500">{prop.location}</p>
