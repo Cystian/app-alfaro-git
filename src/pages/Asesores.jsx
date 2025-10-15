@@ -19,7 +19,7 @@ const Asesores = () => {
   }, []);
 
   return (
-<section  id="redes" className=" bg-gray-50 p-6 rounded-2xl shadow bg-white "  style={{ paddingTop: "3rem" }}>
+<section  id="redes" className=" bg-gray-50 p-6 rounded-2xl shadow bg-white "  style={{ paddingTop: "1rem", marginTop: "2rem" }}>
     
               <div className="mb-4">
     <img 
