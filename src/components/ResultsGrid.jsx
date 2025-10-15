@@ -3,6 +3,7 @@ import React from "react";
 export default function ResultsGrid({ properties }) {
   return (
     <div>
+       <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {properties.map((property) => (
           <div
@@ -50,6 +51,7 @@ export default function ResultsGrid({ properties }) {
           </div>
         ))}
       </section>
+            </section>
     </div>
   );
 }
