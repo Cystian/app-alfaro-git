@@ -27,9 +27,16 @@ const FeaturedProperties = () => {
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Propiedades destacadas
-      </h2>
+ 
+
+            <div className="mb-4">
+    <img 
+      src="/subtitulos/propiedades_destacadas.png" 
+      alt="Propiedades Destacadas" 
+      className="w-[30rem] mx-auto" 
+    />
+  </div>
+      
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}
