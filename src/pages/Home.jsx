@@ -43,7 +43,7 @@ export default function Home() {
         </section>
 
         {/* Contacto */}
-        <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow">
+        <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
             <div className="mb-4">
     <img 
       src="/subtitulos/tienes_dudas.png" 
