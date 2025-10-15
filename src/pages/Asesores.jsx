@@ -68,9 +68,9 @@ const Asesores = () => {
 
               {/* Información */}
               <div className="absolute bottom-6 left-6 text-white z-10">
-                <h2 className="text-2xl font-bold drop-shadow-lg">
-                  {asesor.name_asesores}
-                </h2>
+             <h2 className="text-2xl font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)]">
+  {asesor.name_asesores}
+</h2>
                 <p className="text-sm opacity-90 tracking-wide">Asesor Inmobiliario</p>
               </div>
 
