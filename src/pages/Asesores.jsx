@@ -20,9 +20,15 @@ const Asesores = () => {
 
   return (
 <section  className="px-6 py-14 max-w-7xl mx-auto"  style={{ paddingTop: "3rem" }}>
-            <h1 className="text-4xl font-extrabold text-center mb-4 tracking-wide text-gray-900">
-        Nuestro Equipo de Asesores
-      </h1>
+
+              <div className="mb-4">
+    <img 
+      src="/subtitulos/equipo_asesores.png" 
+      alt="Nuestro Equipo de Asesores" 
+      className="w-[30rem] mx-auto" 
+    />
+  </div>
+  
       <p className="text-gray-600 text-lg text-center mb-12 max-w-3xl mx-auto">
         Expertos en bienes raíces listos para guiarte en la compra o venta de tu
         propiedad con la más alta calidad de servicio.
