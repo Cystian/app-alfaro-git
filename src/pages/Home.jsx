@@ -35,8 +35,10 @@ export default function Home() {
         {searchResults.length > 0 && <ResultsGrid properties={searchResults} />}
 
         {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
+          <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
         <FeaturedProperties />
-
+   </section>
+        
         {/* Redes sociales */}
         <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
           <SocialMediaCallToAction />
