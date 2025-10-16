@@ -22,7 +22,7 @@ exports.handler = async (event, context) => {
 
       const result = await pool.query(
         `
-        SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores
+        SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores,insta_asesores,tiktok_asesores,linkedin_asesores
         FROM asesores
         WHERE id = $1
         `,
