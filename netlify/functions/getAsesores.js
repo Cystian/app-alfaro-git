@@ -45,7 +45,7 @@ exports.handler = async (event, context) => {
     // 🔹 Si NO mandan ID → devolver todos los asesores
     const result = await pool.query(
       `
-      SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores
+      SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores,insta_asesores,tiktok_asesores,linkedin_asesores
       FROM asesores
       ORDER BY id ASC
       `
