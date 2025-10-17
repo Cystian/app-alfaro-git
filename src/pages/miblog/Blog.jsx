@@ -57,9 +57,15 @@ const Blog = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-4">
-              Blog Inmobiliario
-            </h1>
+            
+    <div className="mb-4">
+        <img
+          src="/subtitulos/blog_inmobiliario.png"
+          alt="Blog Inmobiliario"
+          className="w-[30rem] mx-auto"
+        />
+      </div>
+            
             <p className="text-gray-600 max-w-2xl mx-auto">
               Explora las últimas <strong>Noticias</strong> y{" "}
               <strong>Artículos</strong> del mercado inmobiliario.
