@@ -120,14 +120,19 @@ if (!data) {
                   alt={`${data.property.title} - ${labels[idx]}`}
                   className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl transition-transform duration-700 ease-in-out hover:scale-105 cursor-pointer"
                   loading="lazy"
-                  onClick={() => {
-                    const isMain = idx === 0;
-                    openLightbox(
-                      img,
-                      isMain ? data.property.title : labels[idx] || "Subpropiedad",
-                      isMain ? "" : data.subProperties[idx - 1]?.content || ""
-                    );
-                  }}
+           onClick={() => {
+  const isMain = idx === 0;
+  if (isMain) {
+    openLightbox(img, data.property.title, "");
+  } else {
+    const sub = data.subProperties[idx - 1];
+    openLightbox(
+      img,
+      sub?.content || "Subpropiedad",
+      sub?.text_content || ""
+    );
+  }
+}}
                 />
               </SwiperSlide>
             ))}
