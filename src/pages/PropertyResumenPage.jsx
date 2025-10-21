@@ -64,7 +64,7 @@ export default function PropertyResumenPage() {
 
   const formatPrice = (price) => {
     if (!price) return "";
-    return `S/ ${Number(price).toLocaleString("es-PE")}`;
+    return `US$ ${Number(price).toLocaleString("es-PE")}`;
   };
 
 
