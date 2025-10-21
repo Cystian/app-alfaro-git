@@ -247,7 +247,7 @@ if (!data) {
               </div>
             </div>
           </div>
-
+   <hr className="border-gray-300 mb-6" />
           {/* Descripción */}
           <div className="mb-6">
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
