@@ -17,9 +17,7 @@ export default {
         "gris-medio": "var(--gris-medio)",
         "gris-claro": "var(--gris-claro)",
         "beige-suave": "var(--beige-suave)",
-           // 💎 Tonalidad "Luxury Burdeos" (para títulos y precios destacados)
-        "burdeos-luxury": "#5A0A17",
-        "burdeos-luxury-dark": "#420710",
+      
       },
 
       // 🌟 Sombras personalizadas
