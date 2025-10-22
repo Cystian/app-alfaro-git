@@ -1,7 +1,7 @@
 // netlify/functions/getPropertyDetails.js
 const { Pool } = require("pg");
 
-// Pool global para reutilizar conexiones
+// 🧩 Pool global para reutilizar conexiones
 const pool = new Pool({
   connectionString: process.env.NEON_DB_URL,
   ssl: { rejectUnauthorized: false },
@@ -25,12 +25,13 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 🔹 Traer propiedad principal (con lat/long)
+    // 🔹 Consultar propiedad principal con nuevas columnas
     const propertyResult = await pool.query(
       `
       SELECT id, title, image, price, location, status, 
              bedrooms, bathrooms, area, description,
-             latitude, longitude
+             latitude, longitude,
+             address, frontera, largo
       FROM properties
       WHERE id = $1
       `,
@@ -46,7 +47,7 @@ exports.handler = async (event, context) => {
 
     const property = propertyResult.rows[0];
 
-    // 🔹 Traer subpropiedades (con text_content)
+    // 🔹 Consultar subpropiedades relacionadas (galería / info extra)
     const subPropsResult = await pool.query(
       `
       SELECT id, property_id, content, image, "order", text_content
@@ -56,18 +57,23 @@ exports.handler = async (event, context) => {
       `,
       [propertyId]
     );
+
     const subProperties = subPropsResult.rows;
 
-    // 🔹 Respuesta final (sin flyerData)
+    // 🔹 Armar respuesta final
     return {
       statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({
         property,
         subProperties,
       }),
     };
   } catch (error) {
-    console.error("ERROR en getPropertyDetails:", error);
+    console.error("❌ ERROR en getPropertyDetails:", error);
 
     return {
       statusCode: 500,
