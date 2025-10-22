@@ -20,6 +20,12 @@ export default {
       
       },
 
+           // 💎 Fuente personalizada
+      fontFamily: {
+        geist: ['"Geist Mono"', 'monospace'],
+      },
+
+
       // 🌟 Sombras personalizadas
       boxShadow: {
         navbar: "0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06)",
