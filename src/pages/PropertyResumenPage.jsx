@@ -232,21 +232,28 @@ if (!data) {
           {/* Datos principales */}
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-  <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-    <FaMapMarkerAlt className="text-red-600 mr-3" />
-    <div>
-      <p className="text-gray-500 text-sm">Ubicación</p>
-      <p className="font-semibold text-lg">{data.property.location}</p>
-    </div>
-  </div>
+      
+     {/* UBICACIÓN */}
+      <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+        <FaMapMarkerAlt className="text-red-600 mr-3 text-2xl" />
+        <div>
+          <p className="text-gray-500 text-sm">Ubicación</p>
+          <p className="font-semibold text-lg text-gray-800">
+            {data.property.location || "No especificada"}
+          </p>
+        </div>
+      </div>
 
-  <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-    <FaRulerCombined className="text-red-600 mr-3" />
-    <div>
-      <p className="text-gray-500 text-sm">Área de Terreno</p>
-      <p className="font-semibold text-lg">{data.property.area} m²</p>
-    </div>
-  </div>
+      {/* ÁREA DE TERRENO */}
+      <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+        <FaRulerCombined className="text-red-600 mr-3 text-2xl" />
+        <div>
+          <p className="text-gray-500 text-sm">Área de Terreno</p>
+          <p className="font-semibold text-lg text-gray-800">
+            {data.property.area ? `${data.property.area} m²` : "No especificada"}
+          </p>
+        </div>
+      </div>
 
   {/* Lógica condicional: Terreno vs Propiedad con habitaciones */}
   {data.property.title.toLowerCase().includes("terreno") ? (
