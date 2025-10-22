@@ -208,45 +208,88 @@ if (!data) {
           <hr className="border-gray-300 mb-6" />
 
           {/* Datos principales */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
-            <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-              <FaMapMarkerAlt className="text-red-600 mr-3" />
-              <div>
-                <p className="text-gray-500 text-sm">Ubicación</p>
-                <p className="font-semibold text-lg">{data.property.location}</p>
-              </div>
-            </div>
-            <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-              <FaRulerCombined className="text-red-600 mr-3" />
-              <div>
-                <p className="text-gray-500 text-sm">Área</p>
-                <p className="font-semibold text-lg">{data.property.area} m²</p>
-              </div>
-            </div>
-            <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-              <FaBed className="text-red-600 mr-3" />
-              <div>
-                <p className="text-gray-500 text-sm">Dormitorios</p>
-                <p className="font-semibold text-lg">{data.property.bedrooms}</p>
-              </div>
-            </div>
-            <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-              <FaBath className="text-red-600 mr-3" />
-              <div>
-                <p className="text-gray-500 text-sm">Baños</p>
-                <p className="font-semibold text-lg">{data.property.bathrooms}</p>
-              </div>
-            </div>
-            <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
-              <FaTag className="text-red-600 mr-3" />
-              <div>
-                <p className="text-gray-500 text-sm">Precio</p>
-                <p className="font-semibold text-lg text-red-600">
-                  {formatPrice(data.property.price)}
-                </p>
-              </div>
-            </div>
-          </div>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
+  <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+    <FaMapMarkerAlt className="text-red-600 mr-3" />
+    <div>
+      <p className="text-gray-500 text-sm">Ubicación</p>
+      <p className="font-semibold text-lg">{data.property.location}</p>
+    </div>
+  </div>
+
+  <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+    <FaRulerCombined className="text-red-600 mr-3" />
+    <div>
+      <p className="text-gray-500 text-sm">Área</p>
+      <p className="font-semibold text-lg">{data.property.area} m²</p>
+    </div>
+  </div>
+
+  {/* Lógica condicional: Terreno vs Propiedad con habitaciones */}
+  {data.property.title.toLowerCase().includes("terreno") ? (
+    <>
+      {/* Frontera */}
+      <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+        <FaRulerCombined className="text-red-600 mr-3" />
+        <div>
+          <p className="text-gray-500 text-sm">Frontera</p>
+          <p className="font-semibold text-lg">
+            {data.property.frontera
+              ? `${data.property.frontera} m`
+              : "No especificado"}
+          </p>
+        </div>
+      </div>
+
+      {/* Largo */}
+      <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+        <FaRulerCombined className="text-red-600 mr-3" />
+        <div>
+          <p className="text-gray-500 text-sm">Largo</p>
+          <p className="font-semibold text-lg">
+            {data.property.largo
+              ? `${data.property.largo} m`
+              : "No especificado"}
+          </p>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      {/* Dormitorios */}
+      <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+        <FaBed className="text-red-600 mr-3" />
+        <div>
+          <p className="text-gray-500 text-sm">Dormitorios</p>
+          <p className="font-semibold text-lg">{data.property.bedrooms}</p>
+        </div>
+      </div>
+
+      {/* Baños */}
+      <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+        <FaBath className="text-red-600 mr-3" />
+        <div>
+          <p className="text-gray-500 text-sm">Baños</p>
+          <p className="font-semibold text-lg">{data.property.bathrooms}</p>
+        </div>
+      </div>
+    </>
+  )}
+
+  {/* Precio (común a todos) */}
+  <div className="flex items-center bg-gray-50 p-4 rounded-lg shadow">
+    <FaTag className="text-red-600 mr-3" />
+    <div>
+      <p className="text-gray-500 text-sm">Precio</p>
+      <p className="font-semibold text-lg text-red-600">
+        {formatPrice(data.property.price)}
+      </p>
+    </div>
+  </div>
+</div>
+
+          
    <hr className="border-gray-300 mb-6" />
           {/* Descripción */}
           <div className="mb-6">
