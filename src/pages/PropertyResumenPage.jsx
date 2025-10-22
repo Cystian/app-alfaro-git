@@ -201,11 +201,30 @@ if (!data) {
             </div>
           )}
 
-          {/* Título */}
-          <h1 className="text-4xl font-bold text-gray-800 mb-4 mt-4">
-            {data.property.title || "Resumen de Propiedad"}
-          </h1>
-          <hr className="border-gray-300 mb-6" />
+          {/* Línea superior */}
+<div className="w-40 mx-auto border-t-4 border-burgundy-700 mb-6"></div>
+
+{/* Título principal */}
+<h1 className="text-5xl font-extrabold text-gray-900 text-center tracking-tight uppercase mb-3">
+  {data.property.title || "Resumen de Propiedad"}
+</h1>
+
+{/* Dirección */}
+{data.property.address && (
+  <p className="text-lg text-gray-500 italic text-center">
+    {data.property.address}
+  </p>
+)}
+
+{/* Precio */}
+<p className="text-3xl font-semibold text-center text-burgundy-800 mt-4 mb-4">
+  S/. {parseFloat(data.property.price).toLocaleString("es-PE")}
+</p>
+
+{/* Línea inferior */}
+<div className="w-28 mx-auto border-t-2 border-gray-300 mb-8"></div>
+
+{/* Datos principales */}
 
           {/* Datos principales */}
 
