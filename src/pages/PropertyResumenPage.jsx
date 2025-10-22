@@ -218,7 +218,7 @@ if (!data) {
 
 {/* Precio */}
 <p className="text-3xl font-semibold text-center text-burgundy-800 mt-4 mb-4">
-  S/. {parseFloat(data.property.price).toLocaleString("es-PE")}
+  Precio : US$. {parseFloat(data.property.price).toLocaleString("es-PE")}
 </p>
 
 {/* Línea inferior */}
