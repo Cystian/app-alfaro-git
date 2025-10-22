@@ -217,8 +217,11 @@ if (!data) {
 )}
 
 {/* Precio */}
-<p className="text-3xl font-semibold text-center text-burgundy-800 mt-4 mb-4">
-  Precio : US$. {parseFloat(data.property.price).toLocaleString("es-PE")}
+<p className="text-3xl font-semibold text-center text-rojo-inmobiliario mt-4 mb-4 tracking-wide">
+  Precio {data.property.status ? `de ${data.property.status}` : ""}:{" "}
+  <span className="font-bold text-negro-profundo">
+    US$ {parseFloat(data.property.price).toLocaleString("es-PE")}
+  </span>
 </p>
 
 {/* Línea inferior */}
