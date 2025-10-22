@@ -202,8 +202,8 @@ if (!data) {
           )}
 
           {/* Línea superior */}
+ <hr className="border-white-300 mb-6" />
  <hr className="border-gray-300 mb-6" />
-
 {/* Título principal */}
 <h1 className="text-4xl md:text-5xl font-serif font-semibold text-negro-profundo text-center tracking-wide mb-2">
   {data.property.title || "Resumen de Propiedad"}
