@@ -202,13 +202,13 @@ if (!data) {
           )}
 
           {/* Línea superior */}
-<div className="w-40 mx-auto border-t-4 border-burgundy-700 mb-6"></div>
+ <hr className="border-gray-300 mb-6" />
 
 {/* Título principal */}
-<h1 className="text-5xl font-extrabold text-gray-900 text-center tracking-tight uppercase mb-3">
+<h1 className="text-4xl md:text-5xl font-serif font-semibold text-negro-profundo text-center tracking-wide mb-2">
   {data.property.title || "Resumen de Propiedad"}
 </h1>
-
+          
 {/* Dirección */}
 {data.property.address && (
   <p className="text-lg text-gray-500 italic text-center">
@@ -222,7 +222,7 @@ if (!data) {
 </p>
 
 {/* Línea inferior */}
-<div className="w-28 mx-auto border-t-2 border-gray-300 mb-8"></div>
+ <hr className="border-gray-300 mb-6" />
 
 {/* Datos principales */}
 
