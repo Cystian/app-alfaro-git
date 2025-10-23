@@ -262,9 +262,7 @@ if (!data) {
     <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
     <div>
       <p className="text-gray-500 text-sm">Dimensiones</p>
-      <p className="font-semibold text-lg text-gray-800">
-        {data.property.area ? `${data.property.area} m²` : "No especificada"}
-      </p>
+      
     </div>
 
   <div className="space-y-1">
