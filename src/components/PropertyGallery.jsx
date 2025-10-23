@@ -6,12 +6,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 export default function PropertyGallery({ data }) {
-  // ✅ Generar arreglo limpio de imágenes
-  const images = [
-    data?.property?.image,
-    ...(data?.subProperties?.map((sub) => sub.image) || []),
-  ].filter((img) => img && img.trim() !== "");
-
+  const [images, setImages] = useState([]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState({
     img: "",
@@ -20,17 +15,25 @@ export default function PropertyGallery({ data }) {
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // ✅ Abre el Lightbox en la imagen seleccionada
+  // ✅ Construir imágenes solo cuando data esté lista
+  useEffect(() => {
+    if (!data?.property) return;
+    const cleanImages = [
+      data.property.image,
+      ...(data.subProperties?.map((sub) => sub.image) || []),
+    ].filter((img) => img && img.trim() !== "");
+    setImages(cleanImages);
+  }, [data]);
+
+  // ✅ Controladores Lightbox
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
     updateLightboxContent(index);
     setLightboxOpen(true);
   };
 
-  // ✅ Cierra el Lightbox
   const closeLightbox = () => setLightboxOpen(false);
 
-  // ✅ Actualiza contenido dinámico del Lightbox
   const updateLightboxContent = (index) => {
     if (index === 0) {
       setLightboxContent({
@@ -48,7 +51,6 @@ export default function PropertyGallery({ data }) {
     }
   };
 
-  // ✅ Navegar siguiente/anterior
   const showNextImage = () => {
     const nextIndex = (currentImageIndex + 1) % images.length;
     setCurrentImageIndex(nextIndex);
@@ -61,7 +63,7 @@ export default function PropertyGallery({ data }) {
     updateLightboxContent(prevIndex);
   };
 
-  // ✅ Control por teclado (→, ←, ESC)
+  // ✅ Teclas → ← Esc
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!lightboxOpen) return;
@@ -73,26 +75,49 @@ export default function PropertyGallery({ data }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightboxOpen, currentImageIndex]);
 
+  // ⛔ Si no hay imágenes válidas, no renderizar
+  if (!images.length) {
+    return (
+      <div className="p-6 text-center text-gray-500 border rounded-2xl bg-gray-50">
+        No hay imágenes disponibles para esta propiedad.
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+    <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 max-w-full">
       {/* Carrusel principal */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 4000 }}
-        spaceBetween={15}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        observer={true}
+        observeParents={true}
+        spaceBetween={10}
         slidesPerView={1}
-        className="rounded-xl overflow-hidden shadow"
+        className="rounded-xl overflow-hidden shadow max-w-full"
+        onSwiper={(swiper) => {
+          // 🔄 Forzar recalculo al cargar imágenes
+          setTimeout(() => swiper.update(), 300);
+        }}
       >
         {images.map((img, idx) => (
           <SwiperSlide key={idx}>
-            <img
-              src={img}
-              alt={idx === 0 ? data?.property?.title : data?.subProperties?.[idx - 1]?.content}
-              onClick={() => openLightbox(idx)}
-              className="w-full h-80 object-cover rounded-xl cursor-pointer hover:opacity-90 transition"
-            />
+            <div className="w-full aspect-video bg-gray-100 flex items-center justify-center">
+              <img
+                src={img}
+                alt={
+                  idx === 0
+                    ? data?.property?.title
+                    : data?.subProperties?.[idx - 1]?.content
+                }
+                loading="lazy"
+                onClick={() => openLightbox(idx)}
+                className="w-full h-full object-cover rounded-xl cursor-pointer hover:opacity-90 transition"
+                onError={(e) => (e.target.style.opacity = 0.3)}
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -121,7 +146,7 @@ export default function PropertyGallery({ data }) {
               )}
             </div>
 
-            {/* Botón de cierre */}
+            {/* Botones */}
             <button
               onClick={closeLightbox}
               className="absolute top-4 right-5 text-gray-800 hover:text-red-600 font-bold text-3xl"
@@ -129,7 +154,6 @@ export default function PropertyGallery({ data }) {
               &times;
             </button>
 
-            {/* Flechas de navegación */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
