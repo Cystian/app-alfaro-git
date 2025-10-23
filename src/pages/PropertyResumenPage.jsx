@@ -284,7 +284,7 @@ if (!data) {
       <div className="bg-gray-50 p-5 rounded-2xl shadow-md flex flex-col items-center text-center border border-gray-200 hover:shadow-lg transition-all duration-300">
         <div className="flex items-center mb-3">
           <FaRulerCombined className="text-rojo-inmobiliario text-2xl mr-2" />
-          <h2 className="text-xl font-serif font-semibold text-negro-profundo tracking-wide">
+          <h2 className="text-gray-500 text-sm">
             Dimensiones
           </h2>
         </div>
