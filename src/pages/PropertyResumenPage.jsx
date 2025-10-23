@@ -289,7 +289,7 @@ if (!data) {
           </h2>
         </div>
 
-        <div className="space-y-1">
+        <div >
           <p className="text-gray-600 text-base">
             <span className="font-medium text-negro-profundo">Frente:</span>{" "}
             {data.property.frontera
