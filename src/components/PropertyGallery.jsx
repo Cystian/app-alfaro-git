@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { FaRulerCombined } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 export default function PropertyGallery({ data }) {
+  // ✅ Generar arreglo limpio de imágenes
   const images = [
-    data.property.image,
-    ...data.subProperties.map((sub) => sub.image),
-  ];
+    data?.property?.image,
+    ...(data?.subProperties?.map((sub) => sub.image) || []),
+  ].filter((img) => img && img.trim() !== "");
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxContent, setLightboxContent] = useState({
@@ -30,19 +30,19 @@ export default function PropertyGallery({ data }) {
   // ✅ Cierra el Lightbox
   const closeLightbox = () => setLightboxOpen(false);
 
-  // ✅ Actualiza el contenido dinámico del Lightbox
+  // ✅ Actualiza contenido dinámico del Lightbox
   const updateLightboxContent = (index) => {
     if (index === 0) {
       setLightboxContent({
         img: images[0],
-        title: data.property.title,
+        title: data?.property?.title || "Propiedad",
         description: "",
       });
     } else {
-      const sub = data.subProperties[index - 1];
+      const sub = data?.subProperties?.[index - 1];
       setLightboxContent({
         img: images[index],
-        title: sub?.content || "Subpropiedad",
+        title: sub?.content || "Vista adicional",
         description: sub?.text_content || "",
       });
     }
@@ -61,7 +61,7 @@ export default function PropertyGallery({ data }) {
     updateLightboxContent(prevIndex);
   };
 
-  // ✅ Control de teclado (→, ←, ESC)
+  // ✅ Control por teclado (→, ←, ESC)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!lightboxOpen) return;
@@ -75,18 +75,12 @@ export default function PropertyGallery({ data }) {
 
   return (
     <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
-      {/* Encabezado */}
-      <div className="flex items-center mb-2">
-        <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
-        <h2 className="text-lg font-bold text-gray-800">Dimensiones</h2>
-      </div>
-
       {/* Carrusel principal */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 4000 }}
         spaceBetween={15}
         slidesPerView={1}
         className="rounded-xl overflow-hidden shadow"
@@ -95,7 +89,7 @@ export default function PropertyGallery({ data }) {
           <SwiperSlide key={idx}>
             <img
               src={img}
-              alt={idx === 0 ? data.property.title : data.subProperties[idx - 1]?.content}
+              alt={idx === 0 ? data?.property?.title : data?.subProperties?.[idx - 1]?.content}
               onClick={() => openLightbox(idx)}
               className="w-full h-80 object-cover rounded-xl cursor-pointer hover:opacity-90 transition"
             />
@@ -103,36 +97,21 @@ export default function PropertyGallery({ data }) {
         ))}
       </Swiper>
 
-      {/* Información adicional */}
-      <div className="mt-4">
-        <p className="text-gray-700">
-          <span className="font-semibold">Frente:</span>{" "}
-          {data.property.front || "No especificado"} m
-        </p>
-        <p className="text-gray-700">
-          <span className="font-semibold">Largo:</span>{" "}
-          {data.property.length || "No especificado"} m
-        </p>
-      </div>
-
-      {/* Lightbox con navegación interna */}
+      {/* Lightbox */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm"
           onClick={closeLightbox}
         >
           <div
-            className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden bg-white rounded-2xl shadow-2xl p-4 flex flex-col items-center"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl p-4 flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Imagen principal */}
             <img
               src={lightboxContent.img}
               alt={lightboxContent.title}
-              className="w-full h-auto max-h-[70vh] rounded-lg object-contain transition-all duration-500"
+              className="w-full h-auto max-h-[70vh] rounded-lg object-contain"
             />
-
-            {/* Título y descripción */}
             <div className="mt-4 text-center px-4">
               <h2 className="text-2xl font-bold text-gray-900">
                 {lightboxContent.title}
@@ -160,7 +139,6 @@ export default function PropertyGallery({ data }) {
             >
               &#10094;
             </button>
-
             <button
               onClick={(e) => {
                 e.stopPropagation();
