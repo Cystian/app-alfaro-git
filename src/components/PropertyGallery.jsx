@@ -86,44 +86,48 @@ export default function PropertyGallery({ data }) {
   return (
     <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-4/5 mx-auto font-sans relative">
       {/* Carrusel principal */}
-      <Swiper
-        modules={[Navigation, Pagination, Thumbs, Autoplay]}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
-        spaceBetween={10}
-        thumbs={{ swiper: thumbsSwiper }}
-        className="rounded-2xl overflow-hidden w-full"
-        style={{
-          "--swiper-navigation-color": "#fff",
-          "--swiper-pagination-color": "#fff",
-        }}
-      >
-        {images.map((img, index) => (
-          <SwiperSlide key={index}>
-            <div
-              className="relative w-full aspect-[4/3] bg-black flex items-center justify-center"
-              onClick={() => openLightbox(index)}
-            >
-              <img
-                src={img}
-                alt={`Imagen ${index + 1}`}
-                className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
-                loading="lazy"
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <div className="relative rounded-2xl overflow-hidden">
+        <Swiper
+          modules={[Navigation, Pagination, Thumbs, Autoplay]}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          spaceBetween={10}
+          thumbs={{ swiper: thumbsSwiper }}
+          className="rounded-2xl overflow-hidden w-full"
+          style={{
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          }}
+        >
+          {images.map((img, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="relative w-full aspect-[4/3] bg-black flex items-center justify-center"
+                onClick={() => openLightbox(index)}
+              >
+                <img
+                  src={img}
+                  alt={`Imagen ${index + 1}`}
+                  className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
+                  loading="lazy"
+                />
+                {/* Degradado inferior */}
+                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
-      {/* Botón "Ver fotos" */}
-      <button
-        onClick={() => openLightbox(0)}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/95 text-gray-800 font-medium py-2 px-5 rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 text-sm tracking-wide"
-      >
-        <FiCamera className="text-rojo-inmobiliario" />
-        Ver fotos
-      </button>
+        {/* Botón "Ver fotos" ahora sobre la imagen, en esquina inferior derecha */}
+        <button
+          onClick={() => openLightbox(0)}
+          className="absolute bottom-5 right-5 flex items-center gap-2 bg-white/95 text-gray-800 font-medium py-2 px-5 rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 text-sm tracking-wide"
+        >
+          <FiCamera className="text-rojo-inmobiliario" />
+          Ver fotos
+        </button>
+      </div>
 
       {/* Lightbox */}
       {lightboxOpen && (
