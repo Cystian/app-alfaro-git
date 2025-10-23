@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
+import { FiX } from "react-icons/fi";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -92,7 +93,7 @@ export default function PropertyGallery({ data }) {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         spaceBetween={10}
         thumbs={{ swiper: thumbsSwiper }}
-        className="rounded-2xl overflow-hidden w-full max-w-5xl mx-auto"
+        className="rounded-2xl overflow-hidden w-full mx-auto max-w-5xl sm:max-w-full"
         style={{
           "--swiper-navigation-color": "#fff",
           "--swiper-pagination-color": "#fff",
@@ -101,7 +102,7 @@ export default function PropertyGallery({ data }) {
         {images.map((img, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative w-full h-[60vh] sm:h-[75vh] bg-black flex items-center justify-center"
+              className="relative w-full aspect-[4/3] bg-black flex items-center justify-center"
               onClick={() => openLightbox(index)}
             >
               <img
@@ -118,39 +119,39 @@ export default function PropertyGallery({ data }) {
       {/* Lightbox */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm"
           onClick={closeLightbox}
         >
           <div
-            className="relative w-full max-w-6xl max-h-[90vh] flex flex-col items-center"
+            className="relative w-full max-w-5xl max-h-[90vh] flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Imagen principal */}
+            {/* Icono cerrar */}
+            <button
+              onClick={closeLightbox}
+              className="absolute top-6 left-6 text-white text-3xl hover:text-red-400 transition-colors"
+            >
+              <FiX />
+            </button>
+
+            {/* Imagen */}
             <img
               src={lightboxContent.img}
               alt={lightboxContent.title}
-              className="w-auto max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
             />
 
-            {/* Información elegante debajo */}
-            <div className="w-full text-center mt-4 bg-black/70 text-white py-3 px-6 rounded-b-xl backdrop-blur-sm">
-              <h2 className="text-lg sm:text-2xl font-semibold tracking-wide">
+            {/* Texto debajo */}
+            <div className="mt-4 text-center px-4">
+              <h2 className="text-2xl font-semibold text-white drop-shadow-md">
                 {lightboxContent.title}
               </h2>
               {lightboxContent.description && (
-                <p className="text-sm sm:text-base mt-1 opacity-90">
+                <p className="text-gray-200 mt-2 max-w-2xl mx-auto leading-relaxed">
                   {lightboxContent.description}
                 </p>
               )}
             </div>
-
-            {/* Botón cerrar */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-4 right-6 text-white hover:text-red-400 font-bold text-4xl transition"
-            >
-              &times;
-            </button>
 
             {/* Navegación */}
             <button
@@ -158,7 +159,7 @@ export default function PropertyGallery({ data }) {
                 e.stopPropagation();
                 showPrevImage();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-3 text-2xl"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-gray-900 bg-opacity-40 hover:bg-opacity-70 rounded-full p-3 text-2xl"
             >
               &#10094;
             </button>
@@ -167,7 +168,7 @@ export default function PropertyGallery({ data }) {
                 e.stopPropagation();
                 showNextImage();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-3 text-2xl"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-gray-900 bg-opacity-40 hover:bg-opacity-70 rounded-full p-3 text-2xl"
             >
               &#10095;
             </button>
