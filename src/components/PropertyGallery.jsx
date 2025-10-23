@@ -4,6 +4,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/thumbs";
 
 export default function PropertyGallery({ data }) {
   const [images, setImages] = useState([]);
@@ -88,12 +89,12 @@ export default function PropertyGallery({ data }) {
     <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 max-w-full">
       {/* Carrusel principal */}
 {/* Carrusel principal */}
+{/* Carrusel principal */}
 <Swiper
   modules={[Navigation, Pagination, Thumbs]}
   spaceBetween={10}
   navigation
   pagination={{ clickable: true }}
-  thumbs={{ swiper: thumbsSwiper }}
   className="rounded-2xl overflow-hidden w-full max-w-5xl mx-auto"
   style={{
     "--swiper-navigation-color": "#fff",
@@ -113,6 +114,7 @@ export default function PropertyGallery({ data }) {
     </SwiperSlide>
   ))}
 </Swiper>
+
 
 
       {/* Lightbox */}
