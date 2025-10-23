@@ -17,7 +17,6 @@ export default function PropertyGallery({ data }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  // ✅ Cargar imágenes una vez que data esté lista
   useEffect(() => {
     if (!data?.property) return;
     const cleanImages = [
@@ -27,7 +26,6 @@ export default function PropertyGallery({ data }) {
     setImages(cleanImages);
   }, [data]);
 
-  // ✅ Controladores Lightbox
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
     updateLightboxContent(index);
@@ -65,7 +63,6 @@ export default function PropertyGallery({ data }) {
     updateLightboxContent(prevIndex);
   };
 
-  // ✅ Teclas → ← Esc
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!lightboxOpen) return;
@@ -77,7 +74,6 @@ export default function PropertyGallery({ data }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [lightboxOpen, currentImageIndex]);
 
-  // ⛔ Si no hay imágenes válidas, no renderizar
   if (!images.length) {
     return (
       <div className="p-6 text-center text-gray-500 border rounded-2xl bg-gray-50">
@@ -105,7 +101,7 @@ export default function PropertyGallery({ data }) {
         {images.map((img, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative w-full h-[480px] bg-black flex items-center justify-center"
+              className="relative w-full h-[60vh] sm:h-[75vh] bg-black flex items-center justify-center"
               onClick={() => openLightbox(index)}
             >
               <img
@@ -119,69 +115,50 @@ export default function PropertyGallery({ data }) {
         ))}
       </Swiper>
 
-      {/* 🧩 (Opcional futuro) Carrusel de miniaturas */}
-      {/* 
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={5}
-        freeMode
-        watchSlidesProgress
-        modules={[Thumbs]}
-        className="mt-4 hidden md:block"
-      >
-        {images.map((img, idx) => (
-          <SwiperSlide key={idx}>
-            <img
-              src={img}
-              alt={`Miniatura ${idx + 1}`}
-              className="w-full h-20 object-cover rounded-lg cursor-pointer border border-gray-200 hover:opacity-80"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      */}
-
       {/* Lightbox */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
           onClick={closeLightbox}
         >
           <div
-            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl p-4 flex flex-col items-center"
+            className="relative w-full max-w-6xl max-h-[90vh] flex flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Imagen principal */}
             <img
               src={lightboxContent.img}
               alt={lightboxContent.title}
-              className="w-full h-auto max-h-[70vh] rounded-lg object-contain"
+              className="w-auto max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
             />
-            <div className="mt-4 text-center px-4">
-              <h2 className="text-2xl font-bold text-gray-900">
+
+            {/* Información elegante debajo */}
+            <div className="w-full text-center mt-4 bg-black/70 text-white py-3 px-6 rounded-b-xl backdrop-blur-sm">
+              <h2 className="text-lg sm:text-2xl font-semibold tracking-wide">
                 {lightboxContent.title}
               </h2>
               {lightboxContent.description && (
-                <p className="text-gray-700 mt-2">
+                <p className="text-sm sm:text-base mt-1 opacity-90">
                   {lightboxContent.description}
                 </p>
               )}
             </div>
 
-            {/* Botones */}
+            {/* Botón cerrar */}
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-5 text-gray-800 hover:text-red-600 font-bold text-3xl"
+              className="absolute top-4 right-6 text-white hover:text-red-400 font-bold text-4xl transition"
             >
               &times;
             </button>
 
+            {/* Navegación */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 showPrevImage();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-gray-800 bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 text-2xl"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-3 text-2xl"
             >
               &#10094;
             </button>
@@ -190,7 +167,7 @@ export default function PropertyGallery({ data }) {
                 e.stopPropagation();
                 showNextImage();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-gray-800 bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 text-2xl"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 rounded-full p-3 text-2xl"
             >
               &#10095;
             </button>
