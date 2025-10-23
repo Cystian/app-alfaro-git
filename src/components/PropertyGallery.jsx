@@ -111,7 +111,7 @@ export default function PropertyGallery({ data }) {
               <img
                 src={img}
                 alt={`Imagen ${index + 1}`}
-                className="object-contain w-full h-full transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
+                className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
                 loading="lazy"
               />
             </div>
