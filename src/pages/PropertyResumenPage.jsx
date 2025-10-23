@@ -264,7 +264,7 @@ if (!data) {
   <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
       <p className="text-gray-500 text-sm">Dimensiones</p>
     </div>
-   <div className="space-y-1">
+   <div className="space-y-1 ml-9">
           <p className="text-gray-600 text-base">
             <span className="font-medium text-negro-profundo">Frente:</span>{" "}
             {data.property.frontera
