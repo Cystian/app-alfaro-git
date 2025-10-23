@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay ,Thumbs } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -15,8 +15,9 @@ export default function PropertyGallery({ data }) {
     description: "",
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
-  // ✅ Construir imágenes solo cuando data esté lista
+  // ✅ Cargar imágenes una vez que data esté lista
   useEffect(() => {
     if (!data?.property) return;
     const cleanImages = [
@@ -88,34 +89,58 @@ export default function PropertyGallery({ data }) {
   return (
     <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 max-w-full">
       {/* Carrusel principal */}
-{/* Carrusel principal */}
-{/* Carrusel principal */}
-<Swiper
-  modules={[Navigation, Pagination, Thumbs]}
-  spaceBetween={10}
-  navigation
-  pagination={{ clickable: true }}
-  className="rounded-2xl overflow-hidden w-full max-w-5xl mx-auto"
-  style={{
-    "--swiper-navigation-color": "#fff",
-    "--swiper-pagination-color": "#fff",
-  }}
->
-  {property.images.map((img, index) => (
-    <SwiperSlide key={index}>
-      <div className="relative w-full h-[480px] bg-black flex items-center justify-center">
-        <img
-          src={img}
-          alt={`Imagen ${index + 1}`}
-          className="object-contain w-full h-full transition-transform duration-500 hover:scale-[1.02]"
-          loading="lazy"
-        />
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
+      <Swiper
+        modules={[Navigation, Pagination, Thumbs, Autoplay]}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        spaceBetween={10}
+        thumbs={{ swiper: thumbsSwiper }}
+        className="rounded-2xl overflow-hidden w-full max-w-5xl mx-auto"
+        style={{
+          "--swiper-navigation-color": "#fff",
+          "--swiper-pagination-color": "#fff",
+        }}
+      >
+        {images.map((img, index) => (
+          <SwiperSlide key={index}>
+            <div
+              className="relative w-full h-[480px] bg-black flex items-center justify-center"
+              onClick={() => openLightbox(index)}
+            >
+              <img
+                src={img}
+                alt={`Imagen ${index + 1}`}
+                className="object-contain w-full h-full transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
+                loading="lazy"
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-
+      {/* 🧩 (Opcional futuro) Carrusel de miniaturas */}
+      {/* 
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        spaceBetween={10}
+        slidesPerView={5}
+        freeMode
+        watchSlidesProgress
+        modules={[Thumbs]}
+        className="mt-4 hidden md:block"
+      >
+        {images.map((img, idx) => (
+          <SwiperSlide key={idx}>
+            <img
+              src={img}
+              alt={`Miniatura ${idx + 1}`}
+              className="w-full h-20 object-cover rounded-lg cursor-pointer border border-gray-200 hover:opacity-80"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      */}
 
       {/* Lightbox */}
       {lightboxOpen && (
@@ -137,7 +162,9 @@ export default function PropertyGallery({ data }) {
                 {lightboxContent.title}
               </h2>
               {lightboxContent.description && (
-                <p className="text-gray-700 mt-2">{lightboxContent.description}</p>
+                <p className="text-gray-700 mt-2">
+                  {lightboxContent.description}
+                </p>
               )}
             </div>
 
