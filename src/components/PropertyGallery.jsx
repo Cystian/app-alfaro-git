@@ -84,7 +84,7 @@ export default function PropertyGallery({ data }) {
   }
 
   return (
-    <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-4/5 mx-auto font-sans relative">
+    <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-3/5 mx-auto font-sans relative">
       {/* Carrusel principal */}
       <div className="relative rounded-2xl overflow-hidden">
         <Swiper
@@ -112,17 +112,17 @@ export default function PropertyGallery({ data }) {
                   className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
                   loading="lazy"
                 />
-                {/* Degradado inferior */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent pointer-events-none"></div>
+                {/* Degradado inferior más sutil */}
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
 
-        {/* Botón "Ver fotos" ahora sobre la imagen, en esquina inferior derecha */}
+        {/* Botón "Ver fotos" — visible, en esquina inferior derecha */}
         <button
           onClick={() => openLightbox(0)}
-          className="absolute bottom-5 right-5 flex items-center gap-2 bg-white/95 text-gray-800 font-medium py-2 px-5 rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 text-sm tracking-wide"
+          className="absolute bottom-5 right-5 flex items-center gap-2 bg-white/95 text-gray-800 font-medium py-2 px-5 rounded-full shadow-lg hover:shadow-xl hover:bg-white z-20 transition-all duration-300 text-sm tracking-wide"
         >
           <FiCamera className="text-rojo-inmobiliario" />
           Ver fotos
