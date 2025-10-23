@@ -260,9 +260,9 @@ if (!data) {
 
         <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
     <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
-
+<div className="flex items-center mb-2">
       <p className="text-gray-500 text-sm">Dimensiones</p>
-    
+    </div>
    <div className="space-y-1">
           <p className="text-gray-600 text-base">
             <span className="font-medium text-negro-profundo">Frente:</span>{" "}
