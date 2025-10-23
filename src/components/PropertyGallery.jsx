@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
-import { FiX } from "react-icons/fi";
+import { FiX, FiCamera } from "react-icons/fi";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -77,14 +77,14 @@ export default function PropertyGallery({ data }) {
 
   if (!images.length) {
     return (
-      <div className="p-6 text-center text-gray-500 border rounded-2xl bg-gray-50">
+      <div className="p-6 text-center text-gray-500 border rounded-2xl bg-gray-50 font-sans">
         No hay imágenes disponibles para esta propiedad.
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 max-w-full">
+    <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-4/5 mx-auto font-sans relative">
       {/* Carrusel principal */}
       <Swiper
         modules={[Navigation, Pagination, Thumbs, Autoplay]}
@@ -93,7 +93,7 @@ export default function PropertyGallery({ data }) {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         spaceBetween={10}
         thumbs={{ swiper: thumbsSwiper }}
-        className="rounded-2xl overflow-hidden w-full mx-auto max-w-5xl sm:max-w-full"
+        className="rounded-2xl overflow-hidden w-full"
         style={{
           "--swiper-navigation-color": "#fff",
           "--swiper-pagination-color": "#fff",
@@ -116,10 +116,19 @@ export default function PropertyGallery({ data }) {
         ))}
       </Swiper>
 
+      {/* Botón "Ver fotos" */}
+      <button
+        onClick={() => openLightbox(0)}
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/95 text-gray-800 font-medium py-2 px-5 rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all duration-300 text-sm tracking-wide"
+      >
+        <FiCamera className="text-rojo-inmobiliario" />
+        Ver fotos
+      </button>
+
       {/* Lightbox */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-sm"
           onClick={closeLightbox}
         >
           <div
@@ -129,9 +138,9 @@ export default function PropertyGallery({ data }) {
             {/* Icono cerrar */}
             <button
               onClick={closeLightbox}
-              className="absolute top-6 left-6 text-white text-3xl hover:text-red-400 transition-colors"
+              className="absolute top-6 left-6 text-white text-3xl hover:text-red-400 transition-all"
             >
-              <FiX />
+              <FiX strokeWidth={1.5} />
             </button>
 
             {/* Imagen */}
@@ -143,11 +152,11 @@ export default function PropertyGallery({ data }) {
 
             {/* Texto debajo */}
             <div className="mt-4 text-center px-4">
-              <h2 className="text-2xl font-semibold text-white drop-shadow-md">
+              <h2 className="text-2xl font-semibold text-white tracking-tight">
                 {lightboxContent.title}
               </h2>
               {lightboxContent.description && (
-                <p className="text-gray-200 mt-2 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-gray-300 mt-2 max-w-2xl mx-auto leading-relaxed text-sm">
                   {lightboxContent.description}
                 </p>
               )}
@@ -159,7 +168,7 @@ export default function PropertyGallery({ data }) {
                 e.stopPropagation();
                 showPrevImage();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-gray-900 bg-opacity-40 hover:bg-opacity-70 rounded-full p-3 text-2xl"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white bg-gray-900/40 hover:bg-gray-900/70 rounded-full p-3 text-2xl"
             >
               &#10094;
             </button>
@@ -168,7 +177,7 @@ export default function PropertyGallery({ data }) {
                 e.stopPropagation();
                 showNextImage();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-gray-900 bg-opacity-40 hover:bg-opacity-70 rounded-full p-3 text-2xl"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white bg-gray-900/40 hover:bg-gray-900/70 rounded-full p-3 text-2xl"
             >
               &#10095;
             </button>
