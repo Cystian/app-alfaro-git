@@ -84,7 +84,7 @@ export default function PropertyGallery({ data }) {
   }
 
   return (
-   <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-[78%] mx-auto font-sans relative"> 
+   <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-[97.5%] mx-auto font-sans relative"> 
      {/* Carrusel principal */}
       <div className="relative rounded-2xl overflow-hidden">
         <Swiper
@@ -103,7 +103,7 @@ export default function PropertyGallery({ data }) {
           {images.map((img, index) => (
             <SwiperSlide key={index}>
               <div
-                className="relative w-full aspect-[5/3] bg-black flex items-center justify-center"
+                className="relative w-full aspect-[2.1:1] bg-black flex items-center justify-center"
                 onClick={() => openLightbox(index)}
               >
                 <img
