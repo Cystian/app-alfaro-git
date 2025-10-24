@@ -1,4 +1,5 @@
 node_modules
 # Local Netlify folder
 .netlify
+.env
 Use current git remote origin
