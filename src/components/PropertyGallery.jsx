@@ -103,7 +103,7 @@ export default function PropertyGallery({ data }) {
           {images.map((img, index) => (
             <SwiperSlide key={index}>
               <div
-                className="relative w-full aspect-[4/3] bg-black flex items-center justify-center"
+                className="relative w-full aspect-[5/3] bg-black flex items-center justify-center"
                 onClick={() => openLightbox(index)}
               >
                 <img
