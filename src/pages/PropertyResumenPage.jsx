@@ -106,7 +106,7 @@ export default function PropertyResumenPage() {
           <hr className="border-gray-200 mb-6" />
 
           {/* 🔹 Título principal */}
-          <h1 className="text-4xl md:text-5xl font-geist font-bold text-negro-profundo text-center tracking-wide mb-2">
+          <h1 className="text-4xl md:text-5xl font-geist font-extrabold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
 
@@ -260,20 +260,7 @@ export default function PropertyResumenPage() {
             />
           </div>
 
-          {/* 🌍 Mapa */}
-          {data.property.latitude && data.property.longitude && (
-            <div className="relative w-full h-64 sm:h-80 md:h-96 mt-4 mb-8 rounded-xl overflow-hidden">
-              <iframe
-                title="Mapa de la propiedad"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                loading="lazy"
-                allowFullScreen
-                src={`https://maps.google.com/maps?q=${data.property.latitude},${data.property.longitude}&z=16&output=embed`}
-              />
-            </div>
-          )}
+          
 
           {/* ✅ Combo box “Más información” dinámico */}
           <div className="mb-8 font-inter">
@@ -322,6 +309,21 @@ export default function PropertyResumenPage() {
               )}
             </div>
           </div>
+
+{/* 🌍 Mapa */}
+          {data.property.latitude && data.property.longitude && (
+            <div className="relative w-full h-64 sm:h-80 md:h-96 mt-4 mb-8 rounded-xl overflow-hidden">
+              <iframe
+                title="Mapa de la propiedad"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                src={`https://maps.google.com/maps?q=${data.property.latitude},${data.property.longitude}&z=16&output=embed`}
+              />
+            </div>
+          )}
 
           {/* Subpropiedades y botones */}
           {data.subProperties?.length > 0 && (
