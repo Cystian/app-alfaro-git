@@ -127,6 +127,125 @@ export default function PropertyResumenPage() {
           {/* 🔸 Datos principales */}
           {/* ... aquí puedes dejar tu bloque original de cards ... */}
 
+8
+lines changed
+Search within code
+ 
+‎src/pages/PropertyResumenPage.jsx‎
++39
+-108
+Lines changed: 39 additions & 108 deletions
+Original file line number	Diff line number	Diff line change
+@@ -1,4 +1,3 @@
+// src/pages/PropertyResumenPage.jsx
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+@@ -18,6 +17,7 @@ export default function PropertyResumenPage() {
+  const { id } = useParams();
+  const [data, setData] = useState(null);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
+  const [masInfo, setMasInfo] = useState([]); // 🧩 nuevo estado
+
+  useEffect(() => {
+    const fetchData = async () => {
+@@ -35,6 +35,16 @@ export default function PropertyResumenPage() {
+    fetchData();
+  }, [id]);
+
+  // 🔹 Nuevo fetch para información adicional
+  useEffect(() => {
+    const fetchMasInfo = async () => {
+      const res = await fetch(`/.netlify/functions/getPropertyDetailInfo?id=${id}`);
+      const result = await res.json();
+      setMasInfo(result);
+    };
+    fetchMasInfo();
+  }, [id]);
+  const formatPrice = (price) =>
+    price ? `US$ ${Number(price).toLocaleString("es-PE")}` : "";
+
+@@ -87,83 +97,7 @@ export default function PropertyResumenPage() {
+          <hr className="border-gray-300 mb-6" />
+
+          {/* 🔸 Datos principales */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6 font-geistmono">
+            {/* UBICACIÓN */}
+            <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+              <FaMapMarkerAlt className="text-rojo-inmobiliario mr-3 text-2xl" />
+              <div>
+                <p className="text-gray-500 text-sm">Ubicación</p>
+                <p className="font-semibold text-lg text-gray-800">
+                  {data.property.location || "No especificada"}
+                </p>
+              </div>
+            </div>
+            {/* ÁREA DE TERRENO */}
+            <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+              <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
+              <div>
+                <p className="text-gray-500 text-sm">Área de Terreno</p>
+                <p className="font-semibold text-lg text-gray-800">
+                  {data.property.area
+                    ? `${data.property.area} m²`
+                    : "No especificada"}
+                </p>
+              </div>
+            </div>
+            {/* Lógica condicional */}
+            {data.property.title.toLowerCase().includes("terreno") ? (
+              <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center mb-2">
+                  <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
+                  <p className="text-gray-500 text-sm">Dimensiones</p>
+                </div>
+                <div className="space-y-1 ml-9">
+                  <p className="text-gray-600 text-base">
+                    <span className="font-medium text-negro-profundo">
+                      Frente:
+                    </span>{" "}
+                    {data.property.frontera
+                      ? `${data.property.frontera} m`
+                      : "No especificado"}
+                  </p>
+                  <p className="text-gray-600 text-base">
+                    <span className="font-medium text-negro-profundo">
+                      Largo:
+                    </span>{" "}
+                    {data.property.largo
+                      ? `${data.property.largo} m`
+                      : "No especificado"}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* DORMITORIOS */}
+                <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+                  <FaBed className="text-rojo-inmobiliario mr-3 text-2xl" />
+                  <div>
+                    <p className="text-gray-500 text-sm">Dormitorios</p>
+                    <p className="font-semibold text-lg text-gray-800">
+                      {data.property.bedrooms || "No especificado"}
+                    </p>
+                  </div>
+                </div>
+                {/* BAÑOS */}
+                <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+                  <FaBath className="text-rojo-inmobiliario mr-3 text-2xl" />
+                  <div>
+                    <p className="text-gray-500 text-sm">Baños</p>
+                    <p className="font-semibold text-lg text-gray-800">
+                      {data.property.bathrooms || "No especificado"}
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+
+
           <hr className="border-gray-300 mb-6" />
 
           {/* Descripción */}
