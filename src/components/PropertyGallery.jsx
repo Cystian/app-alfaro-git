@@ -18,7 +18,6 @@ export default function PropertyGallery({ data }) {
   useEffect(() => {
     if (!data?.property) return;
 
-    // Array de objetos para el Lightbox, con title y description
     const cleanImages = [
       { src: data.property.image, title: data.property.title, description: "" },
       ...(data.subProperties?.map((sub) => ({
@@ -42,7 +41,7 @@ export default function PropertyGallery({ data }) {
 
   return (
     <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-[97.5%] mx-auto font-sans relative">
-      
+
       {/* Carrusel principal */}
       <div className="relative rounded-2xl overflow-hidden">
         <Swiper
@@ -60,7 +59,7 @@ export default function PropertyGallery({ data }) {
           {images.map((img, index) => (
             <SwiperSlide key={index}>
               <div
-                className="relative w-full aspect-[2.1:1] bg-black flex items-center justify-center cursor-pointer"
+                className="relative w-full aspect-[2.1:1] bg-white flex items-center justify-center cursor-pointer"
                 onClick={() => {
                   setCurrentIndex(index);
                   setLightboxOpen(true);
@@ -69,7 +68,7 @@ export default function PropertyGallery({ data }) {
                 <img
                   src={img}
                   alt={`Imagen ${index + 1}`}
-                  className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-[1.02]"
+                  className="object-contain object-center w-full h-full transition-transform duration-500 hover:scale-[1.02]"
                   loading="lazy"
                 />
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
@@ -92,7 +91,7 @@ export default function PropertyGallery({ data }) {
       {lightboxOpen && (
         <PropertyResumePageGallery
           images={galleryImages}
-          currentIndex={currentIndex} // Abre en la imagen seleccionada
+          currentIndex={currentIndex}
           onClose={() => setLightboxOpen(false)}
         />
       )}
