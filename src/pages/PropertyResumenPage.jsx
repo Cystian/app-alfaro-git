@@ -106,7 +106,7 @@ export default function PropertyResumenPage() {
           <hr className="border-gray-200 mb-6" />
 
           {/* 🔹 Título principal */}
-          <h1 className="text-4xl md:text-5xl font-geist font-semibold text-negro-profundo text-center tracking-wide mb-2">
+          <h1 className="text-4xl md:text-5xl font-geist font-bold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
 
