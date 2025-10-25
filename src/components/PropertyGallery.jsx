@@ -7,13 +7,14 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
 
-// Importa el nuevo Lightbox independiente
+// Importa el nuevo Lightbox
 import PropertyResumePageGallery from "../components/PropertyResumenPageGallery";
 
 export default function PropertyGallery({ data }) {
   const [images, setImages] = useState([]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (!data?.property) return;
@@ -24,7 +25,7 @@ export default function PropertyGallery({ data }) {
     ].filter((img) => img && img.trim() !== "");
 
     setImages(cleanImages);
-    setGalleryImages(cleanImages); // Para el Lightbox
+    setGalleryImages(cleanImages);
   }, [data]);
 
   if (!images.length) {
@@ -53,7 +54,13 @@ export default function PropertyGallery({ data }) {
         >
           {images.map((img, index) => (
             <SwiperSlide key={index}>
-              <div className="relative w-full aspect-[2.1:1] bg-black flex items-center justify-center">
+              <div
+                className="relative w-full aspect-[2.1:1] bg-black flex items-center justify-center cursor-pointer"
+                onClick={() => {
+                  setCurrentIndex(index);
+                  setLightboxOpen(true);
+                }}
+              >
                 <img
                   src={img}
                   alt={`Imagen ${index + 1}`}
@@ -67,7 +74,7 @@ export default function PropertyGallery({ data }) {
           ))}
         </Swiper>
 
-        {/* Botón "Ver fotos" — visible en esquina inferior derecha */}
+        {/* Botón "Ver fotos" */}
         <button
           onClick={() => setLightboxOpen(true)}
           className="absolute bottom-5 right-5 flex items-center gap-2 bg-white/95 text-gray-800 font-medium py-2 px-5 rounded-full shadow-lg hover:shadow-xl hover:bg-white z-20 transition-all duration-300 text-sm tracking-wide"
@@ -77,12 +84,15 @@ export default function PropertyGallery({ data }) {
         </button>
       </div>
 
-      {/* Lightbox independiente */}
+      {/* Lightbox unificado */}
       {lightboxOpen && (
         <PropertyResumePageGallery
           images={galleryImages}
+          currentIndex={currentIndex} // Abre en la imagen seleccionada
           title={data.property.title || "Resumen de Propiedad"}
-          description={data.property.description}
+          description={data.subProperties?.map((sub, i) =>
+            i === 0 ? "" : sub.text_content || ""
+          )}
           onClose={() => setLightboxOpen(false)}
         />
       )}
