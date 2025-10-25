@@ -8,7 +8,6 @@ import {
   FaRulerCombined,
   FaChevronDown,
   FaChevronUp,
-  FaInfoCircle,
 } from "react-icons/fa";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 import FloatingShare from "../components/FloatingShare";
@@ -24,7 +23,6 @@ export default function PropertyResumenPage() {
     const fetchData = async () => {
       const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
       const result = await res.json();
-      console.log("Datos obtenidos de la BD:", result);
 
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
@@ -32,16 +30,13 @@ export default function PropertyResumenPage() {
           image: sub.image.trim(),
         }));
       }
-
       setData(result);
     };
     fetchData();
   }, [id]);
 
-  const formatPrice = (price) => {
-    if (!price) return "";
-    return `US$ ${Number(price).toLocaleString("es-PE")}`;
-  };
+  const formatPrice = (price) =>
+    price ? `US$ ${Number(price).toLocaleString("es-PE")}` : "";
 
   if (!data) {
     return (
@@ -70,7 +65,7 @@ export default function PropertyResumenPage() {
           <hr className="border-gray-200 mb-6" />
 
           {/* 🔹 Título principal */}
-          <h1 className="text-4xl md:text-5xl font-geist font-bold text-negro-profundo text-center tracking-wide mb-2">
+          <h1 className="text-4xl md:text-5xl font-geist font-semibold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
 
@@ -201,59 +196,58 @@ export default function PropertyResumenPage() {
           )}
 
           {/* ✅ Combo box “Más información” */}
-          <div className="mb-8">
+          <div className="mb-8 font-inter">
             <button
               onClick={() => setShowMoreInfo(!showMoreInfo)}
-              className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 font-geist font-bold text-lg text-negro-profundo"
+              className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 text-lg font-medium text-negro-profundo"
             >
-              <div className="flex items-center gap-2">
-                <FaInfoCircle className="text-rojo-inmobiliario text-xl" />
-                <span>Más información</span>
-              </div>
-              {showMoreInfo ? (
-                <FaChevronUp className="text-rojo-inmobiliario" />
-              ) : (
-                <FaChevronDown className="text-rojo-inmobiliario" />
-              )}
+              <span className="flex items-center gap-2">
+                Más información
+                <FaChevronDown
+                  className={`transition-transform duration-300 text-rojo-inmobiliario ${
+                    showMoreInfo ? "rotate-180" : "rotate-0"
+                  }`}
+                />
+              </span>
             </button>
 
-            {showMoreInfo && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-                {[
-                  {
-                    title: "Planos y distribución",
-                    content:
-                      "Explora la organización interna de la propiedad, niveles, y áreas funcionales.",
-                  },
-                  {
-                    title: "Servicios disponibles",
-                    content:
-                      "Incluye detalles sobre agua, luz, desagüe y otros servicios públicos.",
-                  },
-                  {
-                    title: "Documentación legal",
-                    content:
-                      "Verifica títulos, registros y compatibilidad con la normativa local.",
-                  },
-                ].map((card, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-                  >
-                    <h3 className="text-lg font-geist font-bold text-negro-profundo mb-2">
-                      {card.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm font-geistmono">
-                      {card.content}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 overflow-hidden transition-all duration-500 ${
+                showMoreInfo ? "max-h-[1000px] mt-6 opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              {[
+                {
+                  title: "Planos y distribución",
+                  content:
+                    "Explora la organización interna de la propiedad, niveles, y áreas funcionales.",
+                },
+                {
+                  title: "Servicios disponibles",
+                  content:
+                    "Incluye detalles sobre agua, luz, desagüe y otros servicios públicos.",
+                },
+                {
+                  title: "Documentación legal",
+                  content:
+                    "Verifica títulos, registros y compatibilidad con la normativa local.",
+                },
+              ].map((card, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 font-inter"
+                >
+                  <h3 className="text-lg font-semibold text-negro-profundo mb-2">
+                    {card.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{card.content}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Subpropiedades */}
-          {data.subProperties && data.subProperties.length > 0 && (
+          {data.subProperties?.length > 0 && (
             <div className="mb-6">
               <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
                 <button
@@ -262,30 +256,14 @@ export default function PropertyResumenPage() {
                   }
                   className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    className="w-5 h-5"
-                  >
-                    <path d="M5 20h14v-2H5v2zM12 2l-6 6h4v6h4V8h4l-6-6z" />
-                  </svg>
-                  Descargar Flyer
+                  📄 Descargar Flyer
                 </button>
 
                 <button
                   onClick={() => window.open("/", "_blank")}
                   className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    className="w-5 h-5"
-                  >
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                  </svg>
-                  Buscar más propiedades
+                  🔍 Buscar más propiedades
                 </button>
               </div>
             </div>
