@@ -19,12 +19,17 @@ export default function PropertyGallery({ data }) {
   useEffect(() => {
     if (!data?.property) return;
 
+    // Generamos un array de objetos para el Lightbox
     const cleanImages = [
-      data.property.image,
-      ...(data.subProperties?.map((sub) => sub.image) || []),
-    ].filter((img) => img && img.trim() !== "");
+      { src: data.property.image, title: data.property.title, description: "" },
+      ...(data.subProperties?.map((sub) => ({
+        src: sub.image,
+        title: sub.content || "Vista adicional",
+        description: sub.text_content || "",
+      })) || []),
+    ].filter((img) => img.src && img.src.trim() !== "");
 
-    setImages(cleanImages);
+    setImages(cleanImages.map((img) => img.src));
     setGalleryImages(cleanImages);
   }, [data]);
 
@@ -88,11 +93,7 @@ export default function PropertyGallery({ data }) {
       {lightboxOpen && (
         <PropertyResumePageGallery
           images={galleryImages}
-          currentIndex={currentIndex} // Abre en la imagen seleccionada
-          title={data.property.title || "Resumen de Propiedad"}
-          description={data.subProperties?.map((sub, i) =>
-            i === 0 ? "" : sub.text_content || ""
-          )}
+          currentIndex={currentIndex}
           onClose={() => setLightboxOpen(false)}
         />
       )}
