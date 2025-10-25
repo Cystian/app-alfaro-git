@@ -7,7 +7,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
 
-// Importa el nuevo Lightbox
 import PropertyResumePageGallery from "../components/PropertyResumenPageGallery";
 
 export default function PropertyGallery({ data }) {
@@ -19,7 +18,7 @@ export default function PropertyGallery({ data }) {
   useEffect(() => {
     if (!data?.property) return;
 
-    // Generamos un array de objetos para el Lightbox
+    // Array de objetos para el Lightbox, con title y description
     const cleanImages = [
       { src: data.property.image, title: data.property.title, description: "" },
       ...(data.subProperties?.map((sub) => ({
@@ -29,8 +28,8 @@ export default function PropertyGallery({ data }) {
       })) || []),
     ].filter((img) => img.src && img.src.trim() !== "");
 
-    setImages(cleanImages.map((img) => img.src));
-    setGalleryImages(cleanImages);
+    setImages(cleanImages.map((img) => img.src)); // Para Swiper
+    setGalleryImages(cleanImages); // Para Lightbox
   }, [data]);
 
   if (!images.length) {
@@ -43,6 +42,7 @@ export default function PropertyGallery({ data }) {
 
   return (
     <div className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-[97.5%] mx-auto font-sans relative">
+      
       {/* Carrusel principal */}
       <div className="relative rounded-2xl overflow-hidden">
         <Swiper
@@ -72,7 +72,6 @@ export default function PropertyGallery({ data }) {
                   className="object-cover object-center w-full h-full transition-transform duration-500 hover:scale-[1.02]"
                   loading="lazy"
                 />
-                {/* Degradado inferior */}
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
               </div>
             </SwiperSlide>
@@ -93,7 +92,7 @@ export default function PropertyGallery({ data }) {
       {lightboxOpen && (
         <PropertyResumePageGallery
           images={galleryImages}
-          currentIndex={currentIndex}
+          currentIndex={currentIndex} // Abre en la imagen seleccionada
           onClose={() => setLightboxOpen(false)}
         />
       )}
