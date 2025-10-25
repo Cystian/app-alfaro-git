@@ -13,7 +13,7 @@ import { generatePropertyPdf } from "../utils/pdfGenerator";
 import FloatingShare from "../components/FloatingShare";
 import FeaturedProperties from "../components/FeaturedProperties";
 import PropertyResumenPageGallery from "../components/PropertyResumenPageGallery";
-import "../styles/PropertyResumePageGallery.css"; // CSS del Lightbox
+import "../styles/PropertyResumenPageGallery.css"; // CSS del Lightbox
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
