@@ -1,3 +1,4 @@
+// src/pages/PropertyResumenPage.jsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -11,14 +12,16 @@ import {
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 import FloatingShare from "../components/FloatingShare";
 import FeaturedProperties from "../components/FeaturedProperties";
-import PropertyGallery from "../components/PropertyGallery";
+import PropertyResumenPageGallery from "../components/PropertyResumenPageGallery";
+import "../styles/PropertyResumePageGallery.css"; // CSS del Lightbox
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
-  const [masInfo, setMasInfo] = useState([]); // 🧩 nuevo estado
+  const [masInfo, setMasInfo] = useState([]); // info adicional
 
+  // Fetch principal de la propiedad
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
@@ -27,15 +30,16 @@ export default function PropertyResumenPage() {
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
           ...sub,
-          image: sub.image.trim(),
+          image: sub.image?.trim(),
         }));
       }
+
       setData(result);
     };
     fetchData();
   }, [id]);
 
-  // 🔹 Nuevo fetch para información adicional
+  // Fetch para información adicional
   useEffect(() => {
     const fetchMasInfo = async () => {
       const res = await fetch(`/.netlify/functions/getPropertyDetailInfo?id=${id}`);
@@ -63,6 +67,12 @@ export default function PropertyResumenPage() {
     );
   }
 
+  // Array de imágenes para la galería: principal + subpropiedades
+  const galleryImages = [
+    ...(data.property.image ? [data.property.image.trim()] : []),
+    ...data.subProperties.map((sp) => sp.image),
+  ];
+
   return (
     <>
       <FloatingShare />
@@ -70,7 +80,11 @@ export default function PropertyResumenPage() {
       <div className="min-h-screen bg-gray-100 p-6">
         <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
           {/* ✅ Galería */}
-          <PropertyGallery data={data} />
+          <PropertyResumePageGallery
+            images={galleryImages}
+            title={data.property.title || "Resumen de Propiedad"}
+            description={data.property.description}
+          />
 
           <hr className="border-gray-200 mb-6" />
 
@@ -97,7 +111,7 @@ export default function PropertyResumenPage() {
           <hr className="border-gray-300 mb-6" />
 
           {/* 🔸 Datos principales */}
-          {/* ... (tu bloque original de cards de información principal queda igual) ... */}
+          {/* ... aquí puedes dejar tu bloque original de cards ... */}
 
           <hr className="border-gray-300 mb-6" />
 
