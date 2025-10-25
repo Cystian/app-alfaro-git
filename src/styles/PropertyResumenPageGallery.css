@@ -1,0 +1,139 @@
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.thumbnails-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.8rem;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.info-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(128, 0, 32, 0.7); /* Burdeos translúcido */
+  padding: 8px 12px;
+  color: white;
+  border-radius: 4px;
+}
+
+.description-badge {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(128, 0, 32, 0.7);
+  padding: 8px 12px;
+  color: white;
+  border-radius: 4px;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.nav-btn.left {
+  left: 10px;
+}
+
+.nav-btn.right {
+  right: 10px;
+}
+
+/* Miniaturas dentro del lightbox */
+.lightbox-thumbnails {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+  overflow-x: auto;
+  justify-content: center;
+  scroll-behavior: smooth;
+}
+
+@media (min-width: 768px) {
+  .lightbox-content {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .main-image {
+    max-width: 70%;
+  }
+
+  .lightbox-thumbnails {
+    flex-direction: column;
+    margin-top: 0;
+    margin-left: 10px;
+    max-height: 80%;
+    overflow-y: auto;
+  }
+}
+
+.thumbnail-lightbox {
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.thumbnail-lightbox.active {
+  border-color: white;
+}
