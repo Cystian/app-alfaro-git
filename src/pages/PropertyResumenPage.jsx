@@ -60,17 +60,16 @@ export default function PropertyResumenPage() {
 
   return (
     <>
-      {/* Botón flotante de compartir */}
       <FloatingShare />
 
       <div className="min-h-screen bg-gray-100 p-6">
         <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
-          {/* ✅ Carrusel + Lightbox */}
+          {/* ✅ Galería */}
           <PropertyGallery data={data} />
 
           <hr className="border-gray-200 mb-6" />
 
-          {/* 🔹 Título principal actualizado (más grueso) */}
+          {/* 🔹 Título principal */}
           <h1 className="text-4xl md:text-5xl font-geist font-bold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
@@ -175,18 +174,18 @@ export default function PropertyResumenPage() {
 
           {/* Descripción */}
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-geist">
               Descripción
             </h2>
             <div
-              className="text-gray-700"
+              className="text-gray-700 font-geistmono"
               dangerouslySetInnerHTML={{
                 __html: data.property.description,
               }}
             />
           </div>
 
-          {/* Mapa */}
+          {/* 🌍 Mapa */}
           {data.property.latitude && data.property.longitude && (
             <div className="relative w-full h-64 sm:h-80 md:h-96 mt-4 mb-8 rounded-xl overflow-hidden">
               <iframe
@@ -201,11 +200,11 @@ export default function PropertyResumenPage() {
             </div>
           )}
 
-          {/* ✅ Combo box “Más información” actualizado */}
+          {/* ✅ Combo box “Más información” */}
           <div className="mb-8">
             <button
               onClick={() => setShowMoreInfo(!showMoreInfo)}
-              className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 font-geist font-semibold text-lg text-negro-profundo"
+              className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 font-geist font-bold text-lg text-negro-profundo"
             >
               <div className="flex items-center gap-2">
                 <FaInfoCircle className="text-rojo-inmobiliario text-xl" />
@@ -224,7 +223,7 @@ export default function PropertyResumenPage() {
                   {
                     title: "Planos y distribución",
                     content:
-                      "Explora la organización interna de la propiedad, niveles y áreas funcionales.",
+                      "Explora la organización interna de la propiedad, niveles, y áreas funcionales.",
                   },
                   {
                     title: "Servicios disponibles",
@@ -241,7 +240,7 @@ export default function PropertyResumenPage() {
                     key={index}
                     className="bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
                   >
-                    <h3 className="text-lg font-semibold text-negro-profundo mb-2 font-geistmono">
+                    <h3 className="text-lg font-geist font-bold text-negro-profundo mb-2">
                       {card.title}
                     </h3>
                     <p className="text-gray-600 text-sm font-geistmono">
