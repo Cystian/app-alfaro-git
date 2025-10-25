@@ -87,12 +87,7 @@ export default function PropertyResumenPage() {
             <PropertyGallery data={data} /> {/* Slider que ya tenías */}
 
             {/* Botón flotante “Ver fotos” */}
-            <button
-              onClick={() => setLightboxOpen(true)}
-              className="absolute bottom-4 right-4 bg-rojo-inmobiliario text-white px-4 py-2 rounded-xl shadow-lg hover:bg-red-700 transition"
-            >
-              Ver fotos
-            </button>
+            
           </div>
 
           {/* Lightbox independiente */}
