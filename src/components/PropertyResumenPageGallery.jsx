@@ -44,7 +44,7 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, on
 
           {/* Descripción al pie — solo subpropiedades */}
           {current !== 0 && currentImage.description && (
-            <div className="absolute bottom-12 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm">
+            <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm">
               {currentImage.description}
             </div>
           )}
