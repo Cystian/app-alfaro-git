@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
       SELECT id, title, image, price, location, status, 
              bedrooms, bathrooms, area, description,
              latitude, longitude,
-             address, frontera, largo
+             address, frontera, Largo,area_c,cocheras
       FROM properties
       WHERE id = $1
       `,
