@@ -1,42 +1,44 @@
 // src/components/PropertyResumenPageGallery.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../styles/PropertyResumenPageGallery.css"; // CSS Lightbox
 
-export default function PropertyResumePageGallery({ images, onClose }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function PropertyResumePageGallery({ images, currentIndex = 0, onClose }) {
+  const [current, setCurrent] = useState(currentIndex);
 
-  const prevImage = () =>
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  // Cambiar índice si se actualiza desde PropertyGallery
+  useEffect(() => {
+    setCurrent(currentIndex);
+  }, [currentIndex]);
 
-  const nextImage = () =>
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  const prevImage = () => setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  const nextImage = () => setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
-  const current = images[currentIndex];
+  const currentImage = images[current];
 
   return (
     <div className="lightbox-overlay fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
       <div className="relative bg-white rounded-xl shadow-xl w-full max-w-6xl flex flex-col md:flex-row overflow-hidden">
-
+        
         {/* Imagen principal */}
         <div className="flex-1 relative">
           <img
-            src={current.src}
-            alt={current.title || `Foto ${currentIndex + 1}`}
+            src={currentImage.src}
+            alt={currentImage.title || `Foto ${current + 1}`}
             className="object-contain w-full h-[400px] md:h-full rounded-t-xl md:rounded-l-xl"
           />
 
           {/* Título tipo sticker */}
-          {current.title && (
+          {currentImage.title && (
             <div className="absolute top-4 left-4 bg-rojo-inmobiliario text-white px-3 py-1 rounded-lg font-semibold shadow">
-              {current.title}
+              {currentImage.title}
             </div>
           )}
 
           {/* Descripción al pie — solo subpropiedades */}
-          {current.description && currentIndex !== 0 && (
+          {current !== 0 && currentImage.description && (
             <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm">
-              {current.description}
+              {currentImage.description}
             </div>
           )}
 
@@ -70,9 +72,9 @@ export default function PropertyResumePageGallery({ images, onClose }) {
               key={i}
               src={img.src}
               alt={img.title || `Mini ${i + 1}`}
-              onClick={() => setCurrentIndex(i)}
+              onClick={() => setCurrent(i)}
               className={`cursor-pointer rounded-lg border-2 transition-all duration-200 ${
-                i === currentIndex ? "border-rojo-inmobiliario scale-105" : "border-transparent"
+                i === current ? "border-rojo-inmobiliario scale-105" : "border-transparent"
               } w-20 h-20 object-cover md:w-20 md:h-20`}
             />
           ))}
