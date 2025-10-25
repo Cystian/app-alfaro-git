@@ -20,6 +20,7 @@ export default function PropertyResumenPage() {
   const [data, setData] = useState(null);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [masInfo, setMasInfo] = useState([]); // info adicional
+  const [lightboxOpen, setLightboxOpen] = useState(false); // control Lightbox
 
   // Fetch principal de la propiedad
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function PropertyResumenPage() {
     );
   }
 
-  // Array de imágenes para la galería: principal + subpropiedades
+  // Array de imágenes para el Lightbox: principal + subpropiedades
   const galleryImages = [
     ...(data.property.image ? [data.property.image.trim()] : []),
     ...data.subProperties.map((sp) => sp.image),
@@ -79,12 +80,29 @@ export default function PropertyResumenPage() {
 
       <div className="min-h-screen bg-gray-100 p-6">
         <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
-          {/* ✅ Galería */}
-          <PropertyResumePageGallery
-            images={galleryImages}
-            title={data.property.title || "Resumen de Propiedad"}
-            description={data.property.description}
-          />
+
+          {/* 🔹 Slider original intacto */}
+          <div className="relative">
+            <PropertyGallery data={data} /> {/* Slider que ya tenías */}
+
+            {/* Botón flotante “Ver fotos” */}
+            <button
+              onClick={() => setLightboxOpen(true)}
+              className="absolute bottom-4 right-4 bg-rojo-inmobiliario text-white px-4 py-2 rounded-xl shadow-lg hover:bg-red-700 transition"
+            >
+              Ver fotos
+            </button>
+          </div>
+
+          {/* Lightbox independiente */}
+          {lightboxOpen && (
+            <PropertyResumePageGallery
+              images={galleryImages}
+              title={data.property.title || "Resumen de Propiedad"}
+              description={data.property.description}
+              onClose={() => setLightboxOpen(false)}
+            />
+          )}
 
           <hr className="border-gray-200 mb-6" />
 
