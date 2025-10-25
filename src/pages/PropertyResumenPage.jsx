@@ -8,6 +8,7 @@ import {
   FaRulerCombined,
   FaChevronDown,
   FaChevronUp,
+  FaInfoCircle,
 } from "react-icons/fa";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 import FloatingShare from "../components/FloatingShare";
@@ -17,7 +18,7 @@ import PropertyGallery from "../components/PropertyGallery";
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [showMoreInfo, setShowMoreInfo] = useState(false); // ✅ Control del combo box
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,8 +70,8 @@ export default function PropertyResumenPage() {
 
           <hr className="border-gray-200 mb-6" />
 
-          {/* 🔹 Título principal actualizado */}
-          <h1 className="text-4xl md:text-5xl font-geist font-semibold text-negro-profundo text-center tracking-wide mb-2">
+          {/* 🔹 Título principal actualizado (más grueso) */}
+          <h1 className="text-4xl md:text-5xl font-geist font-bold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
 
@@ -200,13 +201,16 @@ export default function PropertyResumenPage() {
             </div>
           )}
 
-          {/* ✅ Combo box “Más información” */}
+          {/* ✅ Combo box “Más información” actualizado */}
           <div className="mb-8">
             <button
               onClick={() => setShowMoreInfo(!showMoreInfo)}
               className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 font-geist font-semibold text-lg text-negro-profundo"
             >
-              <span>Más información</span>
+              <div className="flex items-center gap-2">
+                <FaInfoCircle className="text-rojo-inmobiliario text-xl" />
+                <span>Más información</span>
+              </div>
               {showMoreInfo ? (
                 <FaChevronUp className="text-rojo-inmobiliario" />
               ) : (
@@ -220,7 +224,7 @@ export default function PropertyResumenPage() {
                   {
                     title: "Planos y distribución",
                     content:
-                      "Explora la organización interna de la propiedad, niveles, y áreas funcionales.",
+                      "Explora la organización interna de la propiedad, niveles y áreas funcionales.",
                   },
                   {
                     title: "Servicios disponibles",
@@ -237,10 +241,12 @@ export default function PropertyResumenPage() {
                     key={index}
                     className="bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
                   >
-                    <h3 className="text-lg font-semibold text-negro-profundo mb-2">
+                    <h3 className="text-lg font-semibold text-negro-profundo mb-2 font-geistmono">
                       {card.title}
                     </h3>
-                    <p className="text-gray-600 text-sm">{card.content}</p>
+                    <p className="text-gray-600 text-sm font-geistmono">
+                      {card.content}
+                    </p>
                   </div>
                 ))}
               </div>
