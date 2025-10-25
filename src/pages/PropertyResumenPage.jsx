@@ -1,16 +1,23 @@
 // src/pages/PropertyResumenPage.jsx
-// src/pages/PropertyResumenPage.jsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FaBed, FaBath, FaMapMarkerAlt, FaRulerCombined } from "react-icons/fa";
+import {
+  FaBed,
+  FaBath,
+  FaMapMarkerAlt,
+  FaRulerCombined,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 import { generatePropertyPdf } from "../utils/pdfGenerator";
 import FloatingShare from "../components/FloatingShare";
 import FeaturedProperties from "../components/FeaturedProperties";
-import PropertyGallery from "../components/PropertyGallery"; // ✅ Nuevo componente del carrusel + lightbox
+import PropertyGallery from "../components/PropertyGallery";
 
 export default function PropertyResumenPage() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [showMoreInfo, setShowMoreInfo] = useState(false); // ✅ Control del combo box
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,13 +64,13 @@ export default function PropertyResumenPage() {
 
       <div className="min-h-screen bg-gray-100 p-6">
         <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8 relative">
-          {/* ✅ Nuevo carrusel + Lightbox */}
+          {/* ✅ Carrusel + Lightbox */}
           <PropertyGallery data={data} />
 
           <hr className="border-gray-200 mb-6" />
 
-          {/* 🔹 Encabezado principal */}
-          <h1 className="text-4xl md:text-5xl font-serif font-semibold text-negro-profundo text-center tracking-wide mb-2">
+          {/* 🔹 Título principal actualizado */}
+          <h1 className="text-4xl md:text-5xl font-geist font-semibold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
 
@@ -110,7 +117,7 @@ export default function PropertyResumenPage() {
               </div>
             </div>
 
-            {/* Lógica condicional: Terreno vs Propiedad */}
+            {/* Lógica condicional */}
             {data.property.title.toLowerCase().includes("terreno") ? (
               <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center mb-2">
@@ -192,6 +199,53 @@ export default function PropertyResumenPage() {
               />
             </div>
           )}
+
+          {/* ✅ Combo box “Más información” */}
+          <div className="mb-8">
+            <button
+              onClick={() => setShowMoreInfo(!showMoreInfo)}
+              className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 font-geist font-semibold text-lg text-negro-profundo"
+            >
+              <span>Más información</span>
+              {showMoreInfo ? (
+                <FaChevronUp className="text-rojo-inmobiliario" />
+              ) : (
+                <FaChevronDown className="text-rojo-inmobiliario" />
+              )}
+            </button>
+
+            {showMoreInfo && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+                {[
+                  {
+                    title: "Planos y distribución",
+                    content:
+                      "Explora la organización interna de la propiedad, niveles, y áreas funcionales.",
+                  },
+                  {
+                    title: "Servicios disponibles",
+                    content:
+                      "Incluye detalles sobre agua, luz, desagüe y otros servicios públicos.",
+                  },
+                  {
+                    title: "Documentación legal",
+                    content:
+                      "Verifica títulos, registros y compatibilidad con la normativa local.",
+                  },
+                ].map((card, index) => (
+                  <div
+                    key={index}
+                    className="bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+                  >
+                    <h3 className="text-lg font-semibold text-negro-profundo mb-2">
+                      {card.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">{card.content}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Subpropiedades */}
           {data.subProperties && data.subProperties.length > 0 && (
