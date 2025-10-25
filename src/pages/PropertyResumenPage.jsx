@@ -6,7 +6,9 @@ import {
 FaCar, 
   FaBath,
   FaMapMarkerAlt,
-  FaRulerCombined,
+  FaRulerCombined, 
+ FaRulerVertical, 
+FaRuler, 
   FaChevronDown,
   FaChevronUp,
 } from "react-icons/fa";
@@ -145,7 +147,7 @@ export default function PropertyResumenPage() {
             </div>
             {/* ÁREA DE TERRENO */}
             <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
-              <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
+              <FaRulerVertical className="text-rojo-inmobiliario mr-3 text-2xl" />
               <div>
                 <p className="text-gray-500 text-sm">Área de Terreno</p>
                 <p className="font-semibold text-lg text-gray-800">
@@ -160,7 +162,7 @@ export default function PropertyResumenPage() {
 {/* ÁREA CONSTRUIDA — solo si NO es terreno */}
 {!data.property.title.toLowerCase().includes("terreno") && (
   <div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
-    <FaCar className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <FaRuler className="text-rojo-inmobiliario mr-3 text-2xl" />
     <div>
       <p className="text-gray-500 text-sm">Área Construida</p>
       <p className="font-semibold text-lg text-gray-800">
