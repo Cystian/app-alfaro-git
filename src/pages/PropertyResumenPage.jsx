@@ -164,7 +164,7 @@ export default function PropertyResumenPage() {
     <div>
       <p className="text-gray-500 text-sm">Área Construida</p>
       <p className="font-semibold text-lg text-gray-800">
-        {data.property.area ? `${data.property.area} m²` : "No especificada"}
+        {data.property.area_c ? `${data.property.area_c} m²` : "No especificada"}
       </p>
     </div>
   </div>
@@ -234,7 +234,7 @@ export default function PropertyResumenPage() {
     <div>
       <p className="text-gray-500 text-sm">Cocheras</p>
       <p className="font-semibold text-lg text-gray-800">
-        {data.property.bathrooms || "No especificado"}
+        {data.property.cocheras || "No especificado"}
       </p>
     </div>
   </div>
