@@ -127,46 +127,8 @@ export default function PropertyResumenPage() {
           {/* 🔸 Datos principales */}
           {/* ... aquí puedes dejar tu bloque original de cards ... */}
 
-8
-lines changed
-Search within code
- 
-‎src/pages/PropertyResumenPage.jsx‎
-+39
--108
-Lines changed: 39 additions & 108 deletions
-Original file line number	Diff line number	Diff line change
-@@ -1,4 +1,3 @@
-// src/pages/PropertyResumenPage.jsx
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-@@ -18,6 +17,7 @@ export default function PropertyResumenPage() {
-  const { id } = useParams();
-  const [data, setData] = useState(null);
-  const [showMoreInfo, setShowMoreInfo] = useState(false);
-  const [masInfo, setMasInfo] = useState([]); // 🧩 nuevo estado
 
-  useEffect(() => {
-    const fetchData = async () => {
-@@ -35,6 +35,16 @@ export default function PropertyResumenPage() {
-    fetchData();
-  }, [id]);
-
-  // 🔹 Nuevo fetch para información adicional
-  useEffect(() => {
-    const fetchMasInfo = async () => {
-      const res = await fetch(`/.netlify/functions/getPropertyDetailInfo?id=${id}`);
-      const result = await res.json();
-      setMasInfo(result);
-    };
-    fetchMasInfo();
-  }, [id]);
-  const formatPrice = (price) =>
-    price ? `US$ ${Number(price).toLocaleString("es-PE")}` : "";
-
-@@ -87,83 +97,7 @@ export default function PropertyResumenPage() {
-          <hr className="border-gray-300 mb-6" />
+  
 
           {/* 🔸 Datos principales */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6 font-geistmono">
