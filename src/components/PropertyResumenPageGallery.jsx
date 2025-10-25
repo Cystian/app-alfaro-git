@@ -1,9 +1,8 @@
-// src/components/PropertyResumenPageGallery.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../styles/PropertyResumenPageGallery.css"; // CSS Lightbox
 
-export default function PropertyResumePageGallery({ images, title, description, onClose }) {
+export default function PropertyResumePageGallery({ images, title, descriptions = [], onClose }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Navegar a la imagen anterior
@@ -14,30 +13,37 @@ export default function PropertyResumePageGallery({ images, title, description, 
   const nextImage = () =>
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
+  // Determinar si mostrar descripción (solo subpropiedades)
+  const currentDescription = currentIndex === 0 ? "" : descriptions[currentIndex - 1] || "";
+
+  // Título: para foto principal o subpropiedades
+  const currentTitle = currentIndex === 0 ? title : images[currentIndex]?.title || "Vista adicional";
+
   return (
     <div className="lightbox-overlay fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
       <div className="relative bg-white rounded-xl shadow-xl w-full max-w-6xl flex flex-col md:flex-row overflow-hidden">
-        
+
         {/* Imagen principal */}
         <div className="flex-1 relative">
           <img
-            src={images[currentIndex]}
+            src={images[currentIndex]?.src || images[currentIndex]}
             alt={`Foto ${currentIndex + 1}`}
             className="object-contain w-full h-[400px] md:h-full rounded-t-xl md:rounded-l-xl"
           />
 
           {/* Título tipo sticker */}
-          {title && (
+          {currentTitle && (
             <div className="absolute top-4 left-4 bg-rojo-inmobiliario text-white px-3 py-1 rounded-lg font-semibold shadow">
-              {title}
+              {currentTitle}
             </div>
           )}
 
-          {/* Descripción al pie */}
-          {description && (
-            <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm">
-              {description}
-            </div>
+          {/* Descripción solo para subpropiedades */}
+          {currentDescription && (
+            <div
+              className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm"
+              dangerouslySetInnerHTML={{ __html: currentDescription }}
+            />
           )}
 
           {/* Botón cerrar */}
@@ -68,7 +74,7 @@ export default function PropertyResumePageGallery({ images, title, description, 
           {images.map((img, i) => (
             <img
               key={i}
-              src={img}
+              src={img?.src || img}
               alt={`Mini ${i + 1}`}
               onClick={() => setCurrentIndex(i)}
               className={`cursor-pointer rounded-lg border-2 transition-all duration-200 ${
