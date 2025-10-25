@@ -1,16 +1,22 @@
 // src/components/PropertyResumenPageGallery.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../styles/PropertyResumenPageGallery.css"; // CSS Lightbox
 
-export default function PropertyResumePageGallery({ images, currentIndex = 0, title, descriptions = [], onClose }) {
-  const [index, setIndex] = useState(currentIndex);
+export default function PropertyResumePageGallery({ images, currentIndex = 0, onClose }) {
+  const [current, setCurrent] = useState(currentIndex);
 
-  const prevImage = () => setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  const nextImage = () => setIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  // Cambiar índice si se actualiza desde PropertyGallery
+  useEffect(() => {
+    setCurrent(currentIndex);
+  }, [currentIndex]);
 
-  const current = images[index];
-  const currentDescription = Array.isArray(descriptions) ? descriptions[index] || "" : "";
+  const prevImage = () =>
+    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  const nextImage = () =>
+    setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+
+  const currentImage = images[current];
 
   return (
     <div className="lightbox-overlay fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
@@ -19,34 +25,29 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, ti
         {/* Imagen principal */}
         <div className="flex-1 relative">
           <img
-            src={current.src || current} // soporta string o objeto {src, title, description}
-            alt={current.title || `Foto ${index + 1}`}
+            src={currentImage.src}
+            alt={currentImage.title || `Foto ${current + 1}`}
             className="object-contain w-full h-[400px] md:h-full rounded-t-xl md:rounded-l-xl"
           />
 
-          {/* Sticker título arriba izquierda */}
-          {title && index === 0 && (
+          {/* Título tipo sticker — arriba izquierda */}
+          {currentImage.title && (
             <div className="absolute top-4 left-4 bg-rojo-inmobiliario text-white px-3 py-1 rounded-lg font-semibold shadow">
-              {title}
-            </div>
-          )}
-          {current.title && index !== 0 && (
-            <div className="absolute top-4 left-4 bg-rojo-inmobiliario text-white px-3 py-1 rounded-lg font-semibold shadow">
-              {current.title}
+              {currentImage.title}
             </div>
           )}
 
-          {/* Descripción solo subpropiedades */}
-          {currentDescription && index !== 0 && (
-            <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm">
-              {currentDescription}
-            </div>
-          )}
-
-          {/* Sticker contador abajo derecha */}
-          <div className="absolute bottom-4 right-4 bg-rojo-inmobiliario text-white px-3 py-1 rounded-lg font-semibold shadow">
-            {index + 1} / {images.length}
+          {/* Contador de fotos — abajo derecha */}
+          <div className="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg font-medium text-sm">
+            {current + 1} / {images.length}
           </div>
+
+          {/* Descripción al pie — solo subpropiedades */}
+          {current !== 0 && currentImage.description && (
+            <div className="absolute bottom-12 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-lg max-w-[90%] md:max-w-[70%] text-sm">
+              {currentImage.description}
+            </div>
+          )}
 
           {/* Botón cerrar */}
           <button
@@ -56,7 +57,7 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, ti
             <FaTimes />
           </button>
 
-          {/* Flechas navegación */}
+          {/* Flechas de navegación */}
           <button
             onClick={prevImage}
             className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-2 rounded-full hover:bg-opacity-80 transition"
@@ -73,21 +74,17 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, ti
 
         {/* Miniaturas */}
         <div className="flex md:flex-col md:w-28 overflow-x-auto md:overflow-y-auto mt-2 md:mt-0 md:ml-2 gap-2">
-          {images.map((img, i) => {
-            const src = img.src || img;
-            const t = img.title || `Mini ${i + 1}`;
-            return (
-              <img
-                key={i}
-                src={src}
-                alt={t}
-                onClick={() => setIndex(i)}
-                className={`cursor-pointer rounded-lg border-2 transition-all duration-200 ${
-                  i === index ? "border-rojo-inmobiliario scale-105" : "border-transparent"
-                } w-20 h-20 object-cover md:w-20 md:h-20`}
-              />
-            );
-          })}
+          {images.map((img, i) => (
+            <img
+              key={i}
+              src={img.src}
+              alt={img.title || `Mini ${i + 1}`}
+              onClick={() => setCurrent(i)}
+              className={`cursor-pointer rounded-lg border-2 transition-all duration-200 ${
+                i === current ? "border-rojo-inmobiliario scale-105" : "border-transparent"
+              } w-20 h-20 object-cover md:w-20 md:h-20`}
+            />
+          ))}
         </div>
       </div>
     </div>
