@@ -1,7 +1,7 @@
 // src/components/PropertyResumePageGallery.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import "./PropertyResumePageGallery.css";
+import "../styles/PropertyResumePageGallery.css";
 
 const PropertyResumePageGallery = ({ images, title, description }) => {
   const [isOpen, setIsOpen] = useState(false);
