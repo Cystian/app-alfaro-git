@@ -46,10 +46,11 @@ export default function PropertyGallery({ data }) {
     rounded-2xl shadow-md border border-gray-200
     hover:shadow-lg transition-all duration-300
     w-[130%] font-sans relative
-    mt-[-2rem]          /* margen superior fijo */
-    mx-0 md:mx-[-5rem] lg:mx-[-10rem]  /* márgenes laterales responsive */
+    mt-[-2rem]
+    left-1/2 -translate-x-1/2
   "
 >
+
 
 
 
