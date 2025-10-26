@@ -43,9 +43,9 @@ export default function PropertyGallery({ data }) {
  <div
   className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-[130%] mx-auto font-sans relative"
   style={{
-    marginTop: "-2rem",
-    marginRight: "-10rem",
-    marginLeft: "-10rem",
+    marginTop: "-1rem",
+    marginRight: "-1rem",
+    marginLeft: "-1rem",
     padding: "0.5rem"
   }}
 >
