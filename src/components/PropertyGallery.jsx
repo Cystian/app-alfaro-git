@@ -40,15 +40,17 @@ export default function PropertyGallery({ data }) {
   }
 
   return (
- <div
-  className="flex flex-col bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 w-[130%] mx-auto font-sans relative"
-  style={{
-    marginTop: "-2rem",
-    marginRight: "-5rem",
-    marginLeft: "-5rem",
-    padding: "0.5rem"
-  }}
+<div
+  className="
+    flex flex-col bg-gray-50 p-2
+    rounded-2xl shadow-md border border-gray-200
+    hover:shadow-lg transition-all duration-300
+    w-[130%] font-sans relative
+    mt-[-2rem]          /* margen superior fijo */
+    mx-0 md:mx-[-5rem] lg:mx-[-10rem]  /* márgenes laterales responsive */
+  "
 >
+
 
 
       {/* Carrusel principal */}
