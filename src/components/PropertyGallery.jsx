@@ -49,6 +49,7 @@ export default function PropertyGallery({ data }) {
     font-sans relative
     mt-[-2rem]
     left-1/2 -translate-x-1/2
+  h-[300px] md:h-[350px] lg:h-[400px]
   "
 >
 
