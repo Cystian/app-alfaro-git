@@ -253,7 +253,7 @@ export default function PropertyResumenPage() {
 
           {/* Descripción */}
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2 ">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-geistmono">
               Descripción
             </h2>
             <div
