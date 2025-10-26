@@ -32,7 +32,7 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, on
 
           {/* Título tipo sticker — arriba izquierda */}
           {currentImage.title && (
-            <div className="absolute top-4 left-4 bg-rojo-inmobiliario text-white px-3 py-1 rounded-lg font-semibold shadow">
+            <div className="absolute top-4 left-4  text-white px-3 py-1 rounded-lg font-semibold shadow" style={{ backgroundColor: "#ff4d4f" }}>
               {currentImage.title}
             </div>
           )}
