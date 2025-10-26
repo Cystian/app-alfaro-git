@@ -27,7 +27,7 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, on
           <img
             src={currentImage.src}
             alt={currentImage.title || `Foto ${current + 1}`}
-            className="object-contain w-full h-[400px] md:h-full rounded-t-xl md:rounded-l-xl"
+            className="object-contain w-full h-[400px] md:h-[500px]  rounded-t-xl md:rounded-l-xl"
           />
 
           {/* Título tipo sticker — arriba izquierda */}
