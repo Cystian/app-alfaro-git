@@ -19,7 +19,7 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, on
   const currentImage = images[current];
 
   return (
-    <div className="lightbox-overlay fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
+    <div className="lightbox-overlay fixed inset-0 z-50 bg-gradient-to-b from-black/70 via-black/40 to-black/70 backdrop-blur-lg flex items-center justify-center p-4">
       <div className="relative bg-white rounded-xl shadow-xl w-full max-w-6xl flex flex-col md:flex-row overflow-hidden">
 
         {/* Imagen principal */}
