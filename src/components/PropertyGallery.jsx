@@ -42,7 +42,7 @@ export default function PropertyGallery({ data }) {
   return (
 <div
   className="
-    flex flex-col bg-gray-50 p-2
+    flex flex-col bg-gray-50 p-4 md:p-2
     rounded-2xl shadow-md border border-gray-200
     hover:shadow-lg transition-all duration-300
     w-[120%] md:w-[120%] lg:w-[140%]  /* ancho responsive */
