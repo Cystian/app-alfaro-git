@@ -73,7 +73,7 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, on
         </div>
 
         {/* Miniaturas */}
-        <div className="flex md:flex-col md:w-28 overflow-x-auto md:overflow-y-auto mt-2 md:mt-0 md:ml-2 gap-2">
+        <div className="flex md:flex-col md:w-28 overflow-x-auto md:overflow-y-auto mt-2 md:mt-0 md:ml-2 gap-2" style={{maxHeight:"600px",flexShrink:0,}}>
           {images.map((img, i) => (
             <img
               key={i}
