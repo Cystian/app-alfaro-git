@@ -9,7 +9,7 @@ const Servicios = () => {
 
         {/* Banner superior */}
 <section
-  className="w-full bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-16"
+  className="w-full h-[400px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-16"
   style={{
     backgroundImage: "url('/banner_servicios.png')",
     backgroundSize: "contain", // 🔹 Ajusta la imagen al contenedor
