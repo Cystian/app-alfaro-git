@@ -10,7 +10,7 @@ const Servicios = () => {
         {/* Banner superior */}
         <section
           className="w-full h-80 bg-cover bg-center relative flex items-center justify-center"
-          style={{ backgroundImage: "url('/banner/banner_servicios.png')" }}
+          style={{ backgroundImage: "url('/banner_servicios.png')" }}
         >
           <div className="absolute inset-0 bg-black/50"></div>
           <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-wide text-center relative z-10">
