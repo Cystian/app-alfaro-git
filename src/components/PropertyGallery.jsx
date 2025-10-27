@@ -50,6 +50,7 @@ export default function PropertyGallery({ data }) {
     mt-[-2rem]
     left-1/2 -translate-x-1/2
   h-[300px] md:h-[350px] lg:h-[400px]
+      overflow-hidden
   "
 >
 
@@ -74,7 +75,7 @@ export default function PropertyGallery({ data }) {
           {images.map((img, index) => (
             <SwiperSlide key={index}>
               <div
-                className="relative w-full h-[110px] sm:h-[180px] md:h-[250px] lg:h-[320px] overflow-hidden rounded-2xl bg-white flex items-center justify-center cursor-pointer"
+                className="relative w-full h-full overflow-hidden rounded-2xl bg-white flex items-center justify-center cursor-pointer"
                 onClick={() => {
                   setCurrentIndex(index);
                   setLightboxOpen(true);
