@@ -8,15 +8,20 @@ const Servicios = () => {
       <div className="bg-white text-[#000000]">
 
         {/* Banner superior */}
-        <section
-          className="w-full h-80 bg-cover bg-center relative flex items-center justify-center"
-          style={{ backgroundImage: "url('/banner_servicios.png')" }}
-        >
-          <div className="absolute inset-0 bg-black/50"></div>
-          <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-wide text-center relative z-10">
-            Nuestros Servicios
-          </h1>
-        </section>
+<section
+  className="w-full bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-16"
+  style={{
+    backgroundImage: "url('/banner_servicios.png')",
+    backgroundSize: "contain", // 🔹 Ajusta la imagen al contenedor
+  }}
+>
+  <div className="absolute inset-0 bg-black/30"></div> {/* opcional, da contraste */}
+  <div className="relative z-10 text-center px-6 md:px-12">
+    <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg">
+      Nuestros Servicios
+    </h1>
+  </div>
+</section>
 
         {/* Introducción */}
         <section className="py-16 px-6 md:px-20 bg-[#F9F9F9]">
@@ -41,19 +46,19 @@ const Servicios = () => {
                   title: "Agencia Inmobiliaria",
                   desc: "Venta o alquiler de inmuebles con asesoramiento integral y tasaciones profesionales.",
                   icon: <Building2 size={48} />,
-                  img: "/images/agencia.jpg",
+                  img: "/agencia.png",
                 },
                 {
                   title: "Asesoría",
                   desc: "Saneamiento físico legal de terrenos, asesoría legal, contable y financiera.",
                   icon: <FileText size={48} />,
-                  img: "/images/asesoria.jpg",
+                  img: "/asesoria.png",
                 },
                 {
                   title: "Proyectos",
                   desc: "Desarrollo de proyectos inmobiliarios e inversiones de alta rentabilidad y plusvalía.",
                   icon: <BarChart3 size={48} />,
-                  img: "/images/proyectos.jpg",
+                  img: "/proyectos.png",
                 },
               ].map((serv, idx) => (
                 <div
