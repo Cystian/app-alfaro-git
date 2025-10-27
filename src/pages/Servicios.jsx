@@ -15,12 +15,7 @@ const Servicios = () => {
     backgroundSize: "contain", // 🔹 Ajusta la imagen al contenedor
   }}
 >
-  <div className="absolute inset-0 bg-black/30"></div> {/* opcional, da contraste */}
-  <div className="relative z-10 text-center px-6 md:px-12">
-    <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg">
-      Nuestros Servicios
-    </h1>
-  </div>
+
 </section>
 
         {/* Introducción */}
@@ -86,7 +81,7 @@ const Servicios = () => {
           <div className="max-w-5xl mx-auto leading-relaxed">
 
             {/* AGENCIA INMOBILIARIA */}
-            <h2 className="text-3xl font-semibold text-[#C80000] mb-4 text-center">
+            <h2 className="text-3xl font-semibold text-gray mb-4 text-center">
               Agencia Inmobiliaria
             </h2>
             <p className="mb-4">
