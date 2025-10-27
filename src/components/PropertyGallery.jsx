@@ -75,7 +75,7 @@ export default function PropertyGallery({ data }) {
           {images.map((img, index) => (
             <SwiperSlide key={index}>
               <div
-                className="relative w-full h-full overflow-hidden rounded-2xl bg-white flex items-center justify-center cursor-pointer"
+                className="relative w-full h-[280px] md:h-[330px] lg:h-[380px] overflow-hidden rounded-2xl bg-white flex items-center justify-center cursor-pointer"
                 onClick={() => {
                   setCurrentIndex(index);
                   setLightboxOpen(true);
