@@ -103,6 +103,8 @@ export default function PropertyGallery({ data }) {
         </button>
       </div>
 
+    
+    </div>
       {/* Lightbox unificado */}
       {lightboxOpen && (
         <PropertyResumePageGallery
@@ -111,6 +113,5 @@ export default function PropertyGallery({ data }) {
           onClose={() => setLightboxOpen(false)}
         />
       )}
-    </div>
   );
 }
