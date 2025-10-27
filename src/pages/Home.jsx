@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      <main className="max-w-9xl mx-auto space-y-4 p-4 sm:p-8">
+      <main className="max-w-9xl mx-auto space-y-4 p-2 sm:p-4">
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
 
