@@ -46,7 +46,7 @@ export default function PropertyGallery({ data }) {
           flex flex-col bg-gray-50 p-4 md:p-2
           rounded-2xl shadow-md border border-gray-200
           hover:shadow-lg transition-all duration-300
-          w-[95%] md:w-[95%] lg:w-[98%]
+          w-[98%] md:w-[98%] lg:w-[100%]
           font-sans relative
           mt-[-2rem]
           left-1/2 -translate-x-1/2
