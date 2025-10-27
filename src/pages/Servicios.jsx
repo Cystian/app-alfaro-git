@@ -32,8 +32,8 @@ const Servicios = () => {
         {/* Tarjetas interactivas */}
         <section className="py-20 px-6 md:px-20">
           <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-4xl font-semibold mb-12 text-gray tracking-wide">
-              <p className="text-gray"> Áreas de Gestión   </p>
+            <h2 className="text-4xl font-semibold mb-12 text-[#C80000] tracking-wide">
+              <p className="text-[#C80000]"> Áreas de Gestión   </p>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {[
