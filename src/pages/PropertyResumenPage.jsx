@@ -83,7 +83,7 @@ export default function PropertyResumenPage() {
       <FloatingShare />
 
       <div className="min-h-screen bg-gray-100 ">
-        <div className="max-w-9xl mx-auto bg-white shadow-xl rounded-2xl px-2 relative" style={{marginTop:"3rem"}}>
+        <div className="max-w-9xl mx-auto bg-white shadow-xl rounded-2xl px-2 relative" style={{marginTop:"3rem",marginLeft:"0.5rem",marginRight:"0.5rem"}}>
 
           {/* 🔹 Slider original intacto */}
           <div className="relative">
