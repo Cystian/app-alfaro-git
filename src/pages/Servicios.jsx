@@ -9,7 +9,7 @@ const Servicios = () => {
 
         {/* Banner superior */}
 <section
-  className="w-full min-h-[300px] md:min-h-[400px] bg-center bg-no-repeat relative flex items-center justify-center pb-[5rem] md:pb-[5rem]"
+  className="w-full min-h-[300px] md:min-h-[400px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
   style={{
     backgroundImage: "url('/banner_servicios.png')",
     backgroundSize: "contain", // 🔹 Ajusta la imagen al contenedor
@@ -31,7 +31,7 @@ const Servicios = () => {
 
         {/* Tarjetas interactivas */}
         <section className="py-20 px-6 md:px-20">
-          <div className="max-w-6xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center mt-[-4rem] ">
        
                  <div className="mb-4">
         <img
