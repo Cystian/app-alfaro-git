@@ -1,6 +1,7 @@
 import React from "react";
 import { Building2, FileText, BarChart3 } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
+import { motion } from "framer-motion";
 
 const Servicios = () => {
   return (
@@ -20,6 +21,13 @@ const Servicios = () => {
 
         {/* Introducción */}
         <section className="py-16 px-6 md:px-20 bg-[#F9F9F9]">
+            <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl mx-auto"
+          >
+              
           <div className="max-w-5xl mx-auto text-center">
             <p className="text-gray-700 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
               En <span className="font-semibold text-[#C80000]">Inmobiliaria Alberto Alfaro</span> te brindamos los siguientes servicios
