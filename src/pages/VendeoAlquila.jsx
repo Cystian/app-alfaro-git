@@ -9,7 +9,7 @@ const VendeoAlquila = () => {
 
         {/* 🔻 Banner superior */}
         <section
-          className="w-full min-h-[300px] md:min-h-[400px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
+          className="w-full min-h-[300px] md:min-h-[500px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
           style={{
             backgroundImage: "url('/subtitulos/banner_vendeoalquila.png')",
             backgroundSize: "cover",
