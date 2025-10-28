@@ -76,55 +76,61 @@ const Servicios = () => {
           </div>
         </section>
 
-        {/* Detalle institucional */}
-        <section className="py-16 px-6 md:px-20 bg-[#F9F9F9] text-gray-800">
-          <div className="max-w-5xl mx-auto leading-relaxed">
+{/* Detalle institucional como tarjetas */}
+<section className="py-16 px-6 md:px-20 bg-[#F9F9F9] text-gray-800">
+  <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    {/* 🏠 Agencia Inmobiliaria */}
+    <div className="bg-white shadow-md hover:shadow-lg rounded-2xl p-6 border border-gray-200 transition-all duration-300">
+      <h2
+        className="text-2xl font-semibold text-[#C80000] text-center mb-4 text-stroke-dark"
+        style={{ WebkitTextStroke: "0.6px #9ca3af" }}
+      >
+        Agencia Inmobiliaria
+      </h2>
+      <p className="mb-3">
+        <strong>1. Venta o Alquiler de Inmuebles:</strong> realizamos un servicio y asesoramiento completo en la venta o alquiler de tu propiedad.
+      </p>
+      <p>
+        <strong>2. Tasación de Predios para la Venta:</strong> realizamos estudios de mercado actualizados, con información precisa de precios por m² de terreno y construcción, lo que nos permite realizar una tasación óptima para tu inmueble.
+      </p>
+    </div>
 
-            {/* AGENCIA INMOBILIARIA */}
-            <h2 className="text-3xl font-semibold text-gray text-[#C80000]  mb-4 text-center">
-              Agencia Inmobiliaria
-            </h2>
-            <p className="mb-4">
-              <strong>1. Venta o Alquiler de Inmuebles:</strong> realizamos un servicio y asesoramiento
-              completo en la venta o alquiler de tu propiedad.
-            </p>
-            <p className="mb-8">
-              <strong>2. Tasación de Predios para la Venta:</strong> realizamos estudios de mercado de inmuebles
-              de manera permanente, contando con información de precios por metro cuadrado de terrenos y construcción,
-              lo que nos permite realizar una tasación óptima para tu inmueble.
-            </p>
+    {/* 📄 Asesoría */}
+    <div className="bg-white shadow-md hover:shadow-lg rounded-2xl p-6 border border-gray-200 transition-all duration-300">
+      <h2
+        className="text-2xl font-semibold text-[#C80000] text-center mb-4 text-stroke-dark"
+        style={{ WebkitTextStroke: "0.6px #9ca3af" }}
+      >
+        Asesoría
+      </h2>
+      <p className="mb-3">
+        <strong>3. Saneamiento Físico Legal de Terrenos:</strong> elaboramos expedientes técnicos y trámites para el saneamiento de predios, subdivisiones, acumulaciones y otros procesos que permiten una venta sin complicaciones.
+      </p>
+      <p>
+        <strong>4. Asesoría Legal, Contable y Financiera:</strong> realizamos el análisis legal y contable de tu inmueble para garantizar su efectiva transferencia e inscripción en Registros Públicos.
+      </p>
+    </div>
 
-            {/* ASESORÍA */}
-            <h2 className="text-3xl font-semibold   text-[#C80000]  mb-4 text-center">
-              Asesoría
-            </h2>
-            <p className="mb-4">
-              <strong>3. Saneamiento Físico Legal de Terrenos:</strong> elaboramos expedientes y trámites
-              para el saneamiento de predios, como subdivisiones, acumulaciones y otros que permitan proceder
-              a una venta sin complicaciones.
-            </p>
-            <p className="mb-8">
-              <strong>4. Asesoría Legal, Contable y Financiera:</strong> realizamos el análisis legal de tu
-              inmueble, procediendo a su saneamiento, lo que permitirá su efectiva transferencia e inscripción
-              en Registros Públicos.
-            </p>
+    {/* 📊 Proyectos */}
+    <div className="bg-white shadow-md hover:shadow-lg rounded-2xl p-6 border border-gray-200 transition-all duration-300">
+      <h2
+        className="text-2xl font-semibold text-[#C80000] text-center mb-4 text-stroke-dark"
+        style={{ WebkitTextStroke: "0.6px #9ca3af" }}
+      >
+        Proyectos
+      </h2>
+      <p className="mb-3">
+        <strong>5. Desarrollo de Proyectos Inmobiliarios:</strong> diseñamos proyectos integrales desde el estudio de mercado hasta la ingeniería y presupuestos, asegurando su rentabilidad.
+      </p>
+      <p>
+        <strong>6. Inversiones Inmobiliarias:</strong> contamos con una cartera de inmuebles estratégicos que garantizan inversiones de alta plusvalía y retorno.
+      </p>
+    </div>
 
-            {/* PROYECTOS */}
-            <h2 className="text-3xl font-semibold text-[#C80000] mb-4 text-center">
-              Proyectos
-            </h2>
-            <p className="mb-4">
-              <strong>5. Desarrollo de Proyectos Inmobiliarios:</strong> realizamos el diseño completo de proyectos
-              inmobiliarios, desde el estudio de mercado que garantice su éxito en ventas, pasando por el diseño
-              arquitectónico, ingeniería, presupuesto de obra y el proyecto económico que sustente su rentabilidad.
-            </p>
-            <p>
-              <strong>6. Inversiones Inmobiliarias:</strong> contamos con una importante cartera de inmuebles en
-              ubicaciones estratégicas y precios que garantizan inversiones inmobiliarias de alta rentabilidad
-              y plusvalía.
-            </p>
-          </div>
-        </section>
+  </div>
+</section>
+
 
       </div>
     </PageWrapper>
