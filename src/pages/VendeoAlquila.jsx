@@ -15,15 +15,7 @@ const VendeoAlquila = () => {
             backgroundSize: "cover",
           }}
         >
-          <div className="absolute inset-0 bg-black/40"></div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative text-white text-4xl md:text-5xl font-semibold text-center z-10 drop-shadow-lg"
-          >
-            Vende o Alquila con Total Garantía
-          </motion.h1>
+        
         </section>
 
         {/* 🏡 Introducción */}
