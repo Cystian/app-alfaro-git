@@ -68,7 +68,7 @@ const Servicios = () => {
                   <div className="absolute inset-0 flex flex-col justify-center items-center text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                     <div className="text-[#C80000] mb-3">{serv.icon}</div>
                     <h4 className="text-2xl font-semibold text-gray mb-2">{serv.title}</h4>
-                    <p className="text-gray-100 text-sm max-w-xs  text-stroke-dark ">{serv.desc}</p>
+                    <p className="text-white text-sm max-w-xs  text-stroke-gray ">{serv.desc}</p>
                   </div>
                 </div>
               ))}
