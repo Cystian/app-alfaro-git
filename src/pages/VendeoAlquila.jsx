@@ -1,76 +1,119 @@
 import React from "react";
-import { ClipboardList, Megaphone, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
 import PageWrapper from "../components/PageWrapper";
-import VendeAlquilaForm from "../components/VendeAlquilaForm";
 
 const VendeoAlquila = () => {
   return (
     <PageWrapper>
-      <div className="bg-white text-[#000000]">
+      <div className="bg-white text-gray-800">
 
-        {/* Banner */}
-        <section className="w-full h-72 bg-gradient-to-r from-[#8B0000] to-[#C80000] flex items-center justify-center shadow-lg">
-          <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-wide text-center">
-            Vende o Alquila tu Propiedad
-          </h1>
+        {/* 🔻 Banner superior */}
+        <section
+          className="w-full min-h-[300px] md:min-h-[400px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
+          style={{
+            backgroundImage: "url('/banner_vendeoalquila.png')",
+            backgroundSize: "cover",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40"></div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative text-white text-4xl md:text-5xl font-semibold text-center z-10 drop-shadow-lg"
+          >
+            Vende o Alquila con Total Garantía
+          </motion.h1>
         </section>
 
-        {/* Proceso en 3 pasos */}
-        <section className="py-20 px-6 md:px-20 bg-[#F9F9F9]">
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-semibold mb-12 text-[#C80000] tracking-wide">
+        {/* 🏡 Introducción */}
+        <section className="py-16 px-6 md:px-20 text-center bg-[#F9F9F9]">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl mx-auto"
+          >
+            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+              Nuestra <span className="font-semibold text-[#C80000]">experiencia y capacidad</span> nos permite atenderte
+              de manera segura y personalizada.
+            </p>
+          </motion.div>
+        </section>
+
+        {/* 🔹 Subtítulo */}
+        <section className="px-6 md:px-20 text-center mt-[-2rem] mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2
+              className="text-3xl md:text-4xl font-semibold text-[#C80000] mb-4"
+              style={{ WebkitTextStroke: "0.6px #9ca3af" }}
+            >
               Nuestro Proceso
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              {[
-                {
-                  title: "1. Evalúa tu Inmueble",
-                  desc: "Realizamos una tasación justa y confiable para determinar el mejor valor de mercado.",
-                  icon: <ClipboardList size={48} />,
-                },
-                {
-                  title: "2. Promoción Efectiva",
-                  desc: "Publicamos tu propiedad en nuestra red de clientes y principales plataformas digitales.",
-                  icon: <Megaphone size={48} />,
-                },
-                {
-                  title: "3. Cierra con Confianza",
-                  desc: "Te acompañamos en cada paso, brindando asesoría legal y respaldo profesional.",
-                  icon: <ShieldCheck size={48} />,
-                },
-              ].map((step, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-2"
-                >
-                  <div className="text-[#C80000] mb-4 flex justify-center">
-                    {step.icon}
-                  </div>
-                  <h4 className="text-xl md:text-2xl font-semibold text-[#222222] mb-3">
-                    {step.title}
-                  </h4>
-                  <p className="text-gray-700 text-lg md:text-base leading-relaxed">
-                    {step.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              En <span className="font-semibold text-[#C80000]">Inmobiliaria Alberto Alfaro</span> te ofrecemos
+              un servicio y asesoramiento completo, gestionando detalladamente las siguientes actividades
+              de principio a fin:
+            </p>
+          </motion.div>
         </section>
 
-        {/* Formulario de contacto */}
-        <section className="py-20 px-6 md:px-20">
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-semibold mb-6 text-[#C80000] tracking-wide">
-              Publica tu Propiedad con Nosotros
-            </h2>
-            <p className="text-gray-700 text-lg md:text-xl leading-relaxed mb-12 max-w-3xl mx-auto">
-              Completa el siguiente formulario y nuestro equipo se pondrá en
-              contacto contigo para ayudarte a <span className="font-semibold">vender</span> o{" "}
-              <span className="font-semibold">alquilar</span> tu propiedad de la
-              forma más rápida y segura.
-            </p>
-            <VendeAlquilaForm />
+        {/* 🧭 Tarjetas del proceso */}
+        <section className="pb-20 px-6 md:px-20">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+
+            {[
+              {
+                step: "01",
+                title: "Tasación",
+                desc: "Realizamos la valorización de tu inmueble con peritos experimentados para determinar el mejor precio para venta o alquiler.",
+              },
+              {
+                step: "02",
+                title: "Estudio Legal de tu Inmueble",
+                desc: "Evaluamos tu inmueble para dejarlo saneado y listo para la venta o alquiler.",
+              },
+              {
+                step: "03",
+                title: "Promoción y Publicidad",
+                desc: "Publicitamos tu propiedad mediante carteles, videos y flyers, con campañas en redes sociales y nuestro Portal Web. Además, contamos con una Red de Agentes Inmobiliarios para multiplicar el alcance a potenciales clientes.",
+              },
+              {
+                step: "04",
+                title: "Financiamiento Bancario",
+                desc: "Gestionamos créditos hipotecarios para facilitar la compra del inmueble y cerrar la operación con respaldo financiero.",
+              },
+              {
+                step: "05",
+                title: "Asesoría Legal y Contable",
+                desc: "Elaboramos contratos seguros para la venta o alquiler, gestionando pagos de impuestos municipales (Autovalúo, Arbitrios, Alcabala) y SUNAT (Impuesto a la Renta) para garantizar tu seguridad jurídica y tributaria.",
+              },
+              {
+                step: "06",
+                title: "Firma de Escritura",
+                desc: "Coordinamos con la Notaría y la entidad financiera hasta la firma de la Escritura Pública y la entrega del cheque de gerencia.",
+              },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="relative bg-[#F9F9F9] p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200"
+              >
+                <span className="absolute -top-5 left-6 bg-[#C80000] text-white font-semibold text-sm px-3 py-1 rounded-full shadow-md">
+                  Paso {item.step}
+                </span>
+                <h3 className="text-xl font-semibold text-[#C80000] mb-3 mt-2">{item.title}</h3>
+                <p className="text-gray-700 leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+
           </div>
         </section>
 
