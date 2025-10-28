@@ -35,6 +35,7 @@ const Servicios = () => {
               <span className="italic">Agencia Inmobiliaria, Asesoría y Proyectos.</span>
             </p>
           </div>
+              </motion.div>
         </section>
 
         {/* Tarjetas interactivas */}
