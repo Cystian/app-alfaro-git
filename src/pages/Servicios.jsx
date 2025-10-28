@@ -81,7 +81,7 @@ const Servicios = () => {
           <div className="max-w-5xl mx-auto leading-relaxed">
 
             {/* AGENCIA INMOBILIARIA */}
-            <h2 className="text-3xl font-semibold text-gray mb-4 text-center">
+            <h2 className="text-3xl font-semibold text-gray  text-stroke-dark  mb-4 text-center">
               Agencia Inmobiliaria
             </h2>
             <p className="mb-4">
@@ -95,7 +95,7 @@ const Servicios = () => {
             </p>
 
             {/* ASESORÍA */}
-            <h2 className="text-3xl font-semibold text-[#C80000] mb-4 text-center">
+            <h2 className="text-3xl font-semibold   .text-stroke-gray  mb-4 text-center">
               Asesoría
             </h2>
             <p className="mb-4">
