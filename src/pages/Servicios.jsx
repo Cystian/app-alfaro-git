@@ -36,7 +36,7 @@ const Servicios = () => {
                  <div className="mb-4">
         <img
           src="/subtitulos/areas_gestion.png"
-          alt="Nuestro Equipo de Asesores"
+          alt="Areas de Gestión"
           className="w-[30rem] mx-auto"
         />
       </div>
