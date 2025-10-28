@@ -77,7 +77,7 @@ const Servicios = () => {
         </section>
 
 {/* Detalle institucional como tarjetas */}
-<section className="py-16 px-6 md:px-20 bg-[#F9F9F9] text-gray-800">
+<section className="py-16 px-6 md:px-20 bg-[#F9F9F9] text-gray-800 mt-[-5rem] ">
   <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
     
     {/* 🏠 Agencia Inmobiliaria */}
