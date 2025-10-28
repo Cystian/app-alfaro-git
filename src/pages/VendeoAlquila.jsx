@@ -40,12 +40,16 @@ const VendeoAlquila = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h2
-              className="text-3xl md:text-4xl font-semibold text-[#C80000] mb-4"
-              style={{ WebkitTextStroke: "0.6px #9ca3af" }}
-            >
-              Nuestro Proceso
-            </h2>
+           
+                 <div className="mb-4">
+        <img
+          src="/subtitulos/nuestro_proceso.png"
+          alt="Areas de Gestión"
+          className="w-[30rem] mx-auto"
+        />
+      </div>
+
+            
             <p className="text-gray-600 max-w-3xl mx-auto">
               En <span className="font-semibold text-[#C80000]">Inmobiliaria Alberto Alfaro</span> te ofrecemos
               un servicio y asesoramiento completo, gestionando detalladamente las siguientes actividades
