@@ -67,7 +67,7 @@ const Servicios = () => {
                   />
                   <div className="absolute inset-0 flex flex-col justify-center items-center text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                     <div className="text-[#C80000] mb-3">{serv.icon}</div>
-                    <h4 className="text-2xl font-semibold text-white mb-2">{serv.title}</h4>
+                    <h4 className="text-2xl font-semibold text-gray mb-2">{serv.title}</h4>
                     <p className="text-gray-100 text-sm max-w-xs">{serv.desc}</p>
                   </div>
                 </div>
@@ -81,7 +81,7 @@ const Servicios = () => {
           <div className="max-w-5xl mx-auto leading-relaxed">
 
             {/* AGENCIA INMOBILIARIA */}
-            <h2 className="text-3xl font-semibold text-gray  text-stroke-dark  mb-4 text-center">
+            <h2 className="text-3xl font-semibold text-gray text-[#C80000]  mb-4 text-center">
               Agencia Inmobiliaria
             </h2>
             <p className="mb-4">
@@ -95,7 +95,7 @@ const Servicios = () => {
             </p>
 
             {/* ASESORÍA */}
-            <h2 className="text-3xl font-semibold   .text-stroke-gray  mb-4 text-center">
+            <h2 className="text-3xl font-semibold   text-[#C80000]  mb-4 text-center">
               Asesoría
             </h2>
             <p className="mb-4">
