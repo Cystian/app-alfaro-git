@@ -267,3 +267,15 @@ input[type="checkbox"].custom-checkbox:focus {
   @apply bg-white rounded-2xl shadow-xl max-w-lg w-full p-6;
 }
 
+@layer utilities {
+  .text-stroke-gray {
+    -webkit-text-stroke: 0.7px #9ca3af; /* Gris medio: Tailwind gray-400 */
+    text-stroke: 0.7px #9ca3af; /* Compatibilidad futura */
+  }
+
+  .text-stroke-dark {
+    -webkit-text-stroke: 1px #555555; /* Gris oscuro para títulos negros */
+    text-stroke: 1px #555555;
+  }
+}
+
