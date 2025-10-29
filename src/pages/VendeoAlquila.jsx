@@ -58,60 +58,77 @@ const VendeoAlquila = () => {
           </motion.div>
         </section>
 
-        {/* 🧭 Tarjetas del proceso */}
-        <section className="pb-20 px-6 md:px-20">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+  {/* 🧭 Tarjetas del proceso */}
+<section className="pb-20 px-6 md:px-20">
+  <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+    {[
+      {
+        step: "01",
+        title: "Tasación",
+        desc: "Realizamos la valorización de tu inmueble con peritos experimentados para determinar el mejor precio para venta o alquiler.",
+        icon: "/iconos/tasacion.png",
+      },
+      {
+        step: "02",
+        title: "Estudio Legal de tu Inmueble",
+        desc: "Evaluamos tu inmueble para dejarlo saneado y listo para la venta o alquiler.",
+        icon: "/iconos/estudio_legal_del_inmueble.png",
+      },
+      {
+        step: "03",
+        title: "Promoción y Publicidad",
+        desc: "Publicitamos tu propiedad mediante carteles, videos y flyers, con campañas en redes sociales y nuestro Portal Web. Además, contamos con una Red de Agentes Inmobiliarios para multiplicar el alcance a potenciales clientes.",
+        icon: "/iconos/promocion_y_publicidad.png",
+      },
+      {
+        step: "04",
+        title: "Financiamiento Bancario",
+        desc: "Gestionamos créditos hipotecarios para facilitar la compra del inmueble y cerrar la operación con respaldo financiero.",
+        icon: "/iconos/financiamiento_bancario.png",
+      },
+      {
+        step: "05",
+        title: "Asesoría Legal y Contable",
+        desc: "Elaboramos contratos seguros para la venta o alquiler, gestionando pagos de impuestos municipales (Autovalúo, Arbitrios, Alcabala) y SUNAT (Impuesto a la Renta) para garantizar tu seguridad jurídica y tributaria.",
+        icon: "/iconos/asesoria_legal_y_contable.png",
+      },
+      {
+        step: "06",
+        title: "Firma de Escritura",
+        desc: "Coordinamos con la Notaría y la entidad financiera hasta la firma de la Escritura Pública y la entrega del cheque de gerencia.",
+        icon: "/iconos/firma_de_escritura.png",
+      },
+    ].map((item, index) => (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+        className="relative bg-[#F9F9F9] p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200 text-center"
+      >
+        <span className="absolute -top-5 left-6 bg-[#C80000] text-white font-semibold text-sm px-3 py-1 rounded-full shadow-md">
+          Paso {item.step}
+        </span>
 
-            {[
-              {
-                step: "01",
-                title: "Tasación",
-                desc: "Realizamos la valorización de tu inmueble con peritos experimentados para determinar el mejor precio para venta o alquiler.",
-              },
-              {
-                step: "02",
-                title: "Estudio Legal de tu Inmueble",
-                desc: "Evaluamos tu inmueble para dejarlo saneado y listo para la venta o alquiler.",
-              },
-              {
-                step: "03",
-                title: "Promoción y Publicidad",
-                desc: "Publicitamos tu propiedad mediante carteles, videos y flyers, con campañas en redes sociales y nuestro Portal Web. Además, contamos con una Red de Agentes Inmobiliarios para multiplicar el alcance a potenciales clientes.",
-              },
-              {
-                step: "04",
-                title: "Financiamiento Bancario",
-                desc: "Gestionamos créditos hipotecarios para facilitar la compra del inmueble y cerrar la operación con respaldo financiero.",
-              },
-              {
-                step: "05",
-                title: "Asesoría Legal y Contable",
-                desc: "Elaboramos contratos seguros para la venta o alquiler, gestionando pagos de impuestos municipales (Autovalúo, Arbitrios, Alcabala) y SUNAT (Impuesto a la Renta) para garantizar tu seguridad jurídica y tributaria.",
-              },
-              {
-                step: "06",
-                title: "Firma de Escritura",
-                desc: "Coordinamos con la Notaría y la entidad financiera hasta la firma de la Escritura Pública y la entrega del cheque de gerencia.",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative bg-[#F9F9F9] p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200"
-              >
-                <span className="absolute -top-5 left-6 bg-[#C80000] text-white font-semibold text-sm px-3 py-1 rounded-full shadow-md">
-                  Paso {item.step}
-                </span>
-                <h3 className="text-xl font-semibold text-[#C80000] mb-3 mt-2">{item.title}</h3>
-                <p className="text-gray-700 leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
+        {/* 🖼️ Ícono central */}
+        <div className="flex justify-center mb-5">
+          <img
+            src={item.icon}
+            alt={item.title}
+            className="w-16 h-16 object-contain"
+          />
+        </div>
 
-          </div>
-        </section>
+        <h3 className="text-xl font-semibold text-[#C80000] mb-3 mt-2">
+          {item.title}
+        </h3>
+        <p className="text-gray-700 leading-relaxed">{item.desc}</p>
+      </motion.div>
+    ))}
+  </div>
+</section>
+
 
       </div>
     </PageWrapper>
