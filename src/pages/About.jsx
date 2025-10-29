@@ -7,19 +7,16 @@ const About = () => {
   return (
     <PageWrapper>
       <div className="bg-white text-gray-800">
-
-        {/* 🔻 Banner superior */}
+        
+    {/* 🔻 Banner superior */}
         <section
-          className="w-full min-h-[320px] md:min-h-[480px] bg-gradient-to-r from-[#8B0000] to-[#C80000] flex items-center justify-center text-center relative"
+          className="w-full min-h-[300px] md:min-h-[500px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
+          style={{
+            backgroundImage: "url('/subtitulos/about.png')",
+            backgroundSize: "contain",
+          }}
         >
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-white text-5xl md:text-6xl font-extrabold tracking-wider drop-shadow-lg"
-          >
-            Sobre Nosotros
-          </motion.h1>
+        
         </section>
 
         {/* 🏛️ Quiénes Somos */}
