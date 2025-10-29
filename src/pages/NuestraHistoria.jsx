@@ -1,248 +1,173 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Building2, Users2, Star, Landmark } from "lucide-react";
+import PageWrapper from "../components/PageWrapper";
 
 const NuestraHistoria = () => {
   return (
-    <section
-    className="relative bg-[#F9F9F9] py-20 px-6 md:px-20 overflow-hidden"
-      style={{ paddingTop: "2rem" }}
-    >
-      {/* Fondo decorativo */}
-      <div className="absolute inset-0 bg-cover bg-center opacity-10 pt-4" />
+    <PageWrapper>
+      <section className="relative bg-[#F9F9F9] py-20 px-6 md:px-20 overflow-hidden">
 
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true }}
-        className="relative max-w-6xl mx-auto bg-white shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500"
-      >
-        {/* === Banner Principal === */}
-<div className="relative w-full h-auto md:h-[420px] overflow-hidden bg-[#F5F5F5]">
-  <img
-    src="/nuestra-historia.png"
-    alt="Banner Nuestra Historia"
-    className="w-full h-auto md:h-[420px] object-contain mx-auto"
-  />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-  <div className="absolute bottom-6 left-0 right-0 text-center text-white px-4">
-    <p className="mt-2 text-sm md:text-base text-gray-200">
-      Cuatro décadas de visión, innovación y compromiso con el desarrollo urbano
-    </p>
-  </div>
-</div>
+        {/* 🌇 Banner superior */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full bg-[#F5F5F5] rounded-3xl overflow-hidden shadow-md mb-16"
+        >
+          <img
+            src="/nuestra-historia.png"
+            alt="Banner Nuestra Historia"
+            className="w-full h-auto md:h-[420px] object-contain mx-auto"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div className="absolute bottom-6 left-0 right-0 text-center text-white px-4">
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="text-base md:text-lg text-gray-200 tracking-wide"
+            >
+              Cuatro décadas de visión, innovación y compromiso con el desarrollo urbano
+            </motion.p>
+          </div>
+        </motion.div>
 
-
-        {/* === Contenido Principal === */}
-        <div className="p-10 md:p-16">
-          {/* Texto principal */}
+        {/* 🏛️ Contenedor principal */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9 }}
+          className="max-w-6xl mx-auto bg-white shadow-lg rounded-3xl p-10 md:p-16 border border-gray-100"
+        >
+          {/* Texto introductorio */}
           <div className="text-gray-700 text-lg md:text-xl leading-relaxed space-y-6 text-justify">
             <p>
-              <span className="font-semibold text-gray-900">
-                Inmobiliaria Alberto Alfaro
-              </span>{" "}
-              es una de las firmas del{" "}
-              <span className="font-semibold text-gray-900">
-                Grupo Empresarial Alfa
-              </span>
-              , con más de <span className="font-semibold">40 años</span> de
-              experiencia en los sectores de{" "}
-              <span className="italic">
-                inmobiliaria, construcción, educación y entretenimiento
-              </span>
-              . Durante su trayectoria, el grupo ha desarrollado, financiado,
-              construido, vendido y alquilado proyectos de diversas índoles, como:
-              viviendas, edificios multifamiliares, galerías comerciales, centros
-              empresariales, centros de diversión, mercados de abastos y
-              habilitaciones urbanas.
+              <span className="font-semibold text-gray-900">Inmobiliaria Alberto Alfaro</span>{" "}
+              forma parte del{" "}
+              <span className="font-semibold text-gray-900">Grupo Empresarial Alfa</span>, con más de{" "}
+              <span className="font-semibold">40 años</span> de experiencia en los sectores de{" "}
+              <span className="italic">inmobiliaria, construcción, educación y entretenimiento</span>.  
+              A lo largo de su trayectoria, ha desarrollado, financiado, construido y comercializado
+              diversos proyectos emblemáticos como viviendas, edificios multifamiliares, galerías comerciales,
+              centros empresariales, mercados y habilitaciones urbanas.
             </p>
 
             <p>
-              El grupo a ejecutado importantes proyectos propios de alto impacto,entre los
-              qué sobresalen:
+              Entre los hitos más relevantes del grupo destacan los siguientes proyectos:
             </p>
           </div>
 
-          {/* === Proyectos destacados === */}
+          {/* 🏗️ Proyectos destacados */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
-            {/* Proyecto 1 */}
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 200, damping: 14 }}
-              className="rounded-2xl overflow-hidden shadow-md bg-white"
-            >
-              <img
-                src="/galerias-alfa.png"
-                alt="Galerías Alfa"
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#C80000] mb-2">
-                  Galerías Alfa
-                </h3>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  Inmueble compuesto por{" "}
-                  <strong>70 tiendas comerciales</strong>, símbolo del desarrollo
-                  empresarial y comercial de la ciudad.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Proyecto 2 */}
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 200, damping: 14 }}
-              className="rounded-2xl overflow-hidden shadow-md bg-white"
-            >
-              <img
-                src="/edificio_alfa.png"
-                alt="Edificio Alfa"
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#C80000] mb-2">
-                  Edificio Empresarial Alfa
-                </h3>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  Inmueble empresarial conformado por un{" "}
-                  <strong>
-                    casino, banco, 25 oficinas y 4 departamentos dúplex
-                  </strong>
-                  , consolidando su presencia en el sector corporativo.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Proyecto 3 */}
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 200, damping: 14 }}
-              className="rounded-2xl overflow-hidden shadow-md bg-white"
-            >
-              <img
-                src="/instituto-atlanta.png"
-                alt="Instituto de Turismo & Gastronomía ATLANTA"
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#C80000] mb-2">
-                  Instituto de Turismo & Gastronomía ATLANTA
-                </h3>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  Proyecto educativo pionero, orientado a la formación técnica y
-                  profesional en turismo, hotelería y gastronomía.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Proyecto 4 */}
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 200, damping: 14 }}
-              className="rounded-2xl overflow-hidden shadow-md bg-white"
-            >
-              <img
-                src="/centros-diversion.png"
-                alt="Centros de Diversión"
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-[#C80000] mb-2">
-                  Centros de Diversión
-                </h3>
-                <p className="text-gray-700 text-base leading-relaxed">
-                  <strong>
-                    KANKUN Tropical Disco, Boulevard Sur y Babilon Lounge
-                  </strong>
-                  , reconocidas marcas de entretenimiento y conciertos que
-                  marcaron tendencia en Chimbote.
-                </p>
-              </div>
-            </motion.div>
+            {[
+              {
+                img: "/galerias-alfa.png",
+                title: "Galerías Alfa",
+                text: "Inmueble compuesto por 70 tiendas comerciales, símbolo del desarrollo empresarial y comercial de la ciudad.",
+              },
+              {
+                img: "/edificio_alfa.png",
+                title: "Edificio Empresarial Alfa",
+                text: "Espacio corporativo con casino, banco, 25 oficinas y 4 departamentos dúplex, consolidando su presencia en el sector empresarial.",
+              },
+              {
+                img: "/instituto-atlanta.png",
+                title: "Instituto de Turismo & Gastronomía ATLANTA",
+                text: "Proyecto educativo pionero, orientado a la formación técnica y profesional en turismo, hotelería y gastronomía.",
+              },
+              {
+                img: "/centros-diversion.png",
+                title: "Centros de Diversión",
+                text: "KANKUN Tropical Disco, Boulevard Sur y Babilon Lounge, marcas de entretenimiento que marcaron tendencia en Chimbote.",
+              },
+            ].map((p, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: "spring", stiffness: 200, damping: 14 }}
+                className="rounded-3xl overflow-hidden shadow-md bg-white hover:shadow-xl transition-all duration-500"
+              >
+                <img
+                  src={p.img}
+                  alt={p.title}
+                  className="w-full h-56 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-[#C80000] mb-2">
+                    {p.title}
+                  </h3>
+                  <p className="text-gray-700 text-base leading-relaxed">{p.text}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          {/* === Fundador === */}
-          <div className="mt-16 text-gray-700 text-lg md:text-xl leading-relaxed space-y-6 text-justify">
+          {/* 👔 Fundador */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-16 text-gray-700 text-lg md:text-xl leading-relaxed space-y-6 text-justify"
+          >
             <p>
-              <span className="font-semibold text-gray-900">
-                Inmobiliaria Alberto Alfaro
-              </span>{" "}
-              es dirigida por su CEO y fundador,{" "}
-              <span className="font-semibold text-gray-900">
-                Ing. Alberto Alfaro Vásquez
-              </span>
-              , ingeniero civil con amplia experiencia empresarial en el rubro
-              inmobiliario y sector privado.
+              <span className="font-semibold text-gray-900">Inmobiliaria Alberto Alfaro</span> es dirigida por su fundador,{" "}
+              <span className="font-semibold text-gray-900">Ing. Alberto Alfaro Vásquez</span>, ingeniero civil con amplia experiencia
+              empresarial en el sector inmobiliario y construcción.
             </p>
 
             <p>
-              Se ha desempeñado como{" "}
-              <strong>
-                Perito Valuador de la Superintendencia de Banca y Seguros
-              </strong>
-              , <strong>Perito de la Corte Superior del Santa</strong> y ha
-              ocupado cargos institucionales como{" "}
-              <strong>
-                Gerente de Desarrollo Urbano y Gerente de MYPES y Proyectos
-                Especiales
-              </strong>{" "}
-              de la Provincia del Santa.
+              Ha desempeñado cargos como{" "}
+              <strong>Perito Valuador de la Superintendencia de Banca y Seguros</strong>,{" "}
+              <strong>Perito de la Corte Superior del Santa</strong> y{" "}
+              <strong>Gerente de Desarrollo Urbano</strong> y{" "}
+              <strong>Gerente de MYPES y Proyectos Especiales</strong> en la Provincia del Santa.
             </p>
 
             <p>
               Desde sus inicios, la firma se ha dedicado a{" "}
               <strong>conectar a las personas con sus hogares e inversiones ideales</strong>,
-              creciendo gracias a la confianza de sus clientes y al compromiso
-              con la excelencia.
+              creciendo con la confianza de sus clientes y un firme compromiso con la excelencia.
             </p>
-          </div>
+          </motion.div>
 
-          {/* === Valores === */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-14 text-center">
-            <div className="p-6 bg-[#FFF5F5] rounded-2xl shadow-sm hover:shadow-md transition">
-              <Building2 className="mx-auto text-[#C80000] w-10 h-10 mb-3" />
-              <h3 className="font-bold text-gray-900">+40 Años</h3>
-              <p className="text-gray-600 text-sm mt-2">
-                De experiencia integral
-              </p>
-            </div>
-            <div className="p-6 bg-[#FFF5F5] rounded-2xl shadow-sm hover:shadow-md transition">
-              <Users2 className="mx-auto text-[#C80000] w-10 h-10 mb-3" />
-              <h3 className="font-bold text-gray-900">Confianza</h3>
-              <p className="text-gray-600 text-sm mt-2">
-                Cientos de clientes satisfechos
-              </p>
-            </div>
-            <div className="p-6 bg-[#FFF5F5] rounded-2xl shadow-sm hover:shadow-md transition">
-              <Star className="mx-auto text-[#C80000] w-10 h-10 mb-3" />
-              <h3 className="font-bold text-gray-900">Excelencia</h3>
-              <p className="text-gray-600 text-sm mt-2">
-                Compromiso en cada proyecto
-              </p>
-            </div>
-            <div className="p-6 bg-[#FFF5F5] rounded-2xl shadow-sm hover:shadow-md transition">
-              <Landmark className="mx-auto text-[#C80000] w-10 h-10 mb-3" />
-              <h3 className="font-bold text-gray-900">Presencia</h3>
-              <p className="text-gray-600 text-sm mt-2">
-                En todo el norte del país
-              </p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </section>
+          {/* 💠 Indicadores de Valor */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 text-center"
+          >
+            {[
+              { icon: <Building2 className="w-12 h-12 mx-auto text-[#C80000]" />, title: "+40 Años", desc: "De experiencia integral" },
+              { icon: <Users2 className="w-12 h-12 mx-auto text-[#C80000]" />, title: "Confianza", desc: "Cientos de clientes satisfechos" },
+              { icon: <Star className="w-12 h-12 mx-auto text-[#C80000]" />, title: "Excelencia", desc: "Compromiso en cada proyecto" },
+              { icon: <Landmark className="w-12 h-12 mx-auto text-[#C80000]" />, title: "Presencia", desc: "En todo el norte del país" },
+            ].map((v, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 200, damping: 14 }}
+                className="bg-[#FFF5F5] rounded-3xl p-8 shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <div className="mb-4">{v.icon}</div>
+                <h3 className="font-bold text-gray-900 text-lg">{v.title}</h3>
+                <p className="text-gray-600 text-sm mt-2">{v.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+    </PageWrapper>
   );
 };
 
 export default NuestraHistoria;
-
-
-
-
-
-
-
 
 
 
