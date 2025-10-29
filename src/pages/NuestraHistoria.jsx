@@ -18,7 +18,7 @@ const NuestraHistoria = () => {
         {/* === Banner Principal === */}
         <div className="relative w-full h-auto md:h-[420px] overflow-hidden bg-[#F5F5F5]">
           <img
-            src="/nuestra-historia.png"
+            src="/n_historia.png"
             alt="Banner Nuestra Historia"
             className="w-full h-auto md:h-[420px] object-contain mx-auto"
           />
@@ -179,6 +179,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
