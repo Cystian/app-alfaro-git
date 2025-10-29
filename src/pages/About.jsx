@@ -4,7 +4,7 @@ import { Eye, Handshake, Lightbulb, Heart } from "lucide-react";
 
 const About = () => {
   return (
-         <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
+    <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
       {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-cover bg-center opacity-10" />
 
@@ -15,17 +15,14 @@ const About = () => {
         viewport={{ once: true }}
         className="relative max-w-6xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]"
       >
-        
-    {/* 🔻 Banner superior */}
+        {/* 🔻 Banner superior */}
         <section
           className="w-full min-h-[300px] md:min-h-[500px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
           style={{
             backgroundImage: "url('/subtitulos/about.png')",
             backgroundSize: "contain",
           }}
-        >
-        
-        </section>
+        ></section>
 
         {/* 🏛️ Quiénes Somos */}
         <section className="py-20 px-6 md:px-20 bg-[#F9F9F9] text-center">
@@ -41,11 +38,15 @@ const About = () => {
             </h2>
             <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
               Somos una firma inmobiliaria especializada en proyectos de{" "}
-              <span className="font-semibold text-black">alta gama y desarrollo urbano</span>.  
-              Nuestro compromiso es crear experiencias únicas en la compra, venta y alquiler de propiedades exclusivas.  
-              Combinamos <span className="italic font-semibold">innovación</span>,{" "}
+              <span className="font-semibold text-black">
+                alta gama y desarrollo urbano
+              </span>
+              . Nuestro compromiso es crear experiencias únicas en la compra,
+              venta y alquiler de propiedades exclusivas. Combinamos{" "}
+              <span className="italic font-semibold">innovación</span>,{" "}
               <span className="italic font-semibold">transparencia</span> y{" "}
-              <span className="italic font-semibold">profesionalismo</span> para garantizar un acompañamiento integral y seguro.
+              <span className="italic font-semibold">profesionalismo</span> para
+              garantizar un acompañamiento integral y seguro.
             </p>
           </motion.div>
         </section>
@@ -99,7 +100,9 @@ const About = () => {
                 <h3 className="text-2xl font-semibold mb-4 text-[#C80000] tracking-wide">
                   {item.title}
                 </h3>
-                <p className="text-gray-700 leading-relaxed">{item.content}</p>
+                <p className="text-gray-700 leading-relaxed">
+                  {item.content}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -140,14 +143,11 @@ const About = () => {
             ))}
           </div>
         </section>
-
-      </div>
-              </div>
+      </motion.div>
     </section>
   );
 };
 
 export default About;
-
 
 
