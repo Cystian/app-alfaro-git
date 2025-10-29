@@ -5,8 +5,11 @@ import { Building2, Users2, Star, Landmark } from "lucide-react";
 const NuestraHistoria = () => {
   return (
     <section
-      className="relative bg-[#F9F9F9] py-20 px-6 md:px-20 overflow-hidden"
-      style={{ paddingTop: "2rem" }}
+            className="w-full min-h-[300px] md:min-h-[500px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
+          style={{
+            backgroundImage: "url('/subtitulos/about.png')",
+            backgroundSize: "contain",
+          }}
     >
       {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-cover bg-center opacity-10 pt-4" />
@@ -236,6 +239,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
