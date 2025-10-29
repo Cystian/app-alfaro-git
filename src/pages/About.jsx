@@ -1,12 +1,21 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Eye, Handshake, Lightbulb, Heart } from "lucide-react";
-import PageWrapper from "../components/PageWrapper";
 
 const About = () => {
   return (
-    <PageWrapper>
-      <div className="bg-white text-gray-800">
+   
+         <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
+      {/* Fondo decorativo */}
+      <div className="absolute inset-0 bg-cover bg-center opacity-10" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true }}
+        className="relative max-w-6xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,0,0,0.2)]"
+      >
         
     {/* 🔻 Banner superior */}
         <section
@@ -134,7 +143,7 @@ const About = () => {
         </section>
 
       </div>
-    </PageWrapper>
+    </section>
   );
 };
 
