@@ -4,7 +4,7 @@ import { Eye, Handshake, Lightbulb, Heart } from "lucide-react";
 
 const About = () => {
   return (
-   
+     <PageWrapper>
          <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
       {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-cover bg-center opacity-10" />
@@ -144,6 +144,7 @@ const About = () => {
 
       </div>
     </section>
+         </PageWrapper>
   );
 };
 
