@@ -1,47 +1,76 @@
 import React from "react";
-import { Eye, Handshake, Lightbulb, Heart } from "lucide-react"; 
+import { motion } from "framer-motion";
+import { Eye, Handshake, Lightbulb, Heart } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
 
 const About = () => {
   return (
     <PageWrapper>
-      <div className="bg-white text-[#000000]">
-        {/* Banner */}
-        <section className="w-full h-72 bg-gradient-to-r from-[#8B0000] to-[#C80000] flex items-center justify-center shadow-xl">
-          <h1 className="text-white text-5xl md:text-6xl font-extrabold tracking-wider text-center">
+      <div className="bg-white text-gray-800">
+
+        {/* 🔻 Banner superior */}
+        <section
+          className="w-full min-h-[320px] md:min-h-[480px] bg-gradient-to-r from-[#8B0000] to-[#C80000] flex items-center justify-center text-center relative"
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-white text-5xl md:text-6xl font-extrabold tracking-wider drop-shadow-lg"
+          >
             Sobre Nosotros
-          </h1>
+          </motion.h1>
         </section>
 
-        {/* Quiénes Somos */}
-        <section className="py-20 px-6 md:px-20 bg-[#F9F9F9]">
-          <div className="max-w-4xl mx-auto text-center">
+        {/* 🏛️ Quiénes Somos */}
+        <section className="py-20 px-6 md:px-20 bg-[#F9F9F9] text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl mx-auto"
+          >
             <h2 className="text-4xl font-semibold mb-6 text-[#C80000] tracking-wide">
               ¿Quiénes somos?
             </h2>
-            <p className="text-[#444444] text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+            <p className="text-gray-700 text-lg md:text-xl leading-relaxed">
               Somos una firma inmobiliaria especializada en proyectos de{" "}
-              <span className="font-medium text-[#000000]">alta gama y desarrollo urbano</span>. 
-              Nuestro compromiso es crear experiencias únicas en la compra, venta y alquiler de propiedades exclusivas. 
-              Conjugamos <span className="italic font-semibold">innovación</span>,{" "}
+              <span className="font-semibold text-black">alta gama y desarrollo urbano</span>.  
+              Nuestro compromiso es crear experiencias únicas en la compra, venta y alquiler de propiedades exclusivas.  
+              Combinamos <span className="italic font-semibold">innovación</span>,{" "}
               <span className="italic font-semibold">transparencia</span> y{" "}
-              <span className="italic font-semibold">profesionalismo</span>, garantizando un acompañamiento integral para cada cliente.
+              <span className="italic font-semibold">profesionalismo</span> para garantizar un acompañamiento integral y seguro.
             </p>
-          </div>
+          </motion.div>
         </section>
 
-        {/* Imagen aspiracional */}
-        <section className="w-full h-96 md:h-[28rem] bg-[url('/luxury-skyline.jpg')] bg-cover bg-center relative rounded-xl overflow-hidden">
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4">
-            <h2 className="text-white text-3xl md:text-5xl font-bold tracking-wider text-center">
+        {/* 🌆 Imagen aspiracional */}
+        <section className="relative w-full h-[22rem] md:h-[28rem] overflow-hidden">
+          <motion.div
+            initial={{ scale: 1.1, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/luxury-skyline.jpg')" }}
+          />
+          <div className="absolute inset-0 bg-black/45 flex items-center justify-center px-4">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-white text-3xl md:text-5xl font-bold tracking-wider text-center leading-snug"
+            >
               Elevamos el estándar de vivir con lujo y confianza
-            </h2>
+            </motion.h2>
           </div>
         </section>
 
-        {/* Misión y Visión */}
+        {/* 🎯 Misión y Visión */}
         <section className="py-20 px-6 md:px-20">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
             {[
               {
                 title: "Misión",
@@ -53,49 +82,66 @@ const About = () => {
                 content:
                   "Ser la inmobiliaria de referencia a nivel nacional, reconocida por la innovación, calidad y el impulso a un crecimiento urbano sostenible, alineado a las tendencias globales de lujo y bienestar.",
               },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-gray-100 p-8 rounded-3xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-2"
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                className="relative bg-[#F9F9F9] p-10 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200"
               >
-                <h3 className="text-2xl font-semibold mb-4 text-[#C80000] tracking-wide">{item.title}</h3>
-                <p className="text-[#444444] text-lg leading-relaxed">{item.content}</p>
-              </div>
+                <h3 className="text-2xl font-semibold mb-4 text-[#C80000] tracking-wide">
+                  {item.title}
+                </h3>
+                <p className="text-gray-700 leading-relaxed">{item.content}</p>
+              </motion.div>
             ))}
           </div>
         </section>
 
-        {/* Valores */}
-        <section className="py-24 px-6 md:px-20 bg-[#F5F5F5]">
-          <div className="max-w-7xl mx-auto text-center">
-            <h2 className="text-4xl font-semibold mb-16 text-[#C80000] tracking-wide">
-              Nuestros Valores
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
-              {[
-                { title: "Transparencia", icon: <Eye size={52} /> },
-                { title: "Compromiso", icon: <Handshake size={52} /> },
-                { title: "Innovación", icon: <Lightbulb size={52} /> },
-                { title: "Empatía", icon: <Heart size={52} /> },
-              ].map((val, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white p-10 rounded-3xl shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-3 flex flex-col items-center"
-                >
-                  <div className="text-[#C80000] mb-5 flex justify-center">
-                    {val.icon}
-                  </div>
-                  <h4 className="text-xl font-semibold text-[#222222] tracking-wide">{val.title}</h4>
-                </div>
-              ))}
-            </div>
+        {/* 💎 Nuestros Valores */}
+        <section className="py-24 px-6 md:px-20 bg-[#F5F5F5] text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl font-semibold mb-16 text-[#C80000] tracking-wide"
+          >
+            Nuestros Valores
+          </motion.h2>
+
+          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10">
+            {[
+              { title: "Transparencia", icon: <Eye size={52} /> },
+              { title: "Compromiso", icon: <Handshake size={52} /> },
+              { title: "Innovación", icon: <Lightbulb size={52} /> },
+              { title: "Empatía", icon: <Heart size={52} /> },
+            ].map((val, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white p-10 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 flex flex-col items-center border border-gray-200"
+              >
+                <div className="text-[#C80000] mb-5">{val.icon}</div>
+                <h4 className="text-xl font-semibold text-[#222222] tracking-wide">
+                  {val.title}
+                </h4>
+              </motion.div>
+            ))}
           </div>
         </section>
+
       </div>
     </PageWrapper>
   );
 };
 
 export default About;
+
 
 
