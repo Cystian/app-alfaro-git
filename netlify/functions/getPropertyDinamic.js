@@ -1,57 +1,60 @@
-const { Pool } = require("pg");
 
-const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL,
-  ssl: { rejectUnauthorized: false },
-});
+// netlify/functions/getPropertyDinamic.js
+import { pool } from "./db.js";
 
-exports.handler = async (event) => {
+export async function handler(event) {
   let { title = "", location = "", status = "" } = event.queryStringParameters || {};
 
   try {
-    // Convertir los parámetros en arrays si vienen separados por coma
-    const titleArr = title ? title.split(",") : [];
-    const locationArr = location ? location.split(",") : [];
-    const statusArr = status ? status.split(",") : [];
+    // Convertir los parámetros en arrays (si vienen separados por comas)
+    const titleArr = title ? title.split(",").map((t) => t.trim()) : [];
+    const locationArr = location ? location.split(",").map((l) => l.trim()) : [];
+    const statusArr = status ? status.split(",").map((s) => s.trim()) : [];
 
-    const result = await pool.query(
-      `
+    let query = `
       SELECT id, title, image, price, location, status, bedrooms, bathrooms, area
       FROM properties
-      WHERE (
-        $1::text[] IS NULL OR EXISTS (
-          SELECT 1 FROM unnest($1::text[]) t WHERE title ILIKE '%' || t || '%'
-        )
-      )
-      AND (
-        $2::text[] IS NULL OR EXISTS (
-          SELECT 1 FROM unnest($2::text[]) l WHERE location ILIKE '%' || l || '%'
-        )
-      )
-      AND (
-        $3::text[] IS NULL OR EXISTS (
-          SELECT 1 FROM unnest($3::text[]) s WHERE status ILIKE '%' || s || '%'
-        )
-      )
-      ORDER BY RANDOM()
-      LIMIT 100;
-      `,
-      [
-        titleArr.length ? titleArr : null,
-        locationArr.length ? locationArr : null,
-        statusArr.length ? statusArr : null,
-      ]
-    );
+      WHERE 1 = 1
+    `;
+    const queryParams = [];
+
+    // 🔹 Filtros dinámicos según parámetros
+    if (titleArr.length) {
+      query += ` AND (${titleArr.map(() => `title LIKE ?`).join(" OR ")})`;
+      titleArr.forEach((t) => queryParams.push(`%${t}%`));
+    }
+
+    if (locationArr.length) {
+      query += ` AND (${locationArr.map(() => `location LIKE ?`).join(" OR ")})`;
+      locationArr.forEach((l) => queryParams.push(`%${l}%`));
+    }
+
+    if (statusArr.length) {
+      query += ` AND (${statusArr.map(() => `status LIKE ?`).join(" OR ")})`;
+      statusArr.forEach((s) => queryParams.push(`%${s}%`));
+    }
+
+    // 🔹 Orden aleatorio (equivalente a RANDOM() en PostgreSQL)
+    query += ` ORDER BY RAND() LIMIT 100`;
+
+    const [rows] = await pool.query(query, queryParams);
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result.rows),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(rows),
     };
   } catch (err) {
-    console.error("❌ Error en getPropertyDinamic:", err);
+    console.error("❌ Error en getPropertyDinamic (MySQL):", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error al traer propiedades" }),
+      body: JSON.stringify({
+        message: "Error al traer propiedades",
+        error: err.message,
+      }),
     };
   }
-};
+}
