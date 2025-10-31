@@ -1,14 +1,9 @@
-const { Pool } = require("pg");
+import { pool } from "./db.js";
 
-// 🧩 Reutilizamos el pool global (igual que en getPropertyDetails)
-const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL,
-  ssl: { rejectUnauthorized: false },
-});
-
-exports.handler = async (event, context) => {
+export async function handler(event) {
   try {
     const rawId = event.queryStringParameters?.id;
+
     if (!rawId) {
       return {
         statusCode: 400,
@@ -24,29 +19,27 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // 🔹 Consultamos coincidencias en la tabla mas_info
-    const infoResult = await pool.query(
+    // 🔹 Consulta adaptada a MySQL
+    const [rows] = await pool.query(
       `
       SELECT id, titulo_info, descripcion_info, id_properties
       FROM mas_info
-      WHERE id_properties = $1
+      WHERE id_properties = ?
       ORDER BY id ASC
       `,
       [propertyId]
     );
 
-    // 🔹 Retornar las coincidencias
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify(infoResult.rows),
+      body: JSON.stringify(rows),
     };
   } catch (error) {
     console.error("❌ ERROR en getMasInfo:", error);
-
     return {
       statusCode: 500,
       body: JSON.stringify({
@@ -55,4 +48,4 @@ exports.handler = async (event, context) => {
       }),
     };
   }
-};
+}
