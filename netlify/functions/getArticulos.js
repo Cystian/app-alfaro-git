@@ -1,50 +1,48 @@
-// functions/getArticulos.js
-const { Pool } = require("pg");
+// netlify/functions/getArticulos.js
+import { pool } from "./db.js";
 
-// 🔹 Configuración del pool de conexiones a la BD
-const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL, // URL de la BD en .env en Netlify
-  ssl: { rejectUnauthorized: false }, // para Neon/Postgres en Netlify
-});
-
-exports.handler = async (event, context) => {
+export async function handler(event) {
   try {
     const rawId = event.queryStringParameters?.id;
 
     // 🔹 Si mandan ID → traer artículo específico
     if (rawId) {
       const articuloId = parseInt(rawId, 10);
+
       if (isNaN(articuloId)) {
         return {
           statusCode: 400,
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: "Id inválido, debe ser un número" }),
         };
       }
 
-      const result = await pool.query(
+      const [rows] = await pool.execute(
         `
         SELECT id, titulo, descripcion, imagen, fecha, link
         FROM articulos
-        WHERE id = $1
+        WHERE id = ?
         `,
         [articuloId]
       );
 
-      if (result.rows.length === 0) {
+      if (rows.length === 0) {
         return {
           statusCode: 404,
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: "Artículo no encontrado" }),
         };
       }
 
       return {
         statusCode: 200,
-        body: JSON.stringify(result.rows[0]),
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+        body: JSON.stringify(rows[0]),
       };
     }
 
     // 🔹 Si NO mandan ID → devolver todos los artículos
-    const result = await pool.query(
+    const [rows] = await pool.execute(
       `
       SELECT id, titulo, descripcion, imagen, fecha, link
       FROM articulos
@@ -54,17 +52,19 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result.rows),
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify(rows),
     };
   } catch (error) {
-    console.error("ERROR en getArticulos:", error);
+    console.error("❌ ERROR en getArticulos:", error);
 
     return {
       statusCode: 500,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: "Error al traer artículos",
         error: error.message,
       }),
     };
   }
-};
+}
