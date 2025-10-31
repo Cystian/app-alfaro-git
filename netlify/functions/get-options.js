@@ -1,34 +1,38 @@
-import { Client } from "pg";
+// Importa el cliente MySQL
+import mysql from "mysql2/promise"; // asegúrate de tenerlo: npm install mysql2
 
 export async function handler() {
-  console.log("Valor NEON_DB_URL:", process.env.NEON_DB_URL);
+  console.log("Conectando a MySQL...");
 
-  if (!process.env.NEON_DB_URL) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Variable NEON_DB_URL no definida",
-      }),
-    };
-  }
+  // Configura los datos de tu conexión MySQL en cPanel
+  const connectionConfig = {
+    host: "cp206.hpservidor.com",
+    user: "inmobi16_puma",
+    password: "cantaloop204",
+    database: "inmobi16_prueba01",
+  };
 
-  const client = new Client({
-    connectionString: process.env.NEON_DB_URL,
-    ssl: { rejectUnauthorized: false },
-  });
+  let connection;
 
   try {
-    await client.connect();
+    // 🔹 Conexión
+    connection = await mysql.createConnection(connectionConfig);
+    console.log("✅ Conectado a MySQL");
 
-    // 🔹 Consultas
+    // 🔹 Consultas paralelas
     const [distritosResult, modalidadesResult, tiposResult] = await Promise.all([
-      client.query("SELECT id, nombre, departamento FROM distritos ORDER BY departamento, nombre ASC"),
-      client.query("SELECT nombre FROM modalidades ORDER BY nombre ASC"),
-      client.query("SELECT nombre FROM tipos ORDER BY nombre ASC"),
+      connection.execute("SELECT id, nombre, departamento FROM distritos ORDER BY departamento, nombre ASC"),
+      connection.execute("SELECT nombre FROM modalidades ORDER BY nombre ASC"),
+      connection.execute("SELECT nombre FROM tipos ORDER BY nombre ASC"),
     ]);
 
+    // Los resultados vienen como [rows, fields]
+    const distritosRows = distritosResult[0];
+    const modalidadesRows = modalidadesResult[0];
+    const tiposRows = tiposResult[0];
+
     // 🔹 Agrupar distritos por departamento
-    const groupedDistritos = distritosResult.rows.reduce((acc, row) => {
+    const groupedDistritos = distritosRows.reduce((acc, row) => {
       if (!acc[row.departamento]) acc[row.departamento] = [];
       acc[row.departamento].push({ id: row.id, nombre: row.nombre });
       return acc;
@@ -39,27 +43,29 @@ export async function handler() {
       distritos: groupedDistritos[dep],
     }));
 
+    // 🔹 Respuesta final
     return {
       statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({
         distritos: distritosOptions,
-        modalidades: modalidadesResult.rows.map((row) => row.nombre),
-        tipos: tiposResult.rows.map((row) => row.nombre),
+        modalidades: modalidadesRows.map((r) => r.nombre),
+        tipos: tiposRows.map((r) => r.nombre),
       }),
     };
   } catch (error) {
-    console.error("Error detalle:", error);
-
+    console.error("❌ Error al conectar o consultar:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Error al conectar o consultar en Neon",
+        error: "Error al conectar o consultar en MySQL",
         detalle: error.message,
       }),
     };
   } finally {
-    await client.end().catch((endError) =>
-      console.error("Error cerrando conexión:", endError)
-    );
+    if (connection) await connection.end();
   }
 }
