@@ -1,11 +1,11 @@
 import mysql from "mysql2/promise";
 
 const pool = mysql.createPool({
-  host: "cp206.hpservidor.com",
-  user: "puma@inmobiliariaalbertoalfaro.com.pe",
-  password: "cantaloop204",
-  database: "inmobi16_prueba01",
-  port: 3306,
+  host: "cp206.hpservidor.com",      // tu servidor remoto
+      user: "inmobi16_puma",             // usuario completo
+      password: "cantaloop204",     // la que acabas de asignar
+      database: "inmobi16_prueba01",     // nombre de tu BD
+      port: 3306,
 });
 
 export async function handler() {
