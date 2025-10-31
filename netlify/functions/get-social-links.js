@@ -1,4 +1,4 @@
-// netlify/functions/get-redes.js
+
 import { pool } from "./db.js";
 
 export async function handler() {
