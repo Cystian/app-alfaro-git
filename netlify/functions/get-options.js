@@ -1,12 +1,4 @@
-import mysql from "mysql2/promise";
-
-const pool = mysql.createPool({
-  host: "cp206.hpservidor.com",      // tu servidor remoto
-      user: "inmobi16_puma",             // usuario completo
-      password: "cantaloop204",     // la que acabas de asignar
-      database: "inmobi16_prueba01",     // nombre de tu BD
-      port: 3306,
-});
+import { pool } from "./db.js";
 
 export async function handler() {
   try {
