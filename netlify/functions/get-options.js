@@ -2,7 +2,7 @@ import mysql from "mysql2/promise";
 
 const pool = mysql.createPool({
   host: "cp206.hpservidor.com",
-  user: "inmobi16_puma",
+  user: "puma@inmobiliariaalbertoalfaro.com.pe",
   password: "cantaloop204",
   database: "inmobi16_prueba01",
   port: 3306,
