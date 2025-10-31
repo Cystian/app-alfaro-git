@@ -1,12 +1,6 @@
-// ✅ Lógica de consulta a la base de datos
-const { Pool } = require("pg");
+import { pool } from "./db.js";
 
-const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL,
-  ssl: { rejectUnauthorized: false },
-});
-
-exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const { title = "", location = "", status = "", featured } = event.queryStringParameters || {};
 
@@ -20,35 +14,33 @@ exports.handler = async (event) => {
       WHERE 1=1
     `;
     const queryParams = [];
-    let i = 1;
 
     if (locationArr.length) {
-      query += ` AND (${locationArr.map(() => `location ILIKE $${i++}`).join(" OR ")})`;
+      query += ` AND (${locationArr.map(() => `location LIKE ?`).join(" OR ")})`;
       locationArr.forEach((l) => queryParams.push(`%${l}%`));
     }
     if (statusArr.length) {
-      query += ` AND (${statusArr.map(() => `status ILIKE $${i++}`).join(" OR ")})`;
+      query += ` AND (${statusArr.map(() => `status LIKE ?`).join(" OR ")})`;
       statusArr.forEach((s) => queryParams.push(`%${s}%`));
     }
     if (titleArr.length) {
-      query += ` AND (${titleArr.map(() => `title ILIKE $${i++}`).join(" OR ")})`;
+      query += ` AND (${titleArr.map(() => `title LIKE ?`).join(" OR ")})`;
       titleArr.forEach((t) => queryParams.push(`%${t}%`));
     }
 
-    // Carrusel de destacadas: más recientes
     if (featured === "true") {
       query += ` ORDER BY created_at DESC`;
     } else if (!titleArr.length && !locationArr.length && !statusArr.length) {
-      // Primera carga sin filtros
-      query += " ORDER BY RANDOM() LIMIT 10";
+      query += " ORDER BY RAND() LIMIT 10";
     } else {
       query += " ORDER BY created_at DESC";
     }
 
-    const result = await pool.query(query, queryParams);
-    return { statusCode: 200, body: JSON.stringify(result.rows) };
+    const [rows] = await pool.query(query, queryParams);
+    return { statusCode: 200, body: JSON.stringify(rows) };
+
   } catch (err) {
-    console.error("Error al traer propiedades:", err);
+    console.error("❌ Error al traer propiedades:", err);
     return { statusCode: 500, body: JSON.stringify({ message: "Error al traer propiedades", error: err.message }) };
   }
-};
+}
