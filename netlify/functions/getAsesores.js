@@ -1,51 +1,52 @@
-const { Pool } = require("pg");
+// netlify/functions/getAsesores.js
+import { pool } from "./db.js";
 
-// Reutilizar el pool de conexiones
-const pool = new Pool({
-  connectionString: process.env.NEON_DB_URL, // 👈 en tu .env en Netlify
-  ssl: { rejectUnauthorized: false },
-});
-
-exports.handler = async (event, context) => {
+export async function handler(event) {
   try {
     const rawId = event.queryStringParameters?.id;
 
     // 🔹 Si mandan ID → traer un asesor específico
     if (rawId) {
       const asesorId = parseInt(rawId, 10);
+
       if (isNaN(asesorId)) {
         return {
           statusCode: 400,
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: "Id inválido, debe ser un número" }),
         };
       }
 
-      const result = await pool.query(
+      const [rows] = await pool.execute(
         `
-        SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores,insta_asesores,tiktok_asesores,linkedin_asesores
+        SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores,
+               insta_asesores, tiktok_asesores, linkedin_asesores
         FROM asesores
-        WHERE id = $1
+        WHERE id = ?
         `,
         [asesorId]
       );
 
-      if (result.rows.length === 0) {
+      if (rows.length === 0) {
         return {
           statusCode: 404,
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: "Asesor no encontrado" }),
         };
       }
 
       return {
         statusCode: 200,
-        body: JSON.stringify(result.rows[0]),
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+        body: JSON.stringify(rows[0]),
       };
     }
 
     // 🔹 Si NO mandan ID → devolver todos los asesores
-    const result = await pool.query(
+    const [rows] = await pool.execute(
       `
-      SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores,insta_asesores,tiktok_asesores,linkedin_asesores
+      SELECT id, img_asesores, name_asesores, face_asesores, wasap_asesores,
+             insta_asesores, tiktok_asesores, linkedin_asesores
       FROM asesores
       ORDER BY id ASC
       `
@@ -53,17 +54,19 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify(result.rows),
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify(rows),
     };
   } catch (error) {
-    console.error("ERROR en getAsesores:", error);
+    console.error("❌ ERROR en getAsesores:", error);
 
     return {
       statusCode: 500,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: "Error al traer asesores",
         error: error.message,
       }),
     };
   }
-};
+}
