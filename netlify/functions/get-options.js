@@ -5,9 +5,7 @@ const pool = mysql.createPool({
   user: "inmobi16_puma",
   password: "cantaloop204",
   database: "inmobi16_prueba01",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+  port: 3306,
 });
 
 export async function handler() {
