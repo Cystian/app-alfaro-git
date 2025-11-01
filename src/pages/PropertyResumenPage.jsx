@@ -197,8 +197,8 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
                     <span className="font-medium text-negro-profundo">
                       Largo:
                     </span>{" "}
-                    {data.property.largo
-                      ? `${data.property.largo} m`
+                    {data.property.Largo
+                      ? `${data.property.Largo} m`
                       : "No especificado"}
                   </p>
                 </div>
