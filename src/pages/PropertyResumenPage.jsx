@@ -31,7 +31,7 @@ export default function PropertyResumenPage() {
     const fetchData = async () => {
       const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
       const result = await res.json();
-
+console.log("Resultado desde la BD:", result); // 👈 imprime en consola
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
           ...sub,
