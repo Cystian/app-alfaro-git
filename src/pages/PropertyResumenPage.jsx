@@ -167,11 +167,6 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
   </div>
 )}
 
-
-
-
-
-
             {/* Lógica condicional */}
             {data.property.title.toLowerCase().includes("terreno") ? (
               <div className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
@@ -246,21 +241,20 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
 
           <hr className="border-gray-300 mb-6" />
 
-          {/* Descripción */}
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans-serif">
-              Descripción General:
-            </h2>
-            <div
-              className="text-gray-700 font-geistmono"
-              dangerouslySetInnerHTML={{
-                __html: data.property.description,
-              }}
-            />
-          </div>
+       {/* Descripción */}
+<div className="mb-6">
+  <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans">
+    Descripción General:
+  </h2>
+  <div
+    className="text-gray-700 font-mono"
+    dangerouslySetInnerHTML={{
+      __html: data.property.description,
+    }}
+  />
+</div>
 
-          
-
+       
           {/* ✅ Combo box “Más información” dinámico */}
           <div className="mb-8 font-inter">
             <button
