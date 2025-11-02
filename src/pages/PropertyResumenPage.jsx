@@ -113,7 +113,8 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
           {/* Dirección */}
           {data.property.address && (
             <p className="text-lg text-gray-500 italic text-center font-geistmono tracking-tight">
-              {data.property.address}
+       
+              Dirección: ${data.property.address}
             </p>
           )}
 
@@ -126,12 +127,6 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
           </p>
 
           <hr className="border-gray-300 mb-6" />
-
-          {/* 🔸 Datos principales */}
-          {/* ... aquí puedes dejar tu bloque original de cards ... */}
-
-
-  
 
           {/* 🔸 Datos principales */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6 font-geistmono">
