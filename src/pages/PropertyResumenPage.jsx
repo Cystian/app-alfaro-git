@@ -114,7 +114,7 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
           {data.property.address && (
             <p className="text-lg text-gray-500 italic text-center font-geistmono tracking-tight">
        
-              Dirección: ${data.property.address}
+              Dirección: {data.property.address}
             </p>
           )}
 
