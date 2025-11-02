@@ -243,13 +243,26 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
 
        {/* Descripción */}
 <div className="mb-6">
-  <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans">
+  <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans-serif">
     Descripción General:
   </h2>
   <div
-    className="text-gray-700 font-mono"
+    className="text-gray-700 font-geistmono"
     dangerouslySetInnerHTML={{
       __html: data.property.description,
+    }}
+  />
+</div>
+
+                 {/* Atributos */}
+<div className="mb-6">
+  <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans-serif">
+    Atributos:
+  </h2>
+  <div
+    className="text-gray-700 font-geistmono"
+    dangerouslySetInnerHTML={{
+      __html: data.property.attributes,
     }}
   />
 </div>
