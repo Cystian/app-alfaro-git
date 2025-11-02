@@ -256,8 +256,7 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
           
 {/* Distribucion — solo si NO es terreno */}
 {!data.property.title.toLowerCase().includes("terreno") && (
-                 {/* Distribución */}
-<div className="mb-6">
+               <div className="mb-6">
   <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans-serif">
     Distribución:
   </h2>
