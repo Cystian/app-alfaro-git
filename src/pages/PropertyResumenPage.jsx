@@ -253,7 +253,9 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
     }}
   />
 </div>
-
+          
+{/* Distribucion — solo si NO es terreno */}
+{!data.property.title.toLowerCase().includes("terreno") && (
                  {/* Distribución */}
 <div className="mb-6">
   <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans-serif">
@@ -266,7 +268,7 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
     }}
   />
 </div>
-
+)}
        
           {/* ✅ Combo box “Más información” dinámico */}
           <div className="mb-8 font-inter">
