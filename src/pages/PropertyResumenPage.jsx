@@ -249,7 +249,7 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
           {/* Descripción */}
           <div className="mb-6">
             <h2 className="text-2xl font-semibold text-gray-800 mb-2 font-sans-serif">
-              Descripción General
+              Descripción General:
             </h2>
             <div
               className="text-gray-700 font-geistmono"
