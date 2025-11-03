@@ -22,7 +22,7 @@ const PropertyCard = ({ id, title, image, price, location, status }) => {
           {location || "Ubicación no disponible"}
         </p>
         <p className="text-green-600 font-semibold text-lg">
-          {price || "S/ Consultar"}
+          {price || "$/ Consultar"}
         </p>
         <span
           className={`inline-block mt-2 px-3 py-1 text-sm font-semibold rounded-full ${
