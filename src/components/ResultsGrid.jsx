@@ -34,7 +34,7 @@ export default function ResultsGrid({ properties }) {
               <h3 className="text-lg font-bold mb-1 truncate">{property.title}</h3>
               <p className="text-sm text-gray-600 mb-1 truncate">{property.location}</p>
               <p className="text-blue-600 font-semibold mb-2">
-                S/ {Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}
+                US$ {Number(property.price).toLocaleString("es-PE", { minimumFractionDigits: 2 })}
               </p>
               {property.status && (
                 <p className="text-xs text-gray-500 mb-4">{property.status}</p>
