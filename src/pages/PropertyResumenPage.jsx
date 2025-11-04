@@ -8,6 +8,7 @@ FaCar,
   FaMapMarkerAlt,
   FaRulerCombined, 
  FaRulerVertical, 
+Hourglass,
 FaRuler, 
   FaChevronDown,
   FaChevronUp,
@@ -231,6 +232,16 @@ console.log("Resultado desde la BD:", result); // 👈 imprime en consola
       <p className="text-gray-500 text-sm">Cocheras</p>
       <p className="font-semibold text-lg text-gray-800">
         {data.property.cocheras || "No especificado"}
+      </p>
+    </div>
+  </div>
+
+<div className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300">
+    <Hourglass  className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <div>
+      <p className="text-gray-500 text-sm">Cocheras</p>
+      <p className="font-semibold text-lg text-gray-800">
+        {data.property.antiguedad || "No especificado"}
       </p>
     </div>
   </div>
