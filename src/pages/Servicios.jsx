@@ -56,7 +56,8 @@ const Servicios = () => {
   return (
     <PageWrapper>
       <div className="bg-white text-[#000000]">
-        {/* Banner superior */}
+
+        {/* 🔻 Banner superior */}
         <section
           className="w-full min-h-[300px] md:min-h-[400px] bg-center bg-no-repeat relative flex items-center justify-center py-10 md:py-10"
           style={{
@@ -65,7 +66,7 @@ const Servicios = () => {
           }}
         ></section>
 
-        {/* Introducción */}
+        {/* 🏢 Introducción */}
         <section className="py-16 px-6 md:px-20 bg-[#F9F9F9]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -89,7 +90,7 @@ const Servicios = () => {
           </motion.div>
         </section>
 
-        {/* Tarjetas interactivas superiores */}
+        {/* 🔹 Tarjetas interactivas superiores */}
         <section className="py-20 px-6 md:px-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -100,7 +101,7 @@ const Servicios = () => {
               <div className="mb-4">
                 <img
                   src="/subtitulos/areas_gestion.png"
-                  alt="Areas de Gestión"
+                  alt="Áreas de Gestión"
                   className="w-[30rem] mx-auto"
                 />
               </div>
@@ -140,9 +141,7 @@ const Servicios = () => {
                       <h4 className="text-2xl font-semibold text-gray mb-2">
                         {serv.title}
                       </h4>
-                      <p className="text-gray text-sm max-w-xs ">
-                        {serv.desc}
-                      </p>
+                      <p className="text-gray text-sm max-w-xs ">{serv.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -151,7 +150,7 @@ const Servicios = () => {
           </motion.div>
         </section>
 
-        {/* 🔻 Detalle institucional con animaciones tipo VendeoAlquila */}
+        {/* 🔻 Detalle institucional optimizado */}
         <section className="py-16 px-6 md:px-20 bg-[#F9F9F9] text-gray-800 mt-[-5rem]">
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             {servicios.map((serv, i) => (
@@ -161,35 +160,43 @@ const Servicios = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.15 }}
-                className="bg-white shadow-md hover:shadow-lg rounded-2xl p-6 border border-gray-200 transition-all duration-300"
+                className="bg-white shadow-md hover:shadow-lg rounded-2xl p-6 border border-gray-200 transition-all duration-300 flex flex-col h-full"
               >
-                <h2
-                  className="text-2xl font-semibold text-[#C80000] text-center mb-6 text-stroke-dark"
-                  style={{ WebkitTextStroke: "0.6px #9ca3af" }}
-                >
-                  {serv.title}
-                </h2>
+                <div className="flex flex-col justify-between flex-1 text-center">
+                  <h2
+                    className="text-2xl font-semibold text-[#C80000] mb-6"
+                    style={{ WebkitTextStroke: "0.6px #9ca3af" }}
+                  >
+                    {serv.title}
+                  </h2>
 
-                {serv.items.map((item, j) => (
-                  <div key={j} className="text-center mb-6 last:mb-0">
-                    <motion.img
-                      src={item.icon}
-                      alt={item.title}
-                      className="mx-auto w-14 h-14 mb-3"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                    />
-                    <p>
-                      <strong>{item.title}:</strong> {item.desc}
-                    </p>
+                  <div className="text-gray-700 space-y-5 min-h-[190px] flex flex-col justify-center">
+                    {serv.items.map((item, j) => (
+                      <motion.div
+                        key={j}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: j * 0.2 }}
+                        className="flex flex-col items-center"
+                      >
+                        <img
+                          src={item.icon}
+                          alt={item.title}
+                          className="w-14 h-14 mb-3 object-contain"
+                        />
+                        <p className="leading-relaxed text-sm md:text-base max-w-xs mx-auto">
+                          <strong>{item.title}:</strong> {item.desc}
+                        </p>
+                      </motion.div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </motion.div>
             ))}
           </div>
         </section>
+
       </div>
     </PageWrapper>
   );
