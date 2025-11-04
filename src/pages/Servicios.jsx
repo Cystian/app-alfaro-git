@@ -72,21 +72,19 @@ const Servicios = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto text-center"
           >
-            <div className="max-w-5xl mx-auto text-center">
-              <p className="text-gray-700 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
-                En{" "}
-                <span className="font-semibold text-[#C80000]">
-                  Inmobiliaria Alberto Alfaro
-                </span>{" "}
-                te brindamos los siguientes servicios en nuestras tres áreas de
-                gestión:{" "}
-                <span className="italic">
-                  Agencia Inmobiliaria, Asesoría y Proyectos.
-                </span>
-              </p>
-            </div>
+            <p className="text-gray-700 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+              En{" "}
+              <span className="font-semibold text-[#C80000]">
+                Inmobiliaria Alberto Alfaro
+              </span>{" "}
+              te brindamos los siguientes servicios en nuestras tres áreas de
+              gestión:{" "}
+              <span className="italic">
+                Agencia Inmobiliaria, Asesoría y Proyectos.
+              </span>
+            </p>
           </motion.div>
         </section>
 
@@ -150,9 +148,9 @@ const Servicios = () => {
           </motion.div>
         </section>
 
-        {/* 🔻 Detalle institucional optimizado */}
-        <section className="py-16 px-6 md:px-20 bg-[#F9F9F9] text-gray-800 mt-[-5rem]">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* 🔻 Detalle institucional: tarjetas individuales alineadas */}
+        <section className="py-20 px-6 md:px-20 bg-[#F9F9F9] text-gray-800 mt-[-5rem]">
+          <div className="max-w-6xl mx-auto space-y-20">
             {servicios.map((serv, i) => (
               <motion.div
                 key={i}
@@ -160,43 +158,42 @@ const Servicios = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.15 }}
-                className="bg-white shadow-md hover:shadow-lg rounded-2xl p-6 border border-gray-200 transition-all duration-300 flex flex-col h-full"
               >
-                <div className="flex flex-col justify-between flex-1 text-center">
-                  <h2
-                    className="text-2xl font-semibold text-[#C80000] mb-6"
-                    style={{ WebkitTextStroke: "0.6px #9ca3af" }}
-                  >
-                    {serv.title}
-                  </h2>
+                <h2
+                  className="text-3xl font-bold text-[#C80000] text-center mb-12"
+                  style={{ WebkitTextStroke: "0.6px #9ca3af" }}
+                >
+                  {serv.title}
+                </h2>
 
-                  <div className="text-gray-700 space-y-5 min-h-[190px] flex flex-col justify-center">
-                    {serv.items.map((item, j) => (
-                      <motion.div
-                        key={j}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: j * 0.2 }}
-                        className="flex flex-col items-center"
-                      >
-                        <img
-                          src={item.icon}
-                          alt={item.title}
-                          className="w-14 h-14 mb-3 object-contain"
-                        />
-                        <p className="leading-relaxed text-sm md:text-base max-w-xs mx-auto">
-                          <strong>{item.title}:</strong> {item.desc}
-                        </p>
-                      </motion.div>
-                    ))}
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  {serv.items.map((item, j) => (
+                    <motion.div
+                      key={j}
+                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: j * 0.2 }}
+                      className="bg-white shadow-md hover:shadow-xl rounded-2xl p-6 border border-gray-200 flex flex-col items-center text-center transition-all duration-300 h-full"
+                    >
+                      <img
+                        src={item.icon}
+                        alt={item.title}
+                        className="w-16 h-16 mb-4 object-contain"
+                      />
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
             ))}
           </div>
         </section>
-
       </div>
     </PageWrapper>
   );
