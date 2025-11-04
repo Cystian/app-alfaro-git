@@ -26,7 +26,7 @@ export async function handler(event) {
         id, title, image, price, location, status, 
         bedrooms, bathrooms, area, description,
         latitude, longitude,
-        address, frontera, Largo, area_c, cocheras,distribution  
+        address, frontera, Largo, area_c, cocheras,distribution,antiguedad 
       FROM properties
       WHERE id = ?
       `,
