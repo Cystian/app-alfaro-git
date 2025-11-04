@@ -316,6 +316,92 @@ export default function PropertyResumenPage() {
             </div>
           )}
 
+
+
+     <div className="mb-8 font-inter">
+            <button
+              onClick={() => setShowMoreInfo(!showMoreInfo)}
+              className="flex items-center justify-between w-full bg-gray-100 px-5 py-3 rounded-xl shadow-sm border border-gray-300 hover:bg-gray-200 transition-all duration-300 text-lg font-medium text-negro-profundo"
+            >
+              <span className="flex items-center gap-2">
+                Más información
+                <FaChevronDown
+                  className={`transition-transform duration-300 text-rojo-inmobiliario ${
+                    showMoreInfo ? "rotate-180" : "rotate-0"
+                  }`}
+                />
+              </span>
+            </button>
+
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 overflow-hidden transition-all duration-500 ${
+                showMoreInfo ? "max-h-[1000px] mt-6 opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              {masInfo.length > 0 ? (
+                masInfo.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300 font-inter"
+                  >
+                    <h3 className="text-lg font-semibold text-negro-profundo mb-2">
+                      {item.titulo_info}
+                    </h3>
+                    <p
+                      className="text-gray-600 text-sm"
+                      dangerouslySetInnerHTML={{
+                        __html: item.descripcion_info,
+                      }}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 italic col-span-full text-center mt-4">
+                  No hay información adicional registrada.
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Mapa */}
+          {data.property.latitude && data.property.longitude && (
+            <div className="relative w-full h-64 sm:h-80 md:h-96 mt-4 mb-8 rounded-xl overflow-hidden">
+              <iframe
+                title="Mapa de la propiedad"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen
+                src={`https://maps.google.com/maps?q=${data.property.latitude},${data.property.longitude}&z=16&output=embed`}
+              />
+            </div>
+          )}
+
+          {/* Subpropiedades y botones */}
+          {data.subProperties?.length > 0 && (
+            <div className="mb-6">
+              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <button
+                  onClick={() =>
+                    generatePropertyPdf(data.property, data.subProperties)
+                  }
+                  className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                  📄 Descargar Flyer
+                </button>
+
+                <button
+                  onClick={() => window.open("/", "_blank")}
+                  className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                  🔍 Buscar más propiedades
+                </button>
+              </div>
+            </div>
+          )}
+
+
           {/* Más información */}
           {/* ... resto del código igual */}
           <FeaturedProperties />
