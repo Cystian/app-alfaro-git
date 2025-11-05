@@ -276,7 +276,7 @@ export default function PropertyResumenPage() {
                 >
                   <FaHourglass className="text-rojo-inmobiliario mr-3 text-2xl" />
                   <div>
-                    <p className="text-gray-500 text-sm">Antigüedad (Años)</p>
+                    <p className="text-gray-500 text-sm">Antigüedades</p>
                     <p className="font-semibold text-lg text-gray-800">
                       {data.property.antiguedad || "No especificado"}
                     </p>
