@@ -20,7 +20,7 @@ const SearchBanner = ({ onSearch }) => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const res = await fetch("/.netlify/functions/get-options");
+        const res = await fetch("/api/get-options");
         const data = await res.json();
         setDistritosOptions(data.distritos || []);
         setModalidadesOptions(data.modalidades || []);
