@@ -12,7 +12,7 @@ const SocialMediaSection = () => {
   const [visibleLinks, setVisibleLinks] = useState([]);
 
   useEffect(() => {
-    fetch("/.netlify/functions/get-social-links")
+    fetch("/api/get-social-links")
       .then((res) => res.json())
       .then((data) => {
         data.forEach((item, i) => {
