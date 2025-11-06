@@ -1,5 +1,5 @@
 // /api/getPropertyDetails.js
-import { pool } from "../db.js";
+import { pool } from "./db.js";
 
 export default async function handler(request) {
   try {
