@@ -28,7 +28,7 @@ export default function PropertyResumenPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${id}`);
+      const res = await fetch(`/api/getPropertyDetails?id=${id}`);
       const result = await res.json();
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
@@ -43,7 +43,7 @@ export default function PropertyResumenPage() {
 
   useEffect(() => {
     const fetchMasInfo = async () => {
-      const res = await fetch(`/.netlify/functions/getPropertyDetailInfo?id=${id}`);
+      const res = await fetch(`/api/getPropertyDetailInfo?id=${id}`);
       const result = await res.json();
       setMasInfo(result);
     };
