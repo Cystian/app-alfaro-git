@@ -12,7 +12,7 @@ const FeaturedProperties = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await fetch("/.netlify/functions/getProperties?featured=true");
+        const res = await fetch("/api/getProperties?featured=true");
         const data = await res.json();
         setProperties(data.slice(0, 6)); // siempre 6 más recientes
       } catch (err) {
