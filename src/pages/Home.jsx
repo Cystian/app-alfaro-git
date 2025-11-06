@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     if (!searchFilters) return;
     const params = new URLSearchParams(searchFilters).toString();
-    fetch(`/.netlify/functions/getProperties?${params}`)
+    fetch(`/api/getProperties?${params}`)
       .then((res) => res.json())
       .then((data) => setSearchResults(data))
       .catch((err) => console.error("Error en búsqueda:", err));
