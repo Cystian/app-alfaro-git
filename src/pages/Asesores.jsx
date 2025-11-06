@@ -13,7 +13,7 @@ const Asesores = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/.netlify/functions/getAsesores")
+    fetch("/api/getAsesores")
       .then((res) => res.json())
       .then((data) => {
         setAsesores(data);
