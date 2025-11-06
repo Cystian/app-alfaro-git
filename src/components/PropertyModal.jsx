@@ -33,7 +33,7 @@ const PropertyModal = ({ property, onClose }) => {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`/.netlify/functions/getPropertyDetails?id=${property.id}`);
+        const res = await fetch(`/api/getPropertyDetails?id=${property.id}`);
         if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
         const data = await res.json();
         setDetails(data);
