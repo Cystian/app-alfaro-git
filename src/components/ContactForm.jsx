@@ -60,7 +60,7 @@ const ContactForm = () => {
 
       const result = await toast.promise(
         (async () => {
-          const response = await fetch("/.netlify/functions/sendForm", {
+          const response = await fetch("/api/sendForm", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
