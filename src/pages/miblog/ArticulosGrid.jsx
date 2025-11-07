@@ -76,7 +76,7 @@ const ArticulosGrid = () => {
   const cardsPerPage = 9;
 
   useEffect(() => {
-    fetch("/.netlify/functions/getArticulos")
+    fetch("/api/getArticulos")
       .then((res) => res.json())
       .then((data) => {
         const sorted = data
