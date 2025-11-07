@@ -43,7 +43,7 @@ export default function PropertyResumenPage() {
 
   useEffect(() => {
     const fetchMasInfo = async () => {
-      const res = await fetch(`https://app-alfaro-git.vercel.app/api/getPropertyDetailInfo?id=${id}`);
+      const res = await fetch(`api/getPropertyDetailInfo?id=${id}`);
       const result = await res.json();
       setMasInfo(result);
     };
