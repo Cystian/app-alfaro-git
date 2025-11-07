@@ -7,7 +7,7 @@ const NoticiaDetallePage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/.netlify/functions/getNoticias?id=${id}`)
+    fetch(`/api/getNoticias?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
         setNoticia(data);
