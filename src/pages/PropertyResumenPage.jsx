@@ -47,7 +47,7 @@ export default function PropertyResumenPage() {
 
   useEffect(() => {
     const fetchMasInfo = async () => {
-      const res = await fetch(`api/getPropertyDetailInfo?id=${id}`);
+      const res = await fetch(`/api/getPropertyDetailInfo?id=${id}`);
       
         const text = await res.text();
   console.log("🔎 Respuesta cruda del backend de 2do:", text);
