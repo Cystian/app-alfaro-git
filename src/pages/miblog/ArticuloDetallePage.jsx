@@ -7,7 +7,7 @@ const ArticuloDetallePage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/.netlify/functions/getArticulos?id=${id}`)
+    fetch(`/api/getArticulos?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
         setArticulo(data);
