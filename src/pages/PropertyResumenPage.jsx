@@ -29,11 +29,10 @@ export default function PropertyResumenPage() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(`/api/getPropertyDetails?id=${id}`);
-
-   const text = await res.text();
-  console.log("🔎 Respuesta cruda del backend de 1do:", text);
       
       const result = await res.json();
+
+        console.log("🔎 Respuesta cruda del backend de 1do:", result);
       if (result.subProperties) {
         result.subProperties = result.subProperties.map((sub) => ({
           ...sub,
@@ -49,10 +48,11 @@ export default function PropertyResumenPage() {
     const fetchMasInfo = async () => {
       const res = await fetch(`/api/getPropertyDetailInfo?id=${id}`);
       
-        const text = await res.text();
-  console.log("🔎 Respuesta cruda del backend de 2do:", text);
+
       
       const result = await res.json();
+
+        console.log("🔎 Respuesta cruda del backend de 2do:", result);
       setMasInfo(result);
     };
     fetchMasInfo();
