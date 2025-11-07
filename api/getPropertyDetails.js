@@ -1,30 +1,34 @@
 // /api/getPropertyDetails.js
 import { pool } from "./db.js";
 
-export default async function handler(request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const rawId = searchParams.get("id");
+export default async function handler(req, res) {
+  // 🔹 Manejo CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    if (!rawId) {
-      return new Response(
-        JSON.stringify({ message: "Debe indicar el id de la propiedad" }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+  if (req.method === "OPTIONS") {
+    return res.status(200).end(); // Preflight OK
+  }
+
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Método no permitido" });
+  }
+
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "Debe indicar el id de la propiedad" });
     }
 
-    const propertyId = parseInt(rawId, 10);
+    const propertyId = parseInt(id, 10);
     if (isNaN(propertyId)) {
-      return new Response(
-        JSON.stringify({ message: "Id inválido, debe ser un número" }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      return res
+        .status(400)
+        .json({ message: "Id inválido, debe ser un número" });
     }
 
     // 🔹 Consultar propiedad principal
@@ -42,13 +46,7 @@ export default async function handler(request) {
     );
 
     if (propertyRows.length === 0) {
-      return new Response(
-        JSON.stringify({ message: "Propiedad no encontrada" }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      return res.status(404).json({ message: "Propiedad no encontrada" });
     }
 
     const property = propertyRows[0];
@@ -64,31 +62,17 @@ export default async function handler(request) {
       [propertyId]
     );
 
-    // 🔹 Respuesta final
-    return new Response(
-      JSON.stringify({
-        property,
-        subProperties,
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
+    // 🔹 Enviar respuesta
+    return res.status(200).json({
+      property,
+      subProperties,
+    });
   } catch (error) {
     console.error("❌ ERROR en getPropertyDetails:", error);
-    return new Response(
-      JSON.stringify({
-        message: "Error al traer detalles de la propiedad",
-        error: error.message,
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    return res.status(500).json({
+      message: "Error al traer detalles de la propiedad",
+      error: error.message,
+    });
   }
 }
+
