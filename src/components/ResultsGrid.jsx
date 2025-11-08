@@ -52,9 +52,10 @@ export default function ResultsGrid({ properties }) {
             className="w-[30rem] mx-auto"
           />
           {/* 🔢 Contador */}
-          <p className="text-gray-700 text-sm mt-2">
-            {properties.length} propiedades encontradas
-          </p>
+         <p className="text-gray-800 text-base font-medium mt-3 text-center tracking-wide">
+  🔍 <span className="font-semibold text-blue-600">{properties.length}</span> propiedades encontradas
+</p>
+
         </div>
 
         {/* 🏠 Cuadrícula de propiedades */}
