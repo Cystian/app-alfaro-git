@@ -1,267 +1,142 @@
-import React, { useState, useRef, useEffect } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
-import { UserRound, Mail, BookOpen } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaBars, FaTimes } from "react-icons/fa";
+import logo from "../assets/logo.png";
 
-/**
- * Componente reutilizable para dropdowns
- */
-const NavItemDropdown = ({
-  label,
-  dropdownKey,
-  openDropdown,
-  toggleDropdown,
-  isMobile,
-  closeMobileMenu,
-}) => {
-  const isOpen = openDropdown === dropdownKey;
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [forceCollapse, setForceCollapse] = useState(false);
+  const navRef = useRef(null);
 
-  return (
-    <div className={`relative ${isMobile ? "" : "md:relative"}`}>
-      {/* Botón del dropdown */}
-      <button
-        onClick={() => toggleDropdown(dropdownKey)}
-        aria-haspopup="true"
-        aria-expanded={isOpen}
-        className={`flex items-center justify-between w-full ${
-          isMobile
-            ? "px-4 py-3 text-left font-medium text-gray-800 transition-colors duration-300 focus:outline-none no-underline hover:no-underline active:no-underline"
-            : "nav-link flex items-center space-x-1 focus:outline-none"
-        }`}
-      >
-        <span>{label}</span>
-        <svg
-          className={`w-4 h-4 transform transition-transform duration-300 ease-in-out ${
-            isOpen ? "rotate-180 text-azul-primario" : "rotate-0 text-gray-600"
-          }`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {/* Contenido del dropdown */}
-      {isOpen && (
-        <div
-          className={`${
-            isMobile
-              ? "pl-6 border-l border-azul-primario bg-transparent animate-slide-down"
-              : "dropdown-menu animate-slide-down"
-          }`}
-        >
-          {[
-            {
-              href: "/acerca-de-nosotros",
-              label: "Acerca de Nosotros",
-              icon: (
-                <UserRound
-                  className="w-[18px] h-[18px] shrink-0"
-                  style={{ color: "#d10d0d" }}
-                />
-              ),
-            },
-            {
-              href: "/contacto",
-              label: "Contacto",
-              icon: (
-                <Mail
-                  className="w-[18px] h-[18px] shrink-0"
-                  style={{ color: "#d10d0d" }}
-                />
-              ),
-            },
-            {
-              href: "/nuestra-historia",
-              label: "Nuestra Historia",
-              icon: (
-                <BookOpen
-                  className="w-[18px] h-[18px] shrink-0"
-                  style={{ color: "#d10d0d" }}
-                />
-              ),
-            },
-          ].map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-2 w-full px-4 py-2 text-gray-700 transition-colors duration-300 ${
-                isMobile
-                  ? "hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline"
-                  : "dropdown-item hover:bg-[#bfdbfe]"
-              }`}
-              onClick={() => isMobile && closeMobileMenu()}
-            >
-              {item.icon}
-              <span className="text-sm">{item.label}</span>
-            </a>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const [isCompactMode, setIsCompactMode] = useState(false);
-
-  const wrapperRef = useRef(null);
-  const logoRef = useRef(null);
-  const menuRef = useRef(null);
-
-  // 🔹 Cerrar menú al hacer clic fuera
+  // 🔹 Detecta si hay poco espacio entre el logo y el menú
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-        setIsMobileMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // 🔹 Detección dinámica del espacio (ResizeObserver)
-  useEffect(() => {
-    if (!wrapperRef.current || !logoRef.current || !menuRef.current) return;
-
     const observer = new ResizeObserver(() => {
-      const wrapperWidth = wrapperRef.current.offsetWidth;
-      const logoWidth = logoRef.current.offsetWidth;
-      const menuWidth = menuRef.current.offsetWidth;
+      if (navRef.current) {
+        const navWidth = navRef.current.offsetWidth;
+        const logoWidth = navRef.current.querySelector("img")?.offsetWidth || 0;
+        const linksWidth =
+          navRef.current.querySelector(".nav-links")?.offsetWidth || 0;
 
-      // Si el ancho total del nav es menor que el logo + menú + margen → activar modo compacto
-      if (wrapperWidth < logoWidth + menuWidth + 100) {
-        setIsCompactMode(true);
-      } else {
-        setIsCompactMode(false);
+        // Si el espacio libre es muy pequeño, colapsa el menú
+        if (navWidth - (logoWidth + linksWidth) < 80) {
+          setForceCollapse(true);
+        } else {
+          setForceCollapse(false);
+        }
       }
     });
 
-    observer.observe(wrapperRef.current);
+    observer.observe(document.body);
     return () => observer.disconnect();
   }, []);
 
-  const toggleDropdown = (key) =>
-    setOpenDropdown(openDropdown === key ? null : key);
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    setOpenDropdown(null);
-  };
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
-
   return (
     <nav
-      ref={wrapperRef}
-      className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300"
+      ref={navRef}
+      className="bg-white fixed w-full top-0 z-50 shadow-md px-4 md:px-8"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* LOGO */}
-          <div className="flex-1 flex justify-center md:justify-start">
-            <a href="/" className="flex items-center">
-              <img
-                ref={logoRef}
-                src="/logo.png"
-                alt="Logo"
-                className="h-16 md:h-12 lg:h-16 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg flex-shrink-0 min-w-[100px]"
-              />
-            </a>
-          </div>
+      <div className="flex justify-between items-center h-16">
+        {/* 🔹 Logo */}
+        <Link to="/" className="flex items-center space-x-2">
+          <motion.img
+            src={logo}
+            alt="Logo"
+            className="h-10 w-auto object-contain"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        </Link>
 
-          {/* Menú Desktop */}
-          {!isCompactMode && (
-            <div ref={menuRef} className="hidden md:flex space-x-8">
-              <a href="/vende-o-alquila" className="nav-link">
-                VENDE O ALQUILA CON NOSOTROS
-              </a>
-              <a href="/servicios" className="nav-link">
-                SERVICIOS
-              </a>
+        {/* 🔹 Botón hamburguesa (solo visible si se colapsa) */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-800 focus:outline-none text-2xl"
+          >
+            {isOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
 
-              {/* Dropdown CONÓCENOS Desktop */}
-              <NavItemDropdown
-                label="CONÓCENOS"
-                dropdownKey="conocenos"
-                openDropdown={openDropdown}
-                toggleDropdown={toggleDropdown}
-                isMobile={false}
-              />
-
-              <a href="/blog" className="nav-link">
-                BLOG
-              </a>
-              <a href="/asesores" className="nav-link">
-                ASESORES
-              </a>
-            </div>
-          )}
-
-          {/* Botón menú móvil */}
-          {(isCompactMode || isMobileMenuOpen) && (
-            <div className="md:hidden flex items-center absolute right-4">
-              <button
-                onClick={toggleMobileMenu}
-                aria-label={
-                  isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"
-                }
-                className="text-2xl focus:outline-none"
-              >
-                {isMobileMenuOpen ? <FiX /> : <FiMenu />}
-              </button>
-            </div>
-          )}
+        {/* 🔹 Menú principal */}
+        <div
+          className={`nav-links hidden md:flex space-x-8 text-gray-700 font-medium transition-all duration-300 ${
+            forceCollapse ? "hidden" : ""
+          }`}
+        >
+          <Link
+            to="/"
+            className="hover:text-blue-600 transition-colors duration-200"
+          >
+            Inicio
+          </Link>
+          <Link
+            to="/propiedades"
+            className="hover:text-blue-600 transition-colors duration-200"
+          >
+            Propiedades
+          </Link>
+          <Link
+            to="/vendeoalquila"
+            className="hover:text-blue-600 transition-colors duration-200"
+          >
+            Vende o Alquila con Nosotros
+          </Link>
+          <Link
+            to="/contacto"
+            className="hover:text-blue-600 transition-colors duration-200"
+          >
+            Contacto
+          </Link>
         </div>
       </div>
 
-      {/* Menú móvil */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
-          <a
-            href="/vende-o-alquila"
-            className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300"
-            onClick={closeMobileMenu}
+      {/* 🔹 Menú desplegable en móvil o tablet colapsada */}
+      <AnimatePresence>
+        {(isOpen || forceCollapse) && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white shadow-md overflow-hidden"
           >
-            VENDE O ALQUILA CON NOSOTROS
-          </a>
-          <a
-            href="/servicios"
-            className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300"
-            onClick={closeMobileMenu}
-          >
-            SERVICIOS
-          </a>
-
-          {/* Dropdown CONÓCENOS Móvil */}
-          <NavItemDropdown
-            label="CONÓCENOS"
-            dropdownKey="conocenos"
-            openDropdown={openDropdown}
-            toggleDropdown={toggleDropdown}
-            isMobile={true}
-            closeMobileMenu={closeMobileMenu}
-          />
-
-          <a
-            href="/blog"
-            className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300"
-            onClick={closeMobileMenu}
-          >
-            BLOG
-          </a>
-          <a
-            href="/asesores"
-            className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300"
-            onClick={closeMobileMenu}
-          >
-            ASESORES
-          </a>
-        </div>
-      )}
+            <div className="flex flex-col items-center space-y-3 py-4 text-gray-700 font-medium">
+              <Link
+                to="/"
+                onClick={() => setIsOpen(false)}
+                className="hover:text-blue-600 transition-colors duration-200"
+              >
+                Inicio
+              </Link>
+              <Link
+                to="/propiedades"
+                onClick={() => setIsOpen(false)}
+                className="hover:text-blue-600 transition-colors duration-200"
+              >
+                Propiedades
+              </Link>
+              <Link
+                to="/vendeoalquila"
+                onClick={() => setIsOpen(false)}
+                className="hover:text-blue-600 transition-colors duration-200"
+              >
+                Vende o Alquila con Nosotros
+              </Link>
+              <Link
+                to="/contacto"
+                onClick={() => setIsOpen(false)}
+                className="hover:text-blue-600 transition-colors duration-200"
+              >
+                Contacto
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
-}
+};
+
+export default Navbar;
