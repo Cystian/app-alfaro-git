@@ -158,7 +158,10 @@ export default function PropertyResumenPage() {
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6 font-geistmono"
           >
             {/* UBICACIÓN */}
-            <motion.div
+          
+
+            {data.property.title.toLowerCase().includes("casa") && (
+              <motion.div
               variants={item}
               className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
             >
@@ -170,6 +173,11 @@ export default function PropertyResumenPage() {
                 </p>
               </div>
             </motion.div>
+            )}
+
+
+
+            
 
             {/* ÁREA DE TERRENO */}
             <motion.div
@@ -186,7 +194,7 @@ export default function PropertyResumenPage() {
             </motion.div>
 
             {/* ÁREA CONSTRUIDA */}
-            {!data.property.title.toLowerCase().includes("terreno") && (
+            {!data.property.title.toLowerCase().includes("chris") && (
               <motion.div
                 variants={item}
                 className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
@@ -287,6 +295,17 @@ export default function PropertyResumenPage() {
                     <p className="text-gray-500 text-sm">Antiguedades</p>
                     <p className="font-semibold text-lg text-gray-800">
                       {data.property.antiguedad || "No especificado"}
+
+
+                      <span className="font-semibold text-lg text-gray-800">Antigüedad:</span>{" "}
+{data.property.antiguedad === 0
+  ? "Nueva propiedad"
+  : data.property.antiguedad === 1
+  ? "1 año"
+  : data.property.antiguedad > 1
+  ? `${data.property.antiguedad} años`
+  : "No especificado"}
+
                     </p>
                   </div>
                 </motion.div>
