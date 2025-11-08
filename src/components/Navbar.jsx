@@ -107,7 +107,7 @@ export default function Navbar() {
 
           {/* Menú Desktop */}
           <div className="hidden md:flex space-x-8">
-            <a href="/vende-o-alquila" className="nav-link">VENDE O ALQUILA</a>
+            <a href="/vende-o-alquila" className="nav-link">VENDE O ALQUILA CON NOSOTROS</a>
             <a href="/servicios" className="nav-link">SERVICIOS</a>
 
             {/* Dropdown CONÓCENOS Desktop */}
