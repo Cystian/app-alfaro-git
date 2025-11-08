@@ -5,6 +5,7 @@ import FloatingShare from "../components/FloatingShare";
 
 const VendeoAlquila = () => {
   return (
+     <>
      <FloatingShare />
     <PageWrapper>
       <div className="bg-white text-gray-800">
@@ -134,6 +135,7 @@ const VendeoAlquila = () => {
 
       </div>
     </PageWrapper>
+     </>
   );
 };
 
