@@ -140,7 +140,7 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
           <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
-            VENDE O ALQUILA
+            VENDE O ALQUILA CON NOSOTROS
           </a>
           <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
             SERVICIOS
