@@ -1,9 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import PageWrapper from "../components/PageWrapper";
+import FloatingShare from "../components/FloatingShare";
 
 const VendeoAlquila = () => {
   return (
+     <FloatingShare />
     <PageWrapper>
       <div className="bg-white text-gray-800">
 
