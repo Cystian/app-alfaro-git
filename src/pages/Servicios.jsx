@@ -2,6 +2,7 @@ import React from "react";
 import { Building2, FileText, BarChart3 } from "lucide-react";
 import PageWrapper from "../components/PageWrapper";
 import { motion } from "framer-motion";
+import FloatingShare from "../components/FloatingShare";
 
 const Servicios = () => {
   // 🔹 Definición de servicios institucionales
@@ -54,6 +55,8 @@ const Servicios = () => {
   ];
 
   return (
+    <>
+     <FloatingShare />
     <PageWrapper>
       <div className="bg-white text-[#000000]">
 
@@ -196,6 +199,7 @@ const Servicios = () => {
         </section>
       </div>
     </PageWrapper>
+       </>
   );
 };
 
