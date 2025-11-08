@@ -294,7 +294,6 @@ export default function PropertyResumenPage() {
                   <div>
                     <p className="text-gray-500 text-sm">Antigüedad</p>
                     <p className="font-semibold text-lg text-gray-800">
-                      {data.property.antiguedad || "No especificado"}
 
 
                       <span className="font-semibold text-lg text-gray-800"> </span>{" "}
