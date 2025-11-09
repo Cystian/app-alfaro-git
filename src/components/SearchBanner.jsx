@@ -60,7 +60,7 @@ const SearchBanner = ({ onSearch }) => {
       ></div>
 
       {/* Contenedor principal */}
-      <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl">
+      <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-50 rounded-2xl shadow-xl">
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out ${
             showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"
