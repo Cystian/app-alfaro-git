@@ -5,6 +5,7 @@ import {
   FaCar,
   FaBath,
   FaMapMarkerAlt,
+  FaDrawPolygon,
   FaRulerCombined,
   FaRulerVertical,
   FaHourglass,
@@ -193,83 +194,104 @@ export default function PropertyResumenPage() {
               </div>
             </motion.div>
 
+
+            
+{/* 🧱 BLOQUE 1: TERRENO */}
+{data.property.title.toLowerCase().includes("terreno") && (
+  <motion.div
+    variants={item}
+    className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+  >
+    <div className="flex items-center mb-2">
+      <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
+      <p className="text-gray-500 text-sm">Dimensiones</p>
+    </div>
+    <div className="space-y-1 ml-9">
+      <p className="text-gray-600 text-base">
+        <span className="font-medium text-negro-profundo">Frente:</span>{" "}
+        {data.property.frontera
+          ? `${data.property.frontera} m`
+          : "No especificado"}
+      </p>
+      <p className="text-gray-600 text-base">
+        <span className="font-medium text-negro-profundo">Largo:</span>{" "}
+        {data.property.Largo
+          ? `${data.property.Largo} m`
+          : "No especificado"}
+      </p>
+    </div>
+  </motion.div>
+)}
+
             {/* ÁREA CONSTRUIDA */}
-            {!data.property.title.toLowerCase().includes("chris") && (
-              <motion.div
-                variants={item}
-                className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-              >
-                <FaRuler className="text-rojo-inmobiliario mr-3 text-2xl" />
-                <div>
-                  <p className="text-gray-500 text-sm">Área Construida</p>
-                  <p className="font-semibold text-lg text-gray-800">
-                    {data.property.area_c
-                      ? `${data.property.area_c} m²`
-                      : "No especificada"}
-                  </p>
-                </div>
-              </motion.div>
-            )}
+{Number(data.property.area_c) > 0 && (
+  <motion.div
+    variants={item}
+    className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+  >
+    <FaRuler className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <div>
+      <p className="text-gray-500 text-sm">Área Construida</p>
+      <p className="font-semibold text-lg text-gray-800">
+        {`${Number(data.property.area_c)} m²`}
+      </p>
+    </div>
+  </motion.div>
+)}
 
-            {/* CONDICIONAL TERRENO / VIVIENDA */}
-            {data.property.title.toLowerCase().includes("terreno") ? (
-              <motion.div
-                variants={item}
-                className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex items-center mb-2">
-                  <FaRulerCombined className="text-rojo-inmobiliario mr-3 text-2xl" />
-                  <p className="text-gray-500 text-sm">Dimensiones</p>
-                </div>
-                <div className="space-y-1 ml-9">
-                  <p className="text-gray-600 text-base">
-                    <span className="font-medium text-negro-profundo">Frente:</span>{" "}
-                    {data.property.frontera
-                      ? `${data.property.frontera} m`
-                      : "No especificado"}
-                  </p>
-                  <p className="text-gray-600 text-base">
-                    <span className="font-medium text-negro-profundo">Largo:</span>{" "}
-                    {data.property.Largo
-                      ? `${data.property.Largo} m`
-                      : "No especificado"}
-                  </p>
-                </div>
-              </motion.div>
-            ) : (
-              <>
-                <motion.div
-                  variants={item}
-                  className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-                >
-                  <FaBed className="text-rojo-inmobiliario mr-3 text-2xl" />
-                  <div>
-                    <p className="text-gray-500 text-sm">
-                      {data.property.title.toLowerCase().includes("hotel")
-                        ? "Habitaciones"
-                        : "Dormitorios"}
-                    </p>
-                    <p className="font-semibold text-lg text-gray-800">
-                      {data.property.bedrooms || "No especificado"}
-                    </p>
-                  </div>
-                </motion.div>
+            {/* CERCO PERIMÉTRICO */}
+{Number(data.property.cerco_perimetrico) > 0 && (
+  <motion.div
+    variants={item}
+    className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+  >
+    <FaDrawPolygon className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <div>
+      <p className="text-gray-500 text-sm">Cerco Perimétrico</p>
+      <p className="font-semibold text-lg text-gray-800">
+        {`${Number(data.property.cerco_perimetrico)} ml`}
+      </p>
+    </div>
+  </motion.div>
+)}
+            
+{/* 🏠 BLOQUE 2: DORMITORIOS */}
+{!data.property.title.toLowerCase().includes("terreno") && (
+  <motion.div
+    variants={item}
+    className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+  >
+    <FaBed className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <div>
+      <p className="text-gray-500 text-sm">
+        {data.property.title.toLowerCase().includes("hotel")
+          ? "Habitaciones"
+          : "Dormitorios"}
+      </p>
+      <p className="font-semibold text-lg text-gray-800">
+        {data.property.bedrooms || "No especificado"}
+      </p>
+    </div>
+  </motion.div>
+)}
 
-                <motion.div
-                  variants={item}
-                  className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-                >
-                  <FaBath className="text-rojo-inmobiliario mr-3 text-2xl" />
-                  <div>
-                    <p className="text-gray-500 text-sm">Baños</p>
-                    <p className="font-semibold text-lg text-gray-800">
-                      {data.property.bathrooms || "No especificado"}
-                    </p>
-                  </div>
-                </motion.div>
-              </>
-            )}
+{/* 🚿 BLOQUE 3: BAÑOS */}
+{!data.property.title.toLowerCase().includes("terreno") && (
+  <motion.div
+    variants={item}
+    className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+  >
+    <FaBath className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <div>
+      <p className="text-gray-500 text-sm">Baños</p>
+      <p className="font-semibold text-lg text-gray-800">
+        {data.property.bathrooms || "No especificado"}
+      </p>
+    </div>
+  </motion.div>
+)}
 
+         
             {/* COCHERAS + ANTIGÜEDAD */}
             {!data.property.title.toLowerCase().includes("terreno") && (
               <>
