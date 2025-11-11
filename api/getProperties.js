@@ -1,19 +1,19 @@
-// api/get-properties.js
+// api/getProperties.js
 import { pool } from "./db.js";
 
 export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
-    // Split por comas y limpiar valores vacíos
+    // Split por comas, limpiar valores vacíos y "todos"
     const titleArr = title
-      ? title.split(",").map((t) => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
+      ? title.split(",").map(t => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
       : [];
     const locationArr = location
-      ? location.split(",").map((l) => l.trim().toLowerCase()).filter(Boolean).filter(l => l !== "todos")
+      ? location.split(",").map(l => l.trim().toLowerCase()).filter(Boolean).filter(l => l !== "todos")
       : [];
     const statusArr = status
-      ? status.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
+      ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
       : [];
 
     let query = `
@@ -26,22 +26,24 @@ export default async function handler(req, res) {
     // Location
     if (locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
-      locationArr.forEach((l) => queryParams.push(`%${l}%`));
+      locationArr.forEach(l => queryParams.push(`%${l}%`));
     }
 
     // Status
     if (statusArr.length) {
       query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
-      statusArr.forEach((s) => queryParams.push(`%${s}%`));
+      statusArr.forEach(s => queryParams.push(`%${s}%`));
     }
 
     // Title
     if (titleArr.length) {
       query += " AND (";
-      const titleConditions = titleArr.map((term) => {
-        const words = term.toLowerCase().split(" ").filter(Boolean);
+      const titleConditions = titleArr.map(term => {
+        // Normaliza guiones largos y otros caracteres a espacio
+        const cleanTerm = term.toLowerCase().replace(/[–—-]/g, " ");
+        const words = cleanTerm.split(" ").filter(Boolean);
         const wordConditions = words.map(() => "LOWER(title) LIKE ?").join(" AND ");
-        words.forEach((w) => queryParams.push(`%${w}%`));
+        words.forEach(w => queryParams.push(`%${w}%`));
         return `(${wordConditions})`;
       });
       query += titleConditions.join(" OR ");
