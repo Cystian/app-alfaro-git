@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../styles/PropertyResumenPageGallery.css"; // CSS Lightbox
+import { motion } from "framer-motion";
+
 
 export default function PropertyResumePageGallery({ images, currentIndex = 0, onClose }) {
   const [current, setCurrent] = useState(currentIndex);
