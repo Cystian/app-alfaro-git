@@ -5,9 +5,9 @@ export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
-    // 🔹 Normalización y segmentación de filtros
-    const locationArr = location ? location.split(",").map((l) => l.trim()).filter(Boolean) : [];
-    const statusArr = status ? status.split(",").map((s) => s.trim()).filter(Boolean) : [];
+    const titleArr = title ? title.split(",").map((t) => t.trim()) : [];
+    const locationArr = location ? location.split(",").map((l) => l.trim()) : [];
+    const statusArr = status ? status.split(",").map((s) => s.trim()) : [];
 
     let query = `
       SELECT id, title, image, price, location, status, bedrooms, bathrooms, area, created_at
@@ -16,42 +16,28 @@ export default async function handler(req, res) {
     `;
     const queryParams = [];
 
-    // 🔹 Filtro por ubicación
     if (locationArr.length) {
-      query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
-      locationArr.forEach((l) => queryParams.push(`%${l.toLowerCase()}%`));
+      query += ` AND (${locationArr.map(() => `location LIKE ?`).join(" OR ")})`;
+      locationArr.forEach((l) => queryParams.push(`%${l}%`));
     }
-
-    // 🔹 Filtro por estado
     if (statusArr.length) {
-      query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
-      statusArr.forEach((s) => queryParams.push(`%${s.toLowerCase()}%`));
+      query += ` AND (${statusArr.map(() => `status LIKE ?`).join(" OR ")})`;
+      statusArr.forEach((s) => queryParams.push(`%${s}%`));
+    }
+    if (titleArr.length) {
+      query += ` AND (${titleArr.map(() => `title LIKE ?`).join(" OR ")})`;
+      titleArr.forEach((t) => queryParams.push(`%${t}%`));
     }
 
-    // 🔹 Filtro por palabra clave en título (contextual y seguro)
-    const keyword = title?.trim().toLowerCase();
-    if (keyword && keyword.length > 0) {
-      query += ` AND LOWER(title) LIKE ?`;
-      queryParams.push(`%${keyword}%`);
-    }
-
-    // 🔹 Orden lógico de resultados
     if (featured === "true") {
       query += ` ORDER BY created_at DESC`;
-    } else if (!keyword && !locationArr.length && !statusArr.length) {
+    } else if (!titleArr.length && !locationArr.length && !statusArr.length) {
       query += " ORDER BY RAND() LIMIT 10";
     } else {
       query += " ORDER BY created_at DESC";
     }
 
-    // 🔹 Ejecución de la consulta
     const [rows] = await pool.query(query, queryParams);
-
-    // Opcional: depuración en consola del servidor
-    console.log("🔍 Query ejecutada:", query);
-    console.log("📦 Parámetros:", queryParams);
-    console.log("📤 Filas devueltas:", rows.length);
-
     return res.status(200).json(rows);
 
   } catch (err) {
