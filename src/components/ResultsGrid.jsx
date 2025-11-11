@@ -88,7 +88,7 @@ export default function ResultsGrid({ properties }) {
                 <p className="text-sm text-gray-600 mb-1 truncate">
                   {property.location}
                 </p>
-                <p className="text-blue-600 font-semibold mb-2">
+                <p className="text-blue-600 font-semibold mb-3">
                   US${" "}
                   {Number(property.price).toLocaleString("es-PE", {
                     minimumFractionDigits: 2,
