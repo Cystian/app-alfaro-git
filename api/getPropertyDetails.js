@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         id, title, image, price, location, status, 
         bedrooms, bathrooms, area, description,
         latitude, longitude,
-        address, frontera, Largo, area_c, cocheras, distribution, antiguedad,cerco_perimetrico,condiciones   
+        address, frontera, Largo, area_c, cocheras, distribution, antiguedad,cerco_perimetrico,garantia,adelanto    
       FROM properties
       WHERE id = ?
       `,
