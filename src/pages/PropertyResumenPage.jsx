@@ -291,7 +291,7 @@ export default function PropertyResumenPage() {
   </motion.div>
 )}
 
-         {/* COCHERAS + ANTIGÜEDAD */}
+ {/* COCHERAS + ANTIGÜEDAD */}
 {!data.property.title.toLowerCase().includes("terreno") && (
   <>
     {/* Solo mostrar Cocheras si es mayor a 0 */}
@@ -331,6 +331,7 @@ export default function PropertyResumenPage() {
   </>
 )}
 
+          </motion.div>
          
 
           <hr className="border-gray-300 mb-6" />
