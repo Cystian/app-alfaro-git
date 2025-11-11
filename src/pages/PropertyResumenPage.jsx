@@ -353,9 +353,10 @@ export default function PropertyResumenPage() {
         <p className="text-gray-500 text-sm">Condiciones de alquiler</p>
       </div>
       <div className="ml-9">
-        <p className="text-gray-700 text-base leading-relaxed whitespace-pre-line">
-          {data.property.condiciones}
-        </p>
+      <div
+        className=" text-gray-700 text-base leading-relaxed whitespace-pre-line"
+        dangerouslySetInnerHTML={{ __html: data.property.condiciones }}
+      />
       </div>
     </motion.div>
   )}
