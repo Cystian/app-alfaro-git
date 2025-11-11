@@ -297,8 +297,7 @@ export default function PropertyResumenPage() {
   </motion.div>
 )}
 
-
- {/* COCHERAS + ANTIGÜEDAD */}
+{/* COCHERAS + ANTIGÜEDAD */}
 {!data.property.title.toLowerCase().includes("terreno") && (
   <>
     {/* Solo mostrar Cocheras si es mayor a 0 */}
@@ -317,26 +316,32 @@ export default function PropertyResumenPage() {
       </motion.div>
     )}
 
-    <motion.div
-      variants={item}
-      className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-    >
-      <FaHourglass className="text-rojo-inmobiliario mr-3 text-2xl" />
-      <div>
-        <p className="text-gray-500 text-sm">Antigüedad</p>
-        <p className="font-semibold text-lg text-gray-800">
-          {data.property.antiguedad === 0
-            ? "Nueva propiedad"
-            : data.property.antiguedad === 1
-            ? "1 año"
-            : data.property.antiguedad > 1
-            ? `${data.property.antiguedad} años`
-            : "No especificado"}
-        </p>
-      </div>
-    </motion.div>
+    {/* Mostrar Antigüedad solo si NO es alquiler */}
+    {data.property.status?.toLowerCase() !== "alquiler" && (
+      <motion.div
+        variants={item}
+        className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+      >
+        <FaHourglass className="text-rojo-inmobiliario mr-3 text-2xl" />
+        <div>
+          <p className="text-gray-500 text-sm">Antigüedad</p>
+          <p className="font-semibold text-lg text-gray-800">
+            {data.property.antiguedad === 0
+              ? "Nueva propiedad"
+              : data.property.antiguedad === 1
+              ? "1 año"
+              : data.property.antiguedad > 1
+              ? `${data.property.antiguedad} años`
+              : "No especificado"}
+          </p>
+        </div>
+      </motion.div>
+    )}
   </>
 )}
+
+
+            
  </motion.div>
          
 
