@@ -372,7 +372,7 @@ export default function PropertyResumenPage() {
               Descripción General:
             </h2>
             <div
-              className="text-gray-700 font-geistmono"
+              className="text-gray-700 font-sans-serif"
               dangerouslySetInnerHTML={{
                 __html: data.property.description,
               }}
