@@ -5,9 +5,10 @@ export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
-    const titleArr = title ? title.split(",").map((t) => t.trim()) : [];
-    const locationArr = location ? location.split(",").map((l) => l.trim()) : [];
-    const statusArr = status ? status.split(",").map((s) => s.trim()) : [];
+    // 🔹 Normalización: minúsculas, sin espacios sobrantes
+    const keyword = title.trim().toLowerCase();
+    const locationArr = location ? location.split(",").map(l => l.trim()) : [];
+    const statusArr = status ? status.split(",").map(s => s.trim()) : [];
 
     let query = `
       SELECT id, title, image, price, location, status, bedrooms, bathrooms, area, created_at
@@ -16,27 +17,34 @@ export default async function handler(req, res) {
     `;
     const queryParams = [];
 
-    if (locationArr.length) {
-      query += ` AND (${locationArr.map(() => `location LIKE ?`).join(" OR ")})`;
-      locationArr.forEach((l) => queryParams.push(`%${l}%`));
-    }
-    if (statusArr.length) {
-      query += ` AND (${statusArr.map(() => `status LIKE ?`).join(" OR ")})`;
-      statusArr.forEach((s) => queryParams.push(`%${s}%`));
-    }
-    if (titleArr.length) {
-      query += ` AND (${titleArr.map(() => `title LIKE ?`).join(" OR ")})`;
-      titleArr.forEach((t) => queryParams.push(`%${t}%`));
+    // 🔹 Filtro por palabra clave general (ej: "terreno")
+    if (keyword) {
+      query += ` AND LOWER(title) LIKE ?`;
+      queryParams.push(`%${keyword}%`);
     }
 
+    // 🔹 Filtro por ubicación
+    if (locationArr.length) {
+      query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
+      locationArr.forEach(l => queryParams.push(`%${l.toLowerCase()}%`));
+    }
+
+    // 🔹 Filtro por estado
+    if (statusArr.length) {
+      query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
+      statusArr.forEach(s => queryParams.push(`%${s.toLowerCase()}%`));
+    }
+
+    // 🔹 Orden lógico de resultados
     if (featured === "true") {
       query += ` ORDER BY created_at DESC`;
-    } else if (!titleArr.length && !locationArr.length && !statusArr.length) {
+    } else if (!keyword && !locationArr.length && !statusArr.length) {
       query += " ORDER BY RAND() LIMIT 10";
     } else {
       query += " ORDER BY created_at DESC";
     }
 
+    // 🔹 Ejecutar consulta
     const [rows] = await pool.query(query, queryParams);
     return res.status(200).json(rows);
 
