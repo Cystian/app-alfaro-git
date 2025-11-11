@@ -30,6 +30,7 @@ export default function Home() {
       <main className=" space-y-4 p-0.5 sm:p-1 bg-gray-100">
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
+console.log("Resultados que llegan al grid:", searchResults);
 
         {/* Grid de resultados solo si hay búsqueda */}
         {searchResults.length > 0 && <ResultsGrid properties={searchResults} />}
