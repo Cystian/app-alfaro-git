@@ -341,9 +341,10 @@ export default function PropertyResumenPage() {
   </>
 )}
 
-{/* 📜 CONDICIONES (solo para alquiler) */}
+
+{/* 💼 CONDICIONES ECONÓMICAS (solo para alquiler con adelanto o garantía) */}
 {data.property.status?.toLowerCase() === "alquiler" &&
-  data.property.condiciones && (
+  (data.property.adelanto > 0 || data.property.garantia > 0) && (
     <motion.div
       variants={item}
       className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
@@ -352,11 +353,27 @@ export default function PropertyResumenPage() {
         <FaClipboardList className="text-rojo-inmobiliario mr-3 text-2xl" />
         <p className="text-gray-500 text-sm">Condiciones de alquiler</p>
       </div>
-      <div className="ml-9">
-      <div
-        className=" text-gray-700 text-base leading-relaxed whitespace-pre-line"
-        dangerouslySetInnerHTML={{ __html: data.property.condiciones }}
-      />
+
+      <div className="space-y-1 ml-9">
+        {/* Mostrar solo si Adelanto > 0 */}
+        {data.property.adelanto > 0 && (
+          <p className="text-gray-600 text-base">
+            <span className="font-medium text-negro-profundo">Adelanto:</span>{" "}
+            {data.property.adelanto === 1
+              ? "1 mes"
+              : `${data.property.adelanto} meses`}
+          </p>
+        )}
+
+        {/* Mostrar solo si Garantía > 0 */}
+        {data.property.garantia > 0 && (
+          <p className="text-gray-600 text-base">
+            <span className="font-medium text-negro-profundo">Garantía:</span>{" "}
+            {data.property.garantia === 1
+              ? "1 mes"
+              : `${data.property.garantia} meses`}
+          </p>
+        )}
       </div>
     </motion.div>
   )}
