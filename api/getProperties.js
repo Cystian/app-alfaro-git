@@ -1,4 +1,4 @@
-// api/getProperties.js
+// api/get-properties.js
 import { pool } from "./db.js";
 
 export default async function handler(req, res) {
@@ -39,10 +39,11 @@ export default async function handler(req, res) {
     if (titleArr.length) {
       query += " AND (";
       const titleConditions = titleArr.map(term => {
-        // Normaliza guiones largos y otros caracteres a espacio
+        // Normaliza guiones largos y normales a espacio
         const cleanTerm = term.toLowerCase().replace(/[–—-]/g, " ");
         const words = cleanTerm.split(" ").filter(Boolean);
-        const wordConditions = words.map(() => "LOWER(title) LIKE ?").join(" AND ");
+        // Usamos OR entre palabras para que coincida cualquiera de ellas
+        const wordConditions = words.map(() => "LOWER(title) LIKE ?").join(" OR ");
         words.forEach(w => queryParams.push(`%${w}%`));
         return `(${wordConditions})`;
       });
