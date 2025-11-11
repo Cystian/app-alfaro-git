@@ -30,10 +30,15 @@ export default function Home() {
       <main className=" space-y-4 p-0.5 sm:p-1 bg-gray-100">
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
-console.log("Resultados que llegan al grid:", searchResults);
 
         {/* Grid de resultados solo si hay búsqueda */}
-        {searchResults.length > 0 && <ResultsGrid properties={searchResults} />}
+       {searchResults.length > 0 && (
+  <>
+    {console.log("Resultados que llegan al grid:", searchResults)}
+    <ResultsGrid properties={searchResults} />
+  </>
+)}
+
 
         {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
           <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white ">
