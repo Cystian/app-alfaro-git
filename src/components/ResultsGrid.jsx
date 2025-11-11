@@ -82,6 +82,9 @@ export default function ResultsGrid({ properties }) {
                 <h3 className="text-lg font-bold mb-1 truncate">
                   {property.title}
                 </h3>
+                 <p className="text-sm text-blue-600 mb-1 truncate">
+                  {property.address}
+                </p>
                 <p className="text-sm text-gray-600 mb-1 truncate">
                   {property.location}
                 </p>
