@@ -79,16 +79,16 @@ export default function ResultsGrid({ properties }) {
               </a>
 
               <div className="flex flex-col flex-grow">
-                <h3 className="text-lg font-bold mb-1 truncate">
+                <h3 className="text-lg font-bold truncate">
                   {property.title}
                 </h3>
-                 <p className="text-sm text-blue-600 mb-1 truncate">
+                 <p className="text-sm text-blue-600 mt-1 truncate">
                   {property.address}
                 </p>
-                <p className="text-sm text-gray-600 mb-1 truncate">
+                <p className="text-sm text-gray-600 truncate">
                   {property.location}
                 </p>
-                <p className="text-blue-600 font-semibold mb-3">
+                <p className="text-blue-600 font-semibold mt-1">
                   US${" "}
                   {Number(property.price).toLocaleString("es-PE", {
                     minimumFractionDigits: 2,
