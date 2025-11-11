@@ -160,25 +160,23 @@ export default function PropertyResumenPage() {
           >
             {/* UBICACIÓN */}
           
-
-            {data.property.title.toLowerCase().includes("terreno") && (
-              <motion.div
-              variants={item}
-              className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-            >
-              <FaMapMarkerAlt className="text-rojo-inmobiliario mr-3 text-2xl" />
-              <div>
-                <p className="text-gray-500 text-sm">Ubicación</p>
-                <p className="font-semibold text-lg text-gray-800">
-                  {data.property.location || "No especificada"}
-                </p>
-              </div>
-            </motion.div>
-            )}
-
-
-
-            
+{["terreno", "hotel", "local", "casa"].some((tipo) =>
+  data.property.title.toLowerCase().includes(tipo)
+) && (
+  <motion.div
+    variants={item}
+    className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+  >
+    <FaMapMarkerAlt className="text-rojo-inmobiliario mr-3 text-2xl" />
+    <div>
+      <p className="text-gray-500 text-sm">Ubicación</p>
+      <p className="font-semibold text-lg text-gray-800">
+        {data.property.location || "No especificada"}
+      </p>
+    </div>
+  </motion.div>
+)}
+        
 
             {/* ÁREA DE TERRENO */}
             <motion.div
@@ -196,8 +194,10 @@ export default function PropertyResumenPage() {
 
 
             
-{/* 🧱 BLOQUE 1: TERRENO */}
-{data.property.title.toLowerCase().includes("terreno") && (
+{/* 🧱 BLOQUE 1: Dimensiones */}
+{["terreno", "hotel", "local", "casa"].some((tipo) =>
+  data.property.title.toLowerCase().includes(tipo)
+) && (
   <motion.div
     variants={item}
     className="flex flex-col bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
@@ -222,6 +222,7 @@ export default function PropertyResumenPage() {
     </div>
   </motion.div>
 )}
+
 
             {/* ÁREA CONSTRUIDA */}
 {Number(data.property.area_c) > 0 && (
@@ -256,7 +257,8 @@ export default function PropertyResumenPage() {
 )}
             
 {/* 🏠 BLOQUE 2: DORMITORIOS */}
-{!data.property.title.toLowerCase().includes("terreno") && (
+{!data.property.title.toLowerCase().includes("terreno") &&
+ data.property.bedrooms > 0 && (
   <motion.div
     variants={item}
     className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
@@ -264,7 +266,9 @@ export default function PropertyResumenPage() {
     <FaBed className="text-rojo-inmobiliario mr-3 text-2xl" />
     <div>
       <p className="text-gray-500 text-sm">
-        {data.property.title.toLowerCase().includes("hotel")
+        {["hotel", "local"].some((tipo) =>
+          data.property.title.toLowerCase().includes(tipo)
+        )
           ? "Habitaciones"
           : "Dormitorios"}
       </p>
@@ -275,8 +279,10 @@ export default function PropertyResumenPage() {
   </motion.div>
 )}
 
+
 {/* 🚿 BLOQUE 3: BAÑOS */}
-{!data.property.title.toLowerCase().includes("terreno") && (
+{!data.property.title.toLowerCase().includes("terreno") &&
+ Number(data.property.bathrooms) > 0 && (
   <motion.div
     variants={item}
     className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
@@ -290,6 +296,7 @@ export default function PropertyResumenPage() {
     </div>
   </motion.div>
 )}
+
 
  {/* COCHERAS + ANTIGÜEDAD */}
 {!data.property.title.toLowerCase().includes("terreno") && (
@@ -330,8 +337,7 @@ export default function PropertyResumenPage() {
     </motion.div>
   </>
 )}
-
-          </motion.div>
+ </motion.div>
          
 
           <hr className="border-gray-300 mb-6" />
