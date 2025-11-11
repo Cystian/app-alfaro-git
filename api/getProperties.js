@@ -5,14 +5,15 @@ export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
+    // Split por comas y limpiar valores vacíos
     const titleArr = title
-      ? title.split(" ").map((t) => t.trim().toLowerCase()).filter(Boolean)
+      ? title.split(",").map((t) => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
       : [];
     const locationArr = location
-      ? location.split(",").map((l) => l.trim().toLowerCase()).filter(Boolean)
+      ? location.split(",").map((l) => l.trim().toLowerCase()).filter(Boolean).filter(l => l !== "todos")
       : [];
     const statusArr = status
-      ? status.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)
+      ? status.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
       : [];
 
     let query = `
@@ -22,26 +23,34 @@ export default async function handler(req, res) {
     `;
     const queryParams = [];
 
+    // Location
     if (locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
       locationArr.forEach((l) => queryParams.push(`%${l}%`));
     }
 
+    // Status
     if (statusArr.length) {
       query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
       statusArr.forEach((s) => queryParams.push(`%${s}%`));
     }
 
+    // Title
     if (titleArr.length) {
-      // Cada palabra debe aparecer en el título
-      titleArr.forEach((word) => {
-        query += ` AND LOWER(title) LIKE ?`;
-        queryParams.push(`%${word}%`);
+      query += " AND (";
+      const titleConditions = titleArr.map((term) => {
+        const words = term.toLowerCase().split(" ").filter(Boolean);
+        const wordConditions = words.map(() => "LOWER(title) LIKE ?").join(" AND ");
+        words.forEach((w) => queryParams.push(`%${w}%`));
+        return `(${wordConditions})`;
       });
+      query += titleConditions.join(" OR ");
+      query += ")";
     }
 
+    // Ordenamiento
     if (featured === "true") {
-      query += ` ORDER BY created_at DESC`;
+      query += " ORDER BY created_at DESC";
     } else if (!titleArr.length && !locationArr.length && !statusArr.length) {
       query += " ORDER BY RAND() LIMIT 10";
     } else {
