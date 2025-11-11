@@ -32,9 +32,14 @@ export default function PropertyResumePageGallery({ images, currentIndex = 0, on
 
           {/* Título tipo sticker — arriba izquierda */}
           {currentImage.title && (
-            <div className="absolute top-4 left-4  text-white px-3 py-1 rounded-lg font-semibold shadow" style={{ backgroundColor: "#ff4d4f" }}>
-              {currentImage.title}
-            </div>
+           <motion.div
+  initial={{ y: -5, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.3 }}
+  className="absolute top-4 left-4 flex items-center bg-white shadow-lg px-3 py-1 border-l-2 border-red-500 font-semibold text-red-500"
+>
+  {currentImage.title}
+</motion.div>
           )}
 
           {/* Contador de fotos — abajo derecha */}
