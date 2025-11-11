@@ -5,10 +5,9 @@ export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
-    // 🔹 Normalización: minúsculas, sin espacios sobrantes
-    const keyword = title.trim().toLowerCase();
-    const locationArr = location ? location.split(",").map(l => l.trim()) : [];
-    const statusArr = status ? status.split(",").map(s => s.trim()) : [];
+    // 🔹 Normalización y segmentación de filtros
+    const locationArr = location ? location.split(",").map((l) => l.trim()).filter(Boolean) : [];
+    const statusArr = status ? status.split(",").map((s) => s.trim()).filter(Boolean) : [];
 
     let query = `
       SELECT id, title, image, price, location, status, bedrooms, bathrooms, area, created_at
@@ -17,22 +16,23 @@ export default async function handler(req, res) {
     `;
     const queryParams = [];
 
-    // 🔹 Filtro por palabra clave general (ej: "terreno")
-    if (keyword) {
-      query += ` AND LOWER(title) LIKE ?`;
-      queryParams.push(`%${keyword}%`);
-    }
-
     // 🔹 Filtro por ubicación
     if (locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
-      locationArr.forEach(l => queryParams.push(`%${l.toLowerCase()}%`));
+      locationArr.forEach((l) => queryParams.push(`%${l.toLowerCase()}%`));
     }
 
     // 🔹 Filtro por estado
     if (statusArr.length) {
       query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
-      statusArr.forEach(s => queryParams.push(`%${s.toLowerCase()}%`));
+      statusArr.forEach((s) => queryParams.push(`%${s.toLowerCase()}%`));
+    }
+
+    // 🔹 Filtro por palabra clave en título (contextual y seguro)
+    const keyword = title?.trim().toLowerCase();
+    if (keyword && keyword.length > 0) {
+      query += ` AND LOWER(title) LIKE ?`;
+      queryParams.push(`%${keyword}%`);
     }
 
     // 🔹 Orden lógico de resultados
@@ -44,8 +44,14 @@ export default async function handler(req, res) {
       query += " ORDER BY created_at DESC";
     }
 
-    // 🔹 Ejecutar consulta
+    // 🔹 Ejecución de la consulta
     const [rows] = await pool.query(query, queryParams);
+
+    // Opcional: depuración en consola del servidor
+    console.log("🔍 Query ejecutada:", query);
+    console.log("📦 Parámetros:", queryParams);
+    console.log("📤 Filas devueltas:", rows.length);
+
     return res.status(200).json(rows);
 
   } catch (err) {
