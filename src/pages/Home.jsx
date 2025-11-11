@@ -16,14 +16,21 @@ export default function Home() {
   };
 
   // 🔹 Actualiza resultados del grid cuando cambian los filtros
-  useEffect(() => {
-    if (!searchFilters) return;
-    const params = new URLSearchParams(searchFilters).toString();
-    fetch(`/api/getProperties?${params}`)
-      .then((res) => res.json())
-      .then((data) => setSearchResults(data))
-      .catch((err) => console.error("Error en búsqueda:", err));
-  }, [searchFilters]);
+useEffect(() => {
+  if (!searchFilters) return;
+
+  const params = new URLSearchParams(searchFilters).toString();
+  console.log("🔹 Parámetros de búsqueda:", params); // <-- imprime los filtros que estás enviando
+
+  fetch(`/api/getProperties?${params}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("🔹 Datos que llegan de la API:", data); // <-- imprime los resultados completos
+      setSearchResults(data);
+    })
+    .catch((err) => console.error("Error en búsqueda:", err));
+}, [searchFilters]);
+
 
   return (
     <PageWrapper>
