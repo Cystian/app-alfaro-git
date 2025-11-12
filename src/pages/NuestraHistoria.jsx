@@ -1,9 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Building2, Users2, Star, Landmark } from "lucide-react";
+import FloatingShare from "../components/FloatingShare";
 
 const NuestraHistoria = () => {
   return (
+    <FloatingShare />
     <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
       {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-cover bg-center opacity-10" />
@@ -179,6 +181,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
