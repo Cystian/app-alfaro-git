@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import FloatingShare from "../components/FloatingShare";
+import FloatingShare from "../../components/FloatingShare";
 
 // 💠 Tarjeta de Categoría
 const CategoryCard = ({ title, description, image, link }) => (
