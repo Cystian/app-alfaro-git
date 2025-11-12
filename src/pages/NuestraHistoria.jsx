@@ -5,6 +5,7 @@ import FloatingShare from "../components/FloatingShare";
 
 const NuestraHistoria = () => {
   return (
+    <>
     <FloatingShare />
     <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
       {/* Fondo decorativo */}
@@ -177,10 +178,12 @@ const NuestraHistoria = () => {
         </div>
       </motion.div>
     </section>
+    </>
   );
 };
 
 export default NuestraHistoria;
+
 
 
 
