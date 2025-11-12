@@ -1,9 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Eye, Handshake, Lightbulb, Heart } from "lucide-react";
+import FloatingShare from "../components/FloatingShare";
 
 const About = () => {
   return (
+    <>
+    <FloatingShare />
     <section className="relative bg-[#F9F9F9] pt-8 px-6 md:px-20 overflow-hidden">
       {/* Fondo decorativo */}
       <div className="absolute inset-0 bg-cover bg-center opacity-10" />
@@ -145,6 +148,7 @@ const About = () => {
         </section>
       </motion.div>
     </section>
+    </>
   );
 };
 
