@@ -2,9 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react"; // Asegúrate de tener lucide-react instalado
 import NoticiasGrid from "./NoticiasGrid";
+import FloatingShare from "../../components/FloatingShare";
 
 const NoticiasPage = () => {
   return (
+    <>
+    <FloatingShare />
+
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Botón Volver al Blog */}
       <div className="mb-6">
@@ -20,6 +24,7 @@ const NoticiasPage = () => {
       {/* Grid de Noticias */}
       <NoticiasGrid />
     </div>
+    </>
   );
 };
 
