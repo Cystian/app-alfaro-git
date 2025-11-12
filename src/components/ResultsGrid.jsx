@@ -22,7 +22,7 @@ export default function ResultsGrid({ properties }) {
 
   // 🔹 Generar rango de páginas con puntos suspensivos
   const getPaginationRange = () => {
-    const totalNumbers = 5; // Máx. 5 botones visibles
+    const totalNumbers = 10; // Máx. 10 botones visibles
     const totalBlocks = totalNumbers + 2; // Incluye primeros y últimos
 
     if (totalPages > totalBlocks) {
@@ -89,7 +89,7 @@ export default function ResultsGrid({ properties }) {
                   {property.location}
                 </p>
                 <p className="text-blue-600 font-semibold mt-1">
-                  {prop.moneda}{Number(property.price).toLocaleString("es-PE", {minimumFractionDigits: 2,})}
+                  {property.moneda}{Number(property.price).toLocaleString("es-PE", {minimumFractionDigits: 2,})}
                 </p>
                 {property.status && (
                   <p className="text-xs text-gray-500 mb-4">
