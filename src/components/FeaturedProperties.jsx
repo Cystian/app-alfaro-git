@@ -76,9 +76,9 @@ const FeaturedProperties = () => {
                  {prop.address}
                 </p>
                 <p className="text-gray-500">{prop.location}</p>
-                <p className="text-red-600 font-semibold mt-1">
-                 US$ {Number(prop.price).toLocaleString("es-PE")}
-                </p>
+                 <p className="text-red-600 font-semibold mt-1">
+            {prop.moneda} {Number(prop.price).toLocaleString("es-PE")}
+          </p>
 
                 {/* Tipo de propiedad */}
                 {prop.status && (
