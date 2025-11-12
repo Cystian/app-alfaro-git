@@ -1,109 +1,51 @@
-import React, { useState, useCallback } from "react";
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const ContactForm = () => {
+export default function ContactForm() {
   const [formData, setFormData] = useState({
     nombre: "",
     telefono: "",
-    correo: "",
     categoria: "",
     mensaje: "",
-    privacidadAceptada: false,
   });
 
   const [loading, setLoading] = useState(false);
-  const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const handleChange = useCallback((e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }, []);
-
-  const validateForm = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{6,15}$/;
-
-    if (!emailRegex.test(formData.correo)) {
-      toast.error("📧 Correo inválido ❌");
-      return false;
-    }
-    if (!phoneRegex.test(formData.telefono)) {
-      toast.error("📞 Teléfono inválido (solo números, 6-15 dígitos)");
-      return false;
-    }
-    if (!formData.privacidadAceptada) {
-      toast.error("⚠️ Debes aceptar la política de privacidad");
-      return false;
-    }
-    return true;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    toast.loading("🔍 Validando formulario...");
-    if (!validateForm()) return;
 
-    if (!executeRecaptcha) {
-      toast.error("⚠️ reCAPTCHA aún no está listo.");
+    // Validación mínima
+    if (!formData.nombre || !formData.telefono) {
+      toast.error("⚠️ Completa tu nombre y teléfono");
       return;
     }
 
-    try {
-      setLoading(true);
-      toast.dismiss();
-      console.log("✅ Ejecutando recapcha.........");
+    const numero = "51999999999"; // 👉 tu número WhatsApp con código de país (sin +)
+    const texto = `Hola 👋, soy ${formData.nombre}. 
+Teléfono: ${formData.telefono}
+Categoría: ${formData.categoria || "Sin especificar"}
+Mensaje: ${formData.mensaje || "—"}`;
 
-      // 🔹 Obtener token reCAPTCHA
-      const recaptchaToken = await executeRecaptcha("contact_form");
-      console.log("✅Token reCAPTCHA obtenido correctamente.........");
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
 
-      const payload = { ...formData, recaptchaToken };
-
-      console.log("✅Enviando datos al servidor...........");
-
-      const response = await fetch("/api/sendForm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (data.success !== true) {
-          console.log("❌ Error del servidor...........",data.message);
-        throw new Error(data.message || data.error || "Error al enviar");
-      }
-
-        console.log("🎉Formulario enviado con éxito...........");
-
-      // 🔹 Mostrar log visual de confirmación
-      toast(`📩 Respuesta del servidor: ${data.message || "OK"}`, { icon: "💬" });
-
-      // Reset form
-      setFormData({
-        nombre: "",
-        telefono: "",
-        correo: "",
-        categoria: "",
-        mensaje: "",
-        privacidadAceptada: false,
-      });
-    } catch (error) {
-      toast.error(`💥 Error al enviar: ${error.message}`);
-    } finally {
+    setLoading(true);
+    setTimeout(() => {
+      window.open(url, "_blank");
       setLoading(false);
-      toast.dismiss();
-    }
+      toast.success("📨 Abriendo WhatsApp...");
+      setFormData({ nombre: "", telefono: "", categoria: "", mensaje: "" });
+    }, 600);
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+    <div className="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
       <p className="text-center text-gray-500 mb-6 text-sm">
-        Completa el formulario y nos pondremos en contacto contigo.
+        Completa tus datos y te contactaremos por WhatsApp.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -113,12 +55,12 @@ const ContactForm = () => {
           <input
             type="text"
             name="nombre"
-            placeholder="Ej. Juan Pérez"
-            onChange={handleChange}
             value={formData.nombre}
-            required
+            onChange={handleChange}
+            placeholder="Ej. Juan Pérez"
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                       focus:ring-green-500 focus:border-green-500 outline-none transition"
+            required
           />
         </div>
 
@@ -128,46 +70,29 @@ const ContactForm = () => {
           <input
             type="text"
             name="telefono"
-            placeholder="Ej. +51 999 999 999"
-            onChange={handleChange}
             value={formData.telefono}
-            required
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-          />
-        </div>
-
-        {/* Correo */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Correo</label>
-          <input
-            type="email"
-            name="correo"
-            placeholder="ejemplo@correo.com"
             onChange={handleChange}
-            value={formData.correo}
-            required
+            placeholder="Ej. +51 999 999 999"
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                       focus:ring-green-500 focus:border-green-500 outline-none transition"
+            required
           />
         </div>
 
         {/* Categoría */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Interés</label>
           <select
             name="categoria"
-            onChange={handleChange}
             value={formData.categoria}
-            required
+            onChange={handleChange}
             className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-white"
+                       focus:ring-green-500 focus:border-green-500 outline-none transition bg-white"
           >
-            <option value="">Seleccione categoría</option>
-            <option value="Informes">Informes</option>
+            <option value="">Selecciona una opción</option>
             <option value="Alquiler">Alquiler</option>
-            <option value="Ventas">Ventas</option>
-            <option value="Alquiler+Ventas">Alquiler + Ventas</option>
+            <option value="Venta">Venta</option>
+            <option value="Información">Solicitar información</option>
           </select>
         </div>
 
@@ -176,49 +101,26 @@ const ContactForm = () => {
           <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
           <textarea
             name="mensaje"
-            placeholder="Escribe tu mensaje..."
-            onChange={handleChange}
             value={formData.mensaje}
-            rows="4"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-none"
-          />
-        </div>
-
-        {/* Política de privacidad */}
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            name="privacidadAceptada"
-            checked={formData.privacidadAceptada}
             onChange={handleChange}
-            required
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            placeholder="Escribe tu mensaje..."
+            rows="3"
+            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                       focus:ring-green-500 focus:border-green-500 outline-none transition resize-none"
           />
-          <span className="text-sm text-gray-600">Acepto la política de privacidad</span>
         </div>
 
         {/* Botón */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold 
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold 
                      py-3 rounded-lg shadow-md transition-all duration-200 
                      disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "⏳ Enviando..." : "Enviar mensaje"}
+          {loading ? "⏳ Abriendo WhatsApp..." : "Enviar por WhatsApp"}
         </button>
       </form>
     </div>
   );
-};
-
-// Provider reCAPTCHA
-export default function ContactFormWrapper() {
-  return (
-    <GoogleReCaptchaProvider reCaptchaKey={import.meta.env.VITE_RECAPTCHA_KEY}>
-      <ContactForm />
-    </GoogleReCaptchaProvider>
-  );
 }
-
