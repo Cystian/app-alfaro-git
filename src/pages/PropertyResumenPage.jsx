@@ -147,7 +147,7 @@ export default function PropertyResumenPage() {
           <p className="text-3xl font-semibold text-center text-rojo-inmobiliario mt-4 mb-4 tracking-wide font-geistmono">
             Precio {data.property.status ? `de ${data.property.status}` : ""}:{" "}
             <span className="font-bold text-negro-profundo">
-              {formatPrice(data.property.price)}
+             {data.property.moneda} {data.property.price}
             </span>
           </p>
 
