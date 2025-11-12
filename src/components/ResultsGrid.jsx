@@ -111,8 +111,7 @@ export default function ResultsGrid({ properties }) {
                     href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg 
-                               hover:bg-green-600 transition duration-300"
+                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Contactar
                   </a>
@@ -121,8 +120,7 @@ export default function ResultsGrid({ properties }) {
                     href={`/propiedades/resumen/${property.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg 
-                               hover:bg-blue-600 transition duration-300"
+                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Ver más
                   </a>
