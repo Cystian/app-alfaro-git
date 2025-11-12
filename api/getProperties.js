@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       : [];
 
     let query = `
-      SELECT id, title, image, price, location,address, status, bedrooms, bathrooms, area, created_at
+      SELECT id, title, image, price,moneda, location,address, status, bedrooms, bathrooms, area, created_at
       FROM properties
       WHERE 1=1
     `;
