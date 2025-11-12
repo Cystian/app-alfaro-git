@@ -23,16 +23,16 @@ const SearchBanner = ({ onSearch }) => {
     "/banner3.png",
     "/banner4.png",
     "/banner5.png",
-     "/banner6.png",
+    "/banner6.png",
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
 
-  // ⏱️ Cambia la imagen cada 3 segundos con transición suave
+  // ⏱️ Cambia la imagen cada 4 segundos con transición suave
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [images.length]);
 
