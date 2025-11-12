@@ -1,4 +1,4 @@
-// ✅ Banner de búsqueda dinámico con logo integrado en la parte superior
+// ✅ Banner de búsqueda dinámico
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -16,7 +16,7 @@ const SearchBanner = ({ onSearch }) => {
 
   useEffect(() => setTimeout(() => setShowText(true), 200), []);
 
-  // 🖼️ Lista de imágenes rotativas
+  // 🖼️ Lista de imágenes para el banner (rotación automática)
   const images = [
     "/banner1.png",
     "/banner2.png",
@@ -28,7 +28,7 @@ const SearchBanner = ({ onSearch }) => {
 
   const [currentImage, setCurrentImage] = useState(0);
 
-  // ⏱️ Transición automática
+  // ⏱️ Cambia la imagen cada 4 segundos con transición suave
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
@@ -36,7 +36,7 @@ const SearchBanner = ({ onSearch }) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // 🔹 Cargar opciones desde API
+  // 🔹 Carga opciones dinámicas desde Netlify Function
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -63,13 +63,12 @@ const SearchBanner = ({ onSearch }) => {
       status: modalidades.join(","),
       title: tipos.join(","),
     };
-    onSearch(filters);
+    onSearch(filters); // pasa filtros al grid
   };
 
   return (
     <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-hidden rounded-3xl">
-
-      {/* 🌇 Fondo con transición */}
+      {/* Fondo dinámico con transición tipo fade */}
       {images.map((img, index) => (
         <div
           key={index}
@@ -85,19 +84,8 @@ const SearchBanner = ({ onSearch }) => {
         />
       ))}
 
-      {/* 👑 Logo centrado dentro del banner */}
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 animate-fadeIn">
-        <div className="bg-white/70 backdrop-blur-sm rounded-full shadow-xl ring-1 ring-white/40 p-3">
-          <img
-            src="/logo.png"
-            alt="Logo Inmobiliaria"
-            className="h-16 md:h-20 object-contain drop-shadow-lg"
-          />
-        </div>
-      </div>
-
       {/* Contenedor principal */}
-      <div className="relative z-10 w-full max-w-6xl p-6 bg-white/50 rounded-2xl shadow-xl backdrop-blur-sm mt-12">
+      <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-50 rounded-2xl shadow-xl">
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out ${
             showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"
@@ -106,14 +94,11 @@ const SearchBanner = ({ onSearch }) => {
             textShadow: "2px 2px 4px rgba(0,0,0,0.6), 0 0 6px rgba(255,0,0,0.4)",
           }}
         >
-          Explora propiedades aquí
+          Explora propiedades aqui
         </h2>
 
-        {/* Formulario */}
-        <form
-          className="flex flex-wrap gap-4 justify-center items-end"
-          onSubmit={handleSubmit}
-        >
+        {/* Formulario de búsqueda */}
+        <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
           <div className="w-full sm:w-48">
             <CustomSelect
               label="Distrito"
@@ -148,7 +133,7 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          {/* Botón */}
+          {/* Botón Buscar */}
           <div className="w-full sm:w-auto flex justify-center items-center">
             <button
               type="submit"
@@ -165,7 +150,7 @@ const SearchBanner = ({ onSearch }) => {
         </form>
       </div>
 
-      {/* Animaciones */}
+      {/* Animación flotante */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
@@ -173,13 +158,6 @@ const SearchBanner = ({ onSearch }) => {
         }
         .float-text {
           animation: float 3s ease-in-out infinite;
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 1.5s ease-out;
         }
       `}</style>
     </section>
