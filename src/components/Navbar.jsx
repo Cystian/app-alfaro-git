@@ -93,14 +93,14 @@ export default function Navbar() {
   return (
     <nav ref={wrapperRef} className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24">
           {/* LOGO */}
           <div className="flex-1 flex justify-center md:justify-start">
             <a href="/" className="flex items-center">
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="h-20 md:h-16 lg:h-20 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
+                className="h-24 md:h-20 lg:h-24 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
               />
             </a>
           </div>
