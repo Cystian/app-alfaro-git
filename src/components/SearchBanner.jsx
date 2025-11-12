@@ -1,4 +1,4 @@
-// ✅ Banner de búsqueda dinámico con logo tipo corona
+// ✅ Banner de búsqueda dinámico con logo integrado en la parte superior
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -16,7 +16,7 @@ const SearchBanner = ({ onSearch }) => {
 
   useEffect(() => setTimeout(() => setShowText(true), 200), []);
 
-  // 🖼️ Lista de imágenes para el banner (rotación automática)
+  // 🖼️ Lista de imágenes rotativas
   const images = [
     "/banner1.png",
     "/banner2.png",
@@ -28,7 +28,7 @@ const SearchBanner = ({ onSearch }) => {
 
   const [currentImage, setCurrentImage] = useState(0);
 
-  // ⏱️ Cambia la imagen cada 4 segundos con transición suave
+  // ⏱️ Transición automática
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
@@ -36,7 +36,7 @@ const SearchBanner = ({ onSearch }) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // 🔹 Carga opciones dinámicas desde Netlify Function
+  // 🔹 Cargar opciones desde API
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -69,18 +69,7 @@ const SearchBanner = ({ onSearch }) => {
   return (
     <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-hidden rounded-3xl">
 
-      {/* 👑 Logo tipo corona */}
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-50 animate-fadeIn">
-        <div className="bg-white/80 backdrop-blur-md rounded-full shadow-2xl ring-2 ring-white/60 p-3">
-          <img
-            src="/logo.png"
-            alt="Logo Inmobiliaria"
-            className="h-16 md:h-20 object-contain drop-shadow-lg"
-          />
-        </div>
-      </div>
-
-      {/* Fondo dinámico con transición tipo fade */}
+      {/* 🌇 Fondo con transición */}
       {images.map((img, index) => (
         <div
           key={index}
@@ -96,8 +85,19 @@ const SearchBanner = ({ onSearch }) => {
         />
       ))}
 
+      {/* 👑 Logo centrado dentro del banner */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 animate-fadeIn">
+        <div className="bg-white/70 backdrop-blur-sm rounded-full shadow-xl ring-1 ring-white/40 p-3">
+          <img
+            src="/logo.png"
+            alt="Logo Inmobiliaria"
+            className="h-16 md:h-20 object-contain drop-shadow-lg"
+          />
+        </div>
+      </div>
+
       {/* Contenedor principal */}
-      <div className="relative z-10 w-full max-w-6xl p-6 bg-white/50 rounded-2xl shadow-xl backdrop-blur-sm">
+      <div className="relative z-10 w-full max-w-6xl p-6 bg-white/50 rounded-2xl shadow-xl backdrop-blur-sm mt-12">
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out ${
             showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"
@@ -109,7 +109,7 @@ const SearchBanner = ({ onSearch }) => {
           Explora propiedades aquí
         </h2>
 
-        {/* Formulario de búsqueda */}
+        {/* Formulario */}
         <form
           className="flex flex-wrap gap-4 justify-center items-end"
           onSubmit={handleSubmit}
@@ -148,7 +148,7 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          {/* Botón Buscar */}
+          {/* Botón */}
           <div className="w-full sm:w-auto flex justify-center items-center">
             <button
               type="submit"
