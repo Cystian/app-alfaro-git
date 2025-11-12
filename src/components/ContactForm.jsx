@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import { MessageCircle } from "lucide-react";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -8,7 +10,6 @@ export default function ContactForm() {
     categoria: "",
     mensaje: "",
   });
-
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -19,16 +20,15 @@ export default function ContactForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validación mínima
-    if (!formData.nombre || !formData.telefono) {
-      toast.error("⚠️ Completa tu nombre y teléfono");
+    if (!formData.nombre.trim() || !formData.telefono.trim()) {
+      toast.error("⚠️ Ingresa tu nombre y teléfono antes de continuar");
       return;
     }
 
-    const numero = "51999999999"; // 👉 tu número WhatsApp con código de país (sin +)
-    const texto = `Hola 👋, soy ${formData.nombre}. 
+    const numero = "51931283609";
+    const texto = `Hola 👋, soy ${formData.nombre}.
 Teléfono: ${formData.telefono}
-Categoría: ${formData.categoria || "Sin especificar"}
+Interés: ${formData.categoria || "Sin especificar"}
 Mensaje: ${formData.mensaje || "—"}`;
 
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
@@ -37,90 +37,86 @@ Mensaje: ${formData.mensaje || "—"}`;
     setTimeout(() => {
       window.open(url, "_blank");
       setLoading(false);
-      toast.success("📨 Abriendo WhatsApp...");
+      toast.success("📨 Redirigiendo a WhatsApp...");
       setFormData({ nombre: "", telefono: "", categoria: "", mensaje: "" });
     }, 600);
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-      <p className="text-center text-gray-500 mb-6 text-sm">
-        Completa tus datos y te contactaremos por WhatsApp.
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-md mx-auto bg-white border border-gray-100 p-6 rounded-2xl shadow-lg"
+    >
+      {/* Encabezado tipo WhatsApp */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="bg-green-500 p-2 rounded-full text-white">
+          <MessageCircle className="w-5 h-5" />
+        </div>
+        <h2 className="text-lg font-semibold text-gray-800">
+          Contáctanos por WhatsApp
+        </h2>
+      </div>
+
+      <p className="text-gray-500 text-sm mb-6">
+        Déjanos tus datos y te responderemos lo antes posible.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Nombre */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-          <input
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            placeholder="Ej. Juan Pérez"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-green-500 focus:border-green-500 outline-none transition"
-            required
-          />
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="nombre"
+          value={formData.nombre}
+          onChange={handleChange}
+          placeholder="Tu nombre"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                     focus:ring-green-500 outline-none transition"
+        />
 
-        {/* Teléfono */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-          <input
-            type="text"
-            name="telefono"
-            value={formData.telefono}
-            onChange={handleChange}
-            placeholder="Ej. +51 999 999 999"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-green-500 focus:border-green-500 outline-none transition"
-            required
-          />
-        </div>
+        <input
+          type="text"
+          name="telefono"
+          value={formData.telefono}
+          onChange={handleChange}
+          placeholder="Tu número (ej. 999 999 999)"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                     focus:ring-green-500 outline-none transition"
+        />
 
-        {/* Categoría */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Interés</label>
-          <select
-            name="categoria"
-            value={formData.categoria}
-            onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-green-500 focus:border-green-500 outline-none transition bg-white"
-          >
-            <option value="">Selecciona una opción</option>
-            <option value="Alquiler">Alquiler</option>
-            <option value="Venta">Venta</option>
-            <option value="Información">Solicitar información</option>
-          </select>
-        </div>
+        <select
+          name="categoria"
+          value={formData.categoria}
+          onChange={handleChange}
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                     focus:ring-green-500 outline-none transition bg-white"
+        >
+          <option value="">Selecciona un interés</option>
+          <option value="Alquiler">Alquiler</option>
+          <option value="Venta">Venta</option>
+          <option value="Información">Información general</option>
+        </select>
 
-        {/* Mensaje */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
-          <textarea
-            name="mensaje"
-            value={formData.mensaje}
-            onChange={handleChange}
-            placeholder="Escribe tu mensaje..."
-            rows="3"
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
-                       focus:ring-green-500 focus:border-green-500 outline-none transition resize-none"
-          />
-        </div>
+        <textarea
+          name="mensaje"
+          value={formData.mensaje}
+          onChange={handleChange}
+          placeholder="Escribe tu mensaje..."
+          rows="3"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 
+                     focus:ring-green-500 outline-none transition resize-none"
+        />
 
-        {/* Botón */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
           type="submit"
           disabled={loading}
           className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold 
-                     py-3 rounded-lg shadow-md transition-all duration-200 
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+                     py-3 rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? "⏳ Abriendo WhatsApp..." : "Enviar por WhatsApp"}
-        </button>
+        </motion.button>
       </form>
-    </div>
+    </motion.div>
   );
 }
