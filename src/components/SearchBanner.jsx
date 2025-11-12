@@ -1,4 +1,4 @@
-// ✅ Banner de búsqueda dinámico
+// ✅ Banner de búsqueda dinámico con logo tipo corona
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
 
@@ -63,11 +63,23 @@ const SearchBanner = ({ onSearch }) => {
       status: modalidades.join(","),
       title: tipos.join(","),
     };
-    onSearch(filters); // pasa filtros al grid
+    onSearch(filters);
   };
 
   return (
     <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-hidden rounded-3xl">
+
+      {/* 👑 Logo tipo corona */}
+      <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-50 animate-fadeIn">
+        <div className="bg-white/80 backdrop-blur-md rounded-full shadow-2xl ring-2 ring-white/60 p-3">
+          <img
+            src="/logo.png"
+            alt="Logo Inmobiliaria"
+            className="h-16 md:h-20 object-contain drop-shadow-lg"
+          />
+        </div>
+      </div>
+
       {/* Fondo dinámico con transición tipo fade */}
       {images.map((img, index) => (
         <div
@@ -85,7 +97,7 @@ const SearchBanner = ({ onSearch }) => {
       ))}
 
       {/* Contenedor principal */}
-      <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-50 rounded-2xl shadow-xl">
+      <div className="relative z-10 w-full max-w-6xl p-6 bg-white/50 rounded-2xl shadow-xl backdrop-blur-sm">
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out ${
             showText ? "opacity-100 translate-y-0 float-text" : "opacity-0 translate-y-5"
@@ -94,11 +106,14 @@ const SearchBanner = ({ onSearch }) => {
             textShadow: "2px 2px 4px rgba(0,0,0,0.6), 0 0 6px rgba(255,0,0,0.4)",
           }}
         >
-          Explora propiedades aqui
+          Explora propiedades aquí
         </h2>
 
         {/* Formulario de búsqueda */}
-        <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
+        <form
+          className="flex flex-wrap gap-4 justify-center items-end"
+          onSubmit={handleSubmit}
+        >
           <div className="w-full sm:w-48">
             <CustomSelect
               label="Distrito"
@@ -150,7 +165,7 @@ const SearchBanner = ({ onSearch }) => {
         </form>
       </div>
 
-      {/* Animación flotante */}
+      {/* Animaciones */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
@@ -158,6 +173,13 @@ const SearchBanner = ({ onSearch }) => {
         }
         .float-text {
           animation: float 3s ease-in-out infinite;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 1.5s ease-out;
         }
       `}</style>
     </section>
