@@ -55,15 +55,15 @@ const ContactForm = () => {
     try {
       setLoading(true);
       toast.dismiss();
-      toast("🎯 Ejecutando reCAPTCHA...", { icon: "🤖" });
+      console.log("✅ Ejecutando recapcha.........");
 
       // 🔹 Obtener token reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
-      toast.success("✅ Token reCAPTCHA obtenido correctamente");
+      console.log("✅Token reCAPTCHA obtenido correctamente.........");
 
       const payload = { ...formData, recaptchaToken };
 
-      toast("📨 Enviando datos al servidor...", { icon: "📡" });
+      console.log("✅Enviando datos al servidor...........");
 
       const response = await fetch("/api/sendForm", {
         method: "POST",
@@ -74,11 +74,11 @@ const ContactForm = () => {
       const data = await response.json();
 
       if (data.success !== true) {
-        toast.error(`❌ Error del servidor: ${data.message || "Error desconocido"}`);
+          console.log("❌ Error del servidor...........",data.message);
         throw new Error(data.message || data.error || "Error al enviar");
       }
 
-      toast.success("🎉 Formulario enviado con éxito ✅");
+        console.log("🎉Formulario enviado con éxito...........");
 
       // 🔹 Mostrar log visual de confirmación
       toast(`📩 Respuesta del servidor: ${data.message || "OK"}`, { icon: "💬" });
