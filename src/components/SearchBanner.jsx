@@ -47,7 +47,7 @@ const SearchBanner = ({ onSearch }) => {
   };
 
   return (
-    <section className="relative w-full h-[380px] flex flex-col items-center justify-center mt-2 px-4">
+    <section className="relative w-full h-[480px] flex flex-col items-center justify-center mt-2 px-4">
       {/* Fondo del banner */}
       <div
         className="absolute inset-0 rounded-3xl overflow-hidden"
