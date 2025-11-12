@@ -6,6 +6,7 @@ import {
   FaBath,
   FaMapMarkerAlt,
   FaDrawPolygon,
+  FaStar, FaTools, FaRegBuilding,
   FaRulerCombined,
   FaRulerVertical,
   FaClipboardList, 
@@ -318,26 +319,31 @@ export default function PropertyResumenPage() {
     )}
 
     {/* Mostrar Antigüedad solo si NO es alquiler */}
-    {data.property.status?.toLowerCase() !== "alquiler" && (
-      <motion.div
-        variants={item}
-        className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
-      >
-        <FaHourglass className="text-rojo-inmobiliario mr-3 text-2xl" />
-        <div>
-          <p className="text-gray-500 text-sm">Antigüedad</p>
-          <p className="font-semibold text-lg text-gray-800">
-            {data.property.antiguedad === 0
-              ? "Nueva propiedad"
-              : data.property.antiguedad === 1
-              ? "1 año"
-              : data.property.antiguedad > 1
-              ? `${data.property.antiguedad} años`
-              : "No especificado"}
-          </p>
-        </div>
-      </motion.div>
-    )}
+{data.property.antiguedad && data.property.antiguedad !== "0" && (() => {
+  const antig = data.property.antiguedad.toLowerCase();
+
+  let Icono = FaRegBuilding; // default
+  if (antig.includes("nuevo")) Icono = FaStar;
+  else if (antig.includes("remodel")) Icono = FaTools;
+  else if (antig.includes("año")) Icono = FaHourglass;
+
+  return (
+    <motion.div
+      variants={item}
+      className="flex items-center bg-gray-50 p-5 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-all duration-300"
+    >
+      <Icono className="text-rojo-inmobiliario mr-3 text-2xl" />
+      <div>
+        <p className="text-gray-500 text-sm">Antigüedad</p>
+        <p className="font-semibold text-lg text-gray-800">
+          {data.property.antiguedad}
+        </p>
+      </div>
+    </motion.div>
+  );
+})()}
+
+            
   </>
 )}
 
