@@ -7,7 +7,9 @@ export default async function handler(req, res) {
 
   // ✅ Manejo de preflight (CORS)
   if (req.method === "OPTIONS") {
-    return res.status(200).setHeader("Access-Control-Allow-Origin", "*")
+    return res
+      .status(200)
+      .setHeader("Access-Control-Allow-Origin", "*")
       .setHeader("Access-Control-Allow-Methods", "POST, OPTIONS")
       .setHeader("Access-Control-Allow-Headers", "Content-Type")
       .send("OK");
@@ -15,14 +17,48 @@ export default async function handler(req, res) {
 
   // ✅ Solo permitir POST
   if (req.method !== "POST") {
-    return res.status(405).setHeader("Access-Control-Allow-Origin", "*")
+    return res
+      .status(405)
+      .setHeader("Access-Control-Allow-Origin", "*")
       .json({ success: false, message: "Método no permitido" });
   }
 
   try {
-    // 🔹 Parsear body desde el frontend (Vercel ya lo entrega como objeto JSON)
+    // 🔹 Parsear body desde el frontend
     const data = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
     console.log("📩 Data recibida en sendForm:", data);
+
+    // 🧠 Validar token reCAPTCHA antes de continuar
+    const recaptchaToken = data.recaptchaToken;
+    const secret = process.env.RECAPTCHA_SECRET_KEY; // ⚠️ define esto en tus variables de entorno en Vercel
+
+    if (!recaptchaToken) {
+      throw new Error("No se recibió el token reCAPTCHA.");
+    }
+
+    console.log("🧠 Verificando token reCAPTCHA en Google...");
+    const verifyURL = "https://www.google.com/recaptcha/api/siteverify";
+
+    const verifyResponse = await fetch(verifyURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${secret}&response=${recaptchaToken}`,
+    });
+
+    const verification = await verifyResponse.json();
+    console.log("🧩 Resultado verificación reCAPTCHA:", verification);
+
+    // ⚠️ Si falla la verificación, detener el flujo
+    if (!verification.success || verification.score < 0.5) {
+      return res
+        .status(400)
+        .setHeader("Access-Control-Allow-Origin", "*")
+        .json({
+          success: false,
+          message: "❌ Falló la validación reCAPTCHA",
+          verification,
+        });
+    }
 
     // 🔹 URL de tu Apps Script
     const scriptURL =
@@ -37,14 +73,9 @@ export default async function handler(req, res) {
       body: JSON.stringify(data),
     });
 
-    // 🔹 Leer respuesta cruda
     const text = await response.text();
     console.log("📬 Respuesta cruda Apps Script:", text);
-    console.log("🔎 Tipo de contenido recibido:", response.headers.get("content-type"));
-    console.log("🔎 Status HTTP Apps Script:", response.status);
-    console.log("🔎 Texto exacto recibido:", JSON.stringify(text));
 
-    // 🔹 Intentar parsear como JSON
     let result;
     try {
       result = JSON.parse(text);
@@ -57,13 +88,15 @@ export default async function handler(req, res) {
       };
     }
 
-    return res.status(200)
+    return res
+      .status(200)
       .setHeader("Access-Control-Allow-Origin", "*")
       .json(result);
 
   } catch (error) {
     console.error("❌ Error en sendForm:", error);
-    return res.status(500)
+    return res
+      .status(500)
       .setHeader("Access-Control-Allow-Origin", "*")
       .json({
         success: false,
