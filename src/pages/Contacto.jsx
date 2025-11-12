@@ -8,61 +8,58 @@ const Contacto = () => {
   return (
     <>
     <FloatingShare />
-    <section className="bg-[#F5F5F5] py-10 px-6 md:px-20" style={{ paddingTop: "0.5rem" }}>
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-        
-        {/* Texto + Info corporativa */}
-        <div className="bg-white shadow-xl rounded-3xl p-10 hover:shadow-2xl transition-all duration-300">
-          <img
-            src="/logo.jpeg"
-            alt="Logo Inmobiliaria"
-            className="mx-auto mb-6 w-40 md:w-48 h-auto object-contain"
-          />
+  <section className="bg-[#F5F5F5] py-8 px-4 md:px-20">
+  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
+    
+    {/* Texto corporativo */}
+    <div className="bg-white shadow-xl rounded-3xl p-6 md:p-10 hover:shadow-2xl transition-all duration-300">
+      <img
+        src="/logo.jpeg"
+        alt="Logo Inmobiliaria"
+        className="mx-auto mb-6 w-32 md:w-48 h-auto object-contain"
+      />
+      <h1 className="text-3xl md:text-4xl font-extrabold text-center text-[#C80000] mb-6">
+        Conócenos
+      </h1>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
+        En <span className="font-semibold">nuestra firma inmobiliaria</span> entendemos que cada decisión inmobiliaria es también una <span className="font-semibold">decisión de vida</span>.
+      </p>
+      <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-8">
+        <span className="font-semibold">Gestionamos</span> propiedades residenciales y comerciales, siempre con enfoque en la satisfacción total del cliente.
+      </p>
 
-          <h1 className="text-4xl md:text-4xl font-extrabold text-center text-[#C80000] mb-6">
-            Conócenos
-          </h1>
-
-          <p className="text-gray-700 text-lg md:text-x2 leading-relaxed mb-6">
-            En <span className="font-semibold">nuestra firma inmobiliaria</span> entendemos que cada decisión inmobiliaria es también una <span className="font-semibold">decisión de vida</span>. Nuestro equipo de expertos está comprometido en ofrecer un acompañamiento integral, combinando confianza, profesionalismo y cercanía.
-          </p>
-
-          <p className="text-gray-700 text-lg md:text-x2 leading-relaxed mb-8">
-           <span className="font-semibold">Gestionamos</span> propiedades residenciales y comerciales, siempre con enfoque en la satisfacción total del cliente y la excelencia del servicio.
-          </p>
-
-          <div className="space-y-5 mt-6">
-            <div className="flex items-center gap-3">
-              <Phone className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg md:text-x2">+51 940 221 494</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Mail className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg md:text-x2">contacto@alfaroinmobiliaria.pe</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <MapPin className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg md:text-x2">Nuevo Chimbote, Perú</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Briefcase className="text-[#C80000]" size={24} />
-              <span className="text-gray-800 text-lg">CEO & Fundador:</span> 
-              <span className="font-bold text-[#C80000] text-lg md:text-x2"> Ing. Alberto Alfaro</span>
-            </div>
-          </div>
+      <div className="space-y-4 mt-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <Phone className="text-[#C80000]" size={20} />
+          <span className="text-gray-800 text-base md:text-lg">+51 940 221 494</span>
         </div>
-
-        {/* Formulario de contacto */}
-        <div className="bg-white shadow-xl rounded-3xl p-10 hover:shadow-2xl transition-all duration-300">
-          <ContactFormWrapper />
+        <div className="flex flex-wrap items-center gap-2">
+          <Mail className="text-[#C80000]" size={20} />
+          <span className="text-gray-800 text-base md:text-lg">contacto@alfaroinmobiliaria.pe</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <MapPin className="text-[#C80000]" size={20} />
+          <span className="text-gray-800 text-base md:text-lg">Nuevo Chimbote, Perú</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Briefcase className="text-[#C80000]" size={20} />
+          <span className="text-gray-800 text-base md:text-lg">CEO & Fundador:</span>
+          <span className="font-bold text-[#C80000] text-base md:text-lg"> Ing. Alberto Alfaro</span>
         </div>
       </div>
+    </div>
 
-      {/* Redes Sociales */}
-      <div className="mt-12 bg-white shadow-xl rounded-3xl p-10 hover:shadow-2xl transition-all duration-300">
-        <SocialMediaCallToAction />
-      </div>
-    </section>
+    {/* Formulario */}
+    <div className="bg-white shadow-xl rounded-3xl p-6 md:p-10 hover:shadow-2xl transition-all duration-300">
+      <ContactFormWrapper />
+    </div>
+  </div>
+
+  {/* Redes */}
+  <div className="mt-8 md:mt-12 bg-white shadow-xl rounded-3xl p-6 md:p-10 hover:shadow-2xl transition-all duration-300">
+    <SocialMediaCallToAction />
+  </div>
+</section>
     </>
   );
 };
