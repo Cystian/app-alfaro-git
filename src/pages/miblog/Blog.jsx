@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import FloatingShare from "../components/FloatingShare";
 
 // 💠 Tarjeta de Categoría
 const CategoryCard = ({ title, description, image, link }) => (
@@ -46,6 +47,8 @@ const Blog = () => {
   const isMainBlog = location.pathname === "/blog" || location.pathname === "/blog/";
 
   return (
+    <>
+    <FloatingShare />
     <section className="relative w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 px-6 pt-8 pb-44 min-h-[calc(100vh-4rem)]">
       {isMainBlog ? (
         <>
@@ -103,6 +106,7 @@ const Blog = () => {
         </div>
       )}
     </section>
+    </>
   );
 };
 
