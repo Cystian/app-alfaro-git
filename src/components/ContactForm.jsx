@@ -28,15 +28,15 @@ const ContactForm = () => {
     const phoneRegex = /^[0-9]{6,15}$/;
 
     if (!emailRegex.test(formData.correo)) {
-      toast.error("Correo inválido ❌");
+      toast.error("📧 Correo inválido ❌");
       return false;
     }
     if (!phoneRegex.test(formData.telefono)) {
-      toast.error("Teléfono inválido (solo números, 6-15 dígitos)");
+      toast.error("📞 Teléfono inválido (solo números, 6-15 dígitos)");
       return false;
     }
     if (!formData.privacidadAceptada) {
-      toast.error("Debes aceptar la política de privacidad");
+      toast.error("⚠️ Debes aceptar la política de privacidad");
       return false;
     }
     return true;
@@ -44,43 +44,44 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    toast.loading("🔍 Validando formulario...");
     if (!validateForm()) return;
 
     if (!executeRecaptcha) {
-      toast.error("Error: reCAPTCHA aún no está listo.");
+      toast.error("⚠️ reCAPTCHA aún no está listo.");
       return;
     }
 
     try {
       setLoading(true);
+      toast.dismiss();
+      toast("🎯 Ejecutando reCAPTCHA...", { icon: "🤖" });
 
-      // Obtener token reCAPTCHA
+      // 🔹 Obtener token reCAPTCHA
       const recaptchaToken = await executeRecaptcha("contact_form");
+      toast.success("✅ Token reCAPTCHA obtenido correctamente");
+
       const payload = { ...formData, recaptchaToken };
 
-      const result = await toast.promise(
-        (async () => {
-          const response = await fetch("/api/sendForm", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
+      toast("📨 Enviando datos al servidor...", { icon: "📡" });
 
-          const data = await response.json();
-          if (data.success !== true) {
-            throw new Error(data.message || data.error || "Error al enviar");
-          }
-          return data;
-        })(),
-        {
-          loading: "Enviando…",
-          success: "Formulario enviado con éxito ✅",
-          error: "Hubo un error al enviar ❌",
-        },
-        { duration: 4000 }
-      );
+      const response = await fetch("/api/sendForm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-      console.log("📩 Respuesta del servidor:", result);
+      const data = await response.json();
+
+      if (data.success !== true) {
+        toast.error(`❌ Error del servidor: ${data.message || "Error desconocido"}`);
+        throw new Error(data.message || data.error || "Error al enviar");
+      }
+
+      toast.success("🎉 Formulario enviado con éxito ✅");
+
+      // 🔹 Mostrar log visual de confirmación
+      toast(`📩 Respuesta del servidor: ${data.message || "OK"}`, { icon: "💬" });
 
       // Reset form
       setFormData({
@@ -92,15 +93,15 @@ const ContactForm = () => {
         privacidadAceptada: false,
       });
     } catch (error) {
-      console.error("❌ Error al enviar:", error);
+      toast.error(`💥 Error al enviar: ${error.message}`);
     } finally {
       setLoading(false);
+      toast.dismiss();
     }
   };
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-     {/* h2 className="text-2xl font-bold text-gray-800 text-center mb-2">Contáctanos</h2 */}
       <p className="text-center text-gray-500 mb-6 text-sm">
         Completa el formulario y nos pondremos en contacto contigo.
       </p>
@@ -220,3 +221,4 @@ export default function ContactFormWrapper() {
     </GoogleReCaptchaProvider>
   );
 }
+
