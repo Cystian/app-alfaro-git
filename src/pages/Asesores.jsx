@@ -7,6 +7,7 @@ import {
   FaTiktok, 
   FaLinkedinIn 
 } from "react-icons/fa";
+import FloatingShare from "../components/FloatingShare";
 
 const Asesores = () => {
   const [asesores, setAsesores] = useState([]);
@@ -26,6 +27,8 @@ const Asesores = () => {
   }, []);
 
   return (
+    <>
+    <FloatingShare />
     <section
       id="redes"
       className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
@@ -144,6 +147,7 @@ const Asesores = () => {
         </div>
       )}
     </section>
+    </>
   );
 };
 
