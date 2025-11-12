@@ -16,6 +16,26 @@ const SearchBanner = ({ onSearch }) => {
 
   useEffect(() => setTimeout(() => setShowText(true), 200), []);
 
+  // 🖼️ Lista de imágenes para el banner (rotación automática)
+  const images = [
+    "/banner1.png",
+    "/banner2.png",
+    "/banner3.png",
+    "/banner4.png",
+    "/banner5.png",
+     "/banner6.png",
+  ];
+
+  const [currentImage, setCurrentImage] = useState(0);
+
+  // ⏱️ Cambia la imagen cada 3 segundos con transición suave
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
   // 🔹 Carga opciones dinámicas desde Netlify Function
   useEffect(() => {
     const fetchOptions = async () => {
@@ -47,17 +67,22 @@ const SearchBanner = ({ onSearch }) => {
   };
 
   return (
-    <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4">
-      {/* Fondo del banner */}
-      <div
-        className="absolute inset-0 rounded-3xl overflow-hidden"
-        style={{
-          backgroundImage: "url('/banner_bb.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        aria-hidden="true"
-      ></div>
+    <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-hidden rounded-3xl">
+      {/* Fondo dinámico con transición tipo fade */}
+      {images.map((img, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-[2000ms] ease-in-out ${
+            index === currentImage ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            backgroundImage: `url(${img})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          aria-hidden="true"
+        />
+      ))}
 
       {/* Contenedor principal */}
       <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-50 rounded-2xl shadow-xl">
@@ -116,7 +141,7 @@ const SearchBanner = ({ onSearch }) => {
               className={`w-full sm:w-auto py-2 px-6 rounded-lg font-semibold shadow-md transition-all duration-300 ${
                 isSearchEnabled
                   ? "bg-[#DC2626] hover:bg-[#B91C1C] active:bg-[#991B1B] text-white"
-       : "bg-[#FCA5A5] text-white/80 cursor-not-allowed"
+                  : "bg-[#FCA5A5] text-white/80 cursor-not-allowed"
               }`}
             >
               Buscar
@@ -140,5 +165,3 @@ const SearchBanner = ({ onSearch }) => {
 };
 
 export default SearchBanner;
-
-
