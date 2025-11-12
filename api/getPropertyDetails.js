@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     const [propertyRows] = await pool.query(
       `
       SELECT 
-        id, title, image, price, location, status, 
+        id, title, image, price,moneda, location, status, 
         bedrooms, bathrooms, area, description,
         latitude, longitude,
         address, frontera, Largo, area_c, cocheras, distribution, antiguedad,cerco_perimetrico,garantia,adelanto    
