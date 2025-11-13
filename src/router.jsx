@@ -1,6 +1,7 @@
 // src/router/router.jsx
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
+import SimpleLayout from "./Layout/SimpleLayout"; // 👈 Nuevo layout
 import Home from "./pages/Home";
 import Properties from "./pages/Properties";
 import Servicios from "./pages/Servicios";
@@ -20,13 +21,13 @@ import NoticiasPage from "./pages/miblog/NoticiasPage";
 import ArticulosPage from "./pages/miblog/ArticulosPage";
 
 const router = createBrowserRouter([
+  // 🔹 Layout principal con Navbar
   {
     path: "/",
     element: <MainLayout />,
     children: [
       { index: true, element: <Home /> },
       { path: "propiedades", element: <Properties /> },
-      { path: "propiedades/resumen/:id", element: <PropertyResumenPage /> },
       { path: "login", element: <Login /> },
       { path: "registro", element: <Register /> },
       { path: "acerca-de-nosotros", element: <About /> },
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
         path: "blog",
         element: <Blog />,
         children: [
-          { index: true, element: <NoticiasPage /> }, // por defecto, muestra Noticias
+          { index: true, element: <NoticiasPage /> },
           { path: "noticias", element: <NoticiasPage /> },
           { path: "noticias/:id", element: <NoticiaDetallePage /> },
           { path: "articulos", element: <ArticulosPage /> },
@@ -50,6 +51,16 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+
+  // 🔸 Layout alternativo sin Navbar (solo para resumen de propiedad)
+  {
+    path: "/propiedades/resumen/:id",
+    element: (
+      <SimpleLayout>
+        <PropertyResumenPage />
+      </SimpleLayout>
+    ),
   },
 ]);
 
