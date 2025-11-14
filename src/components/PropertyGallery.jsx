@@ -218,19 +218,28 @@ export default function PropertyGallery({ data }) {
             aria-modal="true"
             aria-label="Menú de opciones de la galería"
           >
-            {/* Header del panel */}
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-semibold text-gray-800 tracking-wide">
-                Opciones
-              </h3>
-              <button
-                onClick={() => setSideMenuOpen(false)}
-                aria-label="Cerrar panel"
-                className="text-gray-600 text-xl hover:text-black transition"
-              >
-                ✕
-              </button>
-            </div>
+            {/* Header del panel con logo */}
+<div className="flex flex-col items-center mb-4">
+  {/* Logo */}
+  <img
+    src="/logo.png"
+    alt="logo"
+    className="w-28 h-auto mb-3 drop-shadow-sm"
+  />
+
+  <div className="flex w-full justify-between items-center">
+    <h3 className="text-lg font-semibold text-gray-800 tracking-wide">
+      Opciones
+    </h3>
+    <button
+      onClick={() => setSideMenuOpen(false)}
+      aria-label="Cerrar panel"
+      className="text-gray-600 text-xl hover:text-black transition"
+    >
+      ✕
+    </button>
+  </div>
+</div>
 
             {/* Sección de navegación principal */}
             <nav className="flex flex-col gap-3">
