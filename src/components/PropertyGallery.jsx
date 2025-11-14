@@ -130,6 +130,21 @@ export default function PropertyGallery({ data }) {
           Más opciones
         </button>
 
+
+{/* Logo centrado superior del slider */}
+<img
+  src="/logo.png"
+  alt="logo"
+  className="
+    absolute top-5 left-1/2 -translate-x-1/2
+    w-28 md:w-32 h-auto
+    bg-white/90 backdrop-blur-md
+    rounded-xl shadow-lg
+    py-1 px-3
+    border border-gray-200
+  "
+/>
+
         {/* CARRUSEL PRINCIPAL */}
         <div className="relative rounded-2xl overflow-hidden h-full">
           <Swiper
