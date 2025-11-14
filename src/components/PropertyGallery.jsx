@@ -130,7 +130,6 @@ export default function PropertyGallery({ data }) {
           Más opciones
         </button>
 
-
 {/* Logo centrado superior del slider */}
 <img
   src="/logo.png"
@@ -142,6 +141,8 @@ export default function PropertyGallery({ data }) {
     rounded-xl shadow-lg
     py-1 px-3
     border border-gray-200
+    z-[60]      /* 🔥 esto lo pone por encima de swiper */
+    pointer-events-none
   "
 />
 
