@@ -17,23 +17,79 @@ export default function PropertyGallery({ data }) {
   const [galleryImages, setGalleryImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // 🔹 Nuevo: estado del menú lateral
+  // Estado del menú lateral
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
 
+  // Helper robusto para obtener la URL de una "imagen" en distintas formas posibles
+  const resolveSrc = (maybe) => {
+    if (!maybe) return null;
+    if (typeof maybe === "string") {
+      const s = maybe.trim();
+      return s === "" ? null : s;
+    }
+    if (typeof maybe === "object") {
+      // busca propiedades comunes
+      const candidates = ["src", "url", "image", "thumbnail", "photo"];
+      for (const c of candidates) {
+        if (maybe[c] && typeof maybe[c] === "string" && maybe[c].trim() !== "") {
+          return maybe[c].trim();
+        }
+      }
+      // a veces la imagen puede estar dentro de un objeto nested { data: { url: ... } }
+      if (maybe.data && typeof maybe.data === "object") {
+        for (const c of ["src", "url", "image", "photo"]) {
+          if (maybe.data[c] && typeof maybe.data[c] === "string" && maybe.data[c].trim() !== "") {
+            return maybe.data[c].trim();
+          }
+        }
+      }
+    }
+    return null;
+  };
+
   useEffect(() => {
-    if (!data?.property) return;
+    if (!data?.property) {
+      setImages([]);
+      setGalleryImages([]);
+      return;
+    }
 
-    const cleanImages = [
-      { src: data.property.image, title: data.property.title, description: "" },
-      ...(data.subProperties?.map((sub) => ({
-        src: sub.image,
-        title: sub.content || "Vista adicional",
-        description: sub.text_content || "",
-      })) || []),
-    ].filter((img) => img.src && img.src.trim() !== "");
+    // Construimos la lista priorizando la imagen principal en primer lugar
+    const mainSrc = resolveSrc(data.property.image) || resolveSrc(data.property.photo) || null;
+    const mainTitle = data.property.title || data.property.name || "";
 
-    setImages(cleanImages.map((img) => img.src));
-    setGalleryImages(cleanImages);
+    // Mapear subpropiedades robustamente (podrían venir con estructuras diferentes)
+    const subs = (data.subProperties || []).map((sub) => {
+      // intenta extraer la imagen de diferentes campos
+      const src =
+        resolveSrc(sub.image) ||
+        resolveSrc(sub.photo) ||
+        resolveSrc(sub.src) ||
+        resolveSrc(sub.url) ||
+        null;
+
+      const title = sub.content || sub.title || sub.name || "Vista adicional";
+      const description = sub.text_content || sub.description || "";
+
+      return { src, title, description };
+    });
+
+    // Armamos array final: primero principal (si existe), luego subpropiedades filtradas
+    const combined = [
+      ...(mainSrc ? [{ src: mainSrc, title: mainTitle, description: "" }] : []),
+      ...subs,
+    ]
+      // filtrar nulos y strings vacíos
+      .filter((it) => it && it.src && typeof it.src === "string" && it.src.trim() !== "")
+      // eliminar duplicados por src manteniendo el primer encuentro
+      .reduce((acc, cur) => {
+        if (!acc.find((x) => x.src === cur.src)) acc.push(cur);
+        return acc;
+      }, []);
+
+    // Actualizamos estados: galleryImages (objetos) y images (solo src para Swiper)
+    setGalleryImages(combined);
+    setImages(combined.map((it) => it.src));
   }, [data]);
 
   if (!images.length) {
@@ -46,9 +102,7 @@ export default function PropertyGallery({ data }) {
 
   return (
     <>
-      {/* ======================= */}
-      {/* GALERÍA PRINCIPAL       */}
-      {/* ======================= */}
+      {/* GALERÍA PRINCIPAL */}
       <div
         className="
           flex flex-col bg-gray-50 p-4 md:p-2
@@ -62,11 +116,11 @@ export default function PropertyGallery({ data }) {
           overflow-hidden
         "
       >
-        {/* BOTÓN DEL MENÚ LATERAL */}
+        {/* BOTÓN DEL MENÚ LATERAL (ahora arriba derecha) */}
         <button
           onClick={() => setSideMenuOpen(true)}
           className="
-            absolute top-5 left-5 z-30
+            absolute top-5 right-5 z-30
             flex items-center gap-2 bg-white/95 text-gray-800
             py-2 px-4 rounded-full shadow-md hover:shadow-lg
             transition-all duration-300 text-sm font-medium tracking-wide
@@ -77,14 +131,14 @@ export default function PropertyGallery({ data }) {
         </button>
 
         {/* CARRUSEL PRINCIPAL */}
-        <div className="relative rounded-2xl overflow-hidden">
+        <div className="relative rounded-2xl overflow-hidden h-full">
           <Swiper
             modules={[Navigation, Pagination, Thumbs, Autoplay]}
             navigation
             pagination={{ clickable: true }}
             autoplay={{ delay: 4000, disableOnInteraction: false }}
             spaceBetween={10}
-            className="rounded-2xl overflow-hidden w-full"
+            className="rounded-2xl overflow-hidden w-full h-full"
             style={{
               "--swiper-navigation-color": "#fff",
               "--swiper-pagination-color": "#fff",
@@ -130,65 +184,132 @@ export default function PropertyGallery({ data }) {
         </div>
       </div>
 
-      {/* ==================================== */}
-      {/* PANEL LATERAL (OFF-CANVAS)           */}
-      {/* ==================================== */}
+      {/* PANEL LATERAL (OFF-CANVAS) */}
       {sideMenuOpen && (
         <>
-          {/* Fondo oscuro */}
+          {/* Fondo oscuro clicable */}
           <div
             onClick={() => setSideMenuOpen(false)}
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
           ></div>
 
           {/* Panel deslizante */}
-          <div
+          <aside
             className="
-              fixed top-0 right-0 h-full w-72 bg-white shadow-xl z-50
+              fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50
               p-6 flex flex-col gap-6 animate-slide-left
             "
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menú de opciones de la galería"
           >
             {/* Header del panel */}
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold text-gray-800 tracking-wide">
-                Más opciones
+                Opciones
               </h3>
               <button
                 onClick={() => setSideMenuOpen(false)}
+                aria-label="Cerrar panel"
                 className="text-gray-600 text-xl hover:text-black transition"
               >
                 ✕
               </button>
             </div>
 
-            {/* Menú del panel */}
-            <div className="flex flex-col gap-3">
-              <a href="/propiedades" className="flex items-center gap-3 text-gray-700 hover:text-black">
-                <Home className="w-[20px] h-[20px] text-rojo-inmobiliario" />
-                Lista de Propiedades
+            {/* Sección de navegación principal */}
+            <nav className="flex flex-col gap-3">
+              <a
+                href="/vende-o-alquila"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+              >
+                <Home className="w-5 h-5 text-rojo-inmobiliario" />
+                VENDE O ALQUILA CON NOSOTROS
               </a>
 
-              <a href="/ubicaciones" className="flex items-center gap-3 text-gray-700 hover:text-black">
-                <MapPin className="w-[20px] h-[20px] text-rojo-inmobiliario" />
-                Ubicaciones
+              <a
+                href="/servicios"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+              >
+                <MapPin className="w-5 h-5 text-rojo-inmobiliario" />
+                SERVICIOS
               </a>
 
-              <a href="/acerca-de-nosotros" className="flex items-center gap-3 text-gray-700 hover:text-black">
-                <UserRound className="w-[20px] h-[20px] text-rojo-inmobiliario" />
-                Acerca de nosotros
+              {/* Grupo CONÓCENOS (sublinks) */}
+              <div className="mt-2 border-t pt-3 border-gray-100">
+                <div className="text-sm font-medium text-gray-500 uppercase mb-2">Conócenos</div>
+
+                <a
+                  href="/acerca-de-nosotros"
+                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                >
+                  <UserRound className="w-5 h-5 text-rojo-inmobiliario" />
+                  Acerca de Nosotros
+                </a>
+
+                <a
+                  href="/contacto"
+                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                >
+                  <Mail className="w-5 h-5 text-rojo-inmobiliario" />
+                  Contacto
+                </a>
+
+                <a
+                  href="/nuestra-historia"
+                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                >
+                  <BookOpen className="w-5 h-5 text-rojo-inmobiliario" />
+                  Nuestra Historia
+                </a>
+              </div>
+
+              <a
+                href="/blog"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+              >
+                <Home className="w-5 h-5 text-rojo-inmobiliario" />
+                BLOG
               </a>
 
-              <a href="/contacto" className="flex items-center gap-3 text-gray-700 hover:text-black">
-                <Mail className="w-[20px] h-[20px] text-rojo-inmobiliario" />
-                Contacto
+              <a
+                href="/asesores"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+              >
+                <Home className="w-5 h-5 text-rojo-inmobiliario" />
+                ASESORES
+              </a>
+            </nav>
+
+            {/* Zona inferior: CTAs o acciones rápidas */}
+            <div className="mt-auto flex flex-col gap-3">
+              <a
+                href={`/propiedad/${data?.property?.id || ""}/contacto`}
+                className="block text-center bg-rojo-inmobiliario text-white py-2 rounded-lg font-medium hover:opacity-95 transition"
+              >
+                Contactar asesor
               </a>
 
-              <a href="/nuestra-historia" className="flex items-center gap-3 text-gray-700 hover:text-black">
-                <BookOpen className="w-[20px] h-[20px] text-rojo-inmobiliario" />
-                Nuestra Historia
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  // ejemplo de acción: compartir enlace
+                  try {
+                    const url = typeof window !== "undefined" ? window.location.href : "#";
+                    navigator.clipboard?.writeText(url);
+                    alert("Enlace copiado al portapapeles");
+                  } catch {
+                    // fallback
+                    alert("No se pudo copiar el enlace");
+                  }
+                }}
+                className="block text-center border border-gray-200 py-2 rounded-lg font-medium hover:bg-gray-50 transition"
+              >
+                Compartir propiedad
               </a>
             </div>
-          </div>
+          </aside>
         </>
       )}
 
@@ -214,4 +335,3 @@ export default function PropertyGallery({ data }) {
     </>
   );
 }
-
