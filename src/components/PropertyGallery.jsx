@@ -127,7 +127,7 @@ export default function PropertyGallery({ data }) {
           "
         >
           <FiMenu className="text-rojo-inmobiliario" />
-          Más opciones
+         . 
         </button>
 
 {/* Logo centrado superior del slider */}
@@ -306,34 +306,8 @@ export default function PropertyGallery({ data }) {
               </a>
             </nav>
 
-            {/* Zona inferior: CTAs o acciones rápidas */}
-            <div className="mt-auto flex flex-col gap-3">
-              <a
-                href={`/propiedad/${data?.property?.id || ""}/contacto`}
-                className="block text-center bg-rojo-inmobiliario text-white py-2 rounded-lg font-medium hover:opacity-95 transition"
-              >
-                Contactar asesor
-              </a>
+            
 
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  // ejemplo de acción: compartir enlace
-                  try {
-                    const url = typeof window !== "undefined" ? window.location.href : "#";
-                    navigator.clipboard?.writeText(url);
-                    alert("Enlace copiado al portapapeles");
-                  } catch {
-                    // fallback
-                    alert("No se pudo copiar el enlace");
-                  }
-                }}
-                className="block text-center border border-gray-200 py-2 rounded-lg font-medium hover:bg-gray-50 transition"
-              >
-                Compartir propiedad
-              </a>
-            </div>
           </aside>
         </>
       )}
