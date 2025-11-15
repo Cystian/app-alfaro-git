@@ -107,7 +107,15 @@ export default function Navbar() {
 
           {/* Menú Desktop */}
           <div className="hidden md:flex space-x-8">
-            <a href="/vende-o-alquila" className="nav-link">VENDE O ALQUILA CON NOSOTROS</a>
+
+            {/* 🔹 AQUI AGREGO SOLO WRAP PARA ESTE ITEM */}
+            <a
+              href="/vende-o-alquila"
+              className="nav-link whitespace-normal leading-tight max-w-[170px]"
+            >
+              VENDE O ALQUILA CON NOSOTROS
+            </a>
+
             <a href="/servicios" className="nav-link">SERVICIOS</a>
 
             {/* Dropdown CONÓCENOS Desktop */}
@@ -167,3 +175,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
