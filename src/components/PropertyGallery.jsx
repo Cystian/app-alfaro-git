@@ -227,7 +227,7 @@ export default function PropertyGallery({ data }) {
             aria-label="Menú de opciones de la galería"
           >
             {/* Header del panel con logo */}
-<div className="flex flex-col items-center mb-4">
+<div className="flex flex-col items-center ">
   {/* Logo */}
   <img
     src="/logo.png"
@@ -250,7 +250,7 @@ export default function PropertyGallery({ data }) {
 </div>
 
             {/* Sección de navegación principal */}
-            <nav className="flex flex-col gap-3">
+            <nav className="flex flex-col gap-3 -mt-4 ">
               <a
                 href="/vende-o-alquila"
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
