@@ -17,41 +17,42 @@ export default async function handler(req, res) {
       : [];
 
     let query = `
-      SELECT id, title, image, price,moneda, location,address, status, bedrooms, bathrooms, area, created_at
+      SELECT id, title, image, price, moneda, location, address, status,
+             bedrooms, bathrooms, area, created_at
       FROM properties
       WHERE 1=1
     `;
     const queryParams = [];
 
-    // Location
+    // ============================================================
+    // 🌍 Location (coincidencia exacta de frase, no por palabras)
+    // ============================================================
     if (locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
-      locationArr.forEach(l => queryParams.push(`%${l}%`));
+      locationArr.forEach(l => queryParams.push(`%${l.toLowerCase()}%`));
     }
 
-    // Status
+    // ============================================================
+    // 📌 Status (coincidencia exacta de frase)
+    // ============================================================
     if (statusArr.length) {
       query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
-      statusArr.forEach(s => queryParams.push(`%${s}%`));
+      statusArr.forEach(s => queryParams.push(`%${s.toLowerCase()}%`));
     }
 
-    // Title
+    // ============================================================
+    // 🔍 Title - Opción B (NO dividir palabras)
+    //     → Busca la frase completa dentro del título
+    //     → Contiene LOWER() y %frase%
+    // ============================================================
     if (titleArr.length) {
-      query += " AND (";
-      const titleConditions = titleArr.map(term => {
-        // Normaliza guiones largos y normales a espacio
-        const cleanTerm = term.toLowerCase().replace(/[–—-]/g, " ");
-        const words = cleanTerm.split(" ").filter(Boolean);
-        // Usamos OR entre palabras para que coincida cualquiera de ellas
-        const wordConditions = words.map(() => "LOWER(title) LIKE ?").join(" OR ");
-        words.forEach(w => queryParams.push(`%${w}%`));
-        return `(${wordConditions})`;
-      });
-      query += titleConditions.join(" OR ");
-      query += ")";
+      query += ` AND (${titleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ")})`;
+      titleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
     }
 
-    // Ordenamiento
+    // ============================================================
+    // 📦 Ordenamiento (igual que tu lógica original)
+    // ============================================================
     if (featured === "true") {
       query += " ORDER BY created_at DESC";
     } else if (!titleArr.length && !locationArr.length && !statusArr.length) {
