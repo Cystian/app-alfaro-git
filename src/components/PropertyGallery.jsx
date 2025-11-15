@@ -227,13 +227,27 @@ export default function PropertyGallery({ data }) {
           >
             {/* Header del panel con logo */}
             {/* Header del panel con logo */}
-<div className="flex flex-col items-center mb-4">
+<div className="flex flex-col items-center mb-1">
   {/* Logo */}
-  <img
-    src="/logo.png"
-    alt="logo"
-    className="w-28 h-auto mb-3 drop-shadow-sm"
-  />
+ <img
+  src="/logo.png"
+  alt="logo"
+  className="
+    absolute top-5 left-1/2 -translate-x-1/2
+    w-40 md:w-44 h-auto
+
+    bg-white               /* Fuerza blanco puro */
+    bg-white/100           /* Sin transparencia */
+    backdrop-blur-none     /* Evita glass o mezcla */
+    rounded-2xl
+
+    shadow-none            /* Sin sombras */
+    pointer-events-none
+    z-[60]
+
+    animate-logoSoftDrop
+  "
+/>
 
 
   <div className="flex w-full justify-between items-center">
