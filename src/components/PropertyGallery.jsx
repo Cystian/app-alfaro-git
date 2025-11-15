@@ -127,7 +127,7 @@ export default function PropertyGallery({ data }) {
           "
         >
           <FiMenu className="text-rojo-inmobiliario" />
-         . 
+          
         </button>
 
 {/* Logo centrado superior del slider */}
@@ -136,15 +136,25 @@ export default function PropertyGallery({ data }) {
   alt="logo"
   className="
     absolute top-5 left-1/2 -translate-x-1/2
-    w-28 md:w-32 h-auto
-    bg-white/90 backdrop-blur-md
-    rounded-xl shadow-lg
-    py-1 px-3
-    border border-gray-200
-    z-[60]      /* 🔥 esto lo pone por encima de swiper */
+    w-36 md:w-40 h-auto               /* ⬆️ Más grande */
+    
+    bg-white/85                       /* ⬆️ Fondo más blanco pero aún glass */
+    backdrop-blur-xl                  /* ⬆️ Efecto glass premium uniforme */
+    rounded-2xl                       /* ⬆️ Esquinas más elegantes */
+    
+    shadow-[0_4px_25px_rgba(0,0,0,0.18)]   /* ⬆️ Sombra inmobiliaria premium */
+    shadow-black/10
+
+    py-2 px-4                         /* ⬆️ Más respiro interno */
+    border border-gray-200/70
+
+    z-[60]
     pointer-events-none
+
+    animate-logoSoftDrop              /* ⬆️ Animación elegante */
   "
 />
+
 
         {/* CARRUSEL PRINCIPAL */}
         <div className="relative rounded-2xl overflow-hidden h-full">
@@ -330,6 +340,26 @@ export default function PropertyGallery({ data }) {
         .animate-slide-left {
           animation: slide-left 0.35s ease-out forwards;
         }
+
+        @keyframes logoSoftDrop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -18px);
+    filter: blur(6px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-logoSoftDrop {
+  animation: logoSoftDrop 0.7s ease-out forwards;
+}
+
       `}</style>
     </>
   );
