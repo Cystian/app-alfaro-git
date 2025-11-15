@@ -226,23 +226,14 @@ export default function PropertyGallery({ data }) {
             aria-label="Menú de opciones de la galería"
           >
             {/* Header del panel con logo */}
-<div className="flex flex-col items-center ">
+            {/* Header del panel con logo */}
+<div className="flex flex-col items-center mb-4">
   {/* Logo */}
-
   <img
-  src="/logo.png"
-  alt="logo"
-  draggable="false"
-  className="
-    w-36 md:w-40 h-auto
-    bg-white                 /* 🔥 elimina el halo gris del PNG */
-    p-1                      /* separa levemente la imagen del borde */
-    rounded-xl               /* bordes profesionales */
-    shadow-md                /* sombra premium */
-    select-none
-    pointer-events-none
-  "
->
+    src="/logo.png"
+    alt="logo"
+    className="w-28 h-auto mb-3 drop-shadow-sm"
+  />
 
 
   <div className="flex w-full justify-between items-center">
