@@ -245,7 +245,7 @@ export default function PropertyGallery({ data }) {
     pointer-events-none
     z-[60]
 
-    animate-logoSoftDrop
+    
   "
 />
 
