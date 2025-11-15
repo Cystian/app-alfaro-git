@@ -99,7 +99,7 @@ const SearchBanner = ({ onSearch }) => {
 
         {/* Formulario de búsqueda */}
         <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
-          <div className="w-full sm:w-48">
+          <div className="w-full sm:w-52">
             <CustomSelect
               label="Distrito"
               options={distritosOptions}
@@ -110,7 +110,7 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
-          <div className="w-full sm:w-48">
+          <div className="w-full sm:w-52">
             <CustomSelect
               label="Modalidad"
               options={modalidadesOptions}
@@ -121,7 +121,7 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
-          <div className="w-full sm:w-52">
+          <div className="w-full sm:w-56">
             <CustomSelect
               label="Tipo"
               options={tiposOptions}
