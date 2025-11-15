@@ -136,23 +136,21 @@ export default function PropertyGallery({ data }) {
   alt="logo"
   className="
     absolute top-5 left-1/2 -translate-x-1/2
-    w-48 md:w-52 h-auto               /* ⬆️ Más grande */
-    
-    bg-white                       /* ⬆️ Fondo más blanco pero aún glass */
-    backdrop-blur-xl                  /* ⬆️ Efecto glass premium uniforme */
-    rounded-2xl                       /* ⬆️ Esquinas más elegantes */
-    
-    shadow-[0_4px_25px_rgba(0,0,0,0.18)]   /* ⬆️ Sombra inmobiliaria premium */
-    shadow-black/10
+    w-48 md:w-52 h-auto
 
-  /*  py-2 px-4                          ⬆️ Más respiro interno    border border-gray-200/70 */
+    bg-white               /* Fuerza blanco puro */
+    bg-opacity-100         /* Cero gris */
+    backdrop-filter-none   /* Evita mezcla visual */
+    shadow-none            /* Quita sombras del contexto */
+    rounded-2xl
 
-    z-[60]
     pointer-events-none
+    z-[60]
 
-    animate-logoSoftDrop              /* ⬆️ Animación elegante */
+    animate-logoSoftDrop
   "
 />
+
 
 
         {/* CARRUSEL PRINCIPAL */}
