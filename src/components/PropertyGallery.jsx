@@ -232,12 +232,12 @@ export default function PropertyGallery({ data }) {
   <img
     src="/logo.png"
     alt="logo"
-    className="w-28 h-auto mb-3 drop-shadow-sm"
+    className="w-36 h-auto mb-3 drop-shadow-sm"
   />
 
   <div className="flex w-full justify-between items-center">
     <h3 className="text-lg font-semibold text-gray-800 tracking-wide">
-      Opciones
+      Menú
     </h3>
     <button
       onClick={() => setSideMenuOpen(false)}
@@ -296,6 +296,8 @@ export default function PropertyGallery({ data }) {
                 </a>
               </div>
 
+              <div className="mt-2 border-t pt-3 border-gray-100">
+
               <a
                 href="/blog"
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
@@ -311,6 +313,8 @@ export default function PropertyGallery({ data }) {
                 <Home className="w-5 h-5 text-rojo-inmobiliario" />
                 ASESORES
               </a>
+
+              </div>
             </nav>
 
             
