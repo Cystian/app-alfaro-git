@@ -268,14 +268,14 @@ export default function PropertyGallery({ data }) {
             <nav className="flex flex-col gap-3 mt-8 ">
               <a
   href="/"
-  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
 >
   <Home className="w-5 h-5 text-rojo-inmobiliario" />
   Inicio
 </a>
               <a
                 href="/vende-o-alquila"
-                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
               >
                 <Handshake className="w-5 h-5 text-rojo-inmobiliario" />
                 Vende o Alquila con Nosotros
@@ -283,7 +283,7 @@ export default function PropertyGallery({ data }) {
 
               <a
                 href="/servicios"
-                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
               >
                 <MapPin className="w-5 h-5 text-rojo-inmobiliario" />
                 Servicios
@@ -295,7 +295,7 @@ export default function PropertyGallery({ data }) {
 
                 <a
                   href="/acerca-de-nosotros"
-                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
                 >
                   <UserRound className="w-5 h-5 text-rojo-inmobiliario" />
                   Acerca de Nosotros
@@ -303,7 +303,7 @@ export default function PropertyGallery({ data }) {
 
                 <a
                   href="/contacto"
-                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
                 >
                   <Mail className="w-5 h-5 text-rojo-inmobiliario" />
                   Contacto
@@ -311,7 +311,7 @@ export default function PropertyGallery({ data }) {
 
                 <a
                   href="/nuestra-historia"
-                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
                 >
                   <BookOpen className="w-5 h-5 text-rojo-inmobiliario" />
                   Nuestra Historia
@@ -322,7 +322,7 @@ export default function PropertyGallery({ data }) {
 
               <a
                 href="/blog"
-                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
               >
                 <Home className="w-5 h-5 text-rojo-inmobiliario" />
                 Blog
@@ -330,7 +330,7 @@ export default function PropertyGallery({ data }) {
 
               <a
                 href="/asesores"
-                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition no-underline hover:no-underline focus:no-underline active:no-underline"
               >
                 <Home className="w-5 h-5 text-rojo-inmobiliario" />
                 Asesores
