@@ -251,9 +251,7 @@ export default function PropertyGallery({ data }) {
 
 
   <div className="flex w-full justify-between items-center">
-    <h3 className="text-lg font-semibold text-gray-800 tracking-wide">
-      Menú
-    </h3>
+   
     <button
       onClick={() => setSideMenuOpen(false)}
       aria-label="Cerrar panel"
@@ -265,7 +263,7 @@ export default function PropertyGallery({ data }) {
 </div>
 
             {/* Sección de navegación principal */}
-            <nav className="flex flex-col gap-3 -mt-4 ">
+            <nav className="flex flex-col gap-3 mt-4 ">
               <a
                 href="/vende-o-alquila"
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
