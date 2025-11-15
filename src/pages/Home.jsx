@@ -34,7 +34,7 @@ export default function Home() {
   // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
   setTimeout(() => {
     if (resultsRef.current) {
-      const offset = 80; // espacio extra hacia abajo
+      const offset = 40; // espacio extra hacia abajo
       const top = resultsRef.current.offsetTop - offset;
 
       window.scrollTo({
