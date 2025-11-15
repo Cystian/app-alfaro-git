@@ -109,12 +109,22 @@ export default function Navbar() {
           <div className="hidden md:flex space-x-8">
 
             {/* 🔹 AQUI AGREGO SOLO WRAP PARA ESTE ITEM */}
-            <a
-              href="/vende-o-alquila"
-              className="nav-link whitespace-normal leading-tight max-w-[170px]"
-            >
-              VENDE O ALQUILA CON NOSOTROS
-            </a>
+          <a
+  href="/vende-o-alquila"
+  className="
+    nav-link
+    text-center
+    flex items-center justify-center
+    leading-tight
+    whitespace-nowrap
+    md:whitespace-nowrap
+    sm:whitespace-normal
+    max-w-[180px]
+  "
+>
+  VENDE O ALQUILA CON NOSOTROS
+</a>
+
 
             <a href="/servicios" className="nav-link">SERVICIOS</a>
 
