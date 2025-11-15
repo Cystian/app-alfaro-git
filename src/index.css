@@ -75,6 +75,26 @@
   transform: scaleX(1);
 }
 
+
+@keyframes logoSoftDrop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -18px);
+    filter: blur(6px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+
+.animate-logoSoftDrop {
+  animation: logoSoftDrop 0.7s ease-out forwards;
+}
+
 /* Logo */
 .logo-hover {
   @apply transition-transform duration-300 ease-in-out rounded-lg shadow-logo-hover;
