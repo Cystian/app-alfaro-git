@@ -67,7 +67,7 @@ const SearchBanner = ({ onSearch }) => {
   };
 
   return (
-    <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-hidden rounded-3xl">
+    <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-visible rounded-3xl">
       {/* Fondo dinámico con transición tipo fade */}
       {images.map((img, index) => (
         <div
