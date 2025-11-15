@@ -227,7 +227,7 @@ export default function PropertyGallery({ data }) {
           >
             {/* Header del panel con logo */}
             {/* Header del panel con logo */}
-<div className="flex flex-col items-center mb-1">
+<div className="flex flex-col items-center ">
   {/* Logo */}
  <img
   src="/logo.png"
