@@ -58,7 +58,7 @@ const CustomSelect = ({
   const toggleDropdown = () => setOpenDropdown(isOpen ? null : label);
 
   return (
-    <div className="relative w-full" ref={wrapperRef}>
+    <div className="relative w-full sm:w-56" ref={wrapperRef}>
       <button
         type="button"
         className="w-full border rounded-lg py-2 px-3 bg-white hover:border-azul-primario focus:outline-none text-left shadow-sm nav-link"
@@ -140,6 +140,7 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+
 
 
 
