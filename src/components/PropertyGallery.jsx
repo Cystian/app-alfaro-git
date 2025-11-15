@@ -269,7 +269,7 @@ export default function PropertyGallery({ data }) {
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
               >
                 <Home className="w-5 h-5 text-rojo-inmobiliario" />
-                VENDE O ALQUILA CON NOSOTROS
+                Vende o Alquila con Nosotros
               </a>
 
               <a
@@ -277,7 +277,7 @@ export default function PropertyGallery({ data }) {
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
               >
                 <MapPin className="w-5 h-5 text-rojo-inmobiliario" />
-                SERVICIOS
+                Servicios
               </a>
 
               {/* Grupo CONÓCENOS (sublinks) */}
@@ -316,7 +316,7 @@ export default function PropertyGallery({ data }) {
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
               >
                 <Home className="w-5 h-5 text-rojo-inmobiliario" />
-                BLOG
+                Blog
               </a>
 
               <a
@@ -324,14 +324,12 @@ export default function PropertyGallery({ data }) {
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
               >
                 <Home className="w-5 h-5 text-rojo-inmobiliario" />
-                ASESORES
+                Asesores
               </a>
 
               </div>
             </nav>
-
-            
-
+   
           </aside>
         </>
       )}
