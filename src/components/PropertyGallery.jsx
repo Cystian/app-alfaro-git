@@ -234,7 +234,7 @@ export default function PropertyGallery({ data }) {
   alt="logo"
   className="
     absolute top-5 left-1/2 -translate-x-1/2
-    w-44 md:w-48 h-auto
+    w-48 md:w-52 h-auto
 
     bg-white               /* Fuerza blanco puro */
     bg-white/100           /* Sin transparencia */
@@ -263,7 +263,7 @@ export default function PropertyGallery({ data }) {
 </div>
 
             {/* Sección de navegación principal */}
-            <nav className="flex flex-col gap-3 mt-4 ">
+            <nav className="flex flex-col gap-3 mt-8 ">
               <a
                 href="/vende-o-alquila"
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
