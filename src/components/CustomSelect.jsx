@@ -69,12 +69,13 @@ const CustomSelect = ({
         <span className="text-sm text-gray-700">{displayValue}</span>
       </button>
 
-      {isOpen && (
-        <ul
-          className="dropdown-menu animate-slide-down max-h-60 overflow-y-auto"
-          role="listbox"
-          aria-label={label}
-        >
+     {isOpen && (
+  <ul
+    className="dropdown-menu absolute left-0 right-0 w-full animate-slide-down max-h-60 overflow-y-auto z-50 bg-white rounded-md shadow-lg"
+    role="listbox"
+    aria-label={label}
+  >
+
           {includeSelectAll && (
             <li
               className="dropdown-item flex items-center cursor-pointer"
@@ -139,5 +140,6 @@ const CustomSelect = ({
 };
 
 export default CustomSelect;
+
 
 
