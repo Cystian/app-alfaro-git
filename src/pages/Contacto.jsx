@@ -35,7 +35,7 @@ const Contacto = () => {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Mail className="text-[#C80000]" size={20} />
-          <span className="text-gray-800 text-base md:text-lg">contacto@alfaroinmobiliaria.pe</span>
+          <span className="text-gray-800 text-base md:text-lg">albertoalfaro@inmobiliariaalbertoalfaro.com.pe</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <MapPin className="text-[#C80000]" size={20} />
@@ -44,7 +44,7 @@ const Contacto = () => {
         <div className="flex flex-wrap items-center gap-2">
           <Briefcase className="text-[#C80000]" size={20} />
           <span className="text-gray-800 text-base md:text-lg">CEO & Fundador:</span>
-          <span className="font-bold text-[#C80000] text-base md:text-lg"> Ing. Alberto Alfaro</span>
+          <span className="font-bold text-[#C80000] text-base md:text-lg"> Ing. Alberto I. Alfaro Vásquez</span>
         </div>
       </div>
     </div>
