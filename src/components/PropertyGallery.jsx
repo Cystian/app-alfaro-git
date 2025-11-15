@@ -139,18 +139,17 @@ export default function PropertyGallery({ data }) {
     w-48 md:w-52 h-auto
 
     bg-white               /* Fuerza blanco puro */
-    bg-opacity-100         /* Cero gris */
-    backdrop-filter-none   /* Evita mezcla visual */
-    shadow-none            /* Quita sombras del contexto */
+    bg-white/100           /* Sin transparencia */
+    backdrop-blur-none     /* Evita glass o mezcla */
     rounded-2xl
 
+    shadow-none            /* Sin sombras */
     pointer-events-none
     z-[60]
 
     animate-logoSoftDrop
   "
 />
-
 
 
         {/* CARRUSEL PRINCIPAL */}
