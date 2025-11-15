@@ -234,7 +234,7 @@ export default function PropertyGallery({ data }) {
   alt="logo"
   className="
     absolute top-5 left-1/2 -translate-x-1/2
-    w-40 md:w-44 h-auto
+    w-44 md:w-48 h-auto
 
     bg-white               /* Fuerza blanco puro */
     bg-white/100           /* Sin transparencia */
