@@ -229,11 +229,22 @@ export default function PropertyGallery({ data }) {
             {/* Header del panel con logo */}
 <div className="flex flex-col items-center ">
   {/* Logo */}
+
   <img
-    src="/logo.png"
-    alt="logo"
-    className="w-36 h-auto mb-3 drop-shadow-sm"
-  />
+  src="/logo.png"
+  alt="logo"
+  draggable="false"
+  className="
+    w-36 md:w-40 h-auto
+    bg-white                 /* 🔥 elimina el halo gris del PNG */
+    p-1                      /* separa levemente la imagen del borde */
+    rounded-xl               /* bordes profesionales */
+    shadow-md                /* sombra premium */
+    select-none
+    pointer-events-none
+  "
+>
+
 
   <div className="flex w-full justify-between items-center">
     <h3 className="text-lg font-semibold text-gray-800 tracking-wide">
