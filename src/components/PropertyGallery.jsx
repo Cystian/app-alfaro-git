@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, Thumbs } from "swiper/modules";
 import { FiCamera, FiMenu } from "react-icons/fi";
-import { Home, MapPin, UserRound, Mail, BookOpen } from "lucide-react";
+import { Home, MapPin, UserRound, Mail, BookOpen,Handshake } from "lucide-react";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -134,22 +134,24 @@ export default function PropertyGallery({ data }) {
 <img
   src="/logo.png"
   alt="logo"
+  onClick={() => (window.location.href = "/")}
   className="
     absolute top-5 left-1/2 -translate-x-1/2
     w-48 md:w-52 h-auto
 
-    bg-white               /* Fuerza blanco puro */
-    bg-white/100           /* Sin transparencia */
-    backdrop-blur-none     /* Evita glass o mezcla */
+    bg-white               /* Fondo blanco puro */
+    bg-opacity-100
     rounded-2xl
 
-    shadow-none            /* Sin sombras */
-    pointer-events-none
-    z-[60]
+    cursor-pointer         /* 🔥 Ahora es clicable */
+    hover:scale-105        /* Hover premium */
+    transition-transform duration-300
 
+    z-[60]
     animate-logoSoftDrop
   "
 />
+
 
 
         {/* CARRUSEL PRINCIPAL */}
@@ -265,10 +267,17 @@ export default function PropertyGallery({ data }) {
             {/* Sección de navegación principal */}
             <nav className="flex flex-col gap-3 mt-8 ">
               <a
+  href="/"
+  className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
+>
+  <Home className="w-5 h-5 text-rojo-inmobiliario" />
+  Inicio
+</a>
+              <a
                 href="/vende-o-alquila"
                 className="flex items-center gap-3 px-2 py-2 rounded-md text-gray-700 hover:bg-gray-50 transition"
               >
-                <Home className="w-5 h-5 text-rojo-inmobiliario" />
+                <Handshake className="w-5 h-5 text-rojo-inmobiliario" />
                 Vende o Alquila con Nosotros
               </a>
 
