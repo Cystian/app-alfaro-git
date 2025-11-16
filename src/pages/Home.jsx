@@ -6,28 +6,21 @@ import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 import ResultsGrid from "../components/ResultsGrid";
-import FloatingShare from "../components/FloatingShare"; // Asegúrate que exista
+import FloatingShare from "../components/FloatingShare"; // ← Componente flotante
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
-  const [isHome, setIsHome] = useState(false);
 
-  // 👉 Ref para hacer scroll suave al grid
   const resultsRef = useRef(null);
 
-  // 👉 Detectar si estamos en la raíz "/" de forma segura
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsHome(window.location.pathname === "/");
-    }
-  }, []);
+  // 👉 Detectar si estamos en la raíz "/"
+  const isHome = typeof window !== "undefined" && window.location.pathname === "/";
 
   const handleSearch = (newFilters) => {
     setSearchFilters(newFilters);
   };
 
-  // 🔹 Actualiza resultados del grid cuando cambian los filtros
   useEffect(() => {
     if (!searchFilters) return;
 
@@ -40,10 +33,9 @@ export default function Home() {
         console.log("🔹 Datos que llegan de la API:", data);
         setSearchResults(data);
 
-        // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
         setTimeout(() => {
           if (resultsRef.current) {
-            const offset = -5; 
+            const offset = -5;
             const top = resultsRef.current.offsetTop - offset;
 
             window.scrollTo({
@@ -58,51 +50,41 @@ export default function Home() {
 
   return (
     <PageWrapper>
-      <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
+      {/* 🌟 Botón flotante con posición fija */}
+      {isHome && (
+        <div className="fixed bottom-6 left-6 z-50">
+          <FloatingShare />
+        </div>
+      )}
 
-        {/* 🔥 Renderizar FloatingShare SOLO si estamos en "/" */}
-        {isHome && (
-          <div className="fixed bottom-4 left-4 z-50">
-            <FloatingShare />
-          </div>
-        )}
+      <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
 
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
 
-        {/* Grid de resultados solo si hay búsqueda */}
+        {/* Grid de resultados */}
         {searchResults.length > 0 && (
           <>
             {console.log("Resultados que llegan al grid:", searchResults)}
 
-            {/* 👉 Contenedor del grid con ref para autoscroll */}
             <div ref={resultsRef}>
               <ResultsGrid properties={searchResults} />
             </div>
           </>
         )}
 
-        {/* Carrusel de propiedades destacadas */}
-        <section
-          id="redes"
-          className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
-        >
+        {/* Destacadas */}
+        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <FeaturedProperties />
         </section>
 
-        {/* Redes sociales */}
-        <section
-          id="redes"
-          className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
-        >
+        {/* Redes */}
+        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <SocialMediaCallToAction />
         </section>
 
         {/* Contacto */}
-        <section
-          id="contacto"
-          className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
-        >
+        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <div className="mb-4">
             <img
               src="/subtitulos/tienes_dudas.png"
