@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       ).then(([rows]) => rows),
 
       pool.execute(
-        "SELECT nombre FROM tipos ORDER BY nombre ASC"
+        "SELECT nombre FROM tipos ORDER BY orden ASC, nombre ASC"
       ).then(([rows]) => rows),
     ]);
 
