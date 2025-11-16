@@ -16,6 +16,7 @@ export default function PropertyGallery({ data }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+const isVideo = (src) => /\.(mp4|mov|webm|ogg)$/i.test(src);
 
   // Estado del menú lateral
   const [sideMenuOpen, setSideMenuOpen] = useState(false);
@@ -178,12 +179,29 @@ export default function PropertyGallery({ data }) {
                     setLightboxOpen(true);
                   }}
                 >
-                  <img
-                    src={img}
-                    alt={`Imagen ${index + 1}`}
-                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-[1.02]"
-                    loading="lazy"
-                  />
+                            {isVideo(img) ? (
+  <video
+    src={img}
+    className="object-cover w-full h-full"
+    controls
+    playsInline
+    muted
+    preload="metadata"
+    onClick={(e) => {
+      e.stopPropagation();
+      setCurrentIndex(index);
+      setLightboxOpen(true);
+    }}
+  />
+) : (
+  <img
+    src={img}
+    alt={`Imagen ${index + 1}`}
+    className="object-cover w-full h-full transition-transform duration-500 hover:scale-[1.02]"
+    loading="lazy"
+  />
+)}
+
 
                   {/* GRADIENTE ELEGANTE */}
                   <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
