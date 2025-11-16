@@ -1,13 +1,12 @@
 // ✅ Página principal que orquesta todo
 import React, { useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation"; // ← Import necesario
 import ContactForm from "../components/ContactForm";
 import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 import ResultsGrid from "../components/ResultsGrid";
-import FloatingShare from "../components/FloatingShare"; // ← Import del componente
+import FloatingShare from "../components/FloatingShare"; // ← Asegúrate que exista
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
@@ -16,9 +15,8 @@ export default function Home() {
   // 👉 Ref para hacer scroll suave al grid
   const resultsRef = useRef(null);
 
-  // 🔍 Detectamos si estamos en "/"
-  const pathname = usePathname();
-  const isHome = pathname === "/";
+  // 👉 Detectar si estamos en la raíz "/"
+  const isHome = window.location.pathname === "/";
 
   const handleSearch = (newFilters) => {
     setSearchFilters(newFilters);
@@ -40,7 +38,7 @@ export default function Home() {
         // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
         setTimeout(() => {
           if (resultsRef.current) {
-            const offset = -5;
+            const offset = -5; 
             const top = resultsRef.current.offsetTop - offset;
 
             window.scrollTo({
@@ -57,7 +55,7 @@ export default function Home() {
     <PageWrapper>
       <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
 
-        {/* 🔥 Mostrar FloatingShare SOLO en la raíz "/" */}
+        {/* Renderizar FloatingShare SOLO en la página raíz */}
         {isHome && <FloatingShare />}
 
         {/* Banner de búsqueda */}
@@ -75,18 +73,27 @@ export default function Home() {
           </>
         )}
 
-        {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
-        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        {/* Carrusel de propiedades destacadas */}
+        <section
+          id="redes"
+          className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
+        >
           <FeaturedProperties />
         </section>
 
         {/* Redes sociales */}
-        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        <section
+          id="redes"
+          className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
+        >
           <SocialMediaCallToAction />
         </section>
 
         {/* Contacto */}
-        <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        <section
+          id="contacto"
+          className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
+        >
           <div className="mb-4">
             <img
               src="/subtitulos/tienes_dudas.png"
@@ -101,5 +108,3 @@ export default function Home() {
     </PageWrapper>
   );
 }
-
-
