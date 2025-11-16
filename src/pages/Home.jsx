@@ -6,17 +6,22 @@ import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 import ResultsGrid from "../components/ResultsGrid";
-import FloatingShare from "../components/FloatingShare"; // ← Asegúrate que exista
+import FloatingShare from "../components/FloatingShare"; // Asegúrate que exista
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [isHome, setIsHome] = useState(false);
 
   // 👉 Ref para hacer scroll suave al grid
   const resultsRef = useRef(null);
 
-  // 👉 Detectar si estamos en la raíz "/"
-  const isHome = window.location.pathname === "/";
+  // 👉 Detectar si estamos en la raíz "/" de forma segura
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsHome(window.location.pathname === "/");
+    }
+  }, []);
 
   const handleSearch = (newFilters) => {
     setSearchFilters(newFilters);
@@ -55,8 +60,12 @@ export default function Home() {
     <PageWrapper>
       <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
 
-        {/* Renderizar FloatingShare SOLO en la página raíz */}
-        {isHome && <FloatingShare />}
+        {/* 🔥 Renderizar FloatingShare SOLO si estamos en "/" */}
+        {isHome && (
+          <div className="fixed bottom-4 left-4 z-50">
+            <FloatingShare />
+          </div>
+        )}
 
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
@@ -108,3 +117,4 @@ export default function Home() {
     </PageWrapper>
   );
 }
+
