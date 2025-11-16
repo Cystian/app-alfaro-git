@@ -1,6 +1,7 @@
 // ✅ Banner de búsqueda dinámico
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
+import FloatingShare from "./FloatingShare";
 
 const SearchBanner = ({ onSearch }) => {
   const [distritosOptions, setDistritosOptions] = useState([]);
@@ -67,6 +68,8 @@ const SearchBanner = ({ onSearch }) => {
   };
 
   return (
+    <>
+    <FloatingShare />
     <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-visible rounded-3xl">
       {/* Fondo dinámico con transición tipo fade */}
       {images.map((img, index) => (
@@ -161,6 +164,7 @@ const SearchBanner = ({ onSearch }) => {
         }
       `}</style>
     </section>
+        </>
   );
 };
 
