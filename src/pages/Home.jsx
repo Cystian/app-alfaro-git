@@ -1,18 +1,23 @@
 // ✅ Página principal que orquesta todo
 import React, { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation"; // ← Nuevo import
 import ContactForm from "../components/ContactForm";
 import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 import ResultsGrid from "../components/ResultsGrid";
+import FloatingShare from "../components/FloatingShare"; // ← Import requerido
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
-  // 👉 Ref para hacer scroll suave al grid
   const resultsRef = useRef(null);
+
+  // 🔹 Detectar si estamos exactamente en la raíz "/"
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   const handleSearch = (newFilters) => {
     setSearchFilters(newFilters);
@@ -27,29 +32,33 @@ export default function Home() {
 
     fetch(`/api/getProperties?${params}`)
       .then((res) => res.json())
-   .then((data) => {
-  console.log("🔹 Datos que llegan de la API:", data);
-  setSearchResults(data);
+      .then((data) => {
+        console.log("🔹 Datos que llegan de la API:", data);
+        setSearchResults(data);
 
-  // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
-  setTimeout(() => {
-    if (resultsRef.current) {
-      const offset = -5; // espacio extra hacia abajo
-      const top = resultsRef.current.offsetTop - offset;
+        // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
+        setTimeout(() => {
+          if (resultsRef.current) {
+            const offset = -5;
+            const top = resultsRef.current.offsetTop - offset;
 
-      window.scrollTo({
-        top,
-        behavior: "smooth",
-      });
-    }
-  }, 200);
-})
-   .catch((err) => console.error("Error en búsqueda:", err));
+            window.scrollTo({
+              top,
+              behavior: "smooth",
+            });
+          }
+        }, 200);
+      })
+      .catch((err) => console.error("Error en búsqueda:", err));
   }, [searchFilters]);
 
   return (
     <PageWrapper>
       <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
+        
+        {/* 🔥 Mostrar FloatingShare SOLO en la raíz "/" */}
+        {isHome && <FloatingShare />}
+
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
 
@@ -66,7 +75,7 @@ export default function Home() {
         )}
 
         {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
-        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <FeaturedProperties />
         </section>
 
@@ -91,4 +100,5 @@ export default function Home() {
     </PageWrapper>
   );
 }
+
 
