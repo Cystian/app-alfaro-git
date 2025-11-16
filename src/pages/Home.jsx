@@ -6,21 +6,19 @@ import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 import ResultsGrid from "../components/ResultsGrid";
-import FloatingShare from "../components/FloatingShare"; // ← Componente flotante
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
+  // 👉 Ref para hacer scroll suave al grid
   const resultsRef = useRef(null);
-
-  // 👉 Detectar si estamos en la raíz "/"
-  const isHome = typeof window !== "undefined" && window.location.pathname === "/";
 
   const handleSearch = (newFilters) => {
     setSearchFilters(newFilters);
   };
 
+  // 🔹 Actualiza resultados del grid cuando cambian los filtros
   useEffect(() => {
     if (!searchFilters) return;
 
@@ -29,62 +27,56 @@ export default function Home() {
 
     fetch(`/api/getProperties?${params}`)
       .then((res) => res.json())
-      .then((data) => {
-        console.log("🔹 Datos que llegan de la API:", data);
-        setSearchResults(data);
+   .then((data) => {
+  console.log("🔹 Datos que llegan de la API:", data);
+  setSearchResults(data);
 
-        setTimeout(() => {
-          if (resultsRef.current) {
-            const offset = -5;
-            const top = resultsRef.current.offsetTop - offset;
+  // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
+  setTimeout(() => {
+    if (resultsRef.current) {
+      const offset = -5; // espacio extra hacia abajo
+      const top = resultsRef.current.offsetTop - offset;
 
-            window.scrollTo({
-              top,
-              behavior: "smooth",
-            });
-          }
-        }, 200);
-      })
-      .catch((err) => console.error("Error en búsqueda:", err));
+      window.scrollTo({
+        top,
+        behavior: "smooth",
+      });
+    }
+  }, 200);
+})
+   .catch((err) => console.error("Error en búsqueda:", err));
   }, [searchFilters]);
 
   return (
     <PageWrapper>
-      {/* 🌟 Botón flotante con posición fija */}
-      {isHome && (
-        <div className="fixed bottom-6 left-6 z-50">
-          <FloatingShare />
-        </div>
-      )}
-
       <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
-
         {/* Banner de búsqueda */}
         <SearchBanner onSearch={handleSearch} />
 
-        {/* Grid de resultados */}
+        {/* Grid de resultados solo si hay búsqueda */}
         {searchResults.length > 0 && (
           <>
             {console.log("Resultados que llegan al grid:", searchResults)}
 
+            {/* 👉 Contenedor del grid con ref para autoscroll */}
             <div ref={resultsRef}>
               <ResultsGrid properties={searchResults} />
             </div>
           </>
         )}
 
-        {/* Destacadas */}
-        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
+        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <FeaturedProperties />
         </section>
 
-        {/* Redes */}
-        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        {/* Redes sociales */}
+        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <SocialMediaCallToAction />
         </section>
 
         {/* Contacto */}
-        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <div className="mb-4">
             <img
               src="/subtitulos/tienes_dudas.png"
@@ -99,4 +91,3 @@ export default function Home() {
     </PageWrapper>
   );
 }
-
