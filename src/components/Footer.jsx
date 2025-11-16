@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 import "../styles/FloatingWhatsApp.css"; // Archivo CSS para el rebote y neon
 import FloatingWhatsApp from "./FloatingWhatsApp";
+import FloatingShare from "./FloatingShare";
 
 const Footer = () => {
   return (
@@ -57,7 +58,7 @@ const Footer = () => {
       {/* WhatsApp flotante con texto + icono juntos */}
   {/* Ícono flotante de WhatsApp */}
       <FloatingWhatsApp />
-      
+      <FloatingShare />
     </>
   );
 };
