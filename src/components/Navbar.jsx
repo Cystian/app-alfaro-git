@@ -112,7 +112,7 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="Logo"
-                className="h-24 md:h-24 lg:h-24 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
+                className="h-20 md:h-20 lg:h-20 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
               />
             </a>
           </div>
