@@ -9,7 +9,7 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
   const isOpen = openDropdown === dropdownKey;
 
   return (
-    <div className={`relative ${isMobile ? "" : "md:relative"}`}>
+    <div className={`relative ${isMobile ? "" : "relative"}`}>
       {/* Botón del dropdown */}
       <button
         onClick={() => toggleDropdown(dropdownKey)}
@@ -73,8 +73,19 @@ const NavItemDropdown = ({ label, dropdownKey, openDropdown, toggleDropdown, isM
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 965);
   const wrapperRef = useRef(null);
 
+  // Detectar si la pantalla es <965px
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 965);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Cerrar al hacer click fuera
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -94,8 +105,9 @@ export default function Navbar() {
     <nav ref={wrapperRef} className="navbar fixed w-full z-50 bg-white shadow-navbar transition-shadow duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
+          
           {/* LOGO */}
-          <div className="flex-1 flex justify-center md:justify-start">
+          <div className="flex-1 flex justify-center">
             <a href="/" className="flex items-center">
               <img
                 src="/logo.png"
@@ -105,54 +117,54 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Menú Desktop */}
-          <div className="hidden md:flex space-x-8">
+          {/* Menú Desktop → aparece solo si ancho ≥965px */}
+          {!isMobileView && (
+            <div className="flex space-x-8">
 
-         
-            <a href="/vende-o-alquila" className="nav-link" >
-              VENDE O ALQUILA CON NOSOTROS
-            </a>
+              <a href="/vende-o-alquila" className="nav-link">
+                VENDE O ALQUILA CON NOSOTROS
+              </a>
 
+              <a href="/servicios" className="nav-link">SERVICIOS</a>
 
-            <a href="/servicios" className="nav-link">SERVICIOS</a>
+              <NavItemDropdown
+                label="CONÓCENOS"
+                dropdownKey="conocenos"
+                openDropdown={openDropdown}
+                toggleDropdown={toggleDropdown}
+                isMobile={false}
+              />
 
-            {/* Dropdown CONÓCENOS Desktop */}
-            <NavItemDropdown
-              label="CONÓCENOS"
-              dropdownKey="conocenos"
-              openDropdown={openDropdown}
-              toggleDropdown={toggleDropdown}
-              isMobile={false}
-            />
+              <a href="/blog" className="nav-link">BLOG</a>
+              <a href="/asesores" className="nav-link">ASESORES</a>
+            </div>
+          )}
 
-            <a href="/blog" className="nav-link">BLOG</a>
-            <a href="/asesores" className="nav-link">ASESORES</a>
-          </div>
-
-          {/* Botón menú móvil */}
-          <div className="md:hidden flex items-center absolute right-4">
-            <button
-              onClick={toggleMobileMenu}
-              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-              className="text-2xl focus:outline-none"
-            >
-              {isMobileMenuOpen ? <FiX /> : <FiMenu />}
-            </button>
-          </div>
+          {/* Botón menú móvil (solo <965px) */}
+          {isMobileView && (
+            <div className="flex items-center absolute right-4">
+              <button
+                onClick={toggleMobileMenu}
+                aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+                className="text-2xl focus:outline-none"
+              >
+                {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Menú móvil */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
-          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
+      {isMobileView && isMobileMenuOpen && (
+        <div className="bg-white shadow-navbar border-t border-gray-200 animate-slide-down">
+          <a href="/vende-o-alquila" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe]" onClick={closeMobileMenu}>
             VENDE O ALQUILA CON NOSOTROS
           </a>
-          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
+          <a href="/servicios" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe]" onClick={closeMobileMenu}>
             SERVICIOS
           </a>
 
-          {/* Dropdown CONÓCENOS Móvil */}
           <NavItemDropdown
             label="CONÓCENOS"
             dropdownKey="conocenos"
@@ -162,10 +174,10 @@ export default function Navbar() {
             closeMobileMenu={closeMobileMenu}
           />
 
-          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
+          <a href="/blog" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe]" onClick={closeMobileMenu}>
             BLOG
           </a>
-          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe] no-underline hover:no-underline focus:no-underline active:no-underline transition-colors duration-300" onClick={closeMobileMenu}>
+          <a href="/asesores" className="block px-4 py-3 text-gray-800 hover:bg-[#bfdbfe]" onClick={closeMobileMenu}>
             ASESORES
           </a>
         </div>
@@ -173,4 +185,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
