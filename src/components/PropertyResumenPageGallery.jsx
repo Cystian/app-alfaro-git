@@ -75,7 +75,7 @@ export default function PropertyResumePageGallery({
       <div className="relative bg-white rounded-xl shadow-xl w-full max-w-6xl flex flex-col md:flex-row overflow-hidden">
 
         {/* VISOR PRINCIPAL */}
-        <div className="flex-1 relative bg-black">
+        <div className="flex-1 relative bg-white">
 
           {/* VIDEO */}
           {isVideo ? (
