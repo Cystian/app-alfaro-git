@@ -183,9 +183,10 @@ const isVideo = (src) => /\.(mp4|mov|webm|ogg)$/i.test(src);
   <video
     src={img}
     className="object-cover w-full h-full"
-    controls
-    playsInline
+    autoPlay
     muted
+    loop
+    playsInline
     preload="metadata"
     onClick={(e) => {
       e.stopPropagation();
