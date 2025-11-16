@@ -1,21 +1,22 @@
 // ✅ Página principal que orquesta todo
 import React, { useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation"; // ← Nuevo import
+import { usePathname } from "next/navigation"; // ← Import necesario
 import ContactForm from "../components/ContactForm";
 import SearchBanner from "../components/SearchBanner";
 import SocialMediaCallToAction from "../components/SocialMediaCallToAction";
 import PageWrapper from "../components/PageWrapper";
 import FeaturedProperties from "../components/FeaturedProperties";
 import ResultsGrid from "../components/ResultsGrid";
-import FloatingShare from "../components/FloatingShare"; // ← Import requerido
+import FloatingShare from "../components/FloatingShare"; // ← Import del componente
 
 export default function Home() {
   const [searchFilters, setSearchFilters] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
+  // 👉 Ref para hacer scroll suave al grid
   const resultsRef = useRef(null);
 
-  // 🔹 Detectar si estamos exactamente en la raíz "/"
+  // 🔍 Detectamos si estamos en "/"
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -55,7 +56,7 @@ export default function Home() {
   return (
     <PageWrapper>
       <main className="space-y-4 p-0.5 sm:p-1 bg-gray-100">
-        
+
         {/* 🔥 Mostrar FloatingShare SOLO en la raíz "/" */}
         {isHome && <FloatingShare />}
 
@@ -75,7 +76,7 @@ export default function Home() {
         )}
 
         {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
-        <section className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
+        <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
           <FeaturedProperties />
         </section>
 
