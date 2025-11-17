@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function ResultsGrid({ properties }) {
-  // normalizar entrada: si vienen null/undefined/no-array => usar []
+  // Normalizamos entrada
   const safeProperties = Array.isArray(properties) ? properties : [];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showNoResultsPopup, setShowNoResultsPopup] = useState(false);
   const itemsPerPage = 9;
 
-  // Si cambia el conjunto de propiedades, reiniciamos página y disparamos popup si está vacío
+  // Efecto cuando cambian los resultados
   useEffect(() => {
-    setCurrentPage(1); // evita páginas fuera de rango cuando cambia el dataset
-console.log("preview primeros-------------------:", safeProperties.length);
+    setCurrentPage(1);
+
+    console.log("📌 Longitud recibida:", properties?.length);
+    console.log("📌 Normalizada:", safeProperties.length);
+
+    // Mostrar popup cuando el array llega vacío
     if (safeProperties.length === 0) {
       setShowNoResultsPopup(true);
       const t = setTimeout(() => setShowNoResultsPopup(false), 2500);
       return () => clearTimeout(t);
     } else {
-      // opcional: si quieres también notificar cuando hay resultados, lo puedes activar aquí
       setShowNoResultsPopup(false);
     }
-  }, [properties]); // observamos la prop original por si reference cambia
+  }, [properties]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const visibleProperties = safeProperties.slice(startIndex, startIndex + itemsPerPage);
@@ -58,26 +61,28 @@ console.log("preview primeros-------------------:", safeProperties.length);
     <div>
       <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
 
-        {/* 🔔 POPUP: No hay resultados (solo cuando el array está vacío) */}
-        {showNoResultsPopup && safeProperties.length === 0 && (
+        {/* 🔔 POPUP: No hay resultados */}
+        {showNoResultsPopup && (
           <div
             className="fixed top-6 left-1/2 -translate-x-1/2 bg-white text-red-600 
                        px-6 py-3 rounded-xl shadow-lg border border-red-500
-                       z-[9999] font-semibold tracking-wide animate-fadeInOut">
+                       z-[9999] font-semibold tracking-wide animate-fadeInOut"
+          >
             ⚠️ No se encontraron propiedades
           </div>
         )}
 
-        {/* Si no hay resultados, no renderizamos banner ni grid (ya mostramos el popup) */}
+        {/* Si no hay resultados → NO renderizamos más UI */}
         {safeProperties.length === 0 ? null : (
           <>
             {/* 🖼️ Banner superior */}
             <div className="mb-4 text-center">
               <img
                 src="/subtitulos/resultados_busqueda.png"
-                alt="Resultados de Busqueda"
+                alt="Resultados"
                 className="w-[30rem] mx-auto"
               />
+
               <p className="text-gray-800 text-base font-medium mt-3 text-center tracking-wide">
                 🔍{" "}
                 <span className="font-semibold text-blue-600">
@@ -87,7 +92,7 @@ console.log("preview primeros-------------------:", safeProperties.length);
               </p>
             </div>
 
-            {/* 🏠 Cuadrícula de propiedades */}
+            {/* 🏠 Cuadrícula */}
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {visibleProperties.map((property, index) => (
                 <motion.div
@@ -115,7 +120,7 @@ console.log("preview primeros-------------------:", safeProperties.length);
                     />
                   </a>
 
-                  {/* Contenido */}
+                  {/* Info */}
                   <div className="flex flex-col flex-grow">
                     <h3 className="text-lg font-semibold text-[#C80000] truncate">
                       {property.title}
@@ -137,7 +142,6 @@ console.log("preview primeros-------------------:", safeProperties.length);
                       <p className="text-xs text-gray-500 mb-4">{property.status}</p>
                     )}
 
-                    {/* Botones */}
                     <div className="mt-auto flex gap-2">
                       <a
                         href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${encodeURIComponent(property.title || "")}`}
@@ -185,7 +189,6 @@ console.log("preview primeros-------------------:", safeProperties.length);
                   </button>
                 </div>
 
-                {/* 🔘 Números de página */}
                 <div className="flex flex-wrap justify-center gap-2">
                   {paginationRange.map((page, index) => {
                     if (page === "left-ellipsis" || page === "right-ellipsis") {
