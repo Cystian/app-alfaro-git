@@ -55,22 +55,6 @@ export default function ResultsGrid({ properties }) {
           </p>
         </div>
 
-        {/* 🚫 Sin resultados */}
-{properties.length === 0 && (
-  <div className="text-center py-16">
-    <img
-     src="/subtitulos/resultados_busqueda.png"
-      alt="Sin resultados"
-      className="w-64 mx-auto mb-6 opacity-80"
-    />
-     <p className="text-gray-800 text-base font-medium mt-3 text-center tracking-wide">
-            🔍{" "} <span className="font-semibold text-blue-600">
-              {properties.length}
-            </span>{" "}
-            propiedades encontradas
-          </p>
-  </div>
-)}
 
         {/* 🏠 Cuadrícula de propiedades */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
