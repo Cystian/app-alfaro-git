@@ -23,12 +23,12 @@ export default function Home() {
     if (!searchFilters) return;
 
     const params = new URLSearchParams(searchFilters).toString();
-    console.log("🔹 Parámetros de búsqueda:", params);
+    // console.log("🔹 Parámetros de búsqueda:", params);
 
     fetch(`/api/getProperties?${params}`)
       .then((res) => res.json())
    .then((data) => {
-  console.log("🔹 Datos que llegan de la API:", data);
+ //  console.log("🔹 Datos que llegan de la API:", data);
   setSearchResults(data);
 
   // 🚀 AUTO-SCROLL cuando llegan resultados (con offset)
