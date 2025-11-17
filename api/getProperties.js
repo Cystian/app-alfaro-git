@@ -16,6 +16,26 @@ export default async function handler(req, res) {
       ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
       : [];
 
+    // 🔄 Mapeo de equivalencias de tipos para búsquedas inteligentes (SOLO para title)
+    const titleMapping = {
+      "terreno comercial": ["terreno comercial", "terreno industrial"],
+      "local comercial": ["local comercial", "local"],
+    };
+
+    // ============================================================
+    // 🔍 Expansión de equivalencias SOLO para Title
+    // ============================================================
+    let expandedTitleArr = [];
+
+    titleArr.forEach(t => {
+      const key = t.toLowerCase();
+      if (titleMapping[key]) {
+        expandedTitleArr.push(...titleMapping[key]);
+      } else {
+        expandedTitleArr.push(t);
+      }
+    });
+
     let query = `
       SELECT id, title, image, price, moneda, location, address, status,
              bedrooms, bathrooms, area, created_at
@@ -41,13 +61,11 @@ export default async function handler(req, res) {
     }
 
     // ============================================================
-    // 🔍 Title - Opción B (NO dividir palabras)
-    //     → Busca la frase completa dentro del título
-    //     → Contiene LOWER() y %frase%
+    // 🔍 Title - coincidencia de frase COMPLETA + equivalencias
     // ============================================================
-    if (titleArr.length) {
-      query += ` AND (${titleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ")})`;
-      titleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
+    if (expandedTitleArr.length) {
+      query += ` AND (${expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ")})`;
+      expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
     }
 
     // ============================================================
