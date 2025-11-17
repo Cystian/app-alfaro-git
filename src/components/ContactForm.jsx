@@ -25,7 +25,7 @@ export default function ContactForm() {
       return;
     }
 
-    const numero = "51931283609";
+    const numero = "51940221494";
     const texto = `Hola 👋, soy ${formData.nombre}.
 Teléfono: ${formData.telefono}
 Interés: ${formData.categoria || "Sin especificar"}
