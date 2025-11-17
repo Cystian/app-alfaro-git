@@ -31,7 +31,7 @@ const FloatingShare = () => {
                      px-6 py-3 rounded-xl shadow-lg z-[9999] 
                      font-semibold text-sm animate-fadeInOut"
         >
-          ✔ Enlace copiado al portapapeles
+          ✔ Enlace copiado
         </div>
       )}
 
