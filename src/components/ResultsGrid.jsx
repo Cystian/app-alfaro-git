@@ -12,7 +12,7 @@ export default function ResultsGrid({ properties }) {
   // Si cambia el conjunto de propiedades, reiniciamos página y disparamos popup si está vacío
   useEffect(() => {
     setCurrentPage(1); // evita páginas fuera de rango cuando cambia el dataset
-
+console.log("preview primeros-------------------:", safeProperties.length);
     if (safeProperties.length === 0) {
       setShowNoResultsPopup(true);
       const t = setTimeout(() => setShowNoResultsPopup(false), 2500);
