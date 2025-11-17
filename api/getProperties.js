@@ -16,19 +16,29 @@ export default async function handler(req, res) {
       ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
       : [];
 
-    // 🔄 Mapeo de equivalencias de tipos para búsquedas inteligentes (SOLO para title)
+    // ============================================================
+    // 🔄 Mapeo de equivalencias SOLO para Title
+    // ============================================================
     const titleMapping = {
       "terreno comercial": ["terreno comercial", "terreno industrial"],
       "local comercial": ["local comercial", "local"],
     };
 
     // ============================================================
-    // 🔍 Expansión de equivalencias SOLO para Title
+    // 🔍 Expansión de equivalencias + Lógica especial “terreno”
     // ============================================================
     let expandedTitleArr = [];
+    let applyPureTerrenoRule = false;
 
     titleArr.forEach(t => {
       const key = t.toLowerCase();
+
+      // 🟢 Caso especial: “terreno”
+      if (key === "terreno") {
+        applyPureTerrenoRule = true;
+      }
+
+      // 🟢 Caso equivalencias normales
       if (titleMapping[key]) {
         expandedTitleArr.push(...titleMapping[key]);
       } else {
@@ -45,7 +55,7 @@ export default async function handler(req, res) {
     const queryParams = [];
 
     // ============================================================
-    // 🌍 Location (coincidencia exacta de frase, no por palabras)
+    // 🌍 Location (coincidencia exacta de frase)
     // ============================================================
     if (locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
@@ -61,15 +71,29 @@ export default async function handler(req, res) {
     }
 
     // ============================================================
-    // 🔍 Title - coincidencia de frase COMPLETA + equivalencias
+    // 🔍 Title - coincidencia general + lógica especial “terreno”
     // ============================================================
     if (expandedTitleArr.length) {
-      query += ` AND (${expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ")})`;
-      expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
+      query += ` AND (`;
+
+      // 🔥 Si aplica la regla especial de “terreno puro”:
+      if (applyPureTerrenoRule) {
+        query += ` (LOWER(title) LIKE ?) 
+                   AND LOWER(title) NOT LIKE '%comercial%' 
+                   AND LOWER(title) NOT LIKE '%industrial%' 
+                 `;
+        queryParams.push("%terreno%");
+      } else {
+        // 🔥 Búsqueda normal con equivalencias
+        query += expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
+        expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
+      }
+
+      query += `)`;
     }
 
     // ============================================================
-    // 📦 Ordenamiento (igual que tu lógica original)
+    // 📦 Ordenamiento (sin cambios)
     // ============================================================
     if (featured === "true") {
       query += " ORDER BY created_at DESC";
