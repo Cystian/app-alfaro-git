@@ -54,16 +54,12 @@ export default function Home() {
         <SearchBanner onSearch={handleSearch} />
 
         {/* Grid de resultados solo si hay búsqueda */}
-        {searchResults.length > 0 && (
-          <>
-            {console.log("Resultados que llegan al grid:", searchResults)}
+    {searchFilters && (
+  <div ref={resultsRef}>
+    <ResultsGrid properties={searchResults} />
+  </div>
+)}
 
-            {/* 👉 Contenedor del grid con ref para autoscroll */}
-            <div ref={resultsRef}>
-              <ResultsGrid properties={searchResults} />
-            </div>
-          </>
-        )}
 
         {/* Carrusel de propiedades destacadas siempre 6 más recientes */}
         <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
