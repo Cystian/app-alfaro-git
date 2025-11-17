@@ -2,22 +2,30 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function ResultsGrid({ properties }) {
+  // normalizar entrada: si vienen null/undefined/no-array => usar []
+  const safeProperties = Array.isArray(properties) ? properties : [];
+
   const [currentPage, setCurrentPage] = useState(1);
   const [showNoResultsPopup, setShowNoResultsPopup] = useState(false);
-
   const itemsPerPage = 9;
 
-  // 🟩 Mostrar popup si no hay resultados
+  // Si cambia el conjunto de propiedades, reiniciamos página y disparamos popup si está vacío
   useEffect(() => {
-    if (properties.length === 0) {
+    setCurrentPage(1); // evita páginas fuera de rango cuando cambia el dataset
+
+    if (safeProperties.length === 0) {
       setShowNoResultsPopup(true);
-      setTimeout(() => setShowNoResultsPopup(false), 2500);
+      const t = setTimeout(() => setShowNoResultsPopup(false), 2500);
+      return () => clearTimeout(t);
+    } else {
+      // opcional: si quieres también notificar cuando hay resultados, lo puedes activar aquí
+      setShowNoResultsPopup(false);
     }
-  }, [properties]);
+  }, [properties]); // observamos la prop original por si reference cambia
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const visibleProperties = properties.slice(startIndex, startIndex + itemsPerPage);
-  const totalPages = Math.ceil(properties.length / itemsPerPage);
+  const visibleProperties = safeProperties.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(safeProperties.length / itemsPerPage));
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -50,8 +58,8 @@ export default function ResultsGrid({ properties }) {
     <div>
       <section id="redes" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
 
-        {/* 🔔 POPUP: No hay resultados */}
-        {showNoResultsPopup && (
+        {/* 🔔 POPUP: No hay resultados (solo cuando el array está vacío) */}
+        {showNoResultsPopup && safeProperties.length === 0 && (
           <div
             className="fixed top-6 left-1/2 -translate-x-1/2 bg-white text-red-600 
                        px-6 py-3 rounded-xl shadow-lg border border-red-500
@@ -60,8 +68,8 @@ export default function ResultsGrid({ properties }) {
           </div>
         )}
 
-        {/* ❌ Si no hay resultados → no renderizar banner, ni grid */}
-        {properties.length === 0 ? null : (
+        {/* Si no hay resultados, no renderizamos banner ni grid (ya mostramos el popup) */}
+        {safeProperties.length === 0 ? null : (
           <>
             {/* 🖼️ Banner superior */}
             <div className="mb-4 text-center">
@@ -73,7 +81,7 @@ export default function ResultsGrid({ properties }) {
               <p className="text-gray-800 text-base font-medium mt-3 text-center tracking-wide">
                 🔍{" "}
                 <span className="font-semibold text-blue-600">
-                  {properties.length}
+                  {safeProperties.length}
                 </span>{" "}
                 propiedades encontradas
               </p>
@@ -83,7 +91,7 @@ export default function ResultsGrid({ properties }) {
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {visibleProperties.map((property, index) => (
                 <motion.div
-                  key={property.id}
+                  key={property.id ?? index}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -120,7 +128,7 @@ export default function ResultsGrid({ properties }) {
                     </p>
                     <p className="text-blue-600 font-bold mt-2">
                       {property.moneda}
-                      {Number(property.price).toLocaleString("es-PE", {
+                      {Number(property.price || 0).toLocaleString("es-PE", {
                         minimumFractionDigits: 2,
                       })}
                     </p>
@@ -132,7 +140,7 @@ export default function ResultsGrid({ properties }) {
                     {/* Botones */}
                     <div className="mt-auto flex gap-2">
                       <a
-                        href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
+                        href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${encodeURIComponent(property.title || "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition"
@@ -211,4 +219,3 @@ export default function ResultsGrid({ properties }) {
     </div>
   );
 }
-
