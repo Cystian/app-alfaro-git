@@ -34,22 +34,23 @@ export default async function handler(req, res) {
     };
 
     // =============================
-    // 4️⃣ Expansión de títulos
+    // 4️⃣ Expansión de títulos + reglas
     // =============================
     let expandedTitleArr = [];
     let applyPureTerrenoRule = false;
 
-    titleArr.forEach(t => {
-      const key = t.toLowerCase();
-
-      if (key === "terreno") {
-        applyPureTerrenoRule = true; // terreno puro
-      } else if (titleMapping[key]) {
-        expandedTitleArr.push(...titleMapping[key]);
-      } else {
-        expandedTitleArr.push(t);
-      }
-    });
+    if (!hasTodosTitle) {
+      titleArr.forEach(t => {
+        const key = t.toLowerCase();
+        if (key === "terreno") {
+          applyPureTerrenoRule = true;
+        } else if (titleMapping[key]) {
+          expandedTitleArr.push(...titleMapping[key]);
+        } else {
+          expandedTitleArr.push(t);
+        }
+      });
+    }
 
     // =============================
     // 5️⃣ Construcción base de la query
@@ -81,20 +82,27 @@ export default async function handler(req, res) {
     // =============================
     // 8️⃣ Title
     // =============================
-    if (!hasTodosTitle) {
+    if (!hasTodosTitle && (applyPureTerrenoRule || expandedTitleArr.length)) {
+      query += ` AND (`;
+
+      const conditions = [];
+
+      // 🔹 Terreno puro (solo si se seleccionó "terreno" a secas)
       if (applyPureTerrenoRule) {
-        // 🔹 Solo terreno puro
-        query += `
-          AND LOWER(title) LIKE ? 
-          AND LOWER(title) NOT LIKE '%comercial%' 
-          AND LOWER(title) NOT LIKE '%industrial%'
-        `;
+        conditions.push(`(LOWER(title) LIKE ? AND LOWER(title) NOT LIKE '%comercial%' AND LOWER(title) NOT LIKE '%industrial%')`);
         queryParams.push("%terreno%");
-      } else if (expandedTitleArr.length) {
-        // 🔹 Otros títulos (incluye equivalencias)
-        query += ` AND (${expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ")})`;
-        expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
       }
+
+      // 🔹 Otros títulos seleccionados (incluyendo mapeados)
+      if (expandedTitleArr.length) {
+        expandedTitleArr.forEach(t => {
+          conditions.push(`LOWER(title) LIKE ?`);
+          queryParams.push(`%${t.toLowerCase()}%`);
+        });
+      }
+
+      query += conditions.join(" OR ");
+      query += `)`;
     }
 
     // =============================
