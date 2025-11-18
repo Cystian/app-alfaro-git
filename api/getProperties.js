@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       ? title.split(",").map(t => t.trim()).filter(Boolean)
       : [];
     const locationArr = !hasTodosLocation
-      ? location.split(",").map(l => l.trim().toLowerCase()).filter(Boolean)
+      ? location.split(",").map(l => l.trim()).filter(Boolean)
       : [];
     const statusArr = !hasTodosStatus
       ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
@@ -64,11 +64,11 @@ export default async function handler(req, res) {
     const queryParams = [];
 
     // =============================
-    // 6️⃣ Location
+    // 6️⃣ Location (coincidencia exacta)
     // =============================
     if (!hasTodosLocation && locationArr.length) {
-      query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
-      locationArr.forEach(l => queryParams.push(`%${l}%`));
+      query += ` AND (${locationArr.map(() => `LOWER(location) = ?`).join(" OR ")})`;
+      locationArr.forEach(l => queryParams.push(l.toLowerCase()));
     }
 
     // =============================
