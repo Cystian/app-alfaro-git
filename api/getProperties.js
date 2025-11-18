@@ -5,61 +5,55 @@ export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
-    // ============================================================
-    // 1️⃣ Detectar si el usuario seleccionó "Todos" en cada filtro
-    // ============================================================
+    // =============================
+    // 1️⃣ Detectar "Todos" en filtros
+    // =============================
     const hasTodosTitle = title.split(",").some(t => t.trim().toLowerCase() === "todos");
     const hasTodosLocation = location.split(",").some(l => l.trim().toLowerCase() === "todos");
     const hasTodosStatus = status.split(",").some(s => s.trim().toLowerCase() === "todos");
 
-    // ============================================================
-    // 2️⃣ Armar arrays limpios SIN "todos", solo si no se seleccionó "todos"
-    // ============================================================
+    // =============================
+    // 2️⃣ Limpiar arrays sin "Todos"
+    // =============================
     const titleArr = !hasTodosTitle
-      ? title.split(",").map(t => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
+      ? title.split(",").map(t => t.trim()).filter(Boolean)
       : [];
-
     const locationArr = !hasTodosLocation
-      ? location.split(",").map(l => l.trim().toLowerCase()).filter(Boolean).filter(l => l !== "todos")
+      ? location.split(",").map(l => l.trim().toLowerCase()).filter(Boolean)
       : [];
-
     const statusArr = !hasTodosStatus
-      ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
+      ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean)
       : [];
 
-    // ============================================================
-    // 3️⃣ Mapeo de equivalencias SOLO para Title
-    // ============================================================
+    // =============================
+    // 3️⃣ Mapping de equivalencias para Title
+    // =============================
     const titleMapping = {
       "terreno comercial": ["terreno comercial", "terreno industrial"],
       "local comercial": ["local comercial", "local"],
     };
 
-    // ============================================================
-    // 4️⃣ Expansión de equivalencias + lógica especial “terreno”
-    // ============================================================
+    // =============================
+    // 4️⃣ Expansión de títulos + lógica “terreno puro”
+    // =============================
     let expandedTitleArr = [];
     let applyPureTerrenoRule = false;
 
     if (!hasTodosTitle) {
       titleArr.forEach(t => {
         const key = t.toLowerCase();
-
-        if (key === "terreno") {
-          applyPureTerrenoRule = true;
-        }
-
-        if (titleMapping[key]) {
-          expandedTitleArr.push(...titleMapping[key]);
-        } else {
-          expandedTitleArr.push(t);
-        }
+        if (key === "terreno") applyPureTerrenoRule = true;
+        if (titleMapping[key]) expandedTitleArr.push(...titleMapping[key]);
+        else expandedTitleArr.push(t);
       });
     }
 
-    // ============================================================
+    // NUEVO: Si el usuario eligió "Todos", activamos terreno puro también
+    if (hasTodosTitle) applyPureTerrenoRule = true;
+
+    // =============================
     // 5️⃣ Construcción base de la query
-    // ============================================================
+    // =============================
     let query = `
       SELECT id, title, image, price, moneda, location, address, status,
              bedrooms, bathrooms, area, created_at
@@ -68,49 +62,53 @@ export default async function handler(req, res) {
     `;
     const queryParams = [];
 
-    // ============================================================
+    // =============================
     // 6️⃣ Location
-    // ============================================================
+    // =============================
     if (!hasTodosLocation && locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
       locationArr.forEach(l => queryParams.push(`%${l}%`));
     }
 
-    // ============================================================
+    // =============================
     // 7️⃣ Status
-    // ============================================================
+    // =============================
     if (!hasTodosStatus && statusArr.length) {
       query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
       statusArr.forEach(s => queryParams.push(`%${s}%`));
     }
 
-    // ============================================================
-    // 8️⃣ Title (reglas “terreno puro” + equivalencias)
-    // ============================================================
-    if (!hasTodosTitle && expandedTitleArr.length) {
-      let titleConditions = [];
+    // =============================
+    // 8️⃣ Title (terreno puro + equivalencias)
+    // =============================
+    if (applyPureTerrenoRule || expandedTitleArr.length) {
+      query += ` AND (`;
 
-      // 🔹 Caso “terreno puro”
-      if (applyPureTerrenoRule && titleArr.includes("terreno")) {
-        titleConditions.push(
-          `(LOWER(title) LIKE ? AND LOWER(title) NOT LIKE '%comercial%' AND LOWER(title) NOT LIKE '%industrial%')`
-        );
+      if (applyPureTerrenoRule) {
+        // 🔹 Terreno puro (sin comercial ni industrial)
+        query += `
+          (LOWER(title) LIKE ?) 
+          AND LOWER(title) NOT LIKE '%comercial%' 
+          AND LOWER(title) NOT LIKE '%industrial%'
+        `;
         queryParams.push("%terreno%");
+        // 🔹 Si hay otros títulos seleccionados, los agregamos con OR
+        if (expandedTitleArr.length) {
+          query += " OR " + expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
+          expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
+        }
+      } else {
+        // 🔹 Solo títulos normales
+        query += expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
+        expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
       }
 
-      // 🔹 Otros títulos de equivalencias
-      const otherTitles = expandedTitleArr.filter(t => t.toLowerCase() !== "terreno");
-      otherTitles.forEach(t => {
-        titleConditions.push(`LOWER(title) LIKE ?`);
-        queryParams.push(`%${t.toLowerCase()}%`);
-      });
-
-      query += ` AND (${titleConditions.join(" OR ")})`;
+      query += `)`;
     }
 
-    // ============================================================
+    // =============================
     // 9️⃣ Ordenamiento
-    // ============================================================
+    // =============================
     if (featured === "true") {
       query += " ORDER BY created_at DESC";
     } else if (!titleArr.length && !locationArr.length && !statusArr.length && hasTodosTitle && hasTodosLocation && hasTodosStatus) {
@@ -119,9 +117,9 @@ export default async function handler(req, res) {
       query += " ORDER BY created_at DESC";
     }
 
-    // ============================================================
-    // 🔟 Ejecución final
-    // ============================================================
+    // =============================
+    // 🔟 Ejecución
+    // =============================
     const [rows] = await pool.query(query, queryParams);
     return res.status(200).json(rows);
 
