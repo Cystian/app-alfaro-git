@@ -5,19 +5,30 @@ export default async function handler(req, res) {
   try {
     const { title = "", location = "", status = "", featured } = req.query || {};
 
-    // Split por comas, limpiar valores vacíos y "todos"
-    const titleArr = title
+    // ============================================================
+    // 1️⃣ Detectar si el usuario seleccionó "Todos" en cada filtro
+    // ============================================================
+    const hasTodosTitle = title.split(",").some(t => t.trim().toLowerCase() === "todos");
+    const hasTodosLocation = location.split(",").some(l => l.trim().toLowerCase() === "todos");
+    const hasTodosStatus = status.split(",").some(s => s.trim().toLowerCase() === "todos");
+
+    // ============================================================
+    // 2️⃣ Armar arrays limpios SIN "todos", solo si no se seleccionó "todos"
+    // ============================================================
+    const titleArr = !hasTodosTitle
       ? title.split(",").map(t => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
       : [];
-    const locationArr = location
+
+    const locationArr = !hasTodosLocation
       ? location.split(",").map(l => l.trim().toLowerCase()).filter(Boolean).filter(l => l !== "todos")
       : [];
-    const statusArr = status
+
+    const statusArr = !hasTodosStatus
       ? status.split(",").map(s => s.trim().toLowerCase()).filter(Boolean).filter(s => s !== "todos")
       : [];
 
     // ============================================================
-    // 🔄 Mapeo de equivalencias SOLO para Title
+    // 3️⃣ Mapeo de equivalencias SOLO para Title
     // ============================================================
     const titleMapping = {
       "terreno comercial": ["terreno comercial", "terreno industrial"],
@@ -25,27 +36,30 @@ export default async function handler(req, res) {
     };
 
     // ============================================================
-    // 🔍 Expansión de equivalencias + Lógica especial “terreno”
+    // 4️⃣ Expansión de equivalencias + lógica especial “terreno”
     // ============================================================
     let expandedTitleArr = [];
     let applyPureTerrenoRule = false;
 
-    titleArr.forEach(t => {
-      const key = t.toLowerCase();
+    if (!hasTodosTitle) {
+      titleArr.forEach(t => {
+        const key = t.toLowerCase();
 
-      // 🟢 Caso especial: “terreno”
-      if (key === "terreno") {
-        applyPureTerrenoRule = true;
-      }
+        if (key === "terreno") {
+          applyPureTerrenoRule = true;
+        }
 
-      // 🟢 Caso equivalencias normales
-      if (titleMapping[key]) {
-        expandedTitleArr.push(...titleMapping[key]);
-      } else {
-        expandedTitleArr.push(t);
-      }
-    });
+        if (titleMapping[key]) {
+          expandedTitleArr.push(...titleMapping[key]);
+        } else {
+          expandedTitleArr.push(t);
+        }
+      });
+    }
 
+    // ============================================================
+    // 5️⃣ Construcción base de la query
+    // ============================================================
     let query = `
       SELECT id, title, image, price, moneda, location, address, status,
              bedrooms, bathrooms, area, created_at
@@ -55,36 +69,36 @@ export default async function handler(req, res) {
     const queryParams = [];
 
     // ============================================================
-    // 🌍 Location (coincidencia exacta de frase)
+    // 6️⃣ Location
     // ============================================================
-    if (locationArr.length) {
+    if (!hasTodosLocation && locationArr.length) {
       query += ` AND (${locationArr.map(() => `LOWER(location) LIKE ?`).join(" OR ")})`;
-      locationArr.forEach(l => queryParams.push(`%${l.toLowerCase()}%`));
+      locationArr.forEach(l => queryParams.push(`%${l}%`));
     }
 
     // ============================================================
-    // 📌 Status (coincidencia exacta de frase)
+    // 7️⃣ Status
     // ============================================================
-    if (statusArr.length) {
+    if (!hasTodosStatus && statusArr.length) {
       query += ` AND (${statusArr.map(() => `LOWER(status) LIKE ?`).join(" OR ")})`;
-      statusArr.forEach(s => queryParams.push(`%${s.toLowerCase()}%`));
+      statusArr.forEach(s => queryParams.push(`%${s}%`));
     }
 
     // ============================================================
-    // 🔍 Title - coincidencia general + lógica especial “terreno”
+    // 8️⃣ Title (reglas “terreno puro” + equivalencias)
+    // → Solo se aplica SI NO se eligió “Todos”
     // ============================================================
-    if (expandedTitleArr.length) {
+    if (!hasTodosTitle && expandedTitleArr.length) {
       query += ` AND (`;
 
-      // 🔥 Si aplica la regla especial de “terreno puro”:
       if (applyPureTerrenoRule) {
-        query += ` (LOWER(title) LIKE ?) 
-                   AND LOWER(title) NOT LIKE '%comercial%' 
-                   AND LOWER(title) NOT LIKE '%industrial%' 
-                 `;
+        query += `
+          (LOWER(title) LIKE ?) 
+          AND LOWER(title) NOT LIKE '%comercial%'
+          AND LOWER(title) NOT LIKE '%industrial%'
+        `;
         queryParams.push("%terreno%");
       } else {
-        // 🔥 Búsqueda normal con equivalencias
         query += expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
         expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
       }
@@ -93,16 +107,20 @@ export default async function handler(req, res) {
     }
 
     // ============================================================
-    // 📦 Ordenamiento (sin cambios)
+    // 9️⃣ Ordenamiento
     // ============================================================
     if (featured === "true") {
       query += " ORDER BY created_at DESC";
-    } else if (!titleArr.length && !locationArr.length && !statusArr.length) {
+    } else if (!titleArr.length && !locationArr.length && !statusArr.length && hasTodosTitle && hasTodosLocation && hasTodosStatus) {
+      // NO HAY FILTROS → lista aleatoria como antes
       query += " ORDER BY RAND() LIMIT 10";
     } else {
       query += " ORDER BY created_at DESC";
     }
 
+    // ============================================================
+    // 🔟 Ejecución final
+    // ============================================================
     const [rows] = await pool.query(query, queryParams);
     return res.status(200).json(rows);
 
