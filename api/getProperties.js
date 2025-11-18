@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // 2️⃣ Armar arrays limpios SIN "todos", solo si no se seleccionó "todos"
     // ============================================================
     const titleArr = !hasTodosTitle
-      ? title.split(",").map(t => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
+      ? title.split(",").map(t => t.trim().toLowerCase()).filter(Boolean).filter(t => t !== "todos")
       : [];
 
     const locationArr = !hasTodosLocation
@@ -43,14 +43,12 @@ export default async function handler(req, res) {
 
     if (!hasTodosTitle) {
       titleArr.forEach(t => {
-        const key = t.toLowerCase();
-
-        if (key === "terreno") {
+        if (t === "terreno") {
           applyPureTerrenoRule = true;
         }
 
-        if (titleMapping[key]) {
-          expandedTitleArr.push(...titleMapping[key]);
+        if (titleMapping[t]) {
+          expandedTitleArr.push(...titleMapping[t]);
         } else {
           expandedTitleArr.push(t);
         }
@@ -86,21 +84,21 @@ export default async function handler(req, res) {
 
     // ============================================================
     // 8️⃣ Title (reglas “terreno puro” + equivalencias)
-    // → Solo se aplica SI NO se eligió “Todos”
+    // → Solo se aplica si NO se eligió “Todos” y se seleccionó terreno explícitamente
     // ============================================================
     if (!hasTodosTitle && expandedTitleArr.length) {
       query += ` AND (`;
 
-      if (applyPureTerrenoRule) {
+      if (applyPureTerrenoRule && titleArr.includes("terreno")) {
         query += `
-          (LOWER(title) LIKE ?) 
+          (LOWER(title) LIKE ?)
           AND LOWER(title) NOT LIKE '%comercial%'
           AND LOWER(title) NOT LIKE '%industrial%'
         `;
         queryParams.push("%terreno%");
       } else {
         query += expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
-        expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
+        expandedTitleArr.forEach(t => queryParams.push(`%${t}%`));
       }
 
       query += `)`;
@@ -112,7 +110,6 @@ export default async function handler(req, res) {
     if (featured === "true") {
       query += " ORDER BY created_at DESC";
     } else if (!titleArr.length && !locationArr.length && !statusArr.length && hasTodosTitle && hasTodosLocation && hasTodosStatus) {
-      // NO HAY FILTROS → lista aleatoria como antes
       query += " ORDER BY RAND() LIMIT 10";
     } else {
       query += " ORDER BY created_at DESC";
