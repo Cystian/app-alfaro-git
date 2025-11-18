@@ -42,14 +42,11 @@ export default async function handler(req, res) {
     if (!hasTodosTitle) {
       titleArr.forEach(t => {
         const key = t.toLowerCase();
-        if (key === "terreno") applyPureTerrenoRule = true;
+        if (key === "terreno") applyPureTerrenoRule = true; // terreno puro
         if (titleMapping[key]) expandedTitleArr.push(...titleMapping[key]);
         else expandedTitleArr.push(t);
       });
     }
-
-    // NUEVO: Si el usuario eligió "Todos", activamos terreno puro también
-    if (hasTodosTitle) applyPureTerrenoRule = true;
 
     // =============================
     // 5️⃣ Construcción base de la query
@@ -92,7 +89,7 @@ export default async function handler(req, res) {
           AND LOWER(title) NOT LIKE '%industrial%'
         `;
         queryParams.push("%terreno%");
-        // 🔹 Si hay otros títulos seleccionados, los agregamos con OR
+        // 🔹 Otros títulos seleccionados
         if (expandedTitleArr.length) {
           query += " OR " + expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
           expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
