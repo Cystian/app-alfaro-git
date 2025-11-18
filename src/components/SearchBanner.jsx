@@ -1,6 +1,7 @@
 // ✅ Banner de búsqueda dinámico
 import React, { useState, useEffect } from "react";
 import CustomSelect from "./CustomSelect";
+
 const SearchBanner = ({ onSearch }) => {
   const [distritosOptions, setDistritosOptions] = useState([]);
   const [modalidadesOptions, setModalidadesOptions] = useState([]);
@@ -15,7 +16,7 @@ const SearchBanner = ({ onSearch }) => {
 
   useEffect(() => setTimeout(() => setShowText(true), 200), []);
 
-  // 🖼️ Lista de imágenes para el banner (rotación automática)
+  // 🖼️ Lista de imágenes del banner
   const images = [
     "/banner1.png",
     "/banner2.png",
@@ -27,7 +28,7 @@ const SearchBanner = ({ onSearch }) => {
 
   const [currentImage, setCurrentImage] = useState(0);
 
-  // ⏱️ Cambia la imagen cada 4 segundos con transición suave
+  // ⏱️ Rotación automática
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
@@ -35,7 +36,7 @@ const SearchBanner = ({ onSearch }) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // 🔹 Carga opciones dinámicas desde Netlify Function
+  // 🔹 Carga opciones dinámicas
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -51,23 +52,36 @@ const SearchBanner = ({ onSearch }) => {
     fetchOptions();
   }, []);
 
+  // 🚀 Nuevo: función que limpia "Todos"
+  const cleanFilter = (arr) => {
+    if (!Array.isArray(arr)) return [];
+    return arr.filter((item) => item.toLowerCase() !== "todos");
+  };
+
   const isSearchEnabled =
     distritos.length > 0 && modalidades.length > 0 && tipos.length > 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const flatDistritos = distritos.join ? distritos : distritos;
+
+    // 🧹 Nueva limpieza segura
+    const cleanDistritos = cleanFilter(distritos);
+    const cleanModalidades = cleanFilter(modalidades);
+    const cleanTipos = cleanFilter(tipos);
+
+    // 📦 Si el usuario eligió "Todos", simplemente NO enviamos ese filtro
     const filters = {
-      location: flatDistritos.join(","),
-      status: modalidades.join(","),
-      title: tipos.join(","),
+      location: cleanDistritos.length ? cleanDistritos.join(",") : "",
+      status: cleanModalidades.length ? cleanModalidades.join(",") : "",
+      title: cleanTipos.length ? cleanTipos.join(",") : "",
     };
-    onSearch(filters); // pasa filtros al grid
+
+    onSearch(filters);
   };
 
   return (
     <section className="relative w-full h-[520px] flex flex-col items-center justify-center mt-2 px-4 overflow-visible rounded-3xl">
-      {/* Fondo dinámico con transición tipo fade */}
+      {/* Fondos dinámicos */}
       {images.map((img, index) => (
         <div
           key={index}
@@ -83,7 +97,6 @@ const SearchBanner = ({ onSearch }) => {
         />
       ))}
 
-      {/* Contenedor principal */}
       <div className="relative z-10 w-full max-w-6xl p-6 bg-white bg-opacity-50 rounded-2xl shadow-xl -mt-20 ">
         <h2
           className={`text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 transition-all duration-1000 ease-out ${
@@ -96,7 +109,7 @@ const SearchBanner = ({ onSearch }) => {
           Explora propiedades aqui
         </h2>
 
-        {/* Formulario de búsqueda */}
+        {/* Formulario */}
         <form className="flex flex-wrap gap-4 justify-center items-end" onSubmit={handleSubmit}>
           <div className="w-full sm:w-56">
             <CustomSelect
@@ -109,6 +122,7 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
+
           <div className="w-full sm:w-56">
             <CustomSelect
               label="Modalidad"
@@ -120,6 +134,7 @@ const SearchBanner = ({ onSearch }) => {
               setOpenDropdown={setOpenDropdown}
             />
           </div>
+
           <div className="w-full sm:w-56">
             <CustomSelect
               label="Tipo"
@@ -132,7 +147,6 @@ const SearchBanner = ({ onSearch }) => {
             />
           </div>
 
-          {/* Botón Buscar */}
           <div className="w-full sm:w-auto flex justify-center items-center">
             <button
               type="submit"
@@ -149,7 +163,6 @@ const SearchBanner = ({ onSearch }) => {
         </form>
       </div>
 
-      {/* Animación flotante */}
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0); }
