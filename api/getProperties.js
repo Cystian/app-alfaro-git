@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     // 2️⃣ Armar arrays limpios SIN "todos", solo si no se seleccionó "todos"
     // ============================================================
     const titleArr = !hasTodosTitle
-      ? title.split(",").map(t => t.trim().toLowerCase()).filter(Boolean).filter(t => t !== "todos")
+      ? title.split(",").map(t => t.trim()).filter(Boolean).filter(t => t.toLowerCase() !== "todos")
       : [];
 
     const locationArr = !hasTodosLocation
@@ -43,12 +43,14 @@ export default async function handler(req, res) {
 
     if (!hasTodosTitle) {
       titleArr.forEach(t => {
-        if (t === "terreno") {
+        const key = t.toLowerCase();
+
+        if (key === "terreno") {
           applyPureTerrenoRule = true;
         }
 
-        if (titleMapping[t]) {
-          expandedTitleArr.push(...titleMapping[t]);
+        if (titleMapping[key]) {
+          expandedTitleArr.push(...titleMapping[key]);
         } else {
           expandedTitleArr.push(t);
         }
@@ -84,24 +86,26 @@ export default async function handler(req, res) {
 
     // ============================================================
     // 8️⃣ Title (reglas “terreno puro” + equivalencias)
-    // → Solo se aplica si NO se eligió “Todos” y se seleccionó terreno explícitamente
     // ============================================================
     if (!hasTodosTitle && expandedTitleArr.length) {
-      query += ` AND (`;
+      let titleConditions = [];
 
+      // 🔹 Caso “terreno puro”
       if (applyPureTerrenoRule && titleArr.includes("terreno")) {
-        query += `
-          (LOWER(title) LIKE ?)
-          AND LOWER(title) NOT LIKE '%comercial%'
-          AND LOWER(title) NOT LIKE '%industrial%'
-        `;
+        titleConditions.push(
+          `(LOWER(title) LIKE ? AND LOWER(title) NOT LIKE '%comercial%' AND LOWER(title) NOT LIKE '%industrial%')`
+        );
         queryParams.push("%terreno%");
-      } else {
-        query += expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
-        expandedTitleArr.forEach(t => queryParams.push(`%${t}%`));
       }
 
-      query += `)`;
+      // 🔹 Otros títulos de equivalencias
+      const otherTitles = expandedTitleArr.filter(t => t.toLowerCase() !== "terreno");
+      otherTitles.forEach(t => {
+        titleConditions.push(`LOWER(title) LIKE ?`);
+        queryParams.push(`%${t.toLowerCase()}%`);
+      });
+
+      query += ` AND (${titleConditions.join(" OR ")})`;
     }
 
     // ============================================================
