@@ -34,19 +34,22 @@ export default async function handler(req, res) {
     };
 
     // =============================
-    // 4️⃣ Expansión de títulos + lógica “terreno puro”
+    // 4️⃣ Expansión de títulos
     // =============================
     let expandedTitleArr = [];
     let applyPureTerrenoRule = false;
 
-    if (!hasTodosTitle) {
-      titleArr.forEach(t => {
-        const key = t.toLowerCase();
-        if (key === "terreno") applyPureTerrenoRule = true; // terreno puro
-        if (titleMapping[key]) expandedTitleArr.push(...titleMapping[key]);
-        else expandedTitleArr.push(t);
-      });
-    }
+    titleArr.forEach(t => {
+      const key = t.toLowerCase();
+
+      if (key === "terreno") {
+        applyPureTerrenoRule = true; // terreno puro
+      } else if (titleMapping[key]) {
+        expandedTitleArr.push(...titleMapping[key]);
+      } else {
+        expandedTitleArr.push(t);
+      }
+    });
 
     // =============================
     // 5️⃣ Construcción base de la query
@@ -76,31 +79,22 @@ export default async function handler(req, res) {
     }
 
     // =============================
-    // 8️⃣ Title (terreno puro + equivalencias)
+    // 8️⃣ Title
     // =============================
-    if (applyPureTerrenoRule || expandedTitleArr.length) {
-      query += ` AND (`;
-
+    if (!hasTodosTitle) {
       if (applyPureTerrenoRule) {
-        // 🔹 Terreno puro (sin comercial ni industrial)
+        // 🔹 Solo terreno puro
         query += `
-          (LOWER(title) LIKE ?) 
+          AND LOWER(title) LIKE ? 
           AND LOWER(title) NOT LIKE '%comercial%' 
           AND LOWER(title) NOT LIKE '%industrial%'
         `;
         queryParams.push("%terreno%");
-        // 🔹 Otros títulos seleccionados
-        if (expandedTitleArr.length) {
-          query += " OR " + expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
-          expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
-        }
-      } else {
-        // 🔹 Solo títulos normales
-        query += expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ");
+      } else if (expandedTitleArr.length) {
+        // 🔹 Otros títulos (incluye equivalencias)
+        query += ` AND (${expandedTitleArr.map(() => `LOWER(title) LIKE ?`).join(" OR ")})`;
         expandedTitleArr.forEach(t => queryParams.push(`%${t.toLowerCase()}%`));
       }
-
-      query += `)`;
     }
 
     // =============================
