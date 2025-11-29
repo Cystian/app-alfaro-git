@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     // =============================
     let query = `
       SELECT id, title, image, price, moneda, location, address, status,
-             bedrooms, bathrooms, area, created_at
+             bedrooms, bathrooms, area, created_at,destacado
       FROM properties
       WHERE 1=1
     `;
@@ -109,9 +109,9 @@ export default async function handler(req, res) {
     // 9️⃣ Ordenamiento
     // =============================
     if (featured === "true") {
-      query += " ORDER BY created_at DESC";
+      query += " AND destacado = 1 ORDER BY created_at DESC";
     } else if (!titleArr.length && !locationArr.length && !statusArr.length && hasTodosTitle && hasTodosLocation && hasTodosStatus) {
-      query += " ORDER BY RAND() LIMIT 10";
+      query += " ORDER BY RAND() LIMIT 1000";
     } else {
       query += " ORDER BY created_at DESC";
     }
