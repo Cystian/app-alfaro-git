@@ -14,7 +14,7 @@ const FeaturedProperties = () => {
       try {
         const res = await fetch("/api/getProperties?featured=true");
         const data = await res.json();
-        setProperties(data.slice(0, 6)); // siempre 6 más recientes
+        setProperties(data);
       } catch (err) {
         console.error("Error al cargar propiedades destacadas:", err);
       }
