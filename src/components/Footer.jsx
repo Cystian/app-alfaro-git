@@ -24,11 +24,11 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-2 text-[#DF011A]">Enlaces</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Inicio</Link></li>
-              <li><Link to="/vende-o-alquila" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Vende o Alquila</Link></li>
-              <li><Link to="/servicios" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Servicios</Link></li>
-              <li><Link to="/blog" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Blog</Link></li>
-                 <li><Link to="/asesores" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Asesores</Link></li>
+              <li><Link to="/" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Inicio</Link></li>
+              <li><Link to="/vende-o-alquila" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Vende o Alquila</Link></li>
+              <li><Link to="/servicios" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Servicios</Link></li>
+              <li><Link to="/blog" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Blog</Link></li>
+                 <li><Link to="/asesores" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Asesores</Link></li>
             </ul>
           </div>
 
@@ -36,11 +36,11 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-2 text-[#DF011A]">Contáctanos</h4>
             <div className="flex space-x-4 mt-2">
-              <a href="https://www.facebook.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500"><FaFacebookF size={20} /></a>
-              <a href="https://www.instagram.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500"><FaInstagram size={20} /></a>
-              <a href="https://www.tiktok.com/@inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500"><FaTiktok size={20} /></a>
-              <a href="https://wa.me/51940221494" target="_blank" rel="noopener noreferrer" className="hover:text-red-500"><FaWhatsapp size={20} /></a>
-              <a href="tel:+51940221494" className="hover:text-red-500"><FaPhoneAlt size={20} /></a>
+              <a href="https://www.facebook.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-[#DF011A]"><FaFacebookF size={20} /></a>
+              <a href="https://www.instagram.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-[#DF011A]"><FaInstagram size={20} /></a>
+              <a href="https://www.tiktok.com/@inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-[#DF011A]"><FaTiktok size={20} /></a>
+              <a href="https://wa.me/51940221494" target="_blank" rel="noopener noreferrer" className="hover:text-[#DF011A]"><FaWhatsapp size={20} /></a>
+              <a href="tel:+51940221494" className="hover:text-[#DF011A]"><FaPhoneAlt size={20} /></a>
             </div>
             <p className="mt-3 text-sm">Tel: +51 940 221 494</p>
             <p className="text-sm">Email: contacto@alfaroinmobiliaria.pe</p>
