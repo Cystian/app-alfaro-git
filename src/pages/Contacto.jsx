@@ -37,8 +37,8 @@ const Contacto = () => {
           <div className="flex flex-wrap items-center gap-2">
           <Mail className="text-[#DF011A]" size={20} />
           <span className="text-gray-800 text-base md:text-lg"> albertoalfaro@</span>
-              <span className="text-gray-800 text-base md:text-lg"> inmobiliariaalbertoalfaro</span>
-              <span className="text-gray-800 text-base md:text-lg"> .com.pe</span>
+              <span className="text-gray-800 text-base md:text-lg">inmobiliariaalbertoalfaro</span>
+              <span className="text-gray-800 text-base md:text-lg">.com.pe</span>
         </div>
 
 
