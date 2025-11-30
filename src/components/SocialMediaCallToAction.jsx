@@ -53,13 +53,13 @@ const SocialMediaSection = () => {
               href={social.enlace}
               target="_blank"
               rel="noopener noreferrer"
-              className={`social-card flex flex-col items-center justify-center fog-breathe ${
+              className={`social-card flex flex-col items-center justify-center fog-breathe text-white ${
                 useClass ? colorValue : ""
               }`}
               style={useStyle}
             >
               {iconMap[social.icono] || null}
-              <p className="social-text">{social.nombre}</p>
+              <p className="social-text text-white ">{social.nombre}</p>
             </a>
           );
         })}
