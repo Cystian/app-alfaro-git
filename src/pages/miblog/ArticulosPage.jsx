@@ -7,7 +7,7 @@ import FloatingShare from "../../components/FloatingShare";
 const ArticulosPage = () => {
   return (
     <>
-    <FloatingShare />
+  
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Botón Volver al Blog */}
       <div className="mb-6">
