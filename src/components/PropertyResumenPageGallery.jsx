@@ -99,18 +99,18 @@ export default function PropertyResumePageGallery({
               {/* BARRA DE PROGRESO */}
               <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-700">
                 <div
-                  className="h-full bg-red-500 transition-all"
+                  className="h-full bg-[#DF011A] transition-all"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
 
               {/* CONTROLES */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 px-4 py-2 rounded-full flex items-center gap-4 text-white">
-                <button onClick={togglePlay} className="text-xl hover:text-red-400">
+                <button onClick={togglePlay} className="text-xl hover:text-[#DF011A]">
                   {isPlaying ? <FaPause /> : <FaPlay />}
                 </button>
 
-                <button onClick={toggleMute} className="text-xl hover:text-red-400">
+                <button onClick={toggleMute} className="text-xl hover:text-[#DF011A]">
                   {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
                 </button>
               </div>
@@ -130,7 +130,7 @@ export default function PropertyResumePageGallery({
               initial={{ y: -5, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="absolute top-4 left-4 flex items-center bg-white shadow-lg px-3 py-1 border-l-2 border-red-500 font-semibold text-red-500"
+              className="absolute top-4 left-4 flex items-center bg-white shadow-lg px-3 py-1 border-l-2 border-[#DF011A] font-semibold text-[#DF011A]"
             >
               {currentImage.title}
             </motion.div>
