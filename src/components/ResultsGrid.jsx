@@ -86,9 +86,15 @@ export default function ResultsGrid({ properties }) {
 
               {/* Contenido */}
               <div className="flex flex-col flex-grow">
-                <h3 className="text-lg font-semibold text-[#C80000] truncate">
-                  {property.title}
-                </h3>
+               <h3
+  className="text-lg font-semibold truncate 
+             bg-[#DF011A] text-white 
+             px-3 py-1 
+             inline-block rounded-xl shadow 
+             border border-[#b80014]"
+>
+  {property.title}
+</h3>
                 <p className="text-sm text-blue-600 mt-1 truncate">
                   {property.address}
                 </p>
@@ -112,7 +118,7 @@ export default function ResultsGrid({ properties }) {
                     href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${property.title}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
+                    className="flex-1 bg-[#DF011A] text-white text-center py-2 px-3 rounded-lg hover:bg-[#BB0017] active:bg-[#980013] transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Contactar
                   </a>
@@ -121,7 +127,7 @@ export default function ResultsGrid({ properties }) {
                     href={`/propiedades/resumen/${property.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
+                    className="flex-1 bg-[#232323] text-white text-center py-2 px-3 rounded-lg hover:bg-[#1A1A1A] active:bg-[#0F0F0F] transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Ver más
                   </a>
