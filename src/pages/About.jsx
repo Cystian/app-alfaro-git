@@ -100,7 +100,7 @@ const About = () => {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="relative bg-[#F9F9F9] p-10 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200"
               >
-                <h3 className="text-2xl font-semibold mb-4 text-[#C80000] tracking-wide">
+                <h3 className="text-2xl font-semibold mb-4 text-[#DF011A] tracking-wide">
                   {item.title}
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
@@ -118,7 +118,7 @@ const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-4xl font-semibold mb-16 text-[#C80000] tracking-wide"
+            className="text-4xl font-semibold mb-16 text-[#DF011A] tracking-wide"
           >
             Nuestros Valores
           </motion.h2>
@@ -138,7 +138,7 @@ const About = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white p-10 rounded-3xl shadow-md hover:shadow-xl transition-all duration-500 flex flex-col items-center border border-gray-200"
               >
-                <div className="text-[#C80000] mb-5">{val.icon}</div>
+                <div className="text-[#DF011A] mb-5">{val.icon}</div>
                 <h4 className="text-xl font-semibold text-[#222222] tracking-wide">
                   {val.title}
                 </h4>
