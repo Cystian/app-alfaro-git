@@ -77,9 +77,6 @@ export default function Home() {
   className="bg-gray-50 p-6 rounded-2xl shadow bg-white bg-cover bg-center"
   style={{
    backgroundImage: "url('/banner_contacto_2.png')",
-    backgroundSize: "contain",   // La clave: mantiene nitidez
-    backgroundRepeat: "no-repeat",
-    height: "100%",              // No agranda el section
   }}
 >
  
