@@ -99,7 +99,7 @@ const PropertyModal = ({ property, onClose }) => {
             <div className="w-1/2 h-4 bg-gray-300 rounded"></div>
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center h-64 text-red-500">
+          <div className="flex items-center justify-center h-64 text-[#DF011A]">
             <p>{error}</p>
           </div>
         ) : (
