@@ -72,17 +72,27 @@ export default function Home() {
         </section>
 
         {/* Contacto */}
-        <section id="contacto" className="bg-gray-50 p-6 rounded-2xl shadow bg-white">
-          <div className="mb-4">
-            <img
-              src="/subtitulos/tienes_dudas.png"
-              alt="Tienes Dudas"
-              className="w-[30rem] mx-auto"
-            />
-          </div>
+ <section
+  id="contacto"
+  className="bg-gray-50 p-6 rounded-2xl shadow bg-white bg-cover bg-center"
+  style={{
+    backgroundImage: "url('/fondo/contacto.jpg')",
+  }}
+>
+  <div className="w-full flex justify-end mb-4">
+    <img
+      src="/banner_contacto.jpg"
+      alt="Tienes Dudas"
+      className="w-[30rem]"
+    />
+  </div>
 
-          <ContactForm />
-        </section>
+  <ContactForm />
+</section>
+
+
+
+        
       </main>
     </PageWrapper>
   );
