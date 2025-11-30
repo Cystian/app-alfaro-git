@@ -169,7 +169,7 @@ const NuestraHistoria = () => {
                 key={i}
                 className="p-6 bg-[#FFF5F5] rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
               >
-                <Icon className="mx-auto text-[#C80000] w-10 h-10 mb-3" />
+                <Icon className="mx-auto text-[#DF011A] w-10 h-10 mb-3" />
                 <h3 className="font-bold text-gray-900">{title}</h3>
                 <p className="text-gray-600 text-sm mt-2">{desc}</p>
               </div>
@@ -183,6 +183,7 @@ const NuestraHistoria = () => {
 };
 
 export default NuestraHistoria;
+
 
 
 
