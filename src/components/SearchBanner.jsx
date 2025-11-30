@@ -106,7 +106,7 @@ const SearchBanner = ({ onSearch }) => {
             textShadow: "2px 2px 4px rgba(0,0,0,0.6), 0 0 6px rgba(255,0,0,0.4)",
           }}
         >
-          Explora propiedades aqui
+          EXPLORA PROPIEDADES AQUÍ
         </h2>
 
         {/* Formulario */}
