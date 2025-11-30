@@ -79,13 +79,7 @@ export default function Home() {
     backgroundImage: "url('/banner_contacto.jpg')",
   }}
 >
-  <div className="w-full flex justify-end mb-4">
-    <img
-      src="/subtitulo/tienes_dudas.jpg"
-      alt="Tienes Dudas"
-      className="w-[30rem]"
-    />
-  </div>
+ 
 
   <ContactForm />
 </section>
