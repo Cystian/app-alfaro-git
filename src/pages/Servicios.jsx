@@ -79,7 +79,7 @@ const Servicios = () => {
           >
             <p className="text-gray-700 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
               En{" "}
-              <span className="font-semibold text-[#C80000]">
+              <span className="font-semibold text-[#DF011A]">
                 Inmobiliaria Alberto Alfaro
               </span>{" "}
               te brindamos los siguientes servicios en nuestras tres áreas de
@@ -138,7 +138,7 @@ const Servicios = () => {
                       className="w-full h-64 object-cover opacity-90 group-hover:opacity-40 transition-all duration-500"
                     />
                     <div className="absolute inset-0 flex flex-col justify-center items-center text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="text-[#C80000] mb-3">{serv.icon}</div>
+                      <div className="text-[#DF011A] mb-3">{serv.icon}</div>
                       <h4 className="text-2xl font-semibold text-gray mb-2">
                         {serv.title}
                       </h4>
@@ -163,7 +163,7 @@ const Servicios = () => {
                 transition={{ duration: 0.7, delay: i * 0.15 }}
               >
                 <h2
-                  className="text-3xl font-bold text-[#C80000] text-center mb-12"
+                  className="text-3xl font-bold text-[#DF011A] text-center mb-12"
                   style={{ WebkitTextStroke: "0.6px #9ca3af" }}
                 >
                   {serv.title}
