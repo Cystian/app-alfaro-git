@@ -13,7 +13,7 @@ const Footer = () => {
           
           {/* Columna 1 */}
           <div>
-            <h3 className="text-xl font-bold text-red-600">Inmobiliaria Alberto Alfaro</h3>
+            <h3 className="text-xl font-bold text-[#DF011A]">Inmobiliaria Alberto Alfaro</h3>
             <p className="mt-2 text-sm">
               Soluciones inmobiliarias con confianza, seguridad y asesoría personalizada. 
               Te ayudamos a encontrar el hogar o inversión ideal.
@@ -22,7 +22,7 @@ const Footer = () => {
 
           {/* Columna 2 */}
           <div>
-            <h4 className="text-lg font-semibold mb-2 text-red-500">Enlaces</h4>
+            <h4 className="text-lg font-semibold mb-2 text-[#DF011A]">Enlaces</h4>
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Inicio</Link></li>
               <li><Link to="/vende-o-alquila" className="hover:text-red-400 transition no-underline hover:no-underline focus:no-underline active:no-underline">Vende o Alquila</Link></li>
@@ -34,7 +34,7 @@ const Footer = () => {
 
           {/* Columna 3 */}
           <div>
-            <h4 className="text-lg font-semibold mb-2 text-red-500">Contáctanos</h4>
+            <h4 className="text-lg font-semibold mb-2 text-[#DF011A]">Contáctanos</h4>
             <div className="flex space-x-4 mt-2">
               <a href="https://www.facebook.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500"><FaFacebookF size={20} /></a>
               <a href="https://www.instagram.com/inmobiliariaalfaro" target="_blank" rel="noopener noreferrer" className="hover:text-red-500"><FaInstagram size={20} /></a>
