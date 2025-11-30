@@ -48,7 +48,6 @@ const Blog = () => {
 
   return (
     <>
-    <FloatingShare />
     <section className="relative w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 px-6 pt-8 pb-44 min-h-[calc(100vh-4rem)]">
       {isMainBlog ? (
         <>
