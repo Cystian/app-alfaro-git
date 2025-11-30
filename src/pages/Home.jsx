@@ -81,7 +81,7 @@ export default function Home() {
 >
   <div className="w-full flex justify-end mb-4">
     <img
-      src="/fondo/contacto.jpg"
+      src="/subtitulo/tienes_dudas.jpg"
       alt="Tienes Dudas"
       className="w-[30rem]"
     />
