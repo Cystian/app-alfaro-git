@@ -76,12 +76,12 @@ export default function Home() {
   id="contacto"
   className="bg-gray-50 p-6 rounded-2xl shadow bg-white bg-cover bg-center"
   style={{
-    backgroundImage: "url('/fondo/contacto.jpg')",
+    backgroundImage: "url('/banner_contacto.jpg')",
   }}
 >
   <div className="w-full flex justify-end mb-4">
     <img
-      src="/banner_contacto.jpg"
+      src="/fondo/contacto.jpg"
       alt="Tienes Dudas"
       className="w-[30rem]"
     />
