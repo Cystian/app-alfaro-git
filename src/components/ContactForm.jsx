@@ -52,6 +52,9 @@ Mensaje: ${formData.mensaje || "—"}`;
       >
         {/* Encabezado tipo WhatsApp */}
         <div className="flex items-center gap-3 mb-4">
+
+          <div className="mb-4"> <img src="/subtitulos/tienes_dudas.png" alt="Tienes Dudas" className="w-[30rem] mx-auto" /> </div>
+          
           <div className="bg-green-500 p-2 rounded-full text-white">
             <MessageCircle className="w-5 h-5" />
           </div>
