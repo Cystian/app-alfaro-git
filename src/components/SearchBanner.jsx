@@ -18,12 +18,12 @@ const SearchBanner = ({ onSearch }) => {
 
   // 🖼️ Lista de imágenes del banner
   const images = [
-    "/banner1.png",
-    "/banner2.png",
-    "/banner3.png",
-    "/banner4.png",
-    "/banner5.png",
-    "/banner6.png",
+    "/IMG1.png",
+    "/IMG2.png",
+    "/IMG3.png",
+    "/IMG4.png",
+    "/IMG5.png",
+    "/IMG6.png",
   ];
 
   const [currentImage, setCurrentImage] = useState(0);
