@@ -30,7 +30,7 @@ const VendeoAlquila = () => {
             className="max-w-4xl mx-auto"
           >
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
-              Nuestra <span className="font-semibold text-[#C80000]">experiencia y capacidad</span> nos permite atenderte
+              Nuestra <span className="font-semibold text-[#DF011A]">experiencia y capacidad</span> nos permite atenderte
               de manera segura y personalizada.
             </p>
           </motion.div>
@@ -54,7 +54,7 @@ const VendeoAlquila = () => {
 
             
             <p className="text-gray-600 max-w-3xl mx-auto">
-              En <span className="font-semibold text-[#C80000]">Inmobiliaria Alberto Alfaro</span> te ofrecemos
+              En <span className="font-semibold text-[#DF011A]">Inmobiliaria Alberto Alfaro</span> te ofrecemos
               un servicio y asesoramiento completo, gestionando detalladamente las siguientes actividades
               de principio a fin:
             </p>
@@ -110,7 +110,7 @@ const VendeoAlquila = () => {
         transition={{ duration: 0.6, delay: index * 0.1 }}
         className="relative bg-[#F9F9F9] p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-gray-200 text-center"
       >
-        <span className="absolute -top-5 left-6 bg-[#C80000] text-white font-semibold text-sm px-3 py-1 rounded-full shadow-md">
+        <span className="absolute -top-5 left-6 bg-[#DF011A] text-white font-semibold text-sm px-3 py-1 rounded-full shadow-md">
           Paso {item.step}
         </span>
 
@@ -123,7 +123,7 @@ const VendeoAlquila = () => {
           />
         </div>
 
-        <h3 className="text-xl font-semibold text-[#C80000] mb-3 mt-2">
+        <h3 className="text-xl font-semibold text-[#DF011A] mb-3 mt-2">
           {item.title}
         </h3>
         <p className="text-gray-700 leading-relaxed">{item.desc}</p>
