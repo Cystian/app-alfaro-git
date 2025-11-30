@@ -34,13 +34,10 @@ const Contacto = () => {
           <span className="text-gray-800 text-base md:text-lg">+51 940 221 494</span>
         </div>
         
-<div className="flex gap-3 items-start">
-  <Mail className="text-[#DF011A] mt-1" size={20} />
-
-  <p className="text-gray-800 text-base md:text-lg leading-relaxed break-words">
-    albertoalfaro@inmobiliariaalbertoalfaro.com.pe
-  </p>
-</div>
+          <div className="flex flex-wrap items-center gap-2">
+          <Mail className="text-[#DF011A]" size={20} />
+          <span className="text-gray-800 text-base md:text-lg"> albertoalfaro@inmobiliariaalbertoalfaro.com.pe</span>
+        </div>
 
 
         
