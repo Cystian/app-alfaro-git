@@ -52,7 +52,7 @@ const FeaturedProperties = () => {
         {properties.map((prop, index) => (
           <SwiperSlide key={prop.id}>
             <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
-              <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
+              <div className="absolute top-2 left-2 bg-[#DF011A] text-white text-xs font-bold px-2 py-1 rounded-lg shadow">
                 {index + 1}/{properties.length}
               </div>
                   <a
