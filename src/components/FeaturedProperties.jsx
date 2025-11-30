@@ -92,7 +92,7 @@ const FeaturedProperties = () => {
                     href={`https://wa.me/51940221494?text=Hola, me interesa la propiedad: ${prop.title}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-green-500 text-white text-center py-2 px-3 rounded-lg hover:bg-green-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
+                    className="flex-1 bg-[#DF011A] text-white text-center py-2 px-3 rounded-lg hover:bg-[#BB0017] active:bg-[#980013] transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Contactar
                   </a>
@@ -112,7 +112,7 @@ const FeaturedProperties = () => {
                     href={`/propiedades/resumen/${prop.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-blue-500 text-white text-center py-2 px-3 rounded-lg hover:bg-blue-600 transition no-underline hover:no-underline focus:no-underline active:no-underline"
+                    className="flex-1   bg-[#232323] text-white text-center py-2 px-3 rounded-lg hover:bg-[#1A1A1A] active:bg-[#0F0F0F] transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Ver más
                   </a>
