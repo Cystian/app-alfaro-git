@@ -226,7 +226,7 @@ input[type="checkbox"].custom-checkbox:focus {
 .social-text {
   margin-top: 0.5rem;
   font-size: 1rem;
-  color: #333;
+  color: inherit;
   font-weight: 500;
 }
 .social-icon {
