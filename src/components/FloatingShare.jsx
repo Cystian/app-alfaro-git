@@ -27,7 +27,7 @@ const FloatingShare = () => {
       {showToast && (
         <div
           className="fixed bottom-6 left-1/2 transform -translate-x-1/2 
-                     bg-white border-2 border-red-600 text-red-600 
+                     bg-white border-2 border-red-600 text-[#DF011A] 
                      px-6 py-3 rounded-xl shadow-lg z-[9999] 
                      font-semibold text-sm animate-fadeInOut"
         >
