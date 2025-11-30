@@ -144,7 +144,7 @@ export default function PropertyResumenPage() {
           )}
 
           {/* Precio */}
-          <p className="text-3xl font-semibold text-center text-rojo-inmobiliario mt-4 mb-4 tracking-wide font-geistmono">
+          <p className="text-3xl font-semibold text-center text-[#DF011A] mt-4 mb-4 tracking-wide font-playfair">
             Precio {data.property.status ? `de ${data.property.status}` : ""}:{" "}
             <span className="font-bold text-negro-profundo">
              {data.property.moneda} {Number(data.property.price).toLocaleString("en-US", { minimumFractionDigits: 2,  maximumFractionDigits: 2,})}
