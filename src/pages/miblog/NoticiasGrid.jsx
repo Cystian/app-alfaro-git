@@ -17,7 +17,7 @@ const NewsCard = ({ id, title, description, image, date }) => (
         alt={title || "Noticia sin título"}
         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
       />
-      <span className="absolute top-4 left-4 bg-red-600 text-white text-xs px-3 py-1 rounded-full font-medium">
+      <span className="absolute top-4 left-4 bg-[#DF011A] text-white text-xs px-3 py-1 rounded-full font-medium">
         {date}
       </span>
     </div>
@@ -27,7 +27,7 @@ const NewsCard = ({ id, title, description, image, date }) => (
       <p className="text-gray-600 text-sm mb-5 line-clamp-3">{description}</p>
       <Link
         to={`/blog/noticias/${id}`}
-        className="text-red-600 hover:text-red-700 font-semibold transition-colors duration-200"
+        className="text-[#DF011A] hover:text-red-700 font-semibold transition-colors duration-200"
       >
         Leer más →
       </Link>
