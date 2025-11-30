@@ -122,7 +122,7 @@ const FeaturedProperties = () => {
                     href={`/propiedades/resumen/${prop.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1   bg-[#303030] text-white text-center py-2 px-3 rounded-lg hover:bg-[#1A1A1A] active:bg-[#0F0F0F] transition no-underline hover:no-underline focus:no-underline active:no-underline"
+                    className="flex-1   bg-[#232323] text-white text-center py-2 px-3 rounded-lg hover:bg-[#1A1A1A] active:bg-[#0F0F0F] transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Ver más
                   </a>
