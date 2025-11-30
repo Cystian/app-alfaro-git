@@ -46,7 +46,7 @@ Mensaje: ${formData.mensaje || "—"}`;
     <section
       className="w-full bg-cover bg-center bg-no-repeat py-20 px-4"
       style={{
-        backgroundImage: "url('/banner_contacto.jpeg')", // 🔥 Aquí cargas tu imagen
+        backgroundImage: "url('/banner_contacto.jpg')", // 🔥 Aquí cargas tu imagen
       }}
     >
       {/* Contenedor que fuerza alineación a la derecha */}
