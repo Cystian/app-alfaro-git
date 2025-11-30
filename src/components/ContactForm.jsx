@@ -43,18 +43,24 @@ Mensaje: ${formData.mensaje || "—"}`;
   };
 
   return (
-    <div className="w-full flex justify-end"> 
-      {/* 🔥 Forzar alineación derecha sin depender del exterior */}
+    <div className="w-full flex justify-end">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md ml-auto bg-white border border-gray-100 p-6 rounded-2xl shadow-lg"
       >
+
+        {/* Imagen de cabecera dentro del card y alineada a la derecha */}
+        <div className="w-full flex justify-end mb-4">
+          <img
+            src="/subtitulos/tienes_dudas.png"
+            alt="Tienes Dudas"
+            className="w-[22rem] object-contain"
+          />
+        </div>
+
         {/* Encabezado tipo WhatsApp */}
         <div className="flex items-center gap-3 mb-4">
-
-          <div className="mb-4"> <img src="/subtitulos/tienes_dudas.png" alt="Tienes Dudas" className="w-[30rem] mx-auto" /> </div>
-          
           <div className="bg-green-500 p-2 rounded-full text-white">
             <MessageCircle className="w-5 h-5" />
           </div>
