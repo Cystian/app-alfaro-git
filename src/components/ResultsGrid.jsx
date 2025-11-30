@@ -48,7 +48,7 @@ export default function ResultsGrid({ properties }) {
           />
           <p className="text-gray-800 text-base font-medium mt-3 text-center tracking-wide">
             🔍{" "}
-            <span className="font-semibold text-blue-600">
+            <span className="font-semibold text-[#DF011A]">
               {properties.length}
             </span>{" "}
             propiedades encontradas
