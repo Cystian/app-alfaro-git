@@ -71,14 +71,16 @@ const FeaturedProperties = () => {
                      </a>
               
               <div className="p-4 flex flex-col flex-grow">
-               <h3
+<h3
   className="text-lg font-semibold truncate 
              bg-[#DF011A] text-white 
              px-3 py-1 
-             inline-block rounded-lg shadow-sm"
+             inline-block rounded-xl shadow 
+             border border-[#b80014]"
 >
   {prop.title}
 </h3>
+
 
                   <p className="text-blue-600 font-semibold mt-1 truncate">
                  {prop.address}
