@@ -55,7 +55,7 @@ Mensaje: ${formData.mensaje || "—"}`;
           <img
             src="/subtitulos/tienes_dudas.png"
             alt="Tienes Dudas"
-            className="w-[22rem] object-contain"
+            className="w-[26rem] object-contain mx-auto"
           />
         </div>
 
