@@ -131,7 +131,7 @@ export default function PropertyResumenPage() {
           <hr className="border-gray-200 mb-6" />
 
           {/* 🔹 Título */}
-          <h1 className="text-4xl md:text-5xl font-playfair font-extrabold text-negro-profundo text-center tracking-wide mb-2">
+          <h1 className="text-4xl md:text-5xl font-inter font-extrabold text-negro-profundo text-center tracking-wide mb-2">
             {data.property.title || "Resumen de Propiedad"}
           </h1>
 
@@ -143,7 +143,7 @@ export default function PropertyResumenPage() {
           )}
 
           {/* Precio */}
-          <p className="text-3xl font-semibold text-center text-[#DF011A] mt-4 mb-4 tracking-wide font-playfair">
+          <p className="text-3xl font-semibold text-center text-[#DF011A] mt-4 mb-4 tracking-wide font-inter">
             Precio {data.property.status ? `de ${data.property.status}` : ""}:{" "}
             <span className="font-bold text-negro-profundo">
              {data.property.moneda} {Number(data.property.price).toLocaleString("en-US", { minimumFractionDigits: 2,  maximumFractionDigits: 2,})}
