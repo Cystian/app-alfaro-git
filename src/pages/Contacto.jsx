@@ -18,7 +18,7 @@ const Contacto = () => {
         alt="Logo Inmobiliaria"
         className="mx-auto mb-6 w-32 md:w-48 h-auto object-contain"
       />
-      <h1 className="text-3xl md:text-4xl font-extrabold text-center text-[#C80000] mb-6">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-center text-[#DF011A] mb-6">
         Conócenos
       </h1>
       <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
@@ -30,21 +30,27 @@ const Contacto = () => {
 
       <div className="space-y-4 mt-6">
         <div className="flex flex-wrap items-center gap-2">
-          <Phone className="text-[#C80000]" size={20} />
+          <Phone className="text-[#DF011A]" size={20} />
           <span className="text-gray-800 text-base md:text-lg">+51 940 221 494</span>
         </div>
+        
+      <div className="flex flex-wrap items-start gap-2">
+  <Mail className="text-[#DF011A] mt-1" size={20} />
+
+  <span className="text-gray-800 text-base md:text-lg w-full md:w-auto break-words">
+    albertoalfaro@inmobiliariaalbertoalfaro.com.pe
+  </span>
+</div>
+
+        
         <div className="flex flex-wrap items-center gap-2">
-          <Mail className="text-[#C80000]" size={20} />
-          <span className="text-gray-800 text-base md:text-lg">albertoalfaro@inmobiliariaalbertoalfaro.com.pe</span>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <MapPin className="text-[#C80000]" size={20} />
+          <MapPin className="text-[#DF011A]" size={20} />
           <span className="text-gray-800 text-base md:text-lg">Nuevo Chimbote, Perú</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Briefcase className="text-[#C80000]" size={20} />
+          <Briefcase className="text-[#DF011A]" size={20} />
           <span className="text-gray-800 text-base md:text-lg">CEO & Fundador:</span>
-          <span className="font-bold text-[#C80000] text-base md:text-lg"> Ing. Alberto I. Alfaro Vásquez</span>
+          <span className="font-bold text-[#DF011A] text-base md:text-lg"> Ing. Alberto I. Alfaro Vásquez</span>
         </div>
       </div>
     </div>
