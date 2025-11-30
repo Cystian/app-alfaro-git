@@ -107,7 +107,6 @@ export default function PropertyResumenPage() {
 
   return (
     <>
-      <FloatingShare />
 
       <div className="min-h-screen bg-gray-100">
         <div
