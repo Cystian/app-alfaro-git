@@ -24,7 +24,7 @@ const NoticiaDetallePage = () => {
 
   return (
     <section className="max-w-5xl mx-auto py-16 px-6">
-      <Link to="/blog/noticias" className="text-red-600 font-semibold mb-6 inline-block">
+      <Link to="/blog/noticias" className="text-[#DF011A] font-semibold mb-6 inline-block">
         ← Volver a Noticias
       </Link>
       <h1 className="text-4xl font-bold mb-6">{noticia.titulo}</h1>
