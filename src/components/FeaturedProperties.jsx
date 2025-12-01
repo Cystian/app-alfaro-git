@@ -75,7 +75,7 @@ const FeaturedProperties = () => {
   className="text-lg font-semibold truncate 
              bg-white text-[#DF011A]
              px-3 py-1 
-             inline-block rounded-xl shadow 
+             inline-block rounded-xl 
              border border-white"
 >
   {prop.title}
