@@ -76,17 +76,17 @@ const FeaturedProperties = () => {
              bg-white text-[#DF011A]
              px-3 py-1 
              inline-block rounded-xl shadow 
-             border border-[#b80014]"
+             border border-white"
 >
   {prop.title}
 </h3>
 
 
-                  <p className="text-blue-600 font-semibold mt-1 truncate">
+                  <p className="text-black font-semibold mt-1 truncate">
                  {prop.address}
                 </p>
                 <p className="text-gray-500">{prop.location}</p>
-                 <p className="text-blue-600 font-semibold mt-1">
+                 <p className="text-black font-semibold mt-1">
             {prop.moneda} {Number(prop.price).toLocaleString("es-PE")}
           </p>
 
