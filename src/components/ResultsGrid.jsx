@@ -91,7 +91,7 @@ export default function ResultsGrid({ properties }) {
               text-[#DF011A] 
              px-3 py-1 
              inline-block rounded-xl 
-             border border-white"
+             border "
 >
   {property.title}
 </h3>
