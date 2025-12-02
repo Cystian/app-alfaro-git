@@ -25,7 +25,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-2 text-[#DF011A]">Enlaces</h4>
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Inicio</Link></li>
-              <li><Link to="/vende-o-alquila" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Vende o Alquila</Link></li>
+              <li><Link to="/vende-o-alquila" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Vende o Alquila con Nosotros</Link></li>
               <li><Link to="/servicios" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Servicios</Link></li>
               <li><Link to="/blog" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Blog</Link></li>
                  <li><Link to="/asesores" className="hover:text-[#DF011A] transition no-underline hover:no-underline focus:no-underline active:no-underline">Asesores</Link></li>
