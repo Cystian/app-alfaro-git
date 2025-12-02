@@ -495,7 +495,7 @@ export default function PropertyResumenPage() {
 
                 <button
                   onClick={() => window.open("/", "_blank")}
-                  className="flex items-center justify-center gap-2  bg-[#232323] hover:bg-[#1A1A1A] active:bg-[#0F0F0F] text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
+                  className="flex items-center justify-center gap-2  bg-[#353535] hover:bg-[#1A1A1A] active:bg-[#0F0F0F] text-white font-semibold py-2 px-4 rounded-lg shadow transition-transform transform hover:scale-105"
                 >
                   🔍 Buscar más propiedades
                 </button>
