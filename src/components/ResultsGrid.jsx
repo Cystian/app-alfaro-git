@@ -88,7 +88,7 @@ export default function ResultsGrid({ properties }) {
               <div className="flex flex-col flex-grow">
                <h3
   className="text-lg font-semibold truncate 
-             bg-white text-[#DF011A] 
+              text-[#DF011A] 
              px-3 py-1 
              inline-block rounded-xl 
              border border-white"
