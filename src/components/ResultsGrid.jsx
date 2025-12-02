@@ -90,8 +90,7 @@ export default function ResultsGrid({ properties }) {
   className="text-lg font-semibold truncate 
               text-[#DF011A] 
              px-3 py-1 
-             inline-block rounded-xl 
-             border "
+             inline-block rounded-xl "
 >
   {property.title}
 </h3>
