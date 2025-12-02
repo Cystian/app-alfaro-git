@@ -46,7 +46,7 @@ const VendeoAlquila = () => {
            
                  <div className="mb-4">
         <img
-          src="/subtitulos/nuestro_proceso.png"
+          src="/subtitulos/nuestro_proceso_1.jpg"
           alt="Areas de Gestión"
           className="w-[30rem] mx-auto"
         />
