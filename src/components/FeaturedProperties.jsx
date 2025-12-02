@@ -52,7 +52,7 @@ const FeaturedProperties = () => {
         {properties.map((prop, index) => (
           <SwiperSlide key={prop.id}>
             <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
-              //op1
+              
                   <a
       href={`/propiedades/resumen/${prop.id}`}
       target="_blank"
