@@ -88,20 +88,20 @@ export default function ResultsGrid({ properties }) {
               <div className="flex flex-col flex-grow">
                <h3
   className="text-lg font-semibold truncate 
-             bg-[#DF011A] text-white 
+             bg-white text-[#DF011A] 
              px-3 py-1 
              inline-block rounded-xl shadow 
-             border border-[#b80014]"
+             border border-white"
 >
   {property.title}
 </h3>
-                <p className="text-sm text-blue-600 mt-1 truncate">
+                <p className="text-sm text-black font-semibold mt-1 truncate">
                   {property.address}
                 </p>
                 <p className="text-sm text-gray-600 truncate">
                   {property.location}
                 </p>
-                <p className="text-blue-600 font-bold mt-2">
+                <p className="text-black font-bold mt-2">
                   {property.moneda}
                   {Number(property.price).toLocaleString("es-PE", {
                     minimumFractionDigits: 2,
@@ -127,7 +127,7 @@ export default function ResultsGrid({ properties }) {
                     href={`/propiedades/resumen/${property.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-[#232323] text-white text-center py-2 px-3 rounded-lg hover:bg-[#1A1A1A] active:bg-[#0F0F0F] transition no-underline hover:no-underline focus:no-underline active:no-underline"
+                    className="flex-1 bg-[#353535] text-white text-center py-2 px-3 rounded-lg hover:bg-[#1A1A1A] active:bg-[#0F0F0F] transition no-underline hover:no-underline focus:no-underline active:no-underline"
                   >
                     Ver más
                   </a>
