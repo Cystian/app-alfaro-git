@@ -8,6 +8,7 @@ import {
   FaLinkedinIn 
 } from "react-icons/fa";
 import FloatingShare from "../components/FloatingShare";
+import { Helmet } from "react-helmet-async";
 
 const Asesores = () => {
   const [asesores, setAsesores] = useState([]);
@@ -29,6 +30,36 @@ const Asesores = () => {
   return (
     <>
     <FloatingShare />
+
+        <Helmet>
+    <title>Asesores Inmobiliarios – Inmobiliaria Alberto Alfaro</title>
+
+    <meta
+      name="description"
+      content="Conoce a nuestro equipo de asesores inmobiliarios expertos en inversiones, venta y compra de propiedades en Chimbote , Nuevo Chimbote y demás ."
+    />
+
+    {/* 🔵 OPEN GRAPH PARA FACEBOOK / WHATSAPP */}
+    <meta property="og:title" content="Nuestro Equipo de Asesores – Inmobiliaria Alberto Alfaro" />
+    <meta
+      property="og:description"
+      content="Asesores profesionales listos para ayudarte a elegir la mejor propiedad o inversión inmobiliaria."
+    />
+    <meta
+      property="og:image"
+      content="https://inmobiliariaalbertoalfaro.com.pe/og/logo_aa.png"
+    />
+    <meta
+      property="og:url"
+      content="https://inmobiliariaalbertoalfaro.com.pe/asesores"
+    />
+    <meta property="og:type" content="website" />
+
+    {/* 🟣 TARJETA PARA X (Twitter) */}
+    <meta name="twitter:card" content="summary_large_image" />
+  </Helmet>
+
+      
     <section
       id="redes"
       className="bg-gray-50 p-6 rounded-2xl shadow bg-white"
