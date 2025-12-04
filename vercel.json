@@ -14,6 +14,10 @@
   ],
   "rewrites": [
     {
+      "source": "/asesores-og.html",
+      "destination": "/asesores-og.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
