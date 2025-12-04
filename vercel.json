@@ -6,7 +6,7 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": "(facebookexternalhit|facebookcatalog|facebook|whatsapp|discord|twitterbot|linkedinbot|crawler|bot)"
+          "value": ".*(facebookexternalhit|Facebot|WhatsApp|whatsapp|Discord|discord|Twitterbot|LinkedInBot|crawler|bot|preview).*"
         }
       ],
       "dest": "https://inmobiliariaalbertoalfaro.com.pe/asesores-og.html"
