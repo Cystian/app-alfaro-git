@@ -1,5 +1,21 @@
 {
+  "routes": [
+    {
+      "src": "/asesores",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(facebookexternalhit|facebookcatalog|facebook|whatsapp|discord|twitterbot|linkedinbot|crawler|bot)"
+        }
+      ],
+      "dest": "https://inmobiliariaalbertoalfaro.com.pe/asesores-og.html"
+    }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
