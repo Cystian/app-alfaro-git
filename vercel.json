@@ -1,24 +1,30 @@
 {
-  "routes": [
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
     {
-      "src": "/asesores",
+      "source": "/asesores",
       "has": [
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(facebookexternalhit|Facebot|WhatsApp|whatsapp|Discord|discord|Twitterbot|LinkedInBot|crawler|bot|preview).*"
+          "value": ".*(facebookexternalhit|Facebot|WhatsApp|whatsapp|Discord|discord|Twitterbot|LinkedInBot|Slackbot|TelegramBot|crawler|bot|preview).*"
         }
       ],
-      "dest": "/asesores-og.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/asesores-og.html",
       "destination": "/asesores-og.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/asesores/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|WhatsApp|whatsapp|Discord|discord|Twitterbot|LinkedInBot|Slackbot|TelegramBot|crawler|bot|preview).*"
+        }
+      ],
+      "destination": "/asesores-og.html"
+    },
+    {
+      "source": "/:path((?!api/|assets/|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$).*)",
       "destination": "/index.html"
     }
   ]
