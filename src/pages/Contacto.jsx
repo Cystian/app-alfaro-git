@@ -22,7 +22,7 @@ const Contacto = () => {
         Conócenos
       </h1>
       <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
-        En <span className="font-semibold">nuestra firma inmobiliaria</span> entendemos que cada decisión inmobiliaria es también una <span className="font-semibold">decisión de vida</span>.
+        En <span className="font-semibold">nuestraX firma inmobiliaria</span> entendemos que cada decisión inmobiliaria es también una <span className="font-semibold">decisión de vida</span>.
       </p>
       <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-8">
         <span className="font-semibold">Gestionamos</span> propiedades residenciales y comerciales, siempre con enfoque en la satisfacción total del cliente.
