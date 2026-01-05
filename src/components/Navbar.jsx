@@ -110,7 +110,7 @@ export default function Navbar() {
           <div className="flex-1 flex justify-center">
             <a href="/" className="flex items-center">
               <img
-                src="/logo_h.png"
+                src="/logo.png"
                 alt="Logo"
                 className="h-20 md:h-20 lg:h-20 w-auto transition-transform duration-300 hover:scale-105 hover:shadow-logo-hover rounded-lg"
               />
