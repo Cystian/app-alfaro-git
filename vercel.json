@@ -1,20 +1,16 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
+  "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+
     {
-      "source": "/asesores",
-      "has": [
-        {
-          "type": "header",
-          "key": "user-agent",
-          "value": ".*(facebookexternalhit|Facebot|WhatsApp|Discord|Twitterbot|LinkedInBot|Slackbot|TelegramBot|crawler|bot|preview).*"
-        }
-      ],
-      "destination": "/asesores-og.html"
+      "src": "/asesores/?",
+      "headers": {
+        "user-agent": ".*(facebookexternalhit|Facebot|WhatsApp|Discord|Twitterbot|LinkedInBot|Slackbot|TelegramBot|crawler|bot|preview).*"
+      },
+      "dest": "/asesores-og.html"
     },
-    {
-      "source": "/:path((?!api/)(?!assets/)(?!og/)(?!.*\\.).*)",
-      "destination": "/"
-    }
+
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
