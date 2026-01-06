@@ -14,7 +14,7 @@
     },
     {
       "source": "/:path((?!api/)(?!assets/)(?!og/)(?!.*\\.).*)",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }
