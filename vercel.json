@@ -7,13 +7,13 @@
         {
           "type": "header",
           "key": "user-agent",
-          "value": ".*(facebookexternalhit|Facebot|WhatsApp|whatsapp|Discord|discord|Twitterbot|LinkedInBot|Slackbot|TelegramBot|crawler|bot|preview).*"
+          "value": ".*(facebookexternalhit|Facebot|WhatsApp|Discord|Twitterbot|LinkedInBot|Slackbot|TelegramBot|crawler|bot|preview).*"
         }
       ],
       "destination": "/asesores-og.html"
     },
     {
-      "source": "/:path((?!api/|assets/|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$).*)",
+      "source": "/:path((?!api/)(?!assets/)(?!og/)(?!.*\\.).*)",
       "destination": "/index.html"
     }
   ]
